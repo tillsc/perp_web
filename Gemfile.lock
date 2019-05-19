@@ -214,7 +214,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (>= 1.1.0)
-  bootstrap (~> 4.1.1)
+  bootstrap (~> 4.1)
   byebug
   capistrano-rails
   capybara (>= 2.15, < 4.0)
