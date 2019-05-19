@@ -1,0 +1,10 @@
+<h1>Verfügbare Rennen</h1>
+
+<table class="table">
+<% @events.each do |event| %>
+  <tr>
+    <td><%= event.number %> - <%= event.name_short %></td>
+    <td><%= event.name %></td>
+  </tr>
+<% end %>
+</table>

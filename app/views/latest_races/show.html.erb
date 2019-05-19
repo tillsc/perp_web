@@ -1,0 +1,21 @@
+<br>
+<br>
+<h1><%= @race.event.try(:name) %>: <%= @race.name %></h1>
+
+<p>Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %></p>
+
+<style>
+  body {
+    background-color: #0000ff;
+    color: black;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  h1 { font-weight: bold }
+</style>
+
+<script>
+  setTimeout(reloadWithTurbolinks, 5000)
+</script>

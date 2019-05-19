@@ -1,0 +1,11 @@
+<h1>Letzte Rennen</h1>
+
+<table class="table">
+<% @races.each do |race| %>
+  <tr>
+  <td><%= race.event.try(:number) %> - <%= race.event.try(:name_short) %></td>
+  <td><%= race.name %></td>
+  <td><%= l race.started_at %></td>
+  </tr>
+<% end %>
+</table>
