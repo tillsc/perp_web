@@ -7,8 +7,10 @@ server "perp.de", user: "perp.de", roles: %w{app db web}
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
-set :rbenv_custom_path, '/usr'
+set :rbenv_path, '/usr/lib/x86_64-linux-gnu/rbenv/libexec/rbenv'
+set :rbenv_prefix, "RBENV_ROOT=/var/www/vhosts/perp.de/.rbenv #{fetch(:rbenv_path)} exec"
 
+set :passenger_restart_with_touch, true
 
 # role-based syntax
 # ==================
