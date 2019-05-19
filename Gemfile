@@ -33,6 +33,8 @@ gem 'bootstrap', '~> 4.3'
 
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
+gem 'capistrano-passenger', group: :development
+gem 'capistrano-rbenv', group: :development
 
 gem 'composite_primary_keys', '~> 11.0'
 
