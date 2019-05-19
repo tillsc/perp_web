@@ -3,7 +3,11 @@
 <table class="table">
 <% @races.each do |race| %>
   <tr>
-  <td><%= race.event.try(:number) %> - <%= race.event.try(:name_short) %></td>
+  <td>
+    <%= link_to latest_race_url(@regatta, race) do %>
+      <%= race.event.try(:number) %> - <%= race.event.try(:name_short) %>
+    <% end %>
+  </td>
   <td><%= race.name %></td>
   <td><%= l race.started_at %></td>
   </tr>

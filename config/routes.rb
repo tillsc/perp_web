@@ -5,7 +5,11 @@ Rails.application.routes.draw do
     get '/latest' => 'latest_races#index'
     get '/latest_race' => 'latest_races#show'
 
-    resources :events, only: [:index, :show]
+    resources :events, only: [:index] do
+      get :participants
+      get :starts
+      resources :results, only: [:index, :show]
+    end
   end
 
   get '/:regatta_id' => 'latest_races#index'

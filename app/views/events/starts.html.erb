@@ -1,0 +1,30 @@
+<h1>Geplante Läufe in Rennen <%= @event.number %> <small><%= @event.name_short %></small></h1>
+<p class="lead">
+  <%= @event.name %>
+</p>
+
+<% @starts.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, starts| %>
+  <h4><%= race.name %></h4>
+  <div class="table-responsive-md">
+    <table class="table">
+      <thead>
+      <th>Bugnr.</th>
+      <th>Land</th>
+      <th>Teamname</th>
+      <th>Ruderer</th>
+      <th>Status</th>
+      </thead>
+      <tbody>
+      <% starts.each do |s| %>
+        <tr class="<%= participant_state_classes(s.participant) %>">
+          <td><%= s.participant.number %></td>
+          <td><%= s.participant.team.try(:country) %></td>
+          <td><%= s.participant.team_name %></td>
+          <td><%= s.participant.rower_names %></td>
+          <td><%= s.participant.state %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

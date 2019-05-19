@@ -12,12 +12,20 @@ class Parameter < ApplicationRecord
   end
 
   def self.current_regatta_id
-    value_for('Global', 'AktRegatta').first.try(:value)
+    @current_regatta_id||= value_for('Global', 'AktRegatta').first.try(:value)
   end
 
   def self.race_type_name(type_short)
     @types_short_to_long ||= {}
     @types_short_to_long[type_short] ||= value_for('Uebersetzer_Lauftypen', type_short).first.try(:value)
+  end
+
+  def self.race_sorter
+    race_type_list = value_for('Global', 'LauftypSortierung')
+    @sorter||= -> (race) {
+      race = race.first if race.is_a?(Array) # For Hashes where the race is the key
+        [race_type_list.index(race.type_short).to_s.presence || "Z#{race.type_short}", race.number_short]
+    }
   end
 
 end

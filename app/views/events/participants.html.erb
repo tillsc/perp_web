@@ -1,0 +1,27 @@
+<h1>Teilnehmer Rennen <%= @event.number %> <small><%= @event.name_short %></small></h1>
+<p class="lead">
+  <%= @event.name %>
+</p>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Bugnr.</th>
+    <th>Land</th>
+    <th>Teamname</th>
+    <th>Ruderer</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @event.participants.each do |p| %>
+    <tr class="<%= participant_state_classes(p) %>">
+      <td><%= p.number %></td>
+      <td><%= p.team.try(:country) %></td>
+      <td><%= p.team_name %></td>
+      <td><%= p.rower_names %></td>
+      <td title="<%= p.history %>" data-toggle="tooltip" data-html="true"><%= p.state %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

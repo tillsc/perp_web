@@ -1,10 +1,17 @@
 <h1>Verfügbare Rennen</h1>
 
-<table class="table">
-<% @events.each do |event| %>
-  <tr>
-    <td><%= event.number %> - <%= event.name_short %></td>
-    <td><%= event.name %></td>
-  </tr>
-<% end %>
-</table>
+<div class="table-responsive-md">
+  <table class="table">
+    <tbody>
+    <% @events.each do |event| %>
+      <tr>
+        <td><%= event.number %> - <%= event.name_short %></td>
+        <td><%= event.name %></td>
+        <td><%= link_to "#{event.participants_count} Meldungen", event_participants_path(@regatta, event) if event.participants_count > 0 %></td>
+        <td><%= link_to "#{event.starts_count} Starts", event_starts_path(@regatta, event) if event.starts_count > 0 %></td>
+        <td><%= link_to "Ergebnisse", event_results_path(@regatta, event) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

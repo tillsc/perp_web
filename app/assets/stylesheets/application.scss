@@ -1,5 +1,14 @@
 @import "bootstrap";
 
 body {
-  padding-top: 50px;
+  padding-top: 80px;
+}
+
+.withdrawn {
+  text-decoration: line-through;
+}
+
+
+.late_entry {
+  font-style: italic;
 }
