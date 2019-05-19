@@ -33,7 +33,7 @@ gem 'bootstrap', '~> 4.1.1'
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 
-gem 'composite_primary_keys', '~> 11.0.0.rc2', git: 'git@github.com:composite-primary-keys/composite_primary_keys.git'
+gem 'composite_primary_keys', '~> 11.0'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
