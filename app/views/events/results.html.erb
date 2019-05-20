@@ -1,0 +1,50 @@
+<h1>Ergebnisse in Rennen <%= @event.number %> <small><%= @event.name_short %></small></h1>
+<p class="lead">
+  <%= @event.name %>
+</p>
+
+<div class="table-responsive-md">
+  <table class="table">
+    <% @results.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, results| %>
+      <thead>
+      <tr class="table-primary" id="<%= race.to_param %>"><th colspan="20"><%= race.name %></th></tr>
+      <tr>
+      <th>Position</th>
+      <th>Bugnr.</th>
+      <th>Land</th>
+      <th>Teamname</th>
+      <% @measuring_points.each do |mp| %>
+        <th><%= mp.name %></th>
+      <% end %>
+      <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% position = 1 %>
+      <% last_position = position %>
+      <% last_time = nil %>
+      <% max_measuring_point_number = results.map { |r| r.times.map(&:measuring_point_number).max }.compact.max %>
+      <% results.sort_by { |r| r.time_for(max_measuring_point_number).try(:time) || 'ZZZZZZZZZ' }.each do |r| %>
+        <% last_mp_time = r.time_for(max_measuring_point_number).try(:time) %>
+        <tr>
+          <td>
+            <% if last_mp_time && last_mp_time != last_time %>
+              <%= last_position = position %>
+            <% elsif last_mp_time %>
+              <%= last_position %>
+            <% end %>
+          </td>
+          <% last_time = last_mp_time; position+= 1 %>
+          <td><%= r.participant.number %></td>
+          <td><%= r.participant.team.try(:country) %></td>
+          <td><%= r.participant.team_name %><br><em><%= r.participant.rower_names %></em></td>
+          <% @measuring_points.each do |mp| %>
+            <td><%= r.time_for(mp).try(:time) %></td>
+          <% end %>
+          <td><%= r.comment %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    <% end %>
+  </table>
+</div>

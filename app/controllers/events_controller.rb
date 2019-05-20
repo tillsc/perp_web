@@ -1,9 +1,7 @@
 class EventsController < ApplicationController
 
   def index
-    @events = @regatta.events.select('rennen.*, COUNT(DISTINCT startlisten.tnr, startlisten.lauf) starts_count, COUNT(DISTINCT meldungen.tnr) participants_count').
-        left_outer_joins(:starts, :participants).
-        group('rennen.regatta_id, rennen.rennen')
+    @events = @regatta.events.with_counts
   end
 
   def participants
@@ -15,6 +13,12 @@ class EventsController < ApplicationController
   def starts
     @event = @regatta.events.find([params[:regatta_id], params[:event_id]])
     @starts = @event.starts.preload(:race, participant: [:team] + Participant::ALL_ROWERS)
+  end
+
+  def results
+    @event = @regatta.events.find([params[:regatta_id], params[:event_id]])
+    @results = @event.results.preload(:race, :times, participant: [:team] + Participant::ALL_ROWERS)
+    @measuring_points = MeasuringPoint.where(regatta_id: params[:regatta_id]).for_event(@event)
   end
 
 end

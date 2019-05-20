@@ -41,4 +41,8 @@ class Race < ApplicationRecord
     DateTime.new(planned_for.year, planned_for.month, planned_for.day, started_at_time.hour, started_at_time.min, started_at_time.sec)
   end
 
+  def to_param
+    self.number
+  end
+
 end

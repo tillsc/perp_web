@@ -7,12 +7,21 @@ class Event < ApplicationRecord
   alias_attribute :name_short, 'NameK'
   alias_attribute :name_de, 'NameD'
   alias_attribute :name_en, 'NameE'
+  alias_attribute :start_measuring_point_number, 'StartMesspunktNr'
+  alias_attribute :finish_measuring_point_number, 'ZielMesspunktNr'
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
 
   has_many :participants, foreign_key: ['Regatta_ID', 'Rennen']
   has_many :races, foreign_key: ['Regatta_ID', 'Rennen']
   has_many :starts, foreign_key: ['Regatta_ID', 'Rennen']
+  has_many :results, foreign_key: ['Regatta_ID', 'Rennen']
+
+  scope :with_counts, -> {
+    select('rennen.*, COUNT(DISTINCT startlisten.tnr, startlisten.lauf) starts_count, COUNT(DISTINCT meldungen.tnr) participants_count, COUNT(DISTINCT ergebnisse.tnr, ergebnisse.lauf) results_count').
+        left_outer_joins(:starts, :participants, :results).
+        group('rennen.regatta_id, rennen.rennen')
+  }
 
   default_scope do
     order('Regatta_ID', 'Rennen')

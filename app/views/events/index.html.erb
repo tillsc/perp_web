@@ -9,7 +9,7 @@
         <td><%= event.name %></td>
         <td><%= link_to "#{event.participants_count} Meldungen", event_participants_path(@regatta, event) if event.participants_count > 0 %></td>
         <td><%= link_to "#{event.starts_count} Starts", event_starts_path(@regatta, event) if event.starts_count > 0 %></td>
-        <td><%= link_to "Ergebnisse", event_results_path(@regatta, event) %></td>
+        <td><%= link_to "#{event.results_count} Ergebnisse", event_results_path(@regatta, event) if event.results_count > 0 %></td>
       </tr>
     <% end %>
     </tbody>

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :events, only: [:index] do
       get :participants
       get :starts
-      resources :results, only: [:index, :show]
+      get :results
     end
   end
 
