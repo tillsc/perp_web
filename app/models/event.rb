@@ -18,8 +18,8 @@ class Event < ApplicationRecord
   has_many :results, foreign_key: ['Regatta_ID', 'Rennen']
 
   scope :with_counts, -> {
-    select('rennen.*, COUNT(DISTINCT startlisten.tnr, startlisten.lauf) starts_count, COUNT(DISTINCT meldungen.tnr) participants_count, COUNT(DISTINCT ergebnisse.tnr, ergebnisse.lauf) results_count').
-        left_outer_joins(:starts, :participants, :results).
+    select('rennen.*, COUNT(DISTINCT startlisten.tnr, startlisten.lauf) starts_count, COUNT(DISTINCT ergebnisse.tnr, ergebnisse.lauf) results_count').
+        left_outer_joins(:starts, :results).
         group('rennen.regatta_id, rennen.rennen')
   }
 
