@@ -1,6 +1,6 @@
-class EventsController < ApplicationController
+class RegattaController < ApplicationController
 
-  def index
+  def show
     @events = @regatta.events.with_counts
     @latest_races = Race.
         joins(:results).

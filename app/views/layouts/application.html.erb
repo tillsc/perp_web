@@ -22,7 +22,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <%= link_to "Übersicht", events_path(@regatta), class: "nav-link#{" active" if params[:controller] == "events"}" %>
+          <%= link_to "Übersicht", regatta_path(@regatta), class: "nav-link#{" active" if params[:controller] == "events"}" %>
         </li>
       </ul>
     </div>
