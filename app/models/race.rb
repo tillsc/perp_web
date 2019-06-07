@@ -16,6 +16,10 @@ class Race < ApplicationRecord
     where.not('IstStartZeit' => nil).order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
   end
 
+  scope :upcoming, -> do
+    where(arel_table['SollStartZeit'].gteq(DateTime.now)).order('SollStartZeit')
+  end
+
   scope :for_regatta, -> (regatta) do
     includes(:event).where(Event.table_name => { regatta_id: regatta.id })
   end

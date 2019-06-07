@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     get '/status' => 'state#index'
   end
 
-  get '/:regatta_id' => 'latest_races#index'
+  get '/:regatta_id' => 'events#index', as: :regatta
 
   root :to => redirect { |p, req| "#{Parameter.current_regatta_id}" }
 

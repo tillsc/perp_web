@@ -1,0 +1,41 @@
+<div class="row">
+  <% if @latest_races.any? %>
+    <div class="col-md-6">
+      <h1>Letzte Rennen</h1>
+
+      <table class="table">
+        <% @latest_races.each do |race| %>
+          <tr>
+            <td>
+              <%= link_to event_results_path(@regatta, race.event, anchor: race) do %>
+                <%= race.event.try(:number) %> - <%= race.event.try(:name_short) %>
+              <% end %>
+            </td>
+            <td><%= race.name %></td>
+            <td><%= l race.started_at %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
+  <% if @next_races.any? %>
+    <div class="col-md-6">
+
+      <h1>Nächste Starts</h1>
+
+      <table class="table">
+        <% @next_races.each do |race| %>
+          <tr>
+            <td>
+              <%= link_to event_starts_path(@regatta, race.event, anchor: race) do %>
+                <%= race.event.try(:number) %> - <%= race.event.try(:name_short) %>
+              <% end %>
+            </td>
+            <td><%= race.name %></td>
+            <td><%= l race.planned_for %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
+</div>

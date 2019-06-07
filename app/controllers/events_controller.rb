@@ -2,6 +2,18 @@ class EventsController < ApplicationController
 
   def index
     @events = @regatta.events.with_counts
+    @latest_races = Race.
+        joins(:results).
+        group('laeufe.Rennen, laeufe.Lauf').
+        for_regatta(@regatta).
+        latest.
+        limit(10)
+    @next_races = Race.
+        joins(:starts).
+        group('laeufe.Rennen, laeufe.Lauf').
+        for_regatta(@regatta).
+        upcoming.
+        limit(10)
   end
 
   def participants
