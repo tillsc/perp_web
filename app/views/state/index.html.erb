@@ -4,10 +4,10 @@
     <div class="card-header">
   <h3><%= k %></h3>
     </div>
-  <dl class="card-body">
+  <dl class="card-body multi-coulmn">
     <% v.each do |k2, v2| %>
       <dt><%= k2 %></dt>
-      <dd><%= v2 || '-' %></dd>
+      <dd><%= v2.presence || '-' %></dd>
     <% end %>
   </dl>
   </div>

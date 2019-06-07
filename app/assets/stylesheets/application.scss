@@ -8,7 +8,14 @@ body {
   text-decoration: line-through;
 }
 
-
 .late_entry {
   font-style: italic;
+}
+
+.multi-coulmn {
+  column-gap: 3em;
+  column-count: 2;
+  @media (min-width: map-get($grid-breakpoints, "lg")) {
+    column-count: 4;
+  }
 }
