@@ -10,6 +10,7 @@ class Race < ApplicationRecord
   belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
 
   has_many :starts, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
+  has_many :results, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
 
   scope :latest, -> do
     where.not('IstStartZeit' => nil).order('DATE(SollStartZeit) DESC, IstStartZeit DESC')

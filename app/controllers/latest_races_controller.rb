@@ -1,7 +1,7 @@
 class LatestRacesController < ApplicationController
 
   def index
-    @races = Race.for_regatta(@regatta).latest.limit(100)
+    @races = Race.joins(:results).for_regatta(@regatta).latest.limit(100)
   end
 
   def show
