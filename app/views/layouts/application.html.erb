@@ -12,20 +12,22 @@
 </head>
 
 <body>
-<nav class="navbar  navbar-expand-md fixed-top navbar-dark bg-dark">
-  <a class="navbar-brand" href="<%= regatta_path(@regatta) %>"><%= @regatta.name %></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<% unless @no_navigation %>
+  <nav class="navbar  navbar-expand-md fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="<%= regatta_path(@regatta) %>"><%= @regatta.name %></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <%= link_to "Übersicht", events_path(@regatta), class: "nav-link#{" active" if params[:controller] == "events"}" %>
-      </li>
-    </ul>
-  </div>
-</nav>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <%= link_to "Übersicht", events_path(@regatta), class: "nav-link#{" active" if params[:controller] == "events"}" %>
+        </li>
+      </ul>
+    </div>
+  </nav>
+<% end %>
 <div class="container">
   <%= yield %>
 </div>

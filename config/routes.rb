@@ -2,7 +2,6 @@ Rails.application.routes.draw do
 
   scope '/:regatta_id' do
 
-    get '/latest' => 'latest_races#index'
     get '/latest_race' => 'latest_races#show'
 
     resources :events, only: [:index] do
