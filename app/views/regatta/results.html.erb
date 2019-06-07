@@ -7,7 +7,14 @@
   <table class="table">
     <% @results.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, results| %>
       <thead>
-      <tr class="table-primary" id="<%= race.to_param %>"><th colspan="20"><%= race.name %></th></tr>
+      <tr class="table-primary" id="<%= race.to_param %>">
+        <th colspan="20">
+          <div class="row">
+            <div class="col-auto mr-auto"><%= race.name %></div>
+            <small class="col-auto"><%= l race.started_at %></small>
+          </div>
+        </th>
+      </tr>
       <tr>
         <th>Position</th>
         <th>Bugnr.</th>
