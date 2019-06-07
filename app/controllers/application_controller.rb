@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
 
   before_action do
-    @regatta = Regatta.find(params[:regatta_id])
+    @regatta = Regatta.find(params[:regatta_id]) if params[:regatta_id]
   end
 
 end

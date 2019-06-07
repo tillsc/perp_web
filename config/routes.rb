@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       get :starts
       get :results
     end
+
+    get '/status' => 'state#index'
   end
 
   get '/:regatta_id' => 'latest_races#index'

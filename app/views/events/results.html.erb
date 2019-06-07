@@ -9,14 +9,14 @@
       <thead>
       <tr class="table-primary" id="<%= race.to_param %>"><th colspan="20"><%= race.name %></th></tr>
       <tr>
-      <th>Position</th>
-      <th>Bugnr.</th>
-      <th>Land</th>
-      <th>Teamname</th>
-      <% @measuring_points.each do |mp| %>
-        <th><%= mp.name %></th>
-      <% end %>
-      <th></th>
+        <th>Position</th>
+        <th>Bugnr.</th>
+        <th>Land</th>
+        <th>Teamname</th>
+        <% @measuring_points.each do |mp| %>
+          <th><%= mp.name %></th>
+        <% end %>
+        <th></th>
       </tr>
       </thead>
       <tbody>

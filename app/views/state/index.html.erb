@@ -1,0 +1,9 @@
+<dl>
+<% @status.each do |k, v| %>
+  <dt><%= k %></dt>
+  <dd><%= v || '-' %></dd>
+<% end %>
+</dl>
+<script>
+  setTimeout(reloadWithTurbolinks, 5000)
+</script>
