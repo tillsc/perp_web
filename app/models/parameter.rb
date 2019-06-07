@@ -12,7 +12,7 @@ class Parameter < ApplicationRecord
   end
 
   def self.current_regatta_id
-    @current_regatta_id||= value_for('Global', 'AktRegatta').first.try(:value)
+    value_for('Global', 'AktRegatta').first.try(:value)
   end
 
   def self.race_type_name(type_short)
