@@ -1,8 +1,8 @@
-<br>
-<br>
-<h1><%= @race.event.try(:name) %>: <%= @race.name %></h1>
+<% if @race %>
+  <h1><%= @race.event.try(:name) %>: <%= @race.name %></h1>
 
-<p>Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %></p>
+  <p>Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %></p>
+<% end %>
 
 <style>
   body {

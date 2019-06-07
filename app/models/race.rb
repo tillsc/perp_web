@@ -25,7 +25,18 @@ class Race < ApplicationRecord
   end
 
   scope :by_type_short, -> (type_short) do
-    where(arel_table['Lauf'].matches("#{type_short}%"))
+    ts = Array(type_short).dup
+    scope = arel_table['Lauf'].matches("#{ts.pop}%")
+    while ts.any?
+      scope = scope.or(arel_table['Lauf'].matches("#{ts.pop}%"))
+    end
+    where(scope)
+  end
+
+  scope :now, -> do
+    where(arel_table['IstStartZeit'].between((100.minutes.ago)..(Time.current.getlocal))).
+        where('DATE(SollStartZeit) = ?', Date.today).
+        order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
   end
 
   def name
