@@ -1,9 +1,18 @@
-<dl>
+
 <% @status.each do |k, v| %>
-  <dt><%= k %></dt>
-  <dd><%= v || '-' %></dd>
+  <div class="card mb-4 <%= v.delete(:failure)  ? 'text-white bg-danger' : '' %>">
+    <div class="card-header">
+  <h3><%= k %></h3>
+    </div>
+  <dl class="card-body">
+    <% v.each do |k2, v2| %>
+      <dt><%= k2 %></dt>
+      <dd><%= v2 || '-' %></dd>
+    <% end %>
+  </dl>
+  </div>
 <% end %>
-</dl>
+
 <script>
   setTimeout(reloadWithTurbolinks, 5000)
 </script>
