@@ -6,6 +6,8 @@ class Race < ApplicationRecord
   alias_attribute :number, 'Lauf'
   alias_attribute :started_at_time, 'IstStartZeit'
   alias_attribute :planned_for, 'SollStartZeit'
+  alias_attribute :official_since, 'ErgebnisEndgueltig'
+  alias_attribute :result_corrected, 'ErgebnisKorrigiert'
 
   belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
 
@@ -41,6 +43,10 @@ class Race < ApplicationRecord
 
   def name
     "#{Parameter.race_type_name(self.type_short)} #{self.number_short}"
+  end
+
+  def is_official?
+    self.official_since.present?
   end
 
   def type_short

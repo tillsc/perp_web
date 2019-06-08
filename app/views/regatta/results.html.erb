@@ -52,6 +52,17 @@
         </tr>
       <% end %>
       </tbody>
+      <tr>
+        <td colspan="20">
+          <div class="row">
+          <div class="col-auto mr-auto"></div>
+          <div class="col-auto">
+            <%= race.is_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
+            <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
+          </div>
+          </div>
+        </td>
+      </tr>
     <% end %>
   </table>
 </div>
