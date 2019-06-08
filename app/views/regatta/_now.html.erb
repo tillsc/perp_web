@@ -12,7 +12,7 @@
               <% end %>
             </td>
             <td><%= race.name %></td>
-            <td><%= l race.started_at %></td>
+            <td><%= l race.started_at, format: :short %></td>
           </tr>
         <% end %>
       </table>
@@ -32,7 +32,7 @@
               <% end %>
             </td>
             <td><%= race.name %></td>
-            <td><%= l race.planned_for %></td>
+            <td><%= l race.planned_for, format: :short %></td>
           </tr>
         <% end %>
       </table>
