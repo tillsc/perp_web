@@ -17,7 +17,7 @@ class Race < ApplicationRecord
   end
 
   scope :upcoming, -> do
-    where(arel_table['SollStartZeit'].gteq(DateTime.now)).order('SollStartZeit')
+    where(arel_table['SollStartZeit'].gteq(1.hour.ago)).where('IstStartZeit' => nil).order('SollStartZeit')
   end
 
   scope :for_regatta, -> (regatta) do
