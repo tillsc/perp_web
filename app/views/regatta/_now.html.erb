@@ -35,7 +35,15 @@
             <td><%= l race.planned_for, format: :short %></td>
           </tr>
         <% end %>
+        <% if @next_races.size >= 10 %>
+          <tr>
+            <td colspan="3">
+              <%= link_to 'Alle anzeigen', upcoming_path(@regatta) %>
+            </td>
+          </tr>
+        <% end %>
       </table>
+
     </div>
   <% end %>
 </div>

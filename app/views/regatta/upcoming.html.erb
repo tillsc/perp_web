@@ -1,0 +1,15 @@
+<h1>Nächste Starts</h1>
+
+<table class="table">
+  <% @next_races.each do |race| %>
+    <tr>
+      <td>
+        <%= link_to event_starts_path(@regatta, race.event, anchor: race) do %>
+          <%= race.event.try(:number) %> - <%= race.event.try(:name_short) %>
+        <% end %>
+      </td>
+      <td><%= race.name %></td>
+      <td><%= l race.planned_for, format: :short %></td>
+    </tr>
+  <% end %>
+</table>

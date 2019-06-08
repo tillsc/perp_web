@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get '/results' => 'regatta#results'
     end
 
+    get '/upcoming' => 'regatta#upcoming'
     get '/status' => 'state#index'
   end
 

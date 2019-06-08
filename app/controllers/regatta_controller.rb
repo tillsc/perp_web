@@ -33,4 +33,12 @@ class RegattaController < ApplicationController
     @measuring_points = MeasuringPoint.where(regatta_id: params[:regatta_id]).for_event(@event)
   end
 
+  def upcoming
+    @next_races = Race.
+        joins(:starts).
+        group('laeufe.Rennen, laeufe.Lauf').
+        for_regatta(@regatta).
+        upcoming
+  end
+
 end
