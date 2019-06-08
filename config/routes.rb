@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   scope '/:regatta_id' do
 
     get '/latest_race' => 'latest_races#show'
+    get '/results' => 'regatta#all_results'
+    get '/upcoming' => 'regatta#upcoming'
+    get '/status' => 'state#index'
 
     scope '/:event_id', as: 'event' do
       get '/participants' => 'regatta#participants'
@@ -10,8 +13,6 @@ Rails.application.routes.draw do
       get '/results' => 'regatta#results'
     end
 
-    get '/upcoming' => 'regatta#upcoming'
-    get '/status' => 'state#index'
   end
 
   get '/:regatta_id' => 'regatta#show', as: :regatta

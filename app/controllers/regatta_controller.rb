@@ -33,6 +33,18 @@ class RegattaController < ApplicationController
     @measuring_points = MeasuringPoint.where(regatta_id: params[:regatta_id]).for_event(@event)
   end
 
+  def all_results
+    @results = {}
+    @regatta.results.preload(:times, race: {event: [:start_measuring_point, :finish_measuring_point]}, participant: [:team] + Participant::ALL_ROWERS).each do |result|
+      @results[result.race.event]||= {}
+      @results[result.race.event][result.race]||= []
+      @results[result.race.event][result.race].push(result)
+    end
+    respond_to do |format|
+      format.xml
+    end
+  end
+
   def upcoming
     @next_races = Race.
         joins(:starts).

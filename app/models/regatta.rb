@@ -6,6 +6,8 @@ class Regatta < ApplicationRecord
 
   has_many :events
 
+  has_many :results
+
   def self.current
     find(Parameter.current_regatta_id)
   end

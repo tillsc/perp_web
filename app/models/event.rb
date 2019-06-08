@@ -11,6 +11,8 @@ class Event < ApplicationRecord
   alias_attribute :finish_measuring_point_number, 'ZielMesspunktNr'
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
+  belongs_to :start_measuring_point, class_name: "MeasuringPoint", foreign_key: ['Regatta_ID', 'StartMesspunktNr']
+  belongs_to :finish_measuring_point, class_name: "MeasuringPoint", foreign_key: ['Regatta_ID', 'ZielMesspunktNr']
 
   has_many :participants, foreign_key: ['Regatta_ID', 'Rennen']
   has_many :races, foreign_key: ['Regatta_ID', 'Rennen']
@@ -33,6 +35,10 @@ class Event < ApplicationRecord
 
   def to_param
     self.number.to_s
+  end
+
+  def distance
+    finish_measuring_point.position - start_measuring_point.position
   end
 
 end

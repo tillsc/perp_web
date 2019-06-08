@@ -57,6 +57,15 @@ class Race < ApplicationRecord
     self.number.to_s[1]
   end
 
+  def numeric_number
+    n = self.number.to_s[1]
+    if (n.to_i > 0)
+      n.to_i
+    else
+      n.upcase.ord - 'A'.ord + 1
+    end
+  end
+
   def started_at
     return unless started_at_time && planned_for
 

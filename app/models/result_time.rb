@@ -20,4 +20,8 @@ class ResultTime < ApplicationRecord
     order('Regatta_ID', 'Rennen', 'Lauf', 'MesspunktNr', 'Zeit')
   end
 
+  def to_time
+    time && "00:#{time.gsub(',', '.')}".to_time
+  end
+
 end

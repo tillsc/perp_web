@@ -41,6 +41,17 @@ class Participant < ApplicationRecord
     }.compact.join(", ")
   end
 
+  def all_rowers
+    i = 1
+    ALL_ROWERS.each_with_object({}) { |assoc, res|
+      rower = self.send(assoc)
+      if rower
+        res[i] = rower
+      end
+      i+=1
+    }
+  end
+
   def state
     [].tap do |res|
       res << "Abgemeldet" if withdrawn?
