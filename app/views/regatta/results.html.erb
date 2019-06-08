@@ -4,7 +4,7 @@
 </p>
 
 <div class="table-responsive-md">
-  <table class="table">
+  <table class="table table-sm">
     <% @results.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, results| %>
       <thead>
       <tr class="table-primary" id="<%= race.to_param %>">
@@ -17,8 +17,7 @@
       </tr>
       <tr>
         <th>Position</th>
-        <th>Bugnr.</th>
-        <th>Land</th>
+        <th>Bugnr&nbsp;/ Land</th>
         <th>Teamname</th>
         <% @measuring_points.each do |mp| %>
           <th><%= mp.name %></th>
@@ -42,8 +41,7 @@
             <% end %>
           </td>
           <% last_time = last_mp_time; position+= 1 %>
-          <td><%= r.participant.number %></td>
-          <td><%= r.participant.team.try(:country) %></td>
+          <td><%= r.participant.number %><br><strong><%= r.participant.team.try(:country) %></strong></td>
           <td><%= r.participant.team_name %><br><em><%= r.participant.rower_names %></em></td>
           <% @measuring_points.each do |mp| %>
             <td><%= r.time_for(mp).try(:time) %></td>
@@ -54,7 +52,7 @@
       </tbody>
       <tr>
         <td colspan="20">
-          <div class="row">
+          <div class="row mb-3">
           <div class="col-auto mr-auto"></div>
           <div class="col-auto">
             <%= race.is_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
