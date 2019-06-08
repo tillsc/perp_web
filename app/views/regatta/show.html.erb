@@ -7,12 +7,25 @@
     <tbody>
     <% @events.each do |event| %>
       <tr>
-        <td><%= event.number %> - <%= event.name_short %></td>
-        <td><%= event.name %></td>
+        <td>
+        <div class="row">
+          <div class="col-lg-6 col-12 mr-auto">
+            <%= event.number %> - <%= event.name_short %>
+           <%= event.name %>
+          </div>
         <% participants_count = event.participants.reject(&:withdrawn).size %>
-        <td><%= link_to "#{participants_count} Meldungen", event_participants_path(@regatta, event) if participants_count > 0 %></td>
-        <td><%= link_to "#{event.starts_count} Starts", event_starts_path(@regatta, event) if event.starts_count > 0 %></td>
-        <td><%= link_to "#{event.results_count} Ergebnisse", event_results_path(@regatta, event) if event.results_count > 0 %></td>
+        <div class="col-lg-2 col-4">
+          <%= link_to "#{participants_count} Meldungen", event_participants_path(@regatta, event) if participants_count > 0 %>
+        </div>
+          <div class="col-lg-2 col-4">
+          <%= link_to "#{event.starts_count} Starts", event_starts_path(@regatta, event) if event.starts_count > 0 %>
+          </div>
+          <div class="col-lg-2 col-4">
+        <%= link_to "#{event.results_count} Ergebnisse", event_results_path(@regatta, event) if event.results_count > 0 %>
+          </div>
+        </div>
+        </div>
+      </td>
       </tr>
     <% end %>
     </tbody>
