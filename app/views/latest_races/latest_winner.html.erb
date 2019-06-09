@@ -7,10 +7,10 @@
 
   <div class="text-white fixed-bottom px-1" style="background: rgba(0, 0, 0, 0.3); margin-top: 10px;">
     <div class="row">
-      <div class="col-6">
-        Bugnr. <%= @result.participant.try(:number) %>
+      <div class="col-auto mr-auto">
+        Bugnr. <%= @result.participant.try(:number) %> - <%= @result.participant.try(:team).try(:country) %>
       </div>
-      <div class="col-6">
+      <div class="col-auto">
         <%= @result.time_for(@measuring_point).try(:time) %>
         bei <%= @measuring_point.position %>m
       </div>
