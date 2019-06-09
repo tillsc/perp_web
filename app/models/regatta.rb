@@ -10,6 +10,8 @@ class Regatta < ApplicationRecord
 
   has_many :results
 
+  has_many :measuring_points
+
   scope :valid, -> { where(Regatta.arel_table[:ID].gteq(1032)) }
 
   def self.current

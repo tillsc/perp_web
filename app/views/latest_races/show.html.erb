@@ -1,4 +1,4 @@
-<% if @race && @race.results.present? && @measuring_point  %>
+<% if @race && @results.present? && @measuring_point  %>
   <div class="sticky-top text-white px-1" style="background: rgba(0, 0, 0, 0.3)">
     <strong><%= @race.event.try(:name) %>: <%= @race.name %></strong>
 
@@ -6,7 +6,7 @@
   </div>
 
   <div class="row text-white fixed-bottom">
-    <% @race.results.sort_by { |r| r.time_for(@measuring_point).try(:time) || 'ZZZZZZZZZ' }.each_with_index do |res,i| %>
+    <% @results.each_with_index do |res,i| %>
       <div class="col-4">
         <div class="row px-1" style="background: rgba(0, 0, 0, 0.3); margin-top: 10px; <%= "margin-right: 0px;" if ((i+1) % 3 != 0) %>">
           <div class="col-1"><%= res.participant.try(:number) %></div>
