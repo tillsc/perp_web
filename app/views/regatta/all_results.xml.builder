@@ -29,7 +29,7 @@ xml.re :Ergebnisse, "xmlns:re" => "http://schemas.rudern.de/service/ergebnisse/2
               else
                 last_rank = rank
               end
-              xml.Ergebnis Rang: r, Zeit: time.strftime("PT%MM%S.%3NS")
+              xml.Ergebnis Rang: r, Zeit: time.strftime("PT%MM%S.%3NS") if time
               last_time = time
               rank+=1
               # <!-- DRV-WKR mit Lizenz nach "neuem" Schema -->
