@@ -26,6 +26,14 @@ class Race < ApplicationRecord
     includes(:event).where(Event.table_name => { regatta_id: regatta.id })
   end
 
+  scope :with_results, -> do
+    joins(:results).group('laeufe.Rennen, laeufe.Lauf')
+  end
+
+  scope :with_starts, -> do
+    joins(:starts).group('laeufe.Rennen, laeufe.Lauf')
+  end
+
   scope :by_type_short, -> (type_short) do
     ts = Array(type_short).dup
     scope = arel_table['Lauf'].matches("#{ts.pop}%")

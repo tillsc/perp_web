@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <title>PerpWeb</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="turbolinks-cache-control" content="no-preview">
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body style="padding-top: 0px">
+  <%= yield %>
+</body>
+</html>

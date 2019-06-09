@@ -1,16 +1,16 @@
 class RegattaController < ApplicationController
 
   def show
-    @events = @regatta.events.with_counts.includes(:participants)
+    @events = @regatta.events.
+        with_counts.
+        includes(:participants)
     @latest_races = Race.
-        joins(:results).
-        group('laeufe.Rennen, laeufe.Lauf').
+        with_results.
         for_regatta(@regatta).
         latest.
         limit(10)
     @next_races = Race.
-        joins(:starts).
-        group('laeufe.Rennen, laeufe.Lauf').
+        with_starts.
         for_regatta(@regatta).
         upcoming.
         limit(10)
