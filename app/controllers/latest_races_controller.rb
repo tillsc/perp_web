@@ -11,11 +11,14 @@ class LatestRacesController < ApplicationController
   end
 
   def latest_winner
-    @measuring_point = @regatta.measuring_points.last
-    scope = Race.joins(results: :times).where('zeiten.MesspunktNr', @measuring_point.number).for_regatta(@regatta).stated_minutes_ago(30)
+    @measuring_point = @regatta.measuring_points.sort_by(&:position).last
+    scope = Race.joins(results: :times).where('zeiten.MesspunktNr' => @measuring_point.number).for_regatta(@regatta).stated_minutes_ago(30)
     scope = scope.by_type_short(params[:type_short].to_s.split(',')) if params[:type_short].present?
     @race = scope.first
-    @result = @race && @race.results && @race.results.sort_by { |r| r.time_for(@measuring_point).try(:time) || 'ZZZZZZZZZ' }.first
+    @result = @race && @race.results && @race.results.
+        select{ |r| r.time_for(@measuring_point).try(:time) }.
+        sort_by { |r| r.time_for(@measuring_point).try(:time) }.
+        first
     render :layout => 'minimal'
   end
 

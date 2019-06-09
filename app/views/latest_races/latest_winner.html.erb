@@ -15,8 +15,9 @@
         bei <%= @measuring_point.position %>m
       </div>
     </div>
-      <div class="text-truncate"><%= @result.participant.try(:team).try(:name) %></div>
-      <div class="text-truncate"><%= @result.participant.rower_names %></div>
+    <div class="text-truncate"><%= @result.participant.try(:team).try(:name) %></div>
+    <div class="text-truncate"><%= @result.participant.rower_names %></div>
+  </div>
 <% end %>
 
 <style>
