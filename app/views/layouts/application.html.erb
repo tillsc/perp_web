@@ -18,15 +18,25 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand ml-1" href="<%= regatta_path(@regatta) %>"><%= @regatta.name %></a>
+      <a class="navbar-brand ml-1" href="<%= regatta_path(@regatta) %>">Perp.de</a>
     </span>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <%= link_to "Übersicht", regatta_path(@regatta), class: "nav-link#{" active" if params[:controller] == "events"}" %>
+        <li class="nav-item">
+          <%= link_to "Regatta-Übersicht", regatta_path(@regatta), class: "nav-link#{" active" if params[:action] != "upcoming"}" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Geplante Starts", upcoming_path(@regatta), class: "nav-link#{" active" if params[:action] == "upcoming"}" %>
         </li>
       </ul>
+
+      <% if @regattas.present? %>
+      <%= form_tag root_path, method: :get, class: "form-inline my-2 my-md-0" do %>
+        <%= select_tag :regatta_id, options_from_collection_for_select(@regattas, 'id', 'name', @regatta.try(:id)), class: "form-control mr-sm-2" %>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
+      <% end %>
+        <% end %>
     </div>
   </nav>
 <% end %>

@@ -17,6 +17,6 @@ Rails.application.routes.draw do
 
   get '/:regatta_id' => 'regatta#show', as: :regatta
 
-  root :to => redirect { |p, req| "#{Parameter.current_regatta_id}" }
+  root :to => redirect { |p, req| req.params["regatta_id"].presence || Parameter.current_regatta_id.to_s }
 
 end

@@ -1,7 +1,7 @@
 <div class="row">
   <% if @latest_races.any? %>
     <div class="col-md-6">
-      <h1>Letzte Rennen</h1>
+      <h3>Letzte Rennen</h3>
 
       <table class="table">
         <% @latest_races.each do |race| %>
@@ -21,7 +21,7 @@
   <% if @next_races.any? %>
     <div class="col-md-6">
 
-      <h1>Nächste Starts</h1>
+      <h3>Nächste Starts</h3>
 
       <table class="table">
         <% @next_races.each do |race| %>
