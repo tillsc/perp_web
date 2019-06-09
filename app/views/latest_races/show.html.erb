@@ -2,7 +2,7 @@
   <div class="sticky-top text-white px-1" style="background: rgba(0, 0, 0, 0.3)">
     <strong><%= @race.event.try(:name) %>: <%= @race.name %></strong>
 
-    <p>Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %>, bei <%= @measuring_point.position %>m</p>
+    <p>Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %>, bei <%= @measuring_point.position - (@race.event.try(:start_measuring_point).try(:position) || 0) %>m</p>
   </div>
 
   <div class="row text-white fixed-bottom">

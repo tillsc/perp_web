@@ -1,4 +1,4 @@
-<% if @race && @result && @measuring_point  %>
+<% if @race && @result && @event  %>
   <div class="sticky-top text-white px-1" style="background: rgba(0, 0, 0, 0.3)">
     <strong><%= @race.event.try(:name) %>: <%= @race.name %></strong>
 
@@ -11,8 +11,8 @@
         Bugnr. <%= @result.participant.try(:number) %> - <%= @result.participant.try(:team).try(:country) %>
       </div>
       <div class="col-auto">
-        <%= @result.time_for(@measuring_point).try(:time) %>
-        bei <%= @measuring_point.position %>m
+        <%= @result.time_for(@event.finish_measuring_point).try(:time) %>
+        bei <%= @event.distance %>m
       </div>
     </div>
     <div class="text-truncate"><%= @result.participant.try(:team).try(:name) %></div>

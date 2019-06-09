@@ -30,6 +30,11 @@ class Race < ApplicationRecord
     joins(:results).group('laeufe.Rennen, laeufe.Lauf')
   end
 
+  scope :with_finish_times, -> do
+    joins(:event, results: :times).
+      where('zeiten.MesspunktNr = rennen.ZielMesspunktNr AND zeiten.Zeit IS NOT NULL')
+  end
+
   scope :with_starts, -> do
     joins(:starts).group('laeufe.Rennen, laeufe.Lauf')
   end
