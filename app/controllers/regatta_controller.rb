@@ -53,4 +53,11 @@ class RegattaController < ApplicationController
         upcoming
   end
 
+  def representative
+    @representative = Address.representative.
+      find_by!(public_private_id: params[:public_private_id])
+
+    @teams = (@regatta.teams.merge(@representative.teams)).preload(:participants)
+  end  
+
 end

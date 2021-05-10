@@ -6,4 +6,6 @@ class Team < ActiveRecord::Base
   alias_attribute :country, 'Land'
   alias_attribute :city, 'Stadt'
 
+  has_many :participants, foreign_key: ['Regatta_ID', 'Team_ID']
+
 end

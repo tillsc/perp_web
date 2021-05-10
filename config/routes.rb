@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     get '/results' => 'regatta#all_results'
     get '/upcoming' => 'regatta#upcoming'
     get '/status' => 'state#index'
+    get 'representative/:public_private_id' => 'regatta#representative'
 
     scope '/:event_id', as: 'event' do
       get '/participants' => 'regatta#participants'
@@ -17,6 +18,8 @@ Rails.application.routes.draw do
   end
 
   get '/:regatta_id' => 'regatta#show', as: :regatta
+
+  get '/representative/:public_private_id', :to => redirect { |p, req| (req.params["regatta_id"].presence || Parameter.current_regatta_id.to_s) + '/representative/' + req.params["public_private_id"]}
 
   root :to => redirect { |p, req| req.params["regatta_id"].presence || Parameter.current_regatta_id.to_s }
 
