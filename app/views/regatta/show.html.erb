@@ -12,7 +12,7 @@
         <td>
           <div class="row">
             <div class="col-lg-6 col-12 mr-auto">
-              <%= event.number %> - <%= event.name_short %>
+              <%= event.label %>
               <%= event.name %>
             </div>
             <% participants_count = event.participants.reject(&:withdrawn).size %>

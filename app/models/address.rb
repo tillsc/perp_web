@@ -5,6 +5,9 @@ class Address < ApplicationRecord
     alias_attribute :is_representative, 'IstObmann'
     alias_attribute :public_private_id, 'PublicPrivateID'
 
+    alias_attribute :first_name, 'Vorname'
+    alias_attribute :last_name, 'Name'
+
 
     has_many :teams, foreign_key: 'obmann_id'
     

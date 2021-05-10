@@ -4,6 +4,9 @@
   <title>PerpWeb</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
+  <% if @noindex %>
+    <meta name="robots" content="noindex">
+  <% end %>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="turbolinks-cache-control" content="no-preview">

@@ -29,6 +29,10 @@ class Event < ApplicationRecord
     order('Regatta_ID', 'Rennen')
   end
 
+  def label
+    "#{self.number} - #{self.name_short}"
+  end
+
   def name
     self.name_de
   end
