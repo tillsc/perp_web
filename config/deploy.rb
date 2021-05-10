@@ -1,5 +1,5 @@
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.11.0"
+lock "~> 3.11"
 
 set :application, "perp_web"
 set :repo_url, "git@github.com:tillsc/perp_web.git"
