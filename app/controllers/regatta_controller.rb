@@ -58,8 +58,15 @@ class RegattaController < ApplicationController
 
     @representative = Address.representative.
       find_by!(public_private_id: params[:public_private_id])
+    cookies[:representative_public_private_id] = @representative.public_private_id
 
     @teams = (@regatta.teams.merge(@representative.teams)).preload(participants: [:team] + Participant::ALL_ROWERS)
+
+    @starts = Start.for_regatta(@regatta).
+      upcoming.
+      for_teams(@teams).
+      preload(race: :event, participant: [:team] + Participant::ALL_ROWERS).
+      reorder('SollStartZeit')
   end  
 
 end

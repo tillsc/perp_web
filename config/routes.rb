@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     get '/results' => 'regatta#all_results'
     get '/upcoming' => 'regatta#upcoming'
     get '/status' => 'state#index'
-    get 'representative/:public_private_id' => 'regatta#representative'
+    get 'representative/:public_private_id' => 'regatta#representative', as: :representative
 
     scope '/:event_id', as: 'event' do
       get '/participants' => 'regatta#participants'

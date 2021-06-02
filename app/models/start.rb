@@ -11,6 +11,19 @@ class Start < ApplicationRecord
 
   alias_attribute :race_number, 'Lauf'
 
+  scope :for_regatta, -> (regatta) {
+    where(regatta_id: regatta.id)
+  }
+  scope :for_teams, -> (teams) {
+    joins(:participant).
+      merge(Participant.for_teams(teams))
+  }
+
+  scope :upcoming, -> {
+    joins(:race).
+      merge(Race.upcoming)
+  }
+
   default_scope do
     order('Regatta_ID', 'Rennen', 'Lauf')
   end

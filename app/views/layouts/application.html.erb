@@ -27,11 +27,16 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <%= link_to "Regatta-Übersicht", regatta_path(@regatta), class: "nav-link#{" active" if params[:action] != "upcoming"}" %>
+        <%= link_to "Regatta-Übersicht", regatta_path(@regatta), class: "nav-link#{" active" unless ["upcoming", "representative"].include?(params[:action])}" %>
       </li>
       <li class="nav-item">
         <%= link_to "Geplante Starts", upcoming_path(@regatta), class: "nav-link#{" active" if params[:action] == "upcoming"}" %>
       </li>
+      <% if @representative.present? %>
+        <li class="nav-item">
+          <%= link_to "Obleute-Ansicht", representative_path(@regatta, @representative.public_private_id), class: "nav-link#{" active" if params[:action] == "representative"}" %>
+        </li>
+      <% end %>
     </ul>
 
     <% if @regattas.present? %>

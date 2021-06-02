@@ -14,6 +14,10 @@ class Participant < ApplicationRecord
     belongs_to ALL_ROWERS[i], class_name: 'Rower', foreign_key: "ruderer#{name}_ID"
   end
 
+  scope :for_teams, -> (teams) {
+    where('Team_ID': Array.wrap(teams).map(&:id).uniq)
+  }
+
   default_scope do
     order('Regatta_ID', 'Rennen', 'BugNr', 'TNr')
   end

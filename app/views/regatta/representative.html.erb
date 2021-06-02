@@ -2,6 +2,32 @@
 
 <p>Hallo <%= @representative.first_name %> <%= @representative.last_name %></p>
 
+<% if @starts.present? %>
+
+  <h3>Meine nächsten Starts</h3>
+
+  <% @starts.group_by{ |s| s.race.planned_for.to_date }.each do |d, starts| %>
+    <h4><%= l(d, format: :long) %></h4>
+    <ul>
+    <% starts.each do |start| %>
+      <li>
+        <%= link_to start.race.event.label, event_starts_path(@regatta, start.event, anchor: "race_#{start.race.number}") %> -
+        <%= start.race.name %> -
+        <strong><%= l start.race.planned_for, format: '%H:%M' %> Uhr</strong>
+        <% if start.race.event.is_leightweigt %>
+          - Verwiegen bis <strong><%= l start.race.planned_for - 1.hour, format: '%H:%M' %> Uhr</strong>
+          (<%= distance_of_time_in_words(start.race.planned_for - 1.hour, Time.now) %>)
+        <% end %>
+        <br>
+        <%= start.participant.number %>: <%= start.participant.team_name %><br>
+        <em><%= start.participant.rower_names %></em>
+      </li>
+    <% end %>
+    </ul>
+  <% end %>
+
+<% end %>
+
 <h3>Meine Teams</h3>
 
 <% @teams.flat_map{ |t| t.participants.flat_map(&:event) }.uniq.each do |event| %>
@@ -10,8 +36,8 @@
   <%= link_to "Ergebnisse", event_results_path(@regatta, event) %>]
   <ul>
     <% @teams.flat_map(&:participants).
-       select { |p| p.event == event }.
-       sort_by{ |p| p.number.to_i }.
+      select { |p| p.event == event }.
+      sort_by{ |p| p.number.to_i }.
       each do |participant| %>
       <li>
         <%= participant.number %>:
