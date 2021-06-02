@@ -11,7 +11,7 @@
     <ul>
     <% starts.each do |start| %>
       <li>
-        <%= link_to start.race.event.label, event_starts_path(@regatta, start.event, anchor: "race_#{start.race.number}") %> -
+        <%= link_to start.race.event.label, event_starts_path(@regatta, start.event, anchor: start.race) %> -
         <%= start.race.name %> -
         <strong><%= l start.race.planned_for, format: '%H:%M' %> Uhr</strong>
         <% if start.race.event.is_leightweigt %>

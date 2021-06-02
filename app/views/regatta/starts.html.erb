@@ -6,7 +6,8 @@
 </p>
 
 <% @starts.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, starts| %>
-  <div class="row" id="race_<%= race.number %>">
+  <div class="row">
+    <a class="anchor" id="<%= race.to_param %>"></a>
     <h4 class="col-auto mr-auto"><%= race.name %></h4>
     <div class="col-auto"><%= l race.planned_for %></div>
     </div>

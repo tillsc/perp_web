@@ -9,9 +9,10 @@
   <table class="table table-sm">
     <% @results.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, results| %>
       <thead>
-      <tr class="table-primary" id="<%= race.to_param %>">
+      <tr class="table-primary">
         <th colspan="20">
           <div class="row">
+            <a class="anchor" id="<%= race.to_param %>"></a>
             <div class="col-auto mr-auto"><%= race.name %></div>
             <small class="col-auto"><%= l race.started_at %></small>
           </div>

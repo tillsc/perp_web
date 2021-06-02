@@ -4,6 +4,13 @@ body {
   padding-top: 80px;
 }
 
+a.anchor {
+  display: block;
+  position: relative;
+  top: -100px;
+  visibility: hidden;
+}
+
 .withdrawn {
   text-decoration: line-through;
 }
