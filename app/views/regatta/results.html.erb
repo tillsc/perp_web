@@ -1,6 +1,6 @@
 <%= render 'header' %>
 
-<h3>Ergebnisse in Rennen <%= @event.number %> <small class="text-nowrap"><%= @event.name_short %></small></h3>
+<h2>Ergebnisse in Rennen <%= @event.number %> <small class="text-nowrap"><%= @event.name_short %></small></h2>
 <p class="lead">
   <%= @event.name %>
 </p>
@@ -9,9 +9,7 @@
 
 <% @results.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, results| %>
   <a class="anchor" id="<%= race.to_param %>"></a>
-  <h2>
-    <%= race.name %> <small class="text-nowrap"><%= l race.started_at %></small>
-  </h2>
+  <h3><%= race.name %></h3>
   <div class="result-row result-row__header">
     <div class="position">Pos.</div>
     <div class="number">Bugnr</div>
@@ -57,10 +55,11 @@
   <% end %>
 
 
-  <div class="row">
-    <div class="row mb-3">
-      <div class="col-auto mr-auto"></div>
-      <div class="col-auto">
+  <div class="result-footer">
+      <div class="started_at">
+        Startzeit: <%= l race.started_at %>
+      </div>
+      <div class="result_official">
         <%= race.is_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
         <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
       </div>

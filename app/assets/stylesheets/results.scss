@@ -51,6 +51,18 @@
       flex: 1;
     }
   }
-
 }
 
+.result-footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+  .started_at {
+    grid-column: auto;
+  }
+  .result-official {
+    grid-column: auto;
+  }
+}
