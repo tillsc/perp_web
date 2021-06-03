@@ -16,9 +16,9 @@
     <div class="country">Land</div>
     <div clasS="team">Teamname</div>
     <div class="times">
-    <% @measuring_points.each do |mp| %>
-      <div class="time"><%= mp.name %></div>
-    <% end %>
+      <% @measuring_points.each do |mp| %>
+        <div class="time"><%= mp.name %></div>
+      <% end %>
       <% if has_comments %>
         <div class="comment"></div>
       <% end %>
@@ -44,8 +44,8 @@
       <div class="team"><%= r.participant.team_name %></div>
       <div class="rower-names"><%= r.participant.rower_names %></div>
       <div class="times">
-      <% @measuring_points.each do |mp| %>
-        <div class="time"><%= r.time_for(mp).try(:time) %></div>
+        <% @measuring_points.each do |mp| %>
+          <div class="time"><%= r.time_for(mp).try(:time) %></div>
         <% end %>
         <% if has_comments %>
           <div class="comment"><%= r.comment %></div>
@@ -56,13 +56,12 @@
 
 
   <div class="result-footer">
-      <div class="started_at">
-        Startzeit: <%= l race.started_at %>
-      </div>
-      <div class="result_official">
-        <%= race.is_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
-        <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
-      </div>
+    <div class="started_at">
+      Startzeit: <%= l race.started_at %>
+    </div>
+    <div class="result_official">
+      <%= race.is_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
+      <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
     </div>
   </div>
 <% end %>

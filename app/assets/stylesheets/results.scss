@@ -5,12 +5,12 @@
             "position country rower-names times";
   grid-template-columns: 1fr 1fr 5fr 2fr;
   @media (min-width: 1000px) {
-    grid-template-columns: 1fr 1fr 5fr 3fr;
+    grid-template-columns: 1fr 1fr 8fr 4fr;
   }
 
   @media (max-width: 800px) {
     grid-template-areas:
-            "position    number      country     country"
+            "position    number      country     times"
             "team        team        team        times"
             "rower-names rower-names rower-names times";
     grid-template-columns: 1fr 1fr 5fr 2fr;
@@ -44,8 +44,15 @@
     grid-area: times;
     display: flex;
     flex-wrap: wrap;
+    @media (max-width: 800px) {
+      flex-wrap: nowrap;
+      flex-direction: column;
+    }
     .time {
-      flex: 1;
+      flex: 1 1 50px;
+      @media (max-width: 800px) {
+        flex: 1;
+      }
     }
     .comment {
       flex: 1;
@@ -56,6 +63,7 @@
 .result-footer {
   display: grid;
   grid-template-columns: 1fr auto;
+  margin-bottom: 2rem;
   @media (max-width: 800px) {
     grid-template-columns: 1fr;
   }
