@@ -1,0 +1,56 @@
+.result-row {
+  display: grid;
+  grid-template-areas:
+            "position number  team        times"
+            "position country rower-names times";
+  grid-template-columns: 1fr 1fr 5fr 2fr;
+  @media (min-width: 1000px) {
+    grid-template-columns: 1fr 1fr 5fr 3fr;
+  }
+
+  @media (max-width: 800px) {
+    grid-template-areas:
+            "position    number      country     country"
+            "team        team        team        times"
+            "rower-names rower-names rower-names times";
+    grid-template-columns: 1fr 1fr 5fr 2fr;
+    &__header {
+      .team, .rower-names {
+        display: none;
+      }
+    }
+}
+
+  grid-gap: 0.2rem;
+
+  border-bottom: 1px solid #ccc;
+
+  &__header {
+    font-weight: bold;
+  }
+
+  .position { grid-area: position }
+  .number { grid-area: number }
+  .country {
+    grid-area: country;
+    font-weight: bold;
+  }
+  .team { grid-area: team }
+  .rower-names {
+    grid-area: rower-names;
+    font-style: italic;
+  }
+  .times {
+    grid-area: times;
+    display: flex;
+    flex-wrap: wrap;
+    .time {
+      flex: 1;
+    }
+    .comment {
+      flex: 1;
+    }
+  }
+
+}
+

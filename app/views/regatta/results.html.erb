@@ -1,69 +1,69 @@
 <%= render 'header' %>
 
-<h3>Ergebnisse in Rennen <%= @event.number %> <small><%= @event.name_short %></small></h3>
+<h3>Ergebnisse in Rennen <%= @event.number %> <small class="text-nowrap"><%= @event.name_short %></small></h3>
 <p class="lead">
   <%= @event.name %>
 </p>
 
-<div class="table-responsive-md">
-  <table class="table table-sm">
-    <% @results.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, results| %>
-      <thead>
-      <tr class="table-primary">
-        <th colspan="20">
-          <div class="row">
-            <a class="anchor" id="<%= race.to_param %>"></a>
-            <div class="col-auto mr-auto"><%= race.name %></div>
-            <small class="col-auto"><%= l race.started_at %></small>
-          </div>
-        </th>
-      </tr>
-      <tr>
-        <th>Position</th>
-        <th>Bugnr&nbsp;/ Land</th>
-        <th>Teamname</th>
-        <% @measuring_points.each do |mp| %>
-          <th><%= mp.name %></th>
-        <% end %>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% position = 1 %>
-      <% last_position = position %>
-      <% last_time = nil %>
-      <% max_measuring_point_number = results.map { |r| r.times.map(&:measuring_point_number).max }.compact.max %>
-      <% results.sort_by { |r| r.time_for(max_measuring_point_number).try(:time) || 'ZZZZZZZZZ' }.each do |r| %>
-        <% last_mp_time = r.time_for(max_measuring_point_number).try(:time) %>
-        <tr>
-          <td>
-            <% if last_mp_time && last_mp_time != last_time %>
-              <%= last_position = position %>
-            <% elsif last_mp_time %>
-              <%= last_position %>
-            <% end %>
-          </td>
-          <% last_time = last_mp_time; position+= 1 %>
-          <td><%= r.participant.number %><br><strong><%= r.participant.team.try(:country) %></strong></td>
-          <td><%= r.participant.team_name %><br><em><%= r.participant.rower_names %></em></td>
-          <% @measuring_points.each do |mp| %>
-            <td><%= r.time_for(mp).try(:time) %></td>
-          <% end %>
-          <td><%= r.comment %></td>
-        </tr>
-      <% end %>
-      </tbody>
-      <tr>
-        <td colspan="20">
-          <div class="row mb-3">
-          <div class="col-auto mr-auto"></div>
-          <div class="col-auto">
-            <%= race.is_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
-            <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
-          </div>
-          </div>
-        </td>
-      </tr>
+<% has_comments = @results.any? { |r| r.comment.present? } %>
+
+<% @results.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, results| %>
+  <a class="anchor" id="<%= race.to_param %>"></a>
+  <h2>
+    <%= race.name %> <small class="text-nowrap"><%= l race.started_at %></small>
+  </h2>
+  <div class="result-row result-row__header">
+    <div class="position">Pos.</div>
+    <div class="number">Bugnr</div>
+    <div class="country">Land</div>
+    <div clasS="team">Teamname</div>
+    <div class="times">
+    <% @measuring_points.each do |mp| %>
+      <div class="time"><%= mp.name %></div>
     <% end %>
-  </table>
-</div>
+      <% if has_comments %>
+        <div class="comment"></div>
+      <% end %>
+    </div>
+  </div>
+  <% position = 1 %>
+  <% last_position = position %>
+  <% last_time = nil %>
+  <% max_measuring_point_number = results.map { |r| r.times.map(&:measuring_point_number).max }.compact.max %>
+  <% results.sort_by { |r| r.time_for(max_measuring_point_number).try(:time) || 'ZZZZZZZZZ' }.each do |r| %>
+    <% last_mp_time = r.time_for(max_measuring_point_number).try(:time) %>
+    <div class="result-row">
+      <div class="position">
+        <% if last_mp_time && last_mp_time != last_time %>
+          <%= last_position = position %>
+        <% elsif last_mp_time %>
+          <%= last_position %>
+        <% end %>
+      </div>
+      <% last_time = last_mp_time; position+= 1 %>
+      <div class="number"><%= r.participant.number %></div>
+      <div class="country"><%= r.participant.team.try(:country) %></div>
+      <div class="team"><%= r.participant.team_name %></div>
+      <div class="rower-names"><%= r.participant.rower_names %></div>
+      <div class="times">
+      <% @measuring_points.each do |mp| %>
+        <div class="time"><%= r.time_for(mp).try(:time) %></div>
+        <% end %>
+        <% if has_comments %>
+          <div class="comment"><%= r.comment %></div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+
+  <div class="row">
+    <div class="row mb-3">
+      <div class="col-auto mr-auto"></div>
+      <div class="col-auto">
+        <%= race.is_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
+        <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
+      </div>
+    </div>
+  </div>
+<% end %>
