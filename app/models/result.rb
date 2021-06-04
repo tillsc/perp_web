@@ -15,6 +15,15 @@ class Result < ApplicationRecord
   alias_attribute :disqualified, 'Ausgeschieden'
   alias_attribute :comment, 'Kommentar'
 
+  scope :for_regatta, -> (regatta) {
+    where(regatta_id: regatta.id)
+  }
+
+  scope :for_rower, -> (rower) {
+    joins(:participant).
+      merge(Participant.for_rower(rower))
+  }
+
   default_scope do
     order('Regatta_ID', 'Rennen', 'Lauf', 'TNr')
   end

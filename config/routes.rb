@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     get '/upcoming' => 'regatta#upcoming'
     get '/status' => 'state#index'
     get 'representative/:public_private_id' => 'regatta#representative', as: :representative
+    get '/rower/:rower_id' => 'regatta#rower', as: :rower
 
     scope '/:event_id', as: 'event' do
       get '/participants' => 'regatta#participants'

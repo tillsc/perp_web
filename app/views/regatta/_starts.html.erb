@@ -1,0 +1,19 @@
+<% starts.group_by{ |s| s.race.planned_for.to_date }.each do |d, st| %>
+  <h4><%= l(d, format: :long) %></h4>
+  <ul>
+    <% st.each do |start| %>
+      <li>
+        <%= link_to start.race.event.label, event_starts_path(@regatta, start.event, anchor: start.race) %> -
+        <%= start.race.name %> -
+        <strong><%= l start.race.planned_for, format: '%H:%M' %> Uhr</strong>
+        <% if start.race.event.is_leightweigt %>
+          - <span class="text-nowrap">Verwiegen bis <strong><%= l start.race.planned_for - 1.hour, format: '%H:%M' %> Uhr</strong>
+          (noch <%= distance_of_time_in_words(start.race.planned_for - 1.hour, Time.now) %>)</span>
+        <% end %>
+        <br>
+        <%= start.participant.number %>: <%= start.participant.team_name %><br>
+        <em><%= start.participant.rower_names %></em>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

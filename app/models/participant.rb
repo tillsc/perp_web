@@ -18,6 +18,12 @@ class Participant < ApplicationRecord
     where('Team_ID': Array.wrap(teams).map(&:id).uniq)
   }
 
+  scope :for_rower, -> (rower) {
+    where(ALL_ROWER_IDX.map { |name|
+      arel_table["ruderer#{name}_ID"].eq(rower.id)
+    }.inject { |sc, cond| sc.or(cond) })
+  }
+
   default_scope do
     order('Regatta_ID', 'Rennen', 'BugNr', 'TNr')
   end
@@ -41,9 +47,14 @@ class Participant < ApplicationRecord
 
   def rower_names(options = {})
     ALL_ROWERS.map { |assoc| self.send(assoc) }.each_with_index.map { |rower, i|
-      rower && rower.name(options.merge(is_cox: i == 8))
-    }.compact.join(", ")
+      if rower
+        n = ERB::Util.html_escape(rower.name(options.merge(is_cox: i == 8)))
+        n = options[:rower_link].call(rower, n) if options[:rower_link]
+        n
+      end
+    }.compact.join(", ").html_safe
   end
+
 
   def all_rowers
     i = 1

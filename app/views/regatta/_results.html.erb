@@ -1,0 +1,17 @@
+<% results.group_by{ |s| s.race.planned_for.to_date }.each do |d, res| %>
+  <h4><%= l(d, format: :long) %></h4>
+  <ul>
+    <% res.each do |result| %>
+      <li>
+        <%= link_to result.race.event.label, event_results_path(@regatta, result.event, anchor: result.race) %> -
+        <%= result.race.name %> -
+        <strong><%= l result.race.started_at_time, format: '%H:%M' %> Uhr</strong>
+        <br>
+        <%= result.participant.number %>: <%= result.participant.team_name %><br>
+        <em><%= result.participant.rower_names %></em>
+        <br>
+        <%= result.race.event.finish_measuring_point&.name %>: <%= result.time_for(result.race.event.finish_measuring_point_number)&.time %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

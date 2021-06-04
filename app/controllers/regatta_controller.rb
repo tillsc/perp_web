@@ -67,6 +67,22 @@ class RegattaController < ApplicationController
       for_teams(@teams).
       preload(race: :event, participant: [:team] + Participant::ALL_ROWERS).
       reorder('SollStartZeit')
-  end  
+  end
+
+  def rower
+    @rower = Rower.find(params[:rower_id])
+
+    @starts = Start.for_regatta(@regatta).
+      for_rower(@rower).
+      preload(race: :event, participant: [:team] + Participant::ALL_ROWERS).
+      joins(:race).
+      reorder('SollStartZeit')
+
+    @results = Result.for_regatta(@regatta).
+      for_rower(@rower).
+      preload(:times, race: {event: :finish_measuring_point}, participant: [:team] + Participant::ALL_ROWERS).
+      joins(:race).
+      reorder('IstStartZeit')
+  end
 
 end

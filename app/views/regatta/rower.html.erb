@@ -1,0 +1,19 @@
+<%= render 'header' %>
+
+<p><%= @rower.first_name %> <%= @rower.last_name %></p>
+
+<div class="row">
+<% if @results.present? %>
+  <div class="col-lg-6">
+    <h2>Ergebnisse</h2>
+    <%= render 'results', results: @results %>
+  </div>
+<% end %>
+
+<% if @starts.present? %>
+  <div class="col-lg-6">
+    <h2>Starts</h2>
+    <%= render 'starts', starts: @starts %>
+  </div>
+<% end %>
+</div>
