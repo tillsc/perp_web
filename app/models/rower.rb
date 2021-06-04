@@ -11,7 +11,7 @@ class Rower < ActiveRecord::Base
 
   def name(options = {})
     "#{options[:is_cox] ? "St.\u00A0" : ""}#{self.first_name}\u00A0#{self.last_name}".tap do |s|
-      s << "\u00A0(#{self.year_of_birth})"
+      s << "\u00A0(#{self.year_of_birth})" if self.year_of_birth.present?
     end
   end
 
