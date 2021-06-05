@@ -22,9 +22,12 @@ var reloadWithTurbolinks = (function () {
   var scrollPosition
 
   function reload () {
-    scrollPosition = [window.scrollX, window.scrollY]
     Turbolinks.visit(window.location.toString(), { action: 'replace' })
   }
+
+  document.addEventListener('turbolinks:before-render', function() {
+    scrollPosition = [window.scrollX, window.scrollY]
+  });
 
   document.addEventListener('turbolinks:load', function () {
     if (scrollPosition) {
