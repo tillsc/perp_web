@@ -3,7 +3,8 @@ class RegattaController < ApplicationController
   def show
     @events = @regatta.events.
       with_counts.
-      includes(:participants)
+      includes(:participants).
+      preload(:races)
     @latest_races = Race.
       with_results.
       for_regatta(@regatta).

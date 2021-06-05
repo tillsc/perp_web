@@ -25,7 +25,7 @@ class Start < ApplicationRecord
   }
 
   scope :upcoming, -> {
-    joins(:race).
+    joins(race: :event).
       merge(Race.upcoming)
   }
 
