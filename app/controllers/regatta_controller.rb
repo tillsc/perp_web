@@ -30,7 +30,7 @@ class RegattaController < ApplicationController
 
   def results
     @event = @regatta.events.
-      preload(:starts, participants: [:team] + Participant::ALL_ROWERS).
+      preload(:starts, :races, participants: [:team] + Participant::ALL_ROWERS).
       find([params[:regatta_id], params[:event_id]])
 
     @results = @event.results.preload(:times, :race)
@@ -38,7 +38,7 @@ class RegattaController < ApplicationController
     @missing = {not_at_start: {}, withdrawn: {}}
     @results.group_by { |r| r.race.type_short.upcase }.each do |race_type, results|
       seen_participant_ids = results.map(&:participant_id)
-      not_started = if Parameter.race_types_with_implicit_start_list.include?(race_type)
+      not_started = if Parameter.race_types_with_implicit_start_list.include?(race_type) or @event.races.map(&:type_short).uniq == [race_type]
                       @event.participants
                     else
                       @event.starts.map { |s| s.race_type_short == race_type ? @event.participants.find { |p| p.participant_id == s.participant_id  } : nil }
@@ -47,6 +47,7 @@ class RegattaController < ApplicationController
         (@missing[p.withdrawn? ? :withdrawn : :not_at_start][race_type]||= []) << p
       end
     end
+
     @measuring_points = MeasuringPoint.where(regatta_id: params[:regatta_id]).for_event(@event)
   end
 
