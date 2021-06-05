@@ -10,6 +10,7 @@ class Start < ApplicationRecord
   belongs_to :participant, foreign_key: ['Regatta_ID', 'Rennen', 'TNr']
 
   alias_attribute :race_number, 'Lauf'
+  alias_attribute :participant_id, 'TNr'
 
   scope :for_regatta, -> (regatta) {
     where(regatta_id: regatta.id)

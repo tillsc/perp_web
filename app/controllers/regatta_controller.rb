@@ -30,7 +30,7 @@ class RegattaController < ApplicationController
 
   def results
     @event = @regatta.events.find([params[:regatta_id], params[:event_id]])
-    @results = @event.results.preload(:race, :times, participant: [:team] + Participant::ALL_ROWERS)
+    @results = @event.results.preload(:times, race: :starts, participant: [:team] + Participant::ALL_ROWERS)
     @measuring_points = MeasuringPoint.where(regatta_id: params[:regatta_id]).for_event(@event)
   end
 
