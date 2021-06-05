@@ -8,7 +8,10 @@
         <strong><%= l start.race.planned_for, format: '%H:%M' %> Uhr</strong>
         <% if start.race.event.is_leightweigt %>
           - <span class="text-nowrap">Verwiegen bis <strong><%= l start.race.planned_for - 1.hour, format: '%H:%M' %> Uhr</strong>
-          (noch <%= distance_of_time_in_words(start.race.planned_for - 1.hour, Time.now) %>)</span>
+          <% if start.race.planned_for - 1.hour > Time.now %>
+          (noch <%= distance_of_time_in_words(start.race.planned_for - 1.hour, Time.now) %>)
+        <% end %>
+          </span>
         <% end %>
         <br>
         <%= start.participant.number %>: <%= start.participant.team_name %><br>
