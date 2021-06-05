@@ -28,6 +28,7 @@ class Participant < ApplicationRecord
     order('Regatta_ID', 'Rennen', 'BugNr', 'TNr')
   end
 
+  alias_attribute :participant_id, 'TNr'
   alias_attribute :number, 'BugNr'
   alias_attribute :team_boat_number, 'TeamBoot'
   alias_attribute :withdrawn, 'Abgemeldet'

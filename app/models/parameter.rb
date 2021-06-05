@@ -28,4 +28,9 @@ class Parameter < ApplicationRecord
     }
   end
 
+  def self.race_types_with_implicit_start_list
+    @_race_types_with_implicit_start_list||=
+      value_for('Global', 'LauftypenNachMeldeergebnis').first&.value.to_s.upcase.split("")
+  end
+
 end

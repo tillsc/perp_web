@@ -34,6 +34,10 @@ class Start < ApplicationRecord
     order('Regatta_ID', 'Rennen', 'Lauf')
   end
 
+  def race_type_short
+    self.race_number.to_s[0]
+  end
+
   def to_param
     self.participant_number.to_s
   end
