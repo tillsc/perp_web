@@ -26,8 +26,12 @@
               <%= link_to "#{event.results_count} Ergebnisse", event_results_path(@regatta, event) if event.results_count > 0 %>
             </div>
             <div class="col-12">
-              <% event.races.group_by(&:type_name).each do |tn, races| %>
-                <%= tn %> (<%= l(races.first.planned_for, format: "%a") %>): <%= races.map{ |r| l(r.planned_for, format: "%H:%M") }.join(", ") %><br>
+              <% if event.starts_count > 0 or participants_count > 1 %>
+                <% event.races.group_by(&:type_name).each do |tn, races| %>
+                  <%= tn %> (<%= l(races.first.planned_for, format: "%a") %>): <%= races.map{ |r| l(r.planned_for, format: "%H:%M") }.join(", ") %><br>
+                <% end %>
+              <% else %>
+                <em>Rennen findet nicht statt</em>
               <% end %>
             </div>
           </div>
