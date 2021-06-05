@@ -64,6 +64,10 @@ class Race < ApplicationRecord
     "#{Parameter.race_type_name(self.type_short)} #{self.number_short}"
   end
 
+  def type_name
+    Parameter.race_type_name(self.type_short)
+  end
+
   def is_official?
     self.official_since.present?
   end

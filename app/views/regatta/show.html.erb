@@ -12,8 +12,8 @@
         <td>
           <div class="row">
             <div class="col-lg-6 col-12 mr-auto">
-              <%= event.label %>
-              <%= event.name %>
+              <strong><%= event.label %></strong>
+              (<%= event.name %>)
             </div>
             <% participants_count = event.participants.reject(&:withdrawn).size %>
             <div class="col-lg-2 col-4">
@@ -24,6 +24,11 @@
             </div>
             <div class="col-lg-2 col-4">
               <%= link_to "#{event.results_count} Ergebnisse", event_results_path(@regatta, event) if event.results_count > 0 %>
+            </div>
+            <div class="col-12">
+              <% event.races.group_by(&:type_name).each do |tn, races| %>
+                <%= tn %> (<%= l(races.first.planned_for, format: "%a") %>): <%= races.map{ |r| l(r.planned_for, format: "%H:%M") }.join(", ") %><br>
+              <% end %>
             </div>
           </div>
         </td>
