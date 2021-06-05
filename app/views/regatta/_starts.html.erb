@@ -6,8 +6,8 @@
         <%= link_to start.race.event.label, event_starts_path(@regatta, start.event, anchor: start.race) %> -
         <%= start.race.name %> -
         <strong><%= l start.race.planned_for, format: '%H:%M' %> Uhr</strong>
-        <% if start.race.event.is_leightweigt %>
-          - <span class="text-nowrap">Verwiegen bis <strong><%= l start.race.planned_for - 1.hour, format: '%H:%M' %> Uhr</strong>
+        <% if start.race.event.is_leightweigt || start.race.event.has_cox? %>
+          - <span class="text-nowrap"><%=  start.race.event.is_leightweigt ? "Verwiegen" : "Stm. verwiegen" %> bis <strong><%= l start.race.planned_for - 1.hour, format: '%H:%M' %> Uhr</strong>
           <% if start.race.planned_for - 1.hour > Time.now %>
           (noch <%= distance_of_time_in_words(start.race.planned_for - 1.hour, Time.now) %>)
         <% end %>

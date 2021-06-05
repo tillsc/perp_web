@@ -11,6 +11,7 @@ class Event < ApplicationRecord
   alias_attribute :finish_measuring_point_number, 'ZielMesspunktNr'
   alias_attribute :is_leightweigt, 'Leichtgewicht'
   attribute 'Leichtgewicht', :boolean
+  alias_attribute :has_cox, 'MitSteuermann'
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :start_measuring_point, class_name: "MeasuringPoint", foreign_key: ['Regatta_ID', 'StartMesspunktNr']
