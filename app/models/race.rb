@@ -19,7 +19,9 @@ class Race < ApplicationRecord
   end
 
   scope :upcoming, -> do
-    where(arel_table['SollStartZeit'].gteq(1.hour.ago)).where('IstStartZeit' => nil).order('SollStartZeit')
+    where(arel_table['SollStartZeit'].gteq(1.hour.ago)).where('IstStartZeit' => nil).
+      where("(SELECT COUNT(*) FROM Meldungen m WHERE m.Regatta_ID = Laeufe.Regatta_ID AND m.Rennen = Laeufe.Rennen) > 1 OR (SELECT COUNT(*) FROM Startlisten s WHERE s.Regatta_ID = Laeufe.Regatta_ID AND s.Rennen = Laeufe.Rennen) > 0").
+      order('SollStartZeit')
   end
 
   scope :for_regatta, -> (regatta) do
