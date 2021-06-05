@@ -20,19 +20,24 @@
 
 var reloadWithTurbolinks = (function () {
   var scrollPosition
+  var autoscroll
 
   function reload () {
+    autoscroll = true
     Turbolinks.visit(window.location.toString(), { action: 'replace' })
   }
 
   document.addEventListener('turbolinks:before-render', function() {
-    scrollPosition = [window.scrollX, window.scrollY]
+    if (autoscroll) {
+      scrollPosition = [window.scrollX, window.scrollY]
+    }
   });
 
   document.addEventListener('turbolinks:load', function () {
     if (scrollPosition) {
       window.scrollTo.apply(window, scrollPosition)
       scrollPosition = null
+      autoscroll = false
     }
   })
 
