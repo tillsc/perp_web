@@ -2,24 +2,24 @@ class RegattaController < ApplicationController
 
   def show
     @events = @regatta.events.
-        with_counts.
-        includes(:participants)
+      with_counts.
+      includes(:participants)
     @latest_races = Race.
-        with_results.
-        for_regatta(@regatta).
-        latest.
-        limit(10)
+      with_results.
+      for_regatta(@regatta).
+      latest.
+      limit(10)
     @next_races = Race.
-        with_starts.
-        for_regatta(@regatta).
-        upcoming.
-        limit(10)
+      for_regatta(@regatta).
+      upcoming.
+      preload(:starts, :event).
+      limit(10)
   end
 
   def participants
     @event = @regatta.events.where(regatta_id: params[:regatta_id], rennen: params[:event_id]).
-        preload(participants: [:team] + Participant::ALL_ROWERS).
-        first
+      preload(participants: [:team] + Participant::ALL_ROWERS).
+      first
   end
 
   def starts
@@ -47,10 +47,9 @@ class RegattaController < ApplicationController
 
   def upcoming
     @next_races = Race.
-        joins(:starts).
-        group('laeufe.Rennen, laeufe.Lauf').
-        for_regatta(@regatta).
-        upcoming
+      for_regatta(@regatta).
+      upcoming.
+      preload(:starts, :event)
   end
 
   def representative

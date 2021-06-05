@@ -1,17 +1,24 @@
 <%= render 'header' %>
 
-<h3>Nächste Starts</h3>
+<h1>Nächste Rennen</h1>
 
-<table class="table">
-  <% @next_races.each do |race| %>
-    <tr>
-      <td>
-        <%= link_to event_starts_path(@regatta, race.event, anchor: race) do %>
-          <%= race.event.try(:number) %> - <%= race.event.try(:name_short) %>
+
+<% @next_races.group_by { |r| r.planned_for.to_date }.each do |date, races| %>
+  <h2><%= l(date, format: :long) %></h2>
+  <% races.each do |race| %>
+    <div class="row mb-3">
+      <div class="col-md-4"><%= l race.planned_for, format: :short %></div>
+      <div class="col-md-5">
+        <%= race.event.try(:number) %> -
+        <%= race.event.try(:name_short) %> -
+        <%= race.name %></div>
+      <div class="col-md-3">
+        <% if race.starts.any? %>
+          <%= link_to "Startlisten", event_starts_path(@regatta, race.event, anchor: race)  %>
+        <% else %>
+          <%= link_to "Noch nicht gesetzt", event_participants_path(@regatta, race.event, anchor: race)  %>
         <% end %>
-      </td>
-      <td><%= race.name %></td>
-      <td><%= l race.planned_for, format: :short %></td>
-    </tr>
+      </div>
+    </div>
   <% end %>
-</table>
+<% end %>

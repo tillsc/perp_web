@@ -3,47 +3,48 @@
     <div class="col-md-6">
       <h3>Letzte Rennen</h3>
 
-      <table class="table">
-        <% @latest_races.each do |race| %>
-          <tr>
-            <td>
-              <%= link_to event_results_path(@regatta, race.event, anchor: race) do %>
-                <%= race.event.try(:number) %> - <%= race.event.try(:name_short) %>
-              <% end %>
-            </td>
-            <td><%= race.name %></td>
-            <td><%= l race.started_at, format: :short %></td>
-          </tr>
-        <% end %>
-      </table>
+      <% @latest_races.each do |race| %>
+        <div class="row mb-3">
+          <div class="col-md-6"><%= l race.started_at, format: :short %></div>
+          <div class="col-md-6">
+            <%= link_to event_results_path(@regatta, race.event, anchor: race) do %>
+              <%= race.event.try(:number) %> -
+              <%= race.event.try(:name_short) %> -
+              <%= race.name %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   <% end %>
   <% if @next_races.any? %>
     <div class="col-md-6">
+      <h3>Nächste Rennen</h3>
 
-      <h3>Nächste Starts</h3>
-
-      <table class="table">
-        <% @next_races.each do |race| %>
-          <tr>
-            <td>
-              <%= link_to event_starts_path(@regatta, race.event, anchor: race) do %>
-                <%= race.event.try(:number) %> - <%= race.event.try(:name_short) %>
-              <% end %>
-            </td>
-            <td><%= race.name %></td>
-            <td><%= l race.planned_for, format: :short %></td>
-          </tr>
-        <% end %>
-        <% if @next_races.size >= 10 %>
-          <tr>
-            <td colspan="3">
-              <%= link_to 'Alle anzeigen', upcoming_path(@regatta) %>
-            </td>
-          </tr>
-        <% end %>
-      </table>
-
+      <% @next_races.each do |race| %>
+        <div class="row mb-3">
+          <div class="col-md-4"><%= l race.planned_for, format: :short %></div>
+          <div class="col-md-5">
+            <%= race.event.try(:number) %> -
+            <%= race.event.try(:name_short) %> -
+            <%= race.name %>
+          </div>
+          <div class="col-md-3">
+            <% if race.starts.any? %>
+              <%= link_to "Startlisten", event_starts_path(@regatta, race.event, anchor: race)  %>
+            <% else %>
+              <%= link_to "Noch nicht gesetzt", event_participants_path(@regatta, race.event, anchor: race)  %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <% if @next_races.size >= 10 %>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <%= link_to 'Alle anzeigen', upcoming_path(@regatta) %>
+          </div>
+        </div>
+      <% end %>
     </div>
   <% end %>
 </div>
