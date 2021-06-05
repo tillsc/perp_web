@@ -16,15 +16,9 @@
 </head>
 
 <body>
-<nav class="navbar  navbar-expand-md fixed-top navbar-dark bg-dark">
-    <span style="white-space: nowrap;">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <a class="navbar-brand ml-1" href="<%= regatta_path(@regatta) %>">Perp.de</a>
-    </span>
+<nav class="navbar navbar-expand fixed-top navbar-dark bg-dark">
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
         <%= link_to "Regatta-Übersicht", regatta_path(@regatta), class: "nav-link#{" active" unless ["upcoming", "representative"].include?(params[:action])}" %>
@@ -40,7 +34,7 @@
     </ul>
 
     <% if @regattas.present? %>
-      <%= form_tag root_path, method: :get, class: "form-inline my-2 my-md-0" do %>
+      <%= form_tag root_path, method: :get, class: "form-inline my-2 my-md-0 d-none d-lg-block" do %>
         <%= select_tag :regatta_id, options_from_collection_for_select(@regattas, 'id', 'name', @regatta.try(:id)), class: "form-control mr-sm-2" %>
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
       <% end %>
