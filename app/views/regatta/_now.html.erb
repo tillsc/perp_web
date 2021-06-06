@@ -15,6 +15,13 @@
           </div>
         </div>
       <% end %>
+      <% if @latest_races.size >= 10 %>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <%= link_to 'Alle Ergebnisse', anchor: 'all_races' %>
+          </div>
+        </div>
+      <% end %>
     </div>
   <% end %>
   <% if @next_races.any? %>
