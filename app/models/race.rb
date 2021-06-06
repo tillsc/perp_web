@@ -4,6 +4,7 @@ class Race < ApplicationRecord
   self.primary_keys = 'Regatta_ID', 'Rennen', 'Lauf'
 
   alias_attribute :number, 'Lauf'
+  alias_attribute :event_number, 'Rennen'
   alias_attribute :started_at_time, 'IstStartZeit'
   alias_attribute :planned_for, 'SollStartZeit'
   alias_attribute :official_since, 'ErgebnisEndgueltig'
@@ -54,6 +55,10 @@ class Race < ApplicationRecord
     where(arel_table['IstStartZeit'].between((10.minutes.ago)..(Time.current.getlocal))).
         where('DATE(SollStartZeit) = ?', Date.today).
         order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
+  end
+
+  scope :nearby, -> do
+    where(arel_table['SollStartZeit'].between((20.minutes.ago)..(20.minutes.since)))
   end
 
   scope :stated_minutes_ago, -> (minutes) do

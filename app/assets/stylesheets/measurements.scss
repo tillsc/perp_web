@@ -1,0 +1,26 @@
+/*
+*= require dragula
+*/
+
+.item_list {
+  border: 1px solid #999;
+  min-height: 100px;
+
+  &__item{
+    border: 1px solid #999;
+    padding: 1em;
+  }
+}
+
+.time {
+  font-family: "Source Code Pro", Monaco, monospace;
+}
+
+.participants_and_times {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  > div {
+    flex: 1;
+  }
+
+}

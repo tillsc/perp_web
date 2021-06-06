@@ -1,0 +1,50 @@
+<%= stylesheet_link_tag 'measurements' %>
+
+<h2>Zwischenzeitmessung <%= @measuring_point.name %></h2>
+
+<% if @race %>
+  <%= form_tag do %>
+
+    <div class="participants_and_times">
+      <div>
+        <h4>Reihenfolge</h4>
+        <div id="participants" class="item_list">
+
+        </div>
+      </div>
+
+      <div>
+        <h4>Zeiten</h4>
+        <div id="times" class="item_list">
+
+        </div>
+      </div>
+    </div>
+
+    <%= submit_tag "Fertig", class: 'btn btn-primary btn-block' %>
+
+  <% end %>
+
+  <h4>Verfügbare Boote</h4>
+  <div id="available_participants" class="item_list">
+    <% @race.event.participants.each do |p| %>
+      <div class="item_list__item">
+        <%= hidden_field_tag 'participants[]', p.participant_id %>
+        <%= p.number %> - Bahn XX
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>Kein Rennen aktiv</p>
+<% end %>
+
+<% if @other_races.present? %>
+  <h3>Anderen Lauf auswählen</h3>
+  <ul>
+    <% @other_races.each do |r| %>
+      <li><%= link_to "#{r.event.name} - #{r.name}", measurements_path(@regatta, measuring_point_number: @measuring_point.number, event_number: r.event_number, race_number: r.number) %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= javascript_include_tag 'measurements' %>

@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     get 'representative/:public_private_id' => 'regatta#representative', as: :representative
     get '/rower/:rower_id' => 'regatta#rower', as: :rower
 
+    get '/measurements/:measuring_point_number/current_race' => 'measurements#current_race', as: :measurements_current_race
+    get '/measurements/:measuring_point_number/:event_number/:race_number' => 'measurements#show', as: :measurements
+
     scope '/:event_id', as: 'event' do
       get '/participants' => 'regatta#participants'
       get '/starts' => 'regatta#starts'
