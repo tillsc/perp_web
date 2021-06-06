@@ -6,10 +6,11 @@
   flex: 1;
   border: 1px solid #999;
   min-height: 100px;
+  font-size: 0.9rem;
 
   &__item{
     border-bottom: 1px solid #999;
-    padding: 1em;
+    padding: 0.5em;
   }
 }
 
