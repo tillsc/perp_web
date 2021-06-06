@@ -35,7 +35,7 @@ class RegattaController < ApplicationController
 
     @results = @event.results.preload(:times, :race)
 
-    @missing = {not_at_start: {}, withdrawn: {}}
+    @missing = {not_at_start: {}, withdrawn: {}, disqualified: {}}
     @results.group_by { |r| r.race.type_short.upcase }.each do |race_type, results|
       seen_participant_ids = results.map(&:participant_id)
       not_started = if Parameter.race_types_with_implicit_start_list.include?(race_type) or @event.races.map(&:type_short).uniq == [race_type]
@@ -44,7 +44,7 @@ class RegattaController < ApplicationController
                       @event.starts.map { |s| s.race_type_short == race_type ? @event.participants.find { |p| p.participant_id == s.participant_id  } : nil }
                     end.compact.reject { |p| seen_participant_ids.include?(p.participant_id) }
       not_started.each do |p|
-        (@missing[p.withdrawn? ? :withdrawn : :not_at_start][race_type]||= []) << p
+        (@missing[p.withdrawn? ? :withdrawn : (p.disqualified? ? :disqualified : :not_at_start)][race_type]||= []) << p
       end
     end
 
