@@ -2,13 +2,21 @@
 
 <p>Hallo <%= @representative.first_name %> <%= @representative.last_name %></p>
 
-<% if @starts.present? %>
+<div class="row">
+  <% if @starts.present? %>
+    <div class="col-lg-6">
+      <h2>Starts</h2>
+      <%= render 'starts', starts: @starts %>
+    </div>
+  <% end %>
 
-  <h3>Meine nächsten Starts</h3>
-
-  <%= render 'starts', starts: @starts %>
-
-<% end %>
+  <% if @results.present? %>
+    <div class="col-lg-6">
+      <h2>Ergebnisse</h2>
+      <%= render 'results', results: @results %>
+    </div>
+  <% end %>
+</div>
 
 <h3>Meine Teams</h3>
 

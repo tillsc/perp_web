@@ -25,6 +25,11 @@ class Result < ApplicationRecord
       merge(Participant.for_rower(rower))
   }
 
+  scope :for_teams, -> (teams) {
+    joins(:participant).
+      merge(Participant.for_teams(teams))
+  }
+
   default_scope do
     order('Regatta_ID', 'Rennen', 'Lauf', 'TNr')
   end
