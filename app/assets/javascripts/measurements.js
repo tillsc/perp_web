@@ -3,7 +3,24 @@
 var selected = document.getElementById('participants')
 var selectable = document.getElementById('available_participants')
 
-dragula([selected, selectable]);
+var scrollable = true;
+
+var listener = function(e) {
+  if (! scrollable) {
+    e.preventDefault();
+  }
+}
+document.addEventListener('touchmove', listener, { passive:false });
+
+dragula([selected, selectable]).on('drag', function(el, source) {
+  scrollable = false;
+}).on('drop', function(el, source) {
+  scrollable = true;
+}).on('dragend', function(el, source) {
+  scrollable = true;
+  // your logic on dragend
+});
+
 
 var times = document.getElementById('times')
 
