@@ -35,6 +35,7 @@ class Participant < ApplicationRecord
   alias_attribute :late_entry, 'Nachgemeldet'
   alias_attribute :entry_changed, 'Umgemeldet'
   alias_attribute :history, 'Historie'
+  alias_attribute :disqualified, 'Ausgeschieden'
 
   def to_param
     self.tnr.to_s
@@ -73,6 +74,7 @@ class Participant < ApplicationRecord
       res << "Abgemeldet" if withdrawn?
       res << "Nachgemeldet" if late_entry?
       res << "Umgemeldet" if entry_changed?
+      res << disqualified if disqualified.present?
     end.join(', ')
   end
 

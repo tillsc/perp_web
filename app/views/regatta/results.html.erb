@@ -69,7 +69,7 @@
       </div>
     <% end %>
 
-    <% {not_at_start: "Nicht am Start erschienen", withdrawn: "Abgemeldet"}.each do |key, label| %>
+    <% {not_at_start: "Nicht am Start erschienen", disqualified: "Ausgeschlossen", withdrawn: "Abgemeldet"}.each do |key, label| %>
       <% if @missing[key][race_type].present? %>
         <div class="mb-4">
           <h5><%= label %></h5>
@@ -80,7 +80,7 @@
               <div class="country"><%= participant.team.try(:country) %></div>
               <div class="team"><%= participant.team_name %></div>
               <div class="rower-names"><%= participant.rower_names %></div>
-              <div class="times"></div>
+              <div class="times"><%= participant.disqualified %></div>
             </div>
           <% end %>
         </div>
