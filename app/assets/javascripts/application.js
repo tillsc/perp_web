@@ -18,31 +18,36 @@
 //= require turbolinks
 //= require_tree .
 
-var reloadWithTurbolinks = (function () {
-  var scrollPosition
-  var autoscroll
+var scrollPosition,
+  autoscroll = false,
+  autoreloadRunning = false
 
-  function reload () {
-    autoscroll = true
-    Turbolinks.visit(window.location.toString(), { action: 'replace' })
+var autoreloadAfter = function(secs) {
+  if (autoreloadRunning) {
+    clearTimeout(autoreloadRunning);
   }
+  autoreloadRunning = setTimeout(reloadWithTurbolinks, secs);
+}
 
-  document.addEventListener('turbolinks:before-render', function() {
-    if (autoscroll) {
-      scrollPosition = [window.scrollX, window.scrollY]
-    }
-  });
+var reloadWithTurbolinks = function () {
+  autoreloadRunning = false
+  autoscroll = true
+  Turbolinks.visit(window.location.toString(), { action: 'replace' })
+}
 
-  document.addEventListener('turbolinks:load', function () {
-    if (scrollPosition) {
-      window.scrollTo.apply(window, scrollPosition)
-      scrollPosition = null
-      autoscroll = false
-    }
-  })
+document.addEventListener('turbolinks:before-render', function() {
+  if (autoscroll) {
+    scrollPosition = [window.scrollX, window.scrollY]
+  }
+});
 
-  return reload
-})();
+document.addEventListener('turbolinks:load', function () {
+  if (scrollPosition) {
+    window.scrollTo.apply(window, scrollPosition)
+    scrollPosition = null
+    autoscroll = false
+  }
+})
 
 jQuery(function () {
   jQuery('[data-toggle="tooltip"]').tooltip();
