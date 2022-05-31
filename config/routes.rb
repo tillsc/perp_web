@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   scope '/:regatta_id' do
 
+    get '/tv' => 'latest_races#index'
+    get '/current_start' => 'latest_races#current_start'
     get '/latest_race' => 'latest_races#show'
     get '/latest_winner' => 'latest_races#latest_winner'
     get '/results' => 'regatta#all_results'

@@ -67,6 +67,15 @@ class Race < ApplicationRecord
         order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
   end
 
+  #
+  scope :current_start, -> do
+    where(arel_table['IstStartZeit'].eq(nil).or(
+      arel_table['IstStartZeit'].gt(2.minutes.ago)
+    )).
+      where('DATE(SollStartZeit) = ?', Date.today).
+      order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
+  end
+
   def name
     "#{Parameter.race_type_name(self.type_short)} #{self.number_short}"
   end

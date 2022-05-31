@@ -1,0 +1,18 @@
+<h1>Verfügbare Ansichten</h1>
+<ul class="list-group">
+  <li class="list-group-item">
+    <%= link_to 'Aktueller Start', current_start_path %>
+    (<%= link_to 'Nur Finale', current_start_path(type_short: 'F') %> |
+    <%= link_to 'Testmodus', current_start_path(testmode: '1') %>)
+  </li>
+  <li class="list-group-item">
+    <%= link_to 'Letztes Endergebnis', latest_race_path %>
+    (<%= link_to 'Nur Finale', latest_race_path(type_short: 'F') %> |
+    <%= link_to 'Testmodus', latest_race_path(testmode: '1') %>)
+  </li>
+  <li class="list-group-item">
+    <%= link_to 'Letzte Gewinner', latest_winner_path %>
+    (<%= link_to 'Nur Finale', latest_winner_path(type_short: 'F') %> |
+    <%= link_to 'Testmodus', latest_winner_path(testmode: '1') %>)
+  </li>
+</ul>
