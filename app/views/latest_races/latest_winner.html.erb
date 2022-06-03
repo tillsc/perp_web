@@ -1,11 +1,14 @@
 <% if @race && @result && @event  %>
-  <div class="sticky-top text-white px-1" style="background: rgba(0, 0, 0, 0.3)">
+  <div class="sticky-top text-white px-3" style="background: var(--bg, rgba(0, 0, 0, 0.3))">
     <strong><%= @race.event.try(:name) %>: <%= @race.name %></strong>
 
-    <p>Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %></p>
+    <div class="row">
+      <p class="col-md-6">Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %></p>
+      <p class="col-md-6 text-right"><%= @race.event.Zusatztext1 %></p>
+    </div>
   </div>
 
-  <div class="text-white fixed-bottom px-1" style="background: rgba(0, 0, 0, 0.3); margin-top: 10px;">
+  <div class="text-white fixed-bottom px-2" style="background: var(--bg, rgba(0, 0, 0, 0.3)); margin-top: 10px;">
     <div class="row">
       <div class="col-auto mr-auto">
         Bugnr. <%= @result.participant.try(:number) %> - <%= @result.participant.try(:team).try(:country) %>
@@ -22,6 +25,7 @@
 
 <style>
   body {
+    --bg: <%= params[:bg] || 'rgba(0, 0, 0, 0.3)' %>;
     background-color: lime;
     color: black;
   //font-smooth: never;
