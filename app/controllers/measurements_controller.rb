@@ -19,7 +19,7 @@ class MeasurementsController < ApplicationController
   def save
     participants = @race.event.participants.where(participant_id:  Array.wrap(params[:participants]))
     times = Array.wrap(params[:times]).map { |t| Time.parse(t).change(year: @race.started_at.year, month: @race.started_at.month, day: @race.started_at.day, offset: @race.started_at.offset)  }
-    rel_times = times.map { |t| Time.at(@race.started_at.to_time - t) }
+    rel_times = times.map { |t| Time.at(t - @race.started_at.to_time ) }
     @res = participants.map.zip(times, rel_times)
   end
 
