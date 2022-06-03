@@ -3,12 +3,18 @@ class MeasuringPoint < ApplicationRecord
   self.table_name = 'messpunkte'
   self.primary_keys = 'Regatta_ID', 'MesspunktNr'
 
+  belongs_to :measuring_session, optional: true
+
   alias_attribute :number, 'MesspunktNr'
   alias_attribute :position, 'Position'
 
   default_scope do
     order('Regatta_ID', 'MesspunktNr')
   end
+
+  scope :for_regatta, -> (regatta) {
+    where(regatta_id: regatta.id)
+  }
 
   scope :for_event, -> (event) {
       where(arel_table[:MesspunktNr].gt(event.start_measuring_point_number)).

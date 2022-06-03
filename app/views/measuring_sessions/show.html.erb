@@ -1,0 +1,21 @@
+<p>Du sitzt bei <%= @measuring_session.measuring_point&.name %>.</p>
+
+<% if @measuring_session.active_measuring_point %>
+  Die folgenden Rennen stehen Dir zur Auswahl
+
+  <table class="table">
+  <% @races.each do |race| %>
+    <tr>
+      <td><%= race.event.number %></td>
+      <td><%= link_to race.name, measurements_path(@regatta, measuring_session_id: @measuring_session, event_number: race.event.number, race_number: race.number) %></td>
+      <td><%= l(race.started_at) %></td>
+      <td>vor <%= distance_of_time_in_words(race.started_at, Time.now) %></td>
+    </tr>
+  <% end %>
+  </table>
+<% else %>
+  Du bist noch nicht für den Messpunkt bestätigt. Bitte warte bis das erledigt ist.
+  <script>
+    autoreloadAfter(5000)
+  </script>
+<% end %>

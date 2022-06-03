@@ -1,0 +1,9 @@
+<table class="table">
+  <% @measuring_sessions.each do |ms| %>
+  <tr>
+    <td><%= ms.device_description %></td>
+    <td><%= link_to ms.identifier, measuring_session_url(@regatta, ms) %></td>
+    <td><%= ms.measuring_point.name %></td>
+  </tr>
+  <% end %>
+</table>

@@ -38,6 +38,10 @@ class Race < ApplicationRecord
       where('zeiten.MesspunktNr = rennen.ZielMesspunktNr AND zeiten.Zeit IS NOT NULL')
   end
 
+  scope :for_measuring, -> (measuring_session) do
+    latest # TODO
+  end
+
   scope :with_starts, -> do
     joins(:starts).group('laeufe.Rennen, laeufe.Lauf')
   end

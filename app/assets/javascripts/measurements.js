@@ -26,12 +26,12 @@ var times = document.getElementById('times')
 function stopTime() {
   var d = new Date();
   var t = document.createElement('div')
-  t.classList.add('item_list__item')
-  t.innerHTML = '<span class="text-nowrap time">' + d.getHours() + ':' +
+  var time = d.getHours() + ':' +
     String(d.getMinutes()).padStart(2, '0')  + ':' +
     String(d.getSeconds()).padStart(2, '0') + '.' +
-    String(Math.round(d.getMilliseconds() / 10)).padStart(2, '0') +
-    '</span>'
+    String(Math.round(d.getMilliseconds() / 10)).padStart(2, '0');
+  t.classList.add('item_list__item')
+  t.innerHTML = '<span class="text-nowrap time">' + time + '</span><input type="hidden" name="times[]" value="' + time +'">'
   times.appendChild(t)
 
   var delBtn =  document.createElement('a')
