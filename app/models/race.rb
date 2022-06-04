@@ -56,7 +56,7 @@ class Race < ApplicationRecord
   end
 
   scope :now, -> do
-    where(arel_table['IstStartZeit'].between((10.minutes.ago)..(Time.current.getlocal))).
+    where(arel_table['IstStartZeit'].between((12.minutes.ago)..(Time.current.getlocal))).
         where('DATE(SollStartZeit) = ?', Date.today).
         order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
   end
