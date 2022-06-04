@@ -11,7 +11,7 @@ class LatestRacesController < ApplicationController
     @race = scope.first
     max_measuring_point_number = @race && @race.results.map { |r| r.times.map(&:measuring_point_number).max }.compact.max
     @measuring_point = max_measuring_point_number && MeasuringPoint.find([@regatta.ID, max_measuring_point_number])
-    @results = @race && @race.results.sort_by { |r| r.time_for(@measuring_point).try(:time) || 'ZZZZZZZZZ' }
+    @results = @race && @race.results.sort_by { |r| r.time_for(@measuring_point)&.sort_time_str || 'ZZZZZZZZZ' }
     render :layout => 'minimal'
   end
 
@@ -22,8 +22,8 @@ class LatestRacesController < ApplicationController
     @race = scope.first
     @event = @race && @race.event
     @result = @race && @event && @race.results.
-        select { |r| r.time_for(@event.finish_measuring_point).try(:time) }.
-        sort_by { |r| r.time_for(@event.finish_measuring_point).try(:time) }.
+        select { |r| r.time_for(@event.finish_measuring_point)&.time }.
+        sort_by { |r| r.time_for(@event.finish_measuring_point)&.sort_time_str }.
         first
     render :layout => 'minimal'
   end

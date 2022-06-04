@@ -24,4 +24,8 @@ class ResultTime < ApplicationRecord
     time && "00:#{time.gsub(',', '.')}".to_time
   end
 
+  def sort_time_str
+    to_time&.strftime("%2H:%2M:%2S.%2N")
+  end
+
 end
