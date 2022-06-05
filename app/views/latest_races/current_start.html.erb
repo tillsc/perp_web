@@ -3,7 +3,13 @@
     <strong><%= @race.event.try(:name) %>: <%= @race.name %></strong>
 
     <div class="row">
-      <p class="col-md-6">Start</p>
+      <p class="col-md-6">
+        <% if @race.started_at %>
+          Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %>
+        <% elsif @race.planned_for %>
+          Start geplant für <%= l(@race.planned_for, format: '%H:%M:%S') %>
+        <% end %>
+      </p>
       <p class="col-md-6 text-right"><%= @race.event.Zusatztext1 %></p>
     </div>
   </div>
