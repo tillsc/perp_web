@@ -1,6 +1,6 @@
 class MeasurementsController < ApplicationController
 
-  before_action do
+  before_action except: :index do
     @measuring_session = MeasuringSession.for_regatta(@regatta).find_by(identifier: params[:measuring_session_id])
     @measuring_point = if @measuring_session
                          @measuring_session.active_measuring_point
@@ -20,6 +20,14 @@ class MeasurementsController < ApplicationController
     @measurements = @measuring.measurements
     @measurements_history = @measuring.measurement_set.measurements_history
     render :show
+  end
+
+  def index
+    # fixme auth!
+
+    @races = Race.for_regatta(@regatta)
+    @measuring_points = MeasuringPoint.for_regatta(@regatta)
+    @measurement_sets = MeasurementSet.for_regatta(@regatta)
   end
 
   def save

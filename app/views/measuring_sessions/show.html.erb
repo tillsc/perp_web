@@ -7,7 +7,7 @@
   <% @races.each do |race| %>
     <tr>
       <td><%= race.event.number %></td>
-      <td><%= link_to race.name, measurements_path(@regatta, measuring_session_id: @measuring_session, event_number: race.event.number, race_number: race.number) %></td>
+      <td><%= link_to race.name, measurement_path(@regatta, measuring_session_id: @measuring_session, event_number: race.event.number, race_number: race.number) %></td>
       <td><%= l(race.started_at) %></td>
       <td>vor <%= distance_of_time_in_words(race.started_at, Time.now) %></td>
     </tr>

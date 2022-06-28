@@ -6,7 +6,7 @@
 </h4>
 
 
-<%= form_tag measurements_path(@regatta, race_number: @race.number, event_number: @race.event.number) do %>
+<%= form_tag measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number) do %>
   <%= hidden_field_tag :measuring_session_id, @measuring_session&.to_param %>
 
   <div class="participants_and_times">
@@ -52,7 +52,7 @@
   <h5 class="mt-3">Anderen Lauf auswählen</h5>
   <ul>
     <% @other_races.each do |r| %>
-      <li><%#= link_to "#{r.event.name} - #{r.name}", measurements_path(@regatta, measuring_point_number: @measuring_point.number, event_number: r.event_number, race_number: r.number) %></li>
+      <li><%#= link_to "#{r.event.name} - #{r.name}", measurement_path(@regatta, measuring_point_number: @measuring_point.number, event_number: r.event_number, race_number: r.number) %></li>
     <% end %>
   </ul>
 <% end %>

@@ -34,6 +34,19 @@ class MeasuringSessionsController < ApplicationController
     end
   end
 
+  def update
+    # fixme auth!
+    @measuring_session = MeasuringSession.for_regatta(@regatta).find_by!(identifier: params[:id])
+
+    if params[:activate].present?
+      @measuring_session.measuring_point.update!(measuring_session: @measuring_session)
+      flash[:info] = "Mess-Sitzung wurde aktiviert"
+    else
+      flash[:danger] = "Nothing to do"
+    end
+    redirect_to measuring_sessions_url(@regatta)
+  end
+
   protected
 
   def prepare_form

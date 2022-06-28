@@ -12,4 +12,8 @@ class MeasurementSet < ApplicationRecord
 
   alias_attribute :race_number, 'Lauf'
 
+  scope :for_regatta, -> (regatta) {
+    where(regatta_id: regatta.id)
+  }
+
 end

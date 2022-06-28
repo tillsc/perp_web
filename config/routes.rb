@@ -12,7 +12,8 @@ Rails.application.routes.draw do
     get 'representative/:public_private_id' => 'regatta#representative', as: :representative
     get '/rower/:rower_id' => 'regatta#rower', as: :rower
 
-    get '/measurements/:event_number/:race_number' => 'measurements#show', as: :measurements
+    get '/measurements' => 'measurements#index', as: :measurements
+    get '/measurements/:event_number/:race_number' => 'measurements#show', as: :measurement
     post '/measurements/:event_number/:race_number' => 'measurements#save'
 
     resources :measuring_sessions

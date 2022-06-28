@@ -7,6 +7,10 @@
       <%= ms.measuring_point.name %>
       <% if ms.active_measuring_point&.number == ms.measuring_point.number %>
         <span class="badge badge-info">Aktiv</span>
+      <% else %>
+      <%= form_tag measuring_session_url(@regatta, ms), method: :patch do %>
+          <button type="submit" name="activate" value="<%= ms.measuring_point.number %>" class="btn btn-primary">Aktivieren</button>
+      <% end %>
       <% end %>
     </td>
   </tr>
