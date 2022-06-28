@@ -3,7 +3,12 @@
   <tr>
     <td><%= ms.device_description %></td>
     <td><%= link_to ms.identifier, measuring_session_url(@regatta, ms) %></td>
-    <td><%= ms.measuring_point.name %></td>
+    <td>
+      <%= ms.measuring_point.name %>
+      <% if ms.active_measuring_point&.number == ms.measuring_point.number %>
+        <span class="badge badge-info">Aktiv</span>
+      <% end %>
+    </td>
   </tr>
   <% end %>
 </table>

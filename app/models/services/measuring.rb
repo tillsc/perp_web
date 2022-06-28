@@ -5,14 +5,23 @@ module Services
     attr_reader :race
     attr_reader :all_participants
 
-    def initialize(measuring_session, race)
+    def initialize(race, measuring_point, force_measuring_session_ownership = nil)
       @race = race
       @all_participants = race.event.participants
       @lanes = (@race.results.presence || @race.starts).
         sort_by(&:lane_number).
         map { |r| [r.participant_id, r.lane_number] }.
         to_h
-      @measurement_set = MeasurementSet.find_or_initialize_for(measuring_session, race)
+      @measurement_set = MeasurementSet.
+        create_with(measuring_session: force_measuring_session_ownership).
+        find_or_initialize_by(
+          race: race,
+          regatta: race.regatta,
+          measuring_point: measuring_point
+        )
+      if force_measuring_session_ownership && force_measuring_session_ownership.id != @measurement_set.measuring_session_id
+        raise "Editing not allowed. This race is already handled by Session #{@measurement_set.measuring_session&.identifier.inspect}"
+      end
     end
 
     def self.ftime(datetime)

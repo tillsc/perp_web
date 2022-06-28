@@ -10,6 +10,7 @@ class Race < ApplicationRecord
   alias_attribute :official_since, 'ErgebnisEndgueltig'
   alias_attribute :result_corrected, 'ErgebnisKorrigiert'
 
+  belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
 
   has_many :starts, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
