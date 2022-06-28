@@ -1,0 +1,13 @@
+<div class="item_list__item">
+  <% if participant.is_a?(Participant) %>
+    <%= hidden_field_tag 'participants[]', participant.participant_id %>
+    <%= participant.number %>
+    <% if lane = measuring.lane_for(participant) %>
+      (Bahn <%= lane %>)
+    <% end %>
+    - <%= participant.team_name %>
+  <% else %>
+    <%= hidden_field_tag 'participants[]', participant %>
+    Nicht gefunden!
+  <% end %>
+</div>

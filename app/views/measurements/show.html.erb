@@ -13,14 +13,18 @@
     <div>
       <h6>Reihenfolge</h6>
       <div id="participants" class="item_list">
-
+        <% @measurements.keys.each do |p| %>
+          <%= render 'participant', participant: p, measuring: @measuring %>
+        <% end %>
       </div>
     </div>
 
     <div>
       <h6>Zeiten</h6>
       <div id="times" class="item_list">
-
+        <% @measurements.values.each do |time| %>
+            <%= hidden_field_tag 'times[]', time %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -32,11 +36,14 @@
 
 <h6 class="mt-1">Verfügbare Boote</h6>
 <div id="available_participants" class="item_list">
-  <% @race.event.participants.each do |p| %>
-    <div class="item_list__item">
-      <%= hidden_field_tag 'participants[]', p.participant_id %>
-      <%= p.number %> (Bahn) - <%= p.team_name %>
-    </div>
+  <% @measuring.other_active_participants.each do |p| %>
+    <%= render 'participant', participant: p, measuring: @measuring %>
+  <% end %>
+  <% if @measuring.other_participants.any? %>
+    <h3 class="item_list__item">Andere Teilnehmer</h3>
+    <% @measuring.other_participants.each do |p| %>
+      <%= render 'participant', participant: p, measuring: @measuring %>
+    <% end %>
   <% end %>
 </div>
 
@@ -48,6 +55,14 @@
       <li><%#= link_to "#{r.event.name} - #{r.name}", measurements_path(@regatta, measuring_point_number: @measuring_point.number, event_number: r.event_number, race_number: r.number) %></li>
     <% end %>
   </ul>
+<% end %>
+
+<% if @measurements_history.present? %>
+  <h6 class="mt-1">Historie</h6>
+  <% @measurements_history.each do |date, data| %>
+    <strong><%= date %></strong>
+    <pre><%= data %></pre>
+  <% end %>
 <% end %>
 
 <%= javascript_include_tag 'measurements' %>

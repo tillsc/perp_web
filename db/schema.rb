@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_03_112721) do
+ActiveRecord::Schema.define(version: 2022_06_28_125714) do
 
   create_table "addressen", primary_key: "ID", id: :integer, options: "ENGINE=MyISAM DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "Titel", limit: 10
@@ -85,6 +85,18 @@ ActiveRecord::Schema.define(version: 2022_06_03_112721) do
     t.string "WiegelisteFreigegebenVon", limit: 150
     t.datetime "ErgebnisEndgueltig"
     t.index ["Regatta_ID", "Rennen", "Lauf"], name: "UNIQUE", unique: true
+  end
+
+  create_table "measurement_sets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "measuring_session_id"
+    t.integer "Regatta_ID", null: false
+    t.integer "Rennen", null: false
+    t.string "Lauf", limit: 2, null: false
+    t.integer "MesspunktNr"
+    t.text "measurements"
+    t.text "measurements_history"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "measuring_sessions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

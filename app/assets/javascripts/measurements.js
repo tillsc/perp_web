@@ -25,13 +25,15 @@ var times = document.getElementById('times')
 
 if (times) {
 
-  function stopTime() {
-    var d = new Date();
+  function stopTime(time) {
+    if (!time) {
+      var d = new Date();
+      time = d.getHours() + ':' +
+        String(d.getMinutes()).padStart(2, '0') + ':' +
+        String(d.getSeconds()).padStart(2, '0') + '.' +
+        String(Math.round(d.getMilliseconds() / 10)).padStart(2, '0');
+    }
     var t = document.createElement('div')
-    var time = d.getHours() + ':' +
-      String(d.getMinutes()).padStart(2, '0') + ':' +
-      String(d.getSeconds()).padStart(2, '0') + '.' +
-      String(Math.round(d.getMilliseconds() / 10)).padStart(2, '0');
     t.classList.add('item_list__item')
     t.innerHTML = '<span class="text-nowrap time">' + time + '</span><input type="hidden" name="times[]" value="' + time + '">'
     times.appendChild(t)
@@ -50,6 +52,11 @@ if (times) {
     return t;
   }
 
+  var existing = times.querySelectorAll('[type=hidden]');
+  for (var i = 0; i < existing.length; i++) {
+    stopTime(existing[i].value);
+    existing[i].remove();
+  }
 
   document.getElementById('stop_time').addEventListener("click", function (e) {
     stopTime();

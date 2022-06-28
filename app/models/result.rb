@@ -15,6 +15,7 @@ class Result < ApplicationRecord
   alias_attribute :disqualified, 'Ausgeschieden'
   alias_attribute :comment, 'Kommentar'
   alias_attribute :participant_id, 'TNr'
+  alias_attribute :lane_number, 'Bahn'
 
   scope :for_regatta, -> (regatta) {
     where(regatta_id: regatta.id)

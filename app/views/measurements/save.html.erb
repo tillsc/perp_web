@@ -4,5 +4,5 @@
 </h4>
 
 <% @res.each do |(p, t, r)| %>
-<li><%= p.number %>: <%= t&.strftime( "%H:%M:%S.%2N" ) %> (<%= r&.strftime( "%H:%M:%S.%2N" ) %>)</li>
+<li><%= p %>: <%= t %> (<%= r %>)</li>
 <% end %>

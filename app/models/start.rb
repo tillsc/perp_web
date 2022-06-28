@@ -11,6 +11,7 @@ class Start < ApplicationRecord
 
   alias_attribute :race_number, 'Lauf'
   alias_attribute :participant_id, 'TNr'
+  alias_attribute :lane_number, 'Bahn'
 
   scope :for_regatta, -> (regatta) {
     where(regatta_id: regatta.id)
