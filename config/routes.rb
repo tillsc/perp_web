@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  devise_for :users
+
   scope '/:regatta_id' do
 
     get '/tv' => 'latest_races#index'
