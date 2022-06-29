@@ -1,23 +1,36 @@
-<table>
-  <thead>
-  <tr>
-    <th></th>
-    <% @measuring_points.each do |mp| %>
-      <th><%= mp.name %></th>
-    <% end %>
-  </tr>
-  </thead>
-  <tbody>
-  <% @races.each do |race| %>
-    <tr>
-      <td><%= race.name %></td>
-      <% @measuring_points.each do |mp| %>
-        <td>
-          <% ms = @measurement_sets.find { |ms| ms.race == race && ms.measuring_point == mp } %>
-          <%= link_to ms ? "Edit" : "Neu", measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number) %>
-        </td>
+<h1>Messungen</h1>
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th></th>
+        <% @measuring_points.each do |mp| %>
+          <th><%= mp.name %></th>
+        <% end %>
+      </tr>
+      </thead>
+      <tbody>
+      <% @races.each do |race| %>
+        <tr>
+          <td><%= race.event.number %> - <%= race.name %></td>
+          <% @measuring_points.each do |mp| %>
+            <td>
+              <% ms = @measurement_sets.find { |ms| ms.race == race && ms.measuring_point == mp } %>
+              <% url = measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number) %>
+              <% if ms %>
+                <%= link_to "Edit", url, class: 'btn btn-secondary' %>
+              <% else %>
+                <%= link_to "Neu", url %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
       <% end %>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= link_to 'Übersicht der Mess-Sitzungen', measuring_sessions_path, class: 'btn btn-secondary btn-block' %>
+  </div>
+</div>

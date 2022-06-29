@@ -10,4 +10,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_user
+    super || @measuring_session
+  end
+
 end

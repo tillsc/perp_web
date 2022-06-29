@@ -1,18 +1,53 @@
-<table class="table">
-  <% @measuring_sessions.each do |ms| %>
-  <tr>
-    <td><%= ms.device_description %></td>
-    <td><%= link_to ms.identifier, measuring_session_url(@regatta, ms) %></td>
-    <td>
-      <%= ms.measuring_point.name %>
-      <% if ms.active_measuring_point&.number == ms.measuring_point.number %>
-        <span class="badge badge-info">Aktiv</span>
-      <% else %>
-      <%= form_tag measuring_session_url(@regatta, ms), method: :patch do %>
-          <button type="submit" name="activate" value="<%= ms.measuring_point.number %>" class="btn btn-primary">Aktivieren</button>
+<h1>Mess-Sitzungen</h1>
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th><%= MeasuringSession.human_attribute_name(:device_description) %></th>
+        <th><%= MeasuringSession.human_attribute_name(:identifier) %></th>
+        <th><%= MeasuringPoint.model_name.human %></th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @measuring_sessions.each do |ms| %>
+        <tr>
+          <td><%= ms.device_description %></td>
+          <td><%= link_to ms.identifier, measuring_session_url(@regatta, ms) %></td>
+          <td>
+            <%= ms.measuring_point.name %>
+            <% if ms.active_measuring_point&.number == ms.measuring_point.number %>
+              <span class="badge badge-info">Aktiv</span>
+              <% end %>
+          </td>
+          <td>
+            <% if can?(:edit, ms) %>
+              <%= link_to "✎", edit_measuring_session_path(@regatta, ms), class: 'btn btn-primary' %>
+            <% end %>
+          </td>
+          <td>
+            <% if can?(:edit, ms) %>
+              <% if ms.active_measuring_point&.number == ms.measuring_point.number %>
+                <%= form_tag measuring_session_url(@regatta, ms), method: :patch do %>
+                  <button type="submit" name="deactivate" value="<%= ms.measuring_point.number %>" class="btn btn-danger">Deaktivieren</button>
+                <% end %>
+              <% else %>
+                <%= form_tag measuring_session_url(@regatta, ms), method: :patch do %>
+                  <button type="submit" name="activate" value="<%= ms.measuring_point.number %>" class="btn btn-success">Aktivieren</button>
+                <% end %>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
       <% end %>
-      <% end %>
-    </td>
-  </tr>
-  <% end %>
-</table>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= link_to 'Neue Sitzung', new_measuring_session_path, class: 'btn btn-secondary btn-block' %>
+    <%= link_to 'Übersicht der Messungen', measurements_path, class: 'btn btn-secondary btn-block' %>
+  </div>
+</div>
+

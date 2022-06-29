@@ -42,6 +42,8 @@ gem 'composite_primary_keys', '~> 11.0'
 
 gem 'devise'
 
+gem 'cancancan'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 

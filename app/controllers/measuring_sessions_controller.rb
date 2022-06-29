@@ -1,13 +1,14 @@
 class MeasuringSessionsController < ApplicationController
 
   def index
-    raise "Not allowed" unless params[:fixme] == '1'
+    authorize! :index, MeasuringSession
 
     @measuring_sessions = MeasuringSession.for_regatta(@regatta)
   end
 
   def show
     @measuring_session = MeasuringSession.for_regatta(@regatta).find_by!(identifier: params[:id])
+    authorize! :show, @measuring_session
 
     if @measuring_session.active_measuring_point
       @races = Race.for_regatta(@regatta).
@@ -18,11 +19,15 @@ class MeasuringSessionsController < ApplicationController
 
   def new
     @measuring_session = MeasuringSession.new
+    authorize! :create, @measuring_session
+
     prepare_form
   end
 
   def create
     @measuring_session = MeasuringSession.new(measuring_session_params)
+    authorize! :create, @measuring_session
+
     @measuring_session.regatta = @regatta
     if @measuring_session.save
       flash[:info] = 'Mess-Sitzung angelegt'
@@ -34,17 +39,37 @@ class MeasuringSessionsController < ApplicationController
     end
   end
 
-  def update
-    # fixme auth!
+  def edit
     @measuring_session = MeasuringSession.for_regatta(@regatta).find_by!(identifier: params[:id])
+    authorize! :update, @measuring_session
+
+    prepare_form
+  end
+
+  def update
+    @measuring_session = MeasuringSession.for_regatta(@regatta).find_by!(identifier: params[:id])
+    authorize! :update, @measuring_session
 
     if params[:activate].present?
       @measuring_session.measuring_point.update!(measuring_session: @measuring_session)
       flash[:info] = "Mess-Sitzung wurde aktiviert"
+
+      redirect_to measuring_sessions_url(@regatta)
+    elsif params[:deactivate].present?
+      @measuring_session.measuring_point.update!(measuring_session: nil)
+      flash[:info] = "Mess-Sitzung wurde deaktiviert"
+
+      redirect_to measuring_sessions_url(@regatta)
     else
-      flash[:danger] = "Nothing to do"
+      if @measuring_session.update(measuring_session_params)
+        flash[:info] = "Mess-Sitzung aktualisiert"
+        redirect_to measuring_sessions_url(@regatta)
+      else
+        prepare_form
+        render :edit
+      end
     end
-    redirect_to measuring_sessions_url(@regatta)
+
   end
 
   protected
