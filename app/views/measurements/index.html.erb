@@ -5,6 +5,7 @@
       <thead>
       <tr>
         <th></th>
+        <th></th>
         <% @measuring_points.each do |mp| %>
           <th><%= mp.name %></th>
         <% end %>
@@ -14,6 +15,7 @@
       <% @races.each do |race| %>
         <tr>
           <td><%= race.event.number %> - <%= race.name %></td>
+          <td><%= race.started_at && l(race.started_at, format: '%a, %H:%M:%S') %></td>
           <% @measuring_points.each do |mp| %>
             <td>
               <% ms = @measurement_sets.find { |ms| ms.race == race && ms.measuring_point == mp } %>

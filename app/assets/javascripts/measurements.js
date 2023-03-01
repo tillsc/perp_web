@@ -1,7 +1,20 @@
 //= require dragula
+//= require moment
+//= require moment/de.js
 
-var selected = document.getElementById('participants')
-var selectable = document.getElementById('available_participants')
+var selected = document.getElementById('participants');
+var selectable = document.getElementById('available_participants');
+
+var startedAt;
+if (document.getElementById('started_at') && document.getElementById('started_at').getAttribute('datetime')) {
+  startedAt = moment.utc(document.getElementById('started_at').getAttribute('datetime'));
+
+  var startTimer = document.createElement('time');
+  document.getElementById('started_at').parentElement.appendChild(startTimer);
+  setInterval(() => {
+    startTimer.innerHTML = " (" + moment().subtract(startedAt).format('HH:mm:ss').replace(/^00:/, '') + ")";
+  }, 500);
+}
 
 var scrollable = true;
 
@@ -26,24 +39,31 @@ var times = document.getElementById('times')
 if (times) {
 
   function stopTime(time) {
+    var now, relative;
     if (!time) {
-      var d = new Date();
-      time = d.getHours() + ':' +
-        String(d.getMinutes()).padStart(2, '0') + ':' +
-        String(d.getSeconds()).padStart(2, '0') + '.' +
-        String(Math.round(d.getMilliseconds() / 10)).padStart(2, '0');
+      now = moment();
     }
-    var t = document.createElement('div')
-    t.classList.add('item_list__item')
-    t.innerHTML = '<span class="text-nowrap time">' + time + '</span><input type="hidden" name="times[]" value="' + time + '">'
-    times.appendChild(t)
+    else {
+      now = moment(time, "HH:mm:ss.SS");
+    }
+    time = now.format('HH:mm:ss.SS')
 
-    var delBtn = document.createElement('a')
-    delBtn.classList.add('btn')
-    delBtn.classList.add('btn-danger')
-    delBtn.classList.add('btn-sm')
-    delBtn.classList.add('float-right')
-    delBtn.innerHTML = 'X'
+    if (startedAt) {
+      relative = now.subtract(startedAt).format('HH:mm:ss.SS').replace(/^00:/, '');
+    }
+
+    var t = document.createElement('div');
+    t.classList.add('item_list__item');
+    t.classList.add('d-flex');
+    t.classList.add('gap-2');
+    t.innerHTML = '<div><span class="text-nowrap time">' + time + '</span>' + (relative ? ' (<span class="text-nowrap time">' + relative + '</span>)' : '') + '<input type="hidden" name="times[]" value="' + time + '"></div>';
+    times.appendChild(t);
+
+    var delBtn = document.createElement('a');
+    delBtn.classList.add('btn');
+    delBtn.classList.add('btn-danger');
+    delBtn.classList.add('btn-sm');
+    delBtn.innerHTML = 'X';
     delBtn.addEventListener("click", function () {
       t.remove();
     });

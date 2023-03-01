@@ -2,7 +2,13 @@
 
 <h4>
   Rennen <%= @race.event.number %> - <%= @race.name %> bei <%= @measuring_point.name %><br>
-  <small>Gestartet um: <%= @race.started_at && l(@race.started_at) || '-' %></small>
+  <small>Gestartet um:
+    <% if  @race.started_at %>
+      <time id="started_at" datetime="<%=  @race.started_at %>"><%= l(@race.started_at) %></time>
+    <% else %>
+      -
+    <% end %>
+  </small>
 </h4>
 
 
@@ -40,7 +46,7 @@
     <%= render 'participant', participant: p, measuring: @measuring %>
   <% end %>
   <% if @measuring.other_participants.any? %>
-    <h3 class="item_list__item">Andere Teilnehmer</h3>
+    <h3 class="item_list__item h-auto">Andere Teilnehmer</h3>
     <% @measuring.other_participants.each do |p| %>
       <%= render 'participant', participant: p, measuring: @measuring %>
     <% end %>

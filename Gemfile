@@ -30,6 +30,7 @@ gem 'bootstrap', '~> 5.0'
 gem "bootstrap_form", "< 5.1" # ruby 2.6
 
 gem 'dragula-rails'
+gem 'momentjs-rails'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
