@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 2.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 6.1'
 
 gem 'mysql2'
 # Use Puma as the app server
@@ -26,7 +26,8 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 gem 'jquery-rails'
-gem 'bootstrap', '~> 4.3'
+gem 'bootstrap', '~> 5.0'
+gem "bootstrap_form", "~> 5.1"
 
 gem 'dragula-rails'
 
@@ -38,9 +39,12 @@ gem 'capistrano-rails', group: :development
 gem 'capistrano-passenger', group: :development
 gem 'capistrano-rbenv', group: :development
 
-gem 'composite_primary_keys', '~> 11.0'
+gem 'composite_primary_keys', '~> 13.0'
 
 gem 'devise'
+gem 'devise-i18n'
+
+gem 'rubocop'
 
 gem 'cancancan'
 

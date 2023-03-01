@@ -16,31 +16,35 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand fixed-top navbar-dark bg-dark">
-
-  <div class="navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <% if @regatta %>
-        <li class="nav-item">
-          <%= link_to "Regatta-Übersicht", regatta_path(@regatta), class: "nav-link#{" active" unless ["upcoming", "representative"].include?(params[:action])}" %>
-        </li>
-        <li class="nav-item">
-          <%= link_to "Geplante Starts", upcoming_path(@regatta), class: "nav-link#{" active" if params[:action] == "upcoming"}" %>
-        </li>
-        <% if @representative.present? %>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <% if @regatta %>
           <li class="nav-item">
-            <%= link_to "Obleute-Ansicht", representative_path(@regatta, @representative.public_private_id), class: "nav-link#{" active" if params[:action] == "representative"}" %>
+            <%= link_to "Regatta-Übersicht", regatta_path(@regatta), class: "nav-link#{" active" unless ["upcoming", "representative"].include?(params[:action])}" %>
           </li>
+          <li class="nav-item">
+            <%= link_to "Geplante Starts", upcoming_path(@regatta), class: "nav-link#{" active" if params[:action] == "upcoming"}" %>
+          </li>
+          <% if @representative.present? %>
+            <li class="nav-item">
+              <%= link_to "Obleute-Ansicht", representative_path(@regatta, @representative.public_private_id), class: "nav-link#{" active" if params[:action] == "representative"}" %>
+            </li>
+          <% end %>
+        <% end %>
+      </ul>
+
+      <% if @regattas.present? %>
+        <%= form_tag root_path, method: :get, class: "d-flex" do %>
+          <%= select_tag :regatta_id, options_from_collection_for_select(@regattas, 'id', 'name', @regatta.try(:id)), class: "form-control me-2" %>
+          <button class="btn btn-outline-success" type="submit">Go</button>
         <% end %>
       <% end %>
-    </ul>
-
-    <% if @regattas.present? %>
-      <%= form_tag root_path, method: :get, class: "form-inline my-2 my-md-0 d-none d-lg-block" do %>
-        <%= select_tag :regatta_id, options_from_collection_for_select(@regattas, 'id', 'name', @regatta.try(:id)), class: "form-control mr-sm-2" %>
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
-      <% end %>
-    <% end %>
+    </div>
   </div>
 </nav>
 <div class="container">
