@@ -2,6 +2,8 @@ de:
   activerecord:
     attributes:
       user:
+        roles: Rollen
+        role_admin: Administrator
         confirmation_sent_at: Bestätigung gesendet am
         confirmation_token: Bestätigungs-Token
         confirmed_at: Bestätigt am

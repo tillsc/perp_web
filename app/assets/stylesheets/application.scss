@@ -1,9 +1,6 @@
 @import "bootstrap";
 @import "results";
-
-body {
-  padding-top: 80px;
-}
+@import "../components/auto-grid/auto-grid";
 
 .regatta-header {
   @media only print {
@@ -12,6 +9,9 @@ body {
   }
 }
 
+.grid-3-col {
+  grid-template-columns: 1fr 1fr 1fr;
+}
 
 a.anchor {
   display: block;

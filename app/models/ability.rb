@@ -5,8 +5,16 @@ class Ability
 
   def initialize(user)
     if user.is_a?(::User)
+      can :access, :internal
+
       can :manage, MeasurementSet
       can :manage, MeasuringSession
+
+      if user.role_admin
+        can :manage, User
+      end
+
+
     elsif user.is_a?(MeasuringSession)
       measuring_session = user
       can [:show], measuring_session

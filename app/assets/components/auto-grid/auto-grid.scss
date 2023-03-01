@@ -1,0 +1,36 @@
+auto-grid {
+  --cols: -1;
+  --gap: 10px;
+  --min-width: 100px;
+  --max-width: 1fr;
+
+  /* Sum of widths of all gaps */
+  --total-gap-width: calc((var(--cols) - 1) * var(--gap));
+  /* width of a column if every coulumn would be pressed into one row */
+  --optimistic-column-width: calc((100.0% - var(--total-gap-width)) / var(--cols));
+  /* width which is at least --min-width wide */
+  --realistic-column-width: max(var(--min-width), var(--optimistic-column-width));
+  /* Allow column width to be even longer (up to --max-width) */
+  --column-width: minmax(var(--realistic-column-width), var(--max-width));
+
+  display: grid;
+  grid-gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, var(--column-width));
+}
+
+auto-grid > .wide {
+  grid-column: 1 / -1;
+}
+
+/* !!!!!!!!! EXPERIMENTAL ZONE !!!!!!!!! */
+auto-grid.switcher {
+
+  /* Pseudo boolean values indicating if stuff does fit into one row (0px) or not (1px) */
+  --should-break: clamp(0px, var(--min-width) - var(--optimistic-column-width), 1px);
+  /* same as --should-not-break but the other way round */
+  --should-not-break: calc(1px - var(--should-break));
+
+  --column-width: calc(min(100%, var(--should-break) * 9999) + min(var(--optimistic-column-width), var(--should-not-break) * 9999));
+}
+
+

@@ -2,6 +2,11 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  get '/internal', to: 'internal#index'
+  scope '/internal', module: :internal, as: :internal do
+    resources :users
+  end
+
   scope '/:regatta_id' do
 
     get '/tv' => 'latest_races#index'
