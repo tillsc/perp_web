@@ -27,7 +27,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'jquery-rails'
 gem 'bootstrap', '~> 5.0'
-gem "bootstrap_form", "~> 5.1"
+gem "bootstrap_form", "< 5.1" # ruby 2.6
 
 gem 'dragula-rails'
 
@@ -40,6 +40,8 @@ gem 'capistrano-passenger', group: :development
 gem 'capistrano-rbenv', group: :development
 
 gem 'composite_primary_keys', '~> 13.0'
+
+gem 'nokogiri', '< 1.14.0' # ruby 2.6
 
 gem 'devise'
 gem 'devise-i18n'
@@ -68,8 +70,8 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15', '< 4.0'
-  gem 'selenium-webdriver'
+  gem 'capybara', '>= 2.15', '< 3.38' # ruby 2.6
+  gem 'selenium-webdriver', '< 4.8' # ruby 2.6
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
 end

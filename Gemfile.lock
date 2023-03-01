@@ -77,7 +77,7 @@ GEM
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 2.11.6, < 3)
       sassc-rails (>= 2.0.0)
-    bootstrap_form (5.1.0)
+    bootstrap_form (5.0.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
     builder (3.2.4)
@@ -98,7 +98,7 @@ GEM
     capistrano-rbenv (2.2.0)
       capistrano (~> 3.1)
       sshkit (~> 1.3)
-    capybara (3.38.0)
+    capybara (3.36.0)
       addressable
       matrix
       mini_mime (>= 0.1.3)
@@ -107,6 +107,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    childprocess (4.1.0)
     chromedriver-helper (2.1.1)
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)
@@ -173,7 +174,7 @@ GEM
       net-protocol
     net-ssh (7.0.1)
     nio4r (2.5.8)
-    nokogiri (1.14.2)
+    nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     orm_adapter (0.5.0)
@@ -258,10 +259,10 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    selenium-webdriver (4.8.1)
+    selenium-webdriver (4.1.0)
+      childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2, < 3.0)
-      websocket (~> 1.0)
+      rubyzip (>= 1.2.2)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -294,7 +295,6 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    websocket (1.2.9)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -308,13 +308,13 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.1.0)
   bootstrap (~> 5.0)
-  bootstrap_form (~> 5.1)
+  bootstrap_form (< 5.1)
   byebug
   cancancan
   capistrano-passenger
   capistrano-rails
   capistrano-rbenv
-  capybara (>= 2.15, < 4.0)
+  capybara (>= 2.15, < 3.38)
   chromedriver-helper
   composite_primary_keys (~> 13.0)
   devise
@@ -324,12 +324,13 @@ DEPENDENCIES
   jquery-rails
   listen (>= 3.0.5, < 3.2)
   mysql2
+  nokogiri (< 1.14.0)
   puma (~> 3.11)
   rack-mini-profiler
   rails (~> 6.1)
   rubocop
   sass-rails (~> 5.0)
-  selenium-webdriver
+  selenium-webdriver (< 4.8)
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)
