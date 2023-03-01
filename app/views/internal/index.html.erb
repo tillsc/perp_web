@@ -1,0 +1,44 @@
+<h1>Intern</h1>
+
+<auto-grid style="--min-width: 20em">
+
+  <div class="card">
+    <h5 class="card-header">Zeitmessung</h5>
+    <div class="card-body">
+      <ul>
+        <li><%= link_to "Messungen", measurements_url(@current_regatta) %></li>
+        <li><%= link_to "Mess-Sitzungen", measuring_sessions_url(@current_regatta) %></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h5 class="card-header">Öffentliche Links</h5>
+    <div class="card-body">
+      <ul>
+        <li><%= link_to "Aktuelle Regatta", regatta_url(@current_regatta) %></li>
+        <li><%= link_to "TV-Overlays", tv_url(@current_regatta) %></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h5 class="card-header">Administration</h5>
+    <div class="card-body">
+      <ul>
+        <li><%= link_to("Benutzerverwaltung", internal_users_url) if can?(:show, User) %></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h5 class="card-header">Mein Account</h5>
+    <div class="card-body">
+      <div class="d-grid gap-2">
+        <%= link_to "Profil bearbeiten", edit_user_registration_url, class: 'btn btn-secondary' %>
+        <%= link_to "Ausloggen", destroy_user_session_url, method: :delete, class: 'btn btn-danger' %>
+      </div>
+    </div>
+  </div>
+
+</auto-grid>

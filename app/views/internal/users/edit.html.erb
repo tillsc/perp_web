@@ -1,0 +1,15 @@
+<h1>Benutzer bearbeiten</h1>
+
+<%= bootstrap_form_for [:internal, @user] do |f| %>
+
+  <%= f.email_field :email %>
+
+  <%#= f.password_field :password %>
+  <%#= f.password_field :password_confirmation %>
+
+  <h2>Rollen</h2>
+
+  <%= f.check_box :role_admin %>
+
+  <%= f.submit %>
+<% end %>
