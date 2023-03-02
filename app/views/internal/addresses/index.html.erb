@@ -1,0 +1,14 @@
+<h1>Obleute für <%= @regatta.name %></h1>
+
+<% @addresses.each do |address| %>
+  <div class="row">
+    <div class="col-3"><%= address.full_name %> (<%= address.id %>)</div>
+    <div class="col-3"><%= address.email %></div>
+    <div class="col-3">
+      <% if address.public_private_id %>
+        <%= link_to "Zur Obleute-Ansicht", representative_path(@regatta, public_private_id: address.public_private_id), class: 'btn btn-secondary' %>
+      <% end %>
+      <%= link_to "Bearbeiten", edit_internal_address_path(@regatta, address), class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

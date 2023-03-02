@@ -12,6 +12,7 @@ class Ability
 
       if user.role_admin
         can :manage, User
+        can :manage, Address
       end
 
 

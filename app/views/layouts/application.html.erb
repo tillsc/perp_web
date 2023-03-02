@@ -38,7 +38,7 @@
         <% end %>
         <% if current_user.present? %>
           <li class="nav-item">
-            <%= link_to "Intern", internal_url, class: "nav-link#{" active" if params[:controller].to_s =~ /^internal/}" %>
+            <%= link_to "Intern", internal_url(@regatta || Parameter.current_regatta_id.to_s), class: "nav-link#{" active" if params[:controller].to_s =~ /^internal/}" %>
           </li>
         <% end %>
       </ul>

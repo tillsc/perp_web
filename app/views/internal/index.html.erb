@@ -6,8 +6,8 @@
     <h5 class="card-header">Zeitmessung</h5>
     <div class="card-body">
       <ul>
-        <li><%= link_to "Messungen", measurements_url(@current_regatta) %></li>
-        <li><%= link_to "Mess-Sitzungen", measuring_sessions_url(@current_regatta) %></li>
+        <li><%= link_to "Messungen", measurements_url(@regatta) %></li>
+        <li><%= link_to "Mess-Sitzungen", measuring_sessions_url(@regatta) %></li>
       </ul>
     </div>
   </div>
@@ -16,8 +16,8 @@
     <h5 class="card-header">Öffentliche Links</h5>
     <div class="card-body">
       <ul>
-        <li><%= link_to "Aktuelle Regatta", regatta_url(@current_regatta) %></li>
-        <li><%= link_to "TV-Overlays", tv_url(@current_regatta) %></li>
+        <li><%= link_to "Aktuelle Regatta", regatta_url(@regatta) %></li>
+        <li><%= link_to "TV-Overlays", tv_url(@regatta) %></li>
       </ul>
     </div>
   </div>
@@ -27,6 +27,7 @@
     <div class="card-body">
       <ul>
         <li><%= link_to("Benutzerverwaltung", internal_users_url) if can?(:show, User) %></li>
+        <li><%= link_to("Obleute", internal_addresses_url) if can?(:index, Address) %></li>
       </ul>
     </div>
   </div>

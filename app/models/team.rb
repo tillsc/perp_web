@@ -9,4 +9,7 @@ class Team < ActiveRecord::Base
 
   has_many :participants, foreign_key: ['Regatta_ID', 'Team_ID']
 
+  scope :for_regatta, -> (regatta) {
+    where(regatta_id: regatta)
+  }
 end
