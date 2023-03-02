@@ -2,6 +2,14 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+
+  get '/representative/:public_private_id', as: :dummy_representative, to: redirect { |p, req| (req.params["regatta_id"].presence || Parameter.current_regatta_id.to_s) + '/representative/' + req.params["public_private_id"]}
+
+  get '/internal', as: :dummy_internal, to: redirect { |p, req| "#{req.params["regatta_id"].presence || Parameter.current_regatta_id.to_s}/internal" }
+  scope '/internal', module: :internal, as: :internal do
+    resources :users
+  end
+
   scope '/:regatta_id' do
 
     get '/internal', to: 'internal#index'
@@ -33,14 +41,6 @@ Rails.application.routes.draw do
   end
 
   get '/:regatta_id' => 'regatta#show', as: :regatta
-
-  get '/representative/:public_private_id', :to => redirect { |p, req| (req.params["regatta_id"].presence || Parameter.current_regatta_id.to_s) + '/representative/' + req.params["public_private_id"]}
-
-  get '/internal', to: redirect { |p, req| "#{req.params["regatta_id"].presence || Parameter.current_regatta_id.to_s}/internal" }
-  scope '/internal', module: :internal, as: :internal do
-    resources :users
-  end
-
 
   root :to => redirect { |p, req| req.params["regatta_id"].presence || Parameter.current_regatta_id.to_s }
 
