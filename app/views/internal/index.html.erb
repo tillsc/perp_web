@@ -1,4 +1,4 @@
-<h1>Intern</h1>
+<h1>Intern - <%= @regatta&.name %></h1>
 
 <auto-grid style="--min-width: 20em">
 
@@ -16,7 +16,7 @@
     <h5 class="card-header">Öffentliche Links</h5>
     <div class="card-body">
       <ul>
-        <li><%= link_to "Aktuelle Regatta", regatta_url(@regatta) %></li>
+        <li><%= link_to "Regatta-Übersicht", regatta_url(@regatta) %></li>
         <li><%= link_to "TV-Overlays", tv_url(@regatta) %></li>
       </ul>
     </div>

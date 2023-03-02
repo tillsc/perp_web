@@ -44,8 +44,8 @@
       </ul>
 
       <% if @regattas.present? %>
-        <%= form_tag root_path, method: :get, class: "d-flex" do %>
-          <%= select_tag :regatta_id, options_from_collection_for_select(@regattas, 'id', 'name', @regatta.try(:id)), class: "form-control me-2" %>
+        <%= form_tag request.original_url, method: :get, class: "d-flex" do %>
+          <%= select_tag :new_regatta_id, options_from_collection_for_select(@regattas, 'id', 'name', @regatta.try(:id)), class: "form-control me-2" %>
           <button class="btn btn-outline-success" type="submit">Go</button>
         <% end %>
       <% end %>

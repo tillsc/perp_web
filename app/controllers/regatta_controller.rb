@@ -75,7 +75,7 @@ class RegattaController < ApplicationController
 
     @representative = Address.representative.
       find_by!(public_private_id: params[:public_private_id])
-    cookies[:representative_public_private_id] = @representative.public_private_id
+    cookies[:representative_public_private_id] = @representative.public_private_id unless params[:no_cookie]
 
     @teams = (@regatta.teams.merge(@representative.teams)).preload(participants: [:team] + Participant::ALL_ROWERS)
 
