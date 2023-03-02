@@ -27,7 +27,7 @@
     <div class="card-body">
       <ul>
         <li><%= link_to("Benutzerverwaltung", internal_users_url) if can?(:show, User) %></li>
-        <li><%= link_to("Obleute", internal_addresses_url) if can?(:index, Address) %></li>
+        <li><%= link_to("Obleute", internal_addresses_url(@regatta)) if can?(:index, Address) %></li>
       </ul>
     </div>
   </div>

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def after_sign_in_path_for(resource)
-    params[:referrer] || internal_url
+    params[:referrer] || internal_url(Parameter.current_regatta_id.to_s)
   end
 
 
