@@ -14,6 +14,10 @@ class MeasuringSession < ApplicationRecord
     self.identifier||= SecureRandom.hex
   end
 
+  def active?
+    self.active_measuring_point&.number == self.measuring_point.number
+  end
+
   def to_param
     self.identifier
   end

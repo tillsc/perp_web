@@ -5,7 +5,7 @@ class MeasurementSet < ApplicationRecord
   belongs_to :race, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
 
   belongs_to :measuring_point, primary_key: ['Regatta_ID', 'MesspunktNr'],  foreign_key: ['Regatta_ID', 'MesspunktNr']
-  belongs_to :measuring_session
+  belongs_to :measuring_session, optional: true
 
   serialize :measurements, JSON
   serialize :measurements_history, JSON

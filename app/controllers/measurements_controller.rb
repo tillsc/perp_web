@@ -28,6 +28,7 @@ class MeasurementsController < ApplicationController
     @other_races = Race.for_regatta(@regatta).joins(:results).nearby
     @measurements = @measuring.measurements
     @measurements_history = @measuring.measurement_set.measurements_history
+    @measuring_session = @measuring.measurement_set.measuring_session
     render :show
   end
 

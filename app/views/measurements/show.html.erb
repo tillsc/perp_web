@@ -13,7 +13,11 @@
 
 
 <%= form_tag measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number) do %>
-  <%= hidden_field_tag :measuring_session_id, @measuring_session&.to_param %>
+  <% if @measuring_session.present? %>
+    <%= hidden_field_tag :measuring_session_id, @measuring_session&.to_param %>
+  <% else %>
+    <%= hidden_field_tag :measuring_point_number, params[:measuring_point_number] %>
+  <% end %>
 
   <div class="participants_and_times">
     <div>
@@ -63,6 +67,11 @@
   </ul>
 <% end %>
 
+<% if @measuring_session %>
+  <h6 class="mt-1">Mess-Sitzung</h6>
+  <%= link_to @measuring_session.identifier, measuring_session_url(@regatta, @measuring_session) %>
+  (<%= @measuring_session.device_description %>@<%= @measuring_session.active_measuring_point.name %> - <%= @measuring_session.active? ? 'Aktiv' : 'Nicht aktiv' %>)
+<% end %>
 <% if @measurements_history.present? %>
   <h6 class="mt-1">Historie</h6>
   <% @measurements_history.each do |date, data| %>
