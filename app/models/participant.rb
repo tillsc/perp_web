@@ -41,9 +41,9 @@ class Participant < ApplicationRecord
     self.tnr.to_s
   end
 
-  def team_name
+  def team_name(options = {})
     "#{self.team.try(:name)}".tap do |n|
-      n << "<em>(Boot #{self.team_boat_number})</em>" if self.team_boat_number
+      n << "<em>(Boot #{self.team_boat_number})</em>" if !options[:hide_team_boat_number] && self.team_boat_number
     end.html_safe
   end
 

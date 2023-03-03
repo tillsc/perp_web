@@ -12,6 +12,7 @@
     border-bottom: 1px solid #999;
     padding: 0.5em;
     height: 2.5rem;
+    overflow: hidden;
 
     .btn {
       padding: 0 0.5rem;
@@ -27,6 +28,13 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: minmax(100px, auto);
+
+  @media (max-width: 500px) {
+    .item_list__item {
+      height: 4rem;
+    }
+  }
+
   > div {
     display: flex;
     flex-direction: column;

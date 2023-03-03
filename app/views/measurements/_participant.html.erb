@@ -5,7 +5,7 @@
     <% if lane = measuring.lane_for(participant) %>
       (Bahn <%= lane %>)
     <% end %>
-    - <%= participant.team_name %>
+    - <%= participant.team_name(hide_team_boat_number: true) %>
   <% else %>
     <%= hidden_field_tag 'participants[]', participant %>
     Nicht gefunden!
