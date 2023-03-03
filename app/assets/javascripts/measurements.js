@@ -7,12 +7,12 @@ var selectable = document.getElementById('available_participants');
 
 var startedAt;
 if (document.getElementById('started_at') && document.getElementById('started_at').getAttribute('datetime')) {
-  startedAt = moment.utc(document.getElementById('started_at').getAttribute('datetime'));
+  startedAt = moment(document.getElementById('started_at').getAttribute('datetime'));
 
   var startTimer = document.createElement('time');
   document.getElementById('started_at').parentElement.appendChild(startTimer);
   setInterval(() => {
-    startTimer.innerHTML = " (" + moment().subtract(startedAt).format('HH:mm:ss').replace(/^00:/, '') + ")";
+    startTimer.innerHTML = " (" + moment().subtract(startedAt).utc().format('HH:mm:ss').replace(/^00:/, '') + ")";
   }, 500);
 }
 
@@ -43,13 +43,16 @@ if (times) {
     if (!time) {
       now = moment();
     }
+    else if (time.includes("T")) {
+      now = moment(time);
+    }
     else {
       now = moment(time, "HH:mm:ss.SS");
     }
     time = now.format('HH:mm:ss.SS')
 
     if (startedAt) {
-      relative = now.subtract(startedAt).format('HH:mm:ss.SS').replace(/^00:/, '');
+      relative = now.subtract(startedAt).utc().format('HH:mm:ss.SS').replace(/^00:/, '');
     }
 
     var t = document.createElement('div');

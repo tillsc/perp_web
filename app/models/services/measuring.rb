@@ -71,7 +71,7 @@ module Services
       ftimes, rel_ftimes = if race.event.measuring_point_type(@measurement_set.measuring_point) == :start
                              calc_start_time(raw_times, participants.length)
                            else
-                             calc_times(raw_times, race.started_at_time)
+                             calc_times(raw_times, race.started_at)
                            end
 
       i = 0
@@ -93,20 +93,35 @@ module Services
       @measurement_set.measurements_history[DateTime.now] = res
       @measurement_set.save!
 
-      persist_to_db!
+      persist_result!
 
       res
     end
 
     protected
 
-    def persist_to_db!
-      
+    def persist_result!
+      if race.event.measuring_point_type(@measurement_set.measuring_point) == :start
+        @measurement_set.measurements.each_with_index do |(participant_id, _start_time, _), lane_number|
+          result = race.results.find { |res| res.participant_id == participant_id } ||
+            race.results.build(participant_id: participant_id)
+          result.lane_number = lane_number + 1
+          result.save!
+        end
+        race.started_at_time = @measurement_set.measurements.first&.second
+        race.save!
+      else
+        @measurement_set.measurements.each do |participant_id, _time, rel_time|
+          result = race.results.find { |res| res.participant_id == participant_id } ||
+            race.results.build(participant_id: participant_id)
+          result.set_time_for(@measurement_set.measuring_point, rel_time).save!
+        end
+      end
     end
 
     def sanitize_times(raw_times)
       start_date = race.started_at || DateTime.now
-      Array.wrap(raw_times).map { |t| Time.parse(t).change(year: start_date.year, month: start_date.month, day: start_date.day, offset: start_date.offset)  }
+      Array.wrap(raw_times).map { |t| Time.zone.parse(t).change(year: start_date.year, month: start_date.month, day: start_date.day) }
     end
 
     def calc_start_time(raw_times, participant_count)
@@ -120,7 +135,7 @@ module Services
     def calc_times(raw_times, start_time)
       times = sanitize_times(raw_times)
       ftimes = times.map { |t| self.ftime(t) }
-      rel_ftimes = start_time && times.map { |t| self.ftime(Time.at(t - start_time.to_time )) } || []
+      rel_ftimes = start_time && times.map { |t| self.ftime(Time.at(t - start_time.to_time ).utc) } || []
       [ftimes, rel_ftimes]
     end
 

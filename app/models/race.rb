@@ -113,7 +113,7 @@ class Race < ApplicationRecord
   def started_at
     return unless started_at_time && planned_for
 
-    DateTime.new(planned_for.year, planned_for.month, planned_for.day, started_at_time.hour, started_at_time.min, started_at_time.sec)
+    DateTime.new(planned_for.year, planned_for.month, planned_for.day, started_at_time.hour, started_at_time.min, started_at_time.sec, planned_for.to_datetime.offset, 24)
   end
 
   def to_param

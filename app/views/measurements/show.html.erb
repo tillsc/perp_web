@@ -84,7 +84,7 @@
 <% end %>
 <% if @measurements_history.present? %>
   <h6 class="mt-1">Historie</h6>
-  <% @measurements_history.each do |date, data| %>
+  <% @measurements_history.reverse_each do |date, data| %>
     <strong><%= date %></strong>
     <pre><%= data %></pre>
   <% end %>
