@@ -35,7 +35,9 @@ class MeasurementsController < ApplicationController
   def save
     authorize! :create, @measuring.measurement_set
 
-    @res = @measuring.save!(params[:participants], params[:times])
+    MeasuringSession.transaction do
+      @res = @measuring.save!(params[:participants], params[:times])
+    end
   end
 
 end

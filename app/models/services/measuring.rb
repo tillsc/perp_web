@@ -67,9 +67,12 @@ module Services
         p_id = p_id.presence&.to_i
         all_participants.find { |p| p.participant_id == p_id }
       }
-      times = Array.wrap(raw_times).map { |t| Time.parse(t).change(year: race.started_at.year, month: race.started_at.month, day: race.started_at.day, offset: race.started_at.offset)  }
-      ftimes = times.map { |t| self.ftime(t) }
-      rel_ftimes = times.map { |t| self.ftime(Time.at(t - race.started_at.to_time )) }
+
+      ftimes, rel_ftimes = if race.event.measuring_point_type(@measurement_set.measuring_point) == :start
+                             calc_start_time(raw_times, participants.length)
+                           else
+                             calc_times(raw_times, race.started_at_time)
+                           end
 
       i = 0
       participant_ids = participants.map do |p|
@@ -90,7 +93,35 @@ module Services
       @measurement_set.measurements_history[DateTime.now] = res
       @measurement_set.save!
 
+      persist_to_db!
+
       res
+    end
+
+    protected
+
+    def persist_to_db!
+      
+    end
+
+    def sanitize_times(raw_times)
+      start_date = race.started_at || DateTime.now
+      Array.wrap(raw_times).map { |t| Time.parse(t).change(year: start_date.year, month: start_date.month, day: start_date.day, offset: start_date.offset)  }
+    end
+
+    def calc_start_time(raw_times, participant_count)
+      times = sanitize_times(raw_times)
+      while times.any? && times.length < participant_count
+        times.push(times.first)
+      end
+      [times, []]
+    end
+
+    def calc_times(raw_times, start_time)
+      times = sanitize_times(raw_times)
+      ftimes = times.map { |t| self.ftime(t) }
+      rel_ftimes = start_time && times.map { |t| self.ftime(Time.at(t - start_time.to_time )) } || []
+      [ftimes, rel_ftimes]
     end
 
   end

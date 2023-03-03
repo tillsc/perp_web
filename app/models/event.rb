@@ -48,4 +48,16 @@ class Event < ApplicationRecord
     finish_measuring_point.position - start_measuring_point.position
   end
 
+  def measuring_point_type(measuring_point)
+    if start_measuring_point_number == measuring_point.number
+      :start
+    elsif finish_measuring_point_number == measuring_point.number
+      :finish
+    elsif measuring_point.number.between?(start_measuring_point_number, finish_measuring_point_number)
+      :split_time
+    else
+      nil
+    end
+  end
+
 end

@@ -1,14 +1,16 @@
 <%= stylesheet_link_tag 'measurements' %>
 
 <h4>
-  Rennen <%= @race.event.number %> - <%= @race.name %> bei <%= @measuring_point.name %><br>
-  <small>Gestartet um:
-    <% if  @race.started_at %>
-      <time id="started_at" datetime="<%=  @race.started_at %>"><%= l(@race.started_at) %></time>
-    <% else %>
-      -
-    <% end %>
-  </small>
+  Rennen <%= @race.event.number %> - <%= @race.name %> bei <%= @measuring_point.name %> (<%= t(@race.event.measuring_point_type(@measuring_point), scope: 'measuring_point_types') %>)<br>
+  <% unless @race.event.measuring_point_type(@measuring_point) == :start %>
+    <small>Gestartet um:
+      <% if  @race.started_at %>
+        <time id="started_at" datetime="<%=  @race.started_at %>"><%= l(@race.started_at) %></time>
+      <% else %>
+        -
+      <% end %>
+    </small>
+  <% end %>
 </h4>
 
 
@@ -21,7 +23,13 @@
 
   <div class="participants_and_times">
     <div>
-      <h6>Reihenfolge</h6>
+      <h6>
+        <% if @race.event.measuring_point_type(@measuring_point) != :start %>
+          Reihenfolge
+        <% else %>
+          Bahnbelegung
+        <% end %>
+      </h6>
       <div id="participants" class="item_list">
         <% @measurements.keys.each do |p| %>
           <%= render 'participant', participant: p, measuring: @measuring %>
@@ -50,7 +58,9 @@
     <%= render 'participant', participant: p, measuring: @measuring %>
   <% end %>
   <% if @measuring.other_participants.any? %>
-    <h3 class="item_list__item h-auto">Andere Teilnehmer</h3>
+    <% if @measuring.other_active_participants.any? %>
+      <h3 class="item_list__item h-auto">Andere Teilnehmer</h3>
+    <% end %>
     <% @measuring.other_participants.each do |p| %>
       <%= render 'participant', participant: p, measuring: @measuring %>
     <% end %>
