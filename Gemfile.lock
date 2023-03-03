@@ -115,7 +115,6 @@ GEM
       activerecord (~> 6.1.0)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
-    date (3.3.3)
     devise (4.9.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -148,11 +147,8 @@ GEM
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mail (2.8.1)
+    mail (2.7.1)
       mini_mime (>= 0.1.1)
-      net-imap
-      net-pop
-      net-smtp
     marcel (1.0.2)
     matrix (0.4.2)
     method_source (1.0.0)
@@ -163,17 +159,8 @@ GEM
       railties (>= 3.1)
     msgpack (1.6.0)
     mysql2 (0.5.5)
-    net-imap (0.3.4)
-      date
-      net-protocol
-    net-pop (0.1.2)
-      net-protocol
-    net-protocol (0.2.1)
-      timeout
     net-scp (4.0.0)
       net-ssh (>= 2.6.5, < 8.0.0)
-    net-smtp (0.3.3)
-      net-protocol
     net-ssh (7.0.1)
     nio4r (2.5.8)
     nokogiri (1.13.10)
@@ -281,7 +268,6 @@ GEM
       net-ssh (>= 2.8.0)
     thor (1.2.1)
     tilt (2.1.0)
-    timeout (0.3.2)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -325,6 +311,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   listen (>= 3.0.5, < 3.2)
+  mail (< 2.8)
   momentjs-rails
   mysql2
   nokogiri (< 1.14.0)

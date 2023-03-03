@@ -6,6 +6,8 @@ ruby '~> 2.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1'
 
+gem 'mail', '< 2.8' # Mail 2.8 is broken!
+
 gem 'mysql2'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
