@@ -7,6 +7,14 @@
 
 <% if @measuring_session.active_measuring_point %>
   <% if @my_races.present? %>
+    <% latest = @my_races.select { |r| r.upcoming_measurement_for(@measuring_session.active_measuring_point) } %>
+    <% if latest.present? %>
+      <h3>Jetzt kommt:</h3>
+      <% latest.each do |race| %>
+        <%= link_to race.full_name, measurement_path(@regatta, measuring_session_id: @measuring_session, event_number: race.event.number, race_number: race.number), class: "btn btn-primary" %>
+      <% end %>
+    <% end %>
+
     <h3>Rennen zur Auswahl</h3>
     <%= render 'races_table', races: @my_races %>
   <% else %>

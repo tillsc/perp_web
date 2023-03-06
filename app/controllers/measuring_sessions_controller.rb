@@ -13,7 +13,11 @@ class MeasuringSessionsController < ApplicationController
     if @measuring_session.active_measuring_point
       races = Race.for_regatta(@regatta).
         preload(:event, :measurement_sets).
-        group_by{ |r| !r.measurement_set_for(@measuring_session.active_measuring_point)&.locked_for?(@measuring_session) }
+        order(:planned_for).
+        group_by{ |r|
+          !r.measurement_set_for(@measuring_session.active_measuring_point)&.locked_for?(@measuring_session) &&
+            r.event.measuring_point_type(@measuring_session.measuring_point_number).present?
+        }
 
       @my_races = races[true]
       @other_races = races[false]

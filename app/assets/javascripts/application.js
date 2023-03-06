@@ -22,10 +22,14 @@ var scrollPosition,
   autoscroll = false,
   autoreloadRunning = false
 
-var autoreloadAfter = function(secs) {
+var cancelAutoreload = function () {
   if (autoreloadRunning) {
     clearTimeout(autoreloadRunning);
   }
+}
+
+var autoreloadAfter = function(secs) {
+  cancelAutoreload();
   autoreloadRunning = setTimeout(reloadWithTurbolinks, secs);
 }
 

@@ -9,14 +9,17 @@
   </thead>
   <tbody>
   <% races.each do |race| %>
+    <% measuring_point_type = race.event.measuring_point_type(@measuring_session.measuring_point_number) %>
     <% measurement_set = race.measurement_set_for(@measuring_session.measuring_point_number) %>
     <tr id="race_<%= race.event.number %>_<%= race.number %>">
       <td class="col-sm-1"><%= race.event.number %></td>
       <td class="col-sm-2">
-        <% unless measurement_set&.locked_for?(@measuring_session) %>
-          <%= link_to race.name, measurement_path(@regatta, measuring_session_id: @measuring_session, event_number: race.event.number, race_number: race.number) %>
-        <% else %>
+        <% if measuring_point_type.nil? %>
+          <%= race.name %> (<%= race.event.distance %>m Rennen)
+        <% elsif measurement_set&.locked_for?(@measuring_session) %>
           <%= race.name %>
+        <% else %>
+          <%= link_to race.name, measurement_path(@regatta, measuring_session_id: @measuring_session, event_number: race.event.number, race_number: race.number) %>
         <% end %>
       </td>
       <td class="col-sm-2">

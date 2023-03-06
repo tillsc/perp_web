@@ -83,6 +83,10 @@ class Race < ApplicationRecord
     "#{Parameter.race_type_name(self.type_short)} #{self.number_short}"
   end
 
+  def full_name
+    "Rennen #{event.number} - #{self.name}"
+  end
+
   def type_name
     Parameter.race_type_name(self.type_short)
   end
@@ -121,6 +125,20 @@ class Race < ApplicationRecord
   def measurement_set_for(measuring_point_or_measuring_point_number)
     mp_number = MeasuringPoint.number(measuring_point_or_measuring_point_number)
     measurement_sets.find { |ms| ms.measuring_point_number == mp_number }
+  end
+
+  SLOWEST_M_PER_SECOND = 200/60.0
+  def upcoming_measurement_for(measuring_point)
+    return false if measurement_set_for(measuring_point).present?
+
+    distance = event.distance_for(measuring_point)
+    if distance == 0
+      started_at.blank? && planned_for &&
+        planned_for > 30.minutes.ago && planned_for < 5.minutes.since
+    else
+      started_at &&
+        (started_at >= (distance / SLOWEST_M_PER_SECOND).seconds.ago)
+    end
   end
 
 end
