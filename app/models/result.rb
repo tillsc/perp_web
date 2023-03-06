@@ -40,29 +40,19 @@ class Result < ApplicationRecord
   end
 
   def time_for(measuring_point_or_measuring_point_number)
-    mpn = measuring_point_number(measuring_point_or_measuring_point_number)
+    mpn = MeasuringPoint.number(measuring_point_or_measuring_point_number)
 
     times.find { |t| t.measuring_point_number == mpn }
   end
 
   def set_time_for(measuring_point_or_measuring_point_number, time)
-    mpn = measuring_point_number(measuring_point_or_measuring_point_number)
+    mpn = MeasuringPoint.number(measuring_point_or_measuring_point_number)
 
     t = self.times.find { |t| t.measuring_point_number == mpn } ||
       self.times.build(measuring_point_number: mpn, result: self)
 
     t.time = time
     t
-  end
-
-  protected
-
-  def measuring_point_number(measuring_point_or_measuring_point_number)
-    if measuring_point_or_measuring_point_number.is_a?(MeasuringPoint)
-      measuring_point_or_measuring_point_number.number
-    else
-      measuring_point_or_measuring_point_number
-    end
   end
 
 end

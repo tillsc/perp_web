@@ -1,4 +1,4 @@
-<%= form_with model: @measuring_session, url: measuring_sessions_url(@regatta) do |f| %>
+<%= bootstrap_form_with model: @measuring_session, url: measuring_sessions_url(@regatta) do |f| %>
   <%= render 'form_fields', f: f %>
 
   <%= f.button 'Los gehts', type: :submit, class: 'btn btn-primary' %>

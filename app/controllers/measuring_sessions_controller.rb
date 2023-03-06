@@ -11,9 +11,12 @@ class MeasuringSessionsController < ApplicationController
     authorize! :show, @measuring_session
 
     if @measuring_session.active_measuring_point
-      @races = Race.for_regatta(@regatta).
-        for_measuring(@measuring_session).
-        preload(:event)
+      races = Race.for_regatta(@regatta).
+        preload(:event, :measurement_sets).
+        group_by{ |r| !r.measurement_set_for(@measuring_session.active_measuring_point)&.locked_for?(@measuring_session) }
+
+      @my_races = races[true]
+      @other_races = races[false]
     end
   end
 
@@ -79,7 +82,7 @@ class MeasuringSessionsController < ApplicationController
   end
 
   def measuring_session_params
-    params.require(:measuring_session).permit(:device_description, 'MesspunktNr')
+    params.require(:measuring_session).permit(:device_description, :measuring_point_number)
   end
 
 end

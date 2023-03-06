@@ -1,0 +1,6 @@
+de:
+  activerecord:
+    attributes:
+      measuring_session:
+        device_description: Gerätebeschreibung
+        measuring_point_number: Messpunkt

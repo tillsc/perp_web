@@ -1,9 +1,3 @@
-<div class="form-group">
-  <%= f.label :device_description %>
-  <%= f.text_field :device_description %>
-</div>
+<%= f.text_field :device_description %>
 
-<div class="form-group">
-  <%= f.label 'MesspunktNr' %>
-  <%= f.select 'MesspunktNr', @measuring_points.map { |mp| [ mp.name, mp.MesspunktNr ] } %>
-</div>
+<%= f.select :measuring_point_number, @measuring_points.map { |mp| [ mp.name, mp.number ] } %>

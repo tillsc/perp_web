@@ -29,4 +29,12 @@ class MeasuringPoint < ApplicationRecord
     self.number.to_s
   end
 
+  def self.number(measuring_point_or_measuring_point_number)
+    if measuring_point_or_measuring_point_number.is_a?(MeasuringPoint)
+      measuring_point_or_measuring_point_number.number
+    else
+      measuring_point_or_measuring_point_number
+    end
+  end
+
 end

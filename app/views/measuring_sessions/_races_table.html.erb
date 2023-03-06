@@ -1,0 +1,37 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th><%= Event.human_attribute_name(:number) %></th>
+    <th><%= Race.human_attribute_name(:number) %></th>
+    <th><%= Race.human_attribute_name(:started_at) %></th>
+    <th>Gemessen von</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% races.each do |race| %>
+    <% measurement_set = race.measurement_set_for(@measuring_session.measuring_point_number) %>
+    <tr id="race_<%= race.event.number %>_<%= race.number %>">
+      <td class="col-sm-1"><%= race.event.number %></td>
+      <td class="col-sm-2">
+        <% unless measurement_set&.locked_for?(@measuring_session) %>
+          <%= link_to race.name, measurement_path(@regatta, measuring_session_id: @measuring_session, event_number: race.event.number, race_number: race.number) %>
+        <% else %>
+          <%= race.name %>
+        <% end %>
+      </td>
+      <td class="col-sm-2">
+        <%= l(race.started_at, format: :short) %>
+      </td>
+      <td class="col-sm-2">
+        <% if measurement_set&.measuring_session %>
+          <%= measurement_set.measuring_session.device_description.presence || measurement_set.measuring_session.identifier %>
+        <% elsif measurement_set %>
+          Administrator
+        <% else %>
+          <em>Noch nicht gemessen</em>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

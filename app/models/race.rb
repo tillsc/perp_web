@@ -16,6 +16,8 @@ class Race < ApplicationRecord
   has_many :starts, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
   has_many :results, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
 
+  has_many :measurement_sets, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
+
   scope :latest, -> do
     where.not('IstStartZeit' => nil).order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
   end
@@ -37,10 +39,6 @@ class Race < ApplicationRecord
   scope :with_finish_times, -> do
     joins(:event, results: :times).
       where('zeiten.MesspunktNr = rennen.ZielMesspunktNr AND zeiten.Zeit IS NOT NULL')
-  end
-
-  scope :for_measuring, -> (measuring_session) do
-    latest # TODO
   end
 
   scope :with_starts, -> do
@@ -118,6 +116,11 @@ class Race < ApplicationRecord
 
   def to_param
     self.number
+  end
+
+  def measurement_set_for(measuring_point_or_measuring_point_number)
+    mp_number = MeasuringPoint.number(measuring_point_or_measuring_point_number)
+    measurement_sets.find { |ms| ms.measuring_point_number == mp_number }
   end
 
 end

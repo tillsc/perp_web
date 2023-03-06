@@ -4,6 +4,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    can :create, MeasuringSession
     if user.is_a?(::User)
       can :access, :internal
 

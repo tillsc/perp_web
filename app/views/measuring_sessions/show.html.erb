@@ -1,21 +1,26 @@
-<p>Du sitzt bei <%= @measuring_session.measuring_point&.name %>.</p>
+<h1>Zeitmessung</h1>
+
+<p>
+  Du sitzt bei <%= @measuring_session.measuring_point&.name %>,
+  dein Gerät heißt <em><%= @measuring_session.device_description.presence || @measuring_session.identifer %></em>
+</p>
 
 <% if @measuring_session.active_measuring_point %>
-  Die folgenden Rennen stehen Dir zur Auswahl
-
-  <table class="table">
-  <% @races.each do |race| %>
-    <tr id="race_<%= race.event.number %>_<%= race.number %>">
-      <td><%= race.event.number %></td>
-      <td><%= link_to race.name, measurement_path(@regatta, measuring_session_id: @measuring_session, event_number: race.event.number, race_number: race.number) %></td>
-      <td><%= l(race.started_at) %></td>
-      <td>vor <%= distance_of_time_in_words(race.started_at, Time.now) %></td>
-    </tr>
+  <% if @my_races.present? %>
+    <h3>Rennen zur Auswahl</h3>
+    <%= render 'races_table', races: @my_races %>
+  <% else %>
+    Dir stehen leider keine Rennen zur Auswahl.
   <% end %>
-  </table>
+
+  <% if @other_races.present? %>
+    <h3>Andere Messungen</h3>
+    <%= render 'races_table', races: @other_races %>
+  <% end %>
 <% else %>
   Du bist noch nicht für den Messpunkt bestätigt. Bitte warte bis das erledigt ist.
-  <script>
-    autoreloadAfter(5000)
-  </script>
 <% end %>
+
+<script>
+  autoreloadAfter(5000)
+</script>
