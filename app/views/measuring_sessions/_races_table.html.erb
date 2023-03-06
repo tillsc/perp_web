@@ -20,7 +20,11 @@
         <% end %>
       </td>
       <td class="col-sm-2">
-        <%= l(race.started_at, format: :short) %>
+        <% if race.started_at %>
+          <%= l(race.started_at, format: :short) %>
+        <% elsif race.planned_for %>
+          <em>Soll: <%= l(race.planned_for, format: :short) %></em>
+        <% end %>
       </td>
       <td class="col-sm-2">
         <% if measurement_set&.measuring_session %>
