@@ -13,7 +13,7 @@
       </thead>
       <tbody>
       <% @races.each do |race| %>
-        <tr>
+        <tr id="race_<%= race.event.number %>_<%= race.number %>">
           <td><%= race.event.number %> - <%= race.name %></td>
           <td><%= race.started_at && l(race.started_at, format: '%a, %H:%M:%S') %></td>
           <% @measuring_points.each do |mp| %>

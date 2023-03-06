@@ -1,8 +1,0 @@
-<h4>
-  Rennen <%= @race.event.number %> - <%= @race.name %> bei <%= @measuring_point.name %><br>
-  <small>Gestartet um: <%= @race.started_at && l(@race.started_at) || '-' %></small>
-</h4>
-
-<% @res.each do |(p, t, r)| %>
-<li><%= p %>: <%= t %> (<%= r %>)</li>
-<% end %>

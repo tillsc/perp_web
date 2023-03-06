@@ -38,6 +38,12 @@ class MeasurementsController < ApplicationController
     MeasuringSession.transaction do
       @res = @measuring.save!(params[:participants], params[:times])
     end
+
+    if current_user.is_a?(MeasuringSession)
+      redirect_to measuring_session_url(@regatta, current_user, anchor: "race_#{@measuring.race.event.number}_#{@measuring.race.number}")
+    else
+      redirect_to measurements_url(@regatta, anchor: "race_#{@measuring.race.event.number}_#{@measuring.race.number}")
+    end
   end
 
 end

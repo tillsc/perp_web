@@ -5,7 +5,7 @@
 
   <table class="table">
   <% @races.each do |race| %>
-    <tr>
+    <tr id="race_<%= race.event.number %>_<%= race.number %>">
       <td><%= race.event.number %></td>
       <td><%= link_to race.name, measurement_path(@regatta, measuring_session_id: @measuring_session, event_number: race.event.number, race_number: race.number) %></td>
       <td><%= l(race.started_at) %></td>
