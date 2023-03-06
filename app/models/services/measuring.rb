@@ -9,8 +9,9 @@ module Services
       @race = race
       @all_participants = race.event.participants
       @lanes = (@race.results.presence || @race.starts).
-        sort_by(&:lane_number).
-        map { |r| [r.participant_id, r.lane_number] }.
+        map { |r| r.lane_number && [r.participant_id, r.lane_number] }.
+        compact.
+        sort_by(&:second).
         to_h
       @measurement_set = MeasurementSet.
         create_with(measuring_session: force_measuring_session_ownership).
@@ -112,9 +113,11 @@ module Services
         race.save!
       else
         @measurement_set.measurements.each do |participant_id, _time, rel_time|
-          result = race.results.find { |res| res.participant_id == participant_id } ||
-            race.results.build(participant_id: participant_id)
-          result.set_time_for(@measurement_set.measuring_point, rel_time).save!
+          if participant_id.to_i > 0 && rel_time.present?
+            result = race.results.find { |res| res.participant_id == participant_id } ||
+              race.results.build(participant_id: participant_id, race: race)
+            result.set_time_for(@measurement_set.measuring_point, rel_time).save!
+          end
         end
       end
     end

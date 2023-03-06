@@ -84,7 +84,9 @@ if (times) {
 
   var existing = times.querySelectorAll('[type=hidden]');
   for (var i = 0; i < existing.length; i++) {
-    stopTime(existing[i].value);
+    if (existing[i].value != '') {
+      stopTime(existing[i].value);
+    }
     existing[i].remove();
   }
 

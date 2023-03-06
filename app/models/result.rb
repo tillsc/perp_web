@@ -49,7 +49,7 @@ class Result < ApplicationRecord
     mpn = measuring_point_number(measuring_point_or_measuring_point_number)
 
     t = self.times.find { |t| t.measuring_point_number == mpn } ||
-      self.times.build(measuring_point_number: mpn)
+      self.times.build(measuring_point_number: mpn, result: self)
 
     t.time = time
     t
