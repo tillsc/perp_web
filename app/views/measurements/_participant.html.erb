@@ -1,13 +1,15 @@
-<div class="item_list__item">
-  <% if participant.is_a?(Participant) %>
-    <%= hidden_field_tag 'participants[]', participant.participant_id %>
-    <%= participant.number %>
-    <% if lane = measuring.lane_for(participant) %>
-      (Bahn <%= lane %>)
+<div class="item_list__item d-flex gap-2">
+  <div>
+    <% if participant.is_a?(Participant) %>
+      <%= hidden_field_tag 'participants[]', participant.participant_id %>
+      <%= participant.number %>
+      <% if lane = measuring.lane_for(participant) %>
+        (Bahn <%= lane %>)
+      <% end %>
+      - <%= participant.team_name(hide_team_boat_number: true) %>
+    <% else %>
+      <%= hidden_field_tag 'participants[]', participant %>
+      Nicht gefunden!
     <% end %>
-    - <%= participant.team_name(hide_team_boat_number: true) %>
-  <% else %>
-    <%= hidden_field_tag 'participants[]', participant %>
-    Nicht gefunden!
-  <% end %>
+  </div>
 </div>

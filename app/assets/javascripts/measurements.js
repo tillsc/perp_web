@@ -67,16 +67,12 @@ if (times) {
     }
 
     var t = document.createElement('div');
-    t.classList.add('item_list__item');
-    t.classList.add('d-flex');
-    t.classList.add('gap-2');
+    t.classList.add('item_list__item', 'd-flex', 'gap-2');
     t.innerHTML = '<div><span class="text-nowrap time">' + time + '</span>' + (relative ? ' (<span class="text-nowrap time">' + relative + '</span>)' : '') + '<input type="hidden" name="times[]" value="' + time + '"></div>';
     times.appendChild(t);
 
     var delBtn = document.createElement('a');
-    delBtn.classList.add('btn');
-    delBtn.classList.add('btn-danger');
-    delBtn.classList.add('btn-sm');
+    delBtn.classList.add('btn', 'btn-danger', 'btn-sm');
     delBtn.innerHTML = 'X';
     delBtn.addEventListener("click", function () {
       t.remove();
