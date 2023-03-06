@@ -29,8 +29,11 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: minmax(100px, auto);
 
-  @media (max-width: 500px) {
-    .item_list__item {
+  .item_list__item {
+    .quick-button {
+      display: none;
+    }
+    @media (max-width: 500px) {
       height: 4rem;
     }
   }

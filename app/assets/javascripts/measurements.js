@@ -34,6 +34,17 @@ dragula([selected, selectable]).on('drag', function(el, source) {
   // your logic on dragend
 });
 
+[...document.querySelectorAll("#participants .item_list__item, #available_participants .item_list__item")].forEach((item) => {
+  const quickButton = document.createElement('button');
+  quickButton.classList.add('btn', 'btn-primary', 'quick-button');
+  quickButton.innerText = '⤒';
+  quickButton.addEventListener('click', (e) => {
+    selected.append(item);
+    e.preventDefault();
+  });
+  item.append(quickButton);
+})
+
 var times = document.getElementById('times')
 
 if (times) {
