@@ -19,7 +19,7 @@ class MeasurementsController < ApplicationController
 
     @races = Race.for_regatta(@regatta)
     @measuring_points = MeasuringPoint.for_regatta(@regatta)
-    @measurement_sets = MeasurementSet.for_regatta(@regatta)
+    @measurement_sets = MeasurementSet.for_regatta(@regatta).preload(:race, :measuring_point)
   end
 
   def show
