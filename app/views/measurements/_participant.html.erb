@@ -1,12 +1,12 @@
 <% if participant.is_a?(Participant) %>
-  <div class="item_list__item d-flex gap-2">
+  <div class="item_list__item">
     <div>
       <%= hidden_field_tag 'participants[]', participant.participant_id %>
       <%= participant.number %>
       <% if lane = measuring.lane_for(participant) %>
         (Bahn <%= lane %>)
       <% end %>
-      - <%= participant.team_name(hide_team_boat_number: true) %>
+      <span class="team_name">- <%= participant.team_name(hide_team_boat_number: true) %></span>
     </div>
   </div>
 <% end %>

@@ -1,17 +1,18 @@
 <%= stylesheet_link_tag 'measurements' %>
 
 <h4>
-  Rennen <%= @race.event.number %> - <%= @race.name %> bei <%= @measuring_point.name %> (<%= t(@race.event.measuring_point_type(@measuring_point), scope: 'measuring_point_types') %>)<br>
+  Rennen <%= @race.event.number %> - <%= @race.name %> bei <%= @measuring_point.name %>
+</h4>
+<p><small>
   <% unless @race.event.measuring_point_type(@measuring_point) == :start %>
-    <small>Gestartet um:
+    Gestartet:
       <% if  @race.started_at %>
-        <time id="started_at" datetime="<%=  @race.started_at %>"><%= l(@race.started_at) %></time>
+        <time id="started_at" datetime="<%=  @race.started_at %>"><%= l(@race.started_at, format: :short) %></time>
       <% else %>
         -
       <% end %>
-    </small>
   <% end %>
-</h4>
+</small></p>
 
 
 <%= form_tag measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number) do %>
@@ -21,7 +22,7 @@
     <%= hidden_field_tag :measuring_point_number, params[:measuring_point_number] %>
   <% end %>
 
-  <div class="participants_and_times">
+  <div class="participants_and_times <%= "hide_team_name" if @race.event.measuring_point_type(@measuring_point) != :start  %>">
     <div>
       <h6>
         <% if @race.event.measuring_point_type(@measuring_point) != :start %>

@@ -13,6 +13,9 @@
     padding: 0.5em;
     height: 2.5rem;
     overflow: hidden;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 
     .btn {
       padding: 0 0.25rem;
@@ -23,17 +26,14 @@
   }
 }
 
-.time {
-  font-family: "Source Code Pro", Monaco, monospace;
-}
-
 .participants_and_times {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: minmax(100px, auto);
   min-height: calc((2.75rem) * 8);
-  @media (max-width: 500px) {
-    min-height: calc((4.25rem) * 8);
+
+  h6 {
+    font-size: 0.9rem;
   }
 
   .item_list__item {
@@ -41,7 +41,7 @@
       display: none;
     }
     @media (max-width: 500px) {
-      height: 4rem;
+      font-size: 0.8rem;
     }
   }
 
@@ -50,4 +50,8 @@
     flex-direction: column;
   }
 
+}
+
+.hide_team_name .team_name {
+  display: none;
 }

@@ -9,10 +9,11 @@ var startedAt;
 if (document.getElementById('started_at') && document.getElementById('started_at').getAttribute('datetime')) {
   startedAt = moment(document.getElementById('started_at').getAttribute('datetime'));
 
-  var startTimer = document.createElement('time');
+  var startTimer = document.createElement('span');
+  startTimer.classList.add('time');
   document.getElementById('started_at').parentElement.appendChild(startTimer);
   setInterval(() => {
-    startTimer.innerHTML = " (" + moment().subtract(startedAt).utc().format('HH:mm:ss').replace(/^00:/, '') + ")";
+    startTimer.innerHTML = "&rightarrow; " + moment().subtract(startedAt).utc().format('HH:mm:ss').replace(/^00:/, '');
   }, 500);
 }
 
@@ -75,8 +76,8 @@ if (times) {
     }
 
     var t = document.createElement('div');
-    t.classList.add('item_list__item', 'd-flex', 'gap-2');
-    t.innerHTML = '<div><span class="text-nowrap time">' + time + '</span>' + (relative ? ' (<span class="text-nowrap time">' + relative + '</span>)' : '') + '<input type="hidden" name="times[]" value="' + time + '"></div>';
+    t.classList.add('item_list__item');
+    t.innerHTML = '<div><span class="text-nowrap time">' + time + '</span>' + (relative ? ' <small class="text-nowrap time">&rightarrow; ' + relative + '</small>' : '') + '<input type="hidden" name="times[]" value="' + time + '"></div>';
     times.appendChild(t);
 
     var delBtn = document.createElement('a');
