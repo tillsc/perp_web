@@ -19,19 +19,27 @@ if (document.getElementById('started_at') && document.getElementById('started_at
 var scrollable = true;
 
 var listener = function(e) {
-  if (! scrollable) {
+  if (!scrollable) {
     e.preventDefault();
   }
 }
 document.addEventListener('touchmove', listener, { passive:false });
 
-dragula([selected, selectable]).on('drag', function(el, source) {
+var drake = dragula([selected, selectable], {
+  moves: (_el, _source, handle, _sibling) => {
+    console.log(handle)
+    return !handle.classList.contains('quick-button');
+  }
+});
+
+drake.on('drag', function(el, source) {
   scrollable = false;
-}).on('drop', function(el, source) {
+});
+drake.on('drop', function(el, source) {
   scrollable = true;
-}).on('dragend', function(el, source) {
+});
+drake.on('dragend', function(el, source) {
   scrollable = true;
-  // your logic on dragend
 });
 
 [...document.querySelectorAll("#participants .item_list__item, #available_participants .item_list__item")].forEach((item) => {
