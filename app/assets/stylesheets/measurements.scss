@@ -15,7 +15,10 @@
     overflow: hidden;
 
     .btn {
-      padding: 0 0.5rem;
+      padding: 0 0.25rem;
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
     }
   }
 }
@@ -28,6 +31,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: minmax(100px, auto);
+  min-height: calc((2.75rem) * 8);
+  @media (max-width: 500px) {
+    min-height: calc((4.25rem) * 8);
+  }
 
   .item_list__item {
     .quick-button {
