@@ -3,7 +3,7 @@ class MeasuringSessionsController < ApplicationController
   def index
     authorize! :index, MeasuringSession
 
-    @measuring_sessions = MeasuringSession.for_regatta(@regatta)
+    @measuring_sessions = MeasuringSession.for_regatta(@regatta).preload(:measuring_point, :active_measuring_point)
   end
 
   def show
