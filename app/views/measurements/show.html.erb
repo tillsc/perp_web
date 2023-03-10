@@ -60,7 +60,7 @@
   <% end %>
   <% if @measuring.other_participants.any? %>
     <% if @measuring.other_active_participants.any? %>
-      <h3 class="item_list__item h-auto">Andere Teilnehmer</h3>
+      <h3 class="item_list__item h-auto sub-header">Andere Teilnehmer</h3>
     <% end %>
     <% @measuring.other_participants.each do |p| %>
       <%= render 'participant', participant: p, measuring: @measuring %>

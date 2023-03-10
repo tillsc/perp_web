@@ -27,9 +27,9 @@ var listener = function(e) {
 document.addEventListener('touchmove', listener, { passive:false });
 
 var drake = dragula([selected, selectable], {
-  moves: (_el, _source, handle, _sibling) => {
+  moves: (el, _source, handle, _sibling) => {
     console.log(handle)
-    return !handle.classList.contains('quick-button');
+    return !(handle.classList.contains('quick-button') || el.classList.contains('sub-header'));
   }
 });
 
@@ -44,6 +44,9 @@ drake.on('dragend', function(el, source) {
 });
 
 [...document.querySelectorAll("#participants .item_list__item, #available_participants .item_list__item")].forEach((item) => {
+  if (item.classList.contains("sub-header")) {
+    return;
+  }
   const quickButton = document.createElement('button');
   quickButton.classList.add('btn', 'btn-primary', 'quick-button');
   quickButton.innerText = '⤒';
