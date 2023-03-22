@@ -51,6 +51,9 @@ gem 'devise-i18n'
 
 gem 'rubocop'
 
+gem "sentry-ruby"
+gem "sentry-rails"
+
 gem 'cancancan'
 
 # Reduces boot times through caching; required in config/boot.rb
