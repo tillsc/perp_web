@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-3"><%= user.email %></div>
     <div class="col-3"><%= Array.wrap(user.roles).presence&.join(", ") || "-" %></div>
-    <div class="col-3"><%= l user.last_sign_in_at %></div>
+    <div class="col-3"><%= user.last_sign_in_at && l(user.last_sign_in_at) || "-" %></div>
     <div class="col-3">
       <%= link_to "Bearbeiten", edit_internal_user_path(user), class: 'btn btn-primary' %>
       <% unless user.id == current_user.id %>
