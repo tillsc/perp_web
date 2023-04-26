@@ -29,11 +29,13 @@
             <div class="col-12">
               <% if event.starts_count > 0 or participants_count > 1 %>
                 <% event.races.group_by(&:type_name).each do |tn, races| %>
-                  <%= tn %>
-                  <% if races.first.planned_for %>
-                    (<%= l(races.first.planned_for, format: "%a") %>): <%= races.map{ |r| r.planned_for && l(r.planned_for, format: "%H:%M") }.compact.join(", ") %>
+                  <% start_times = races.map(&:planned_for).compact %>
+                  <% if start_times.any? %>
+                    <%= tn %>
+                    (<%= start_times.map{ |t| l(t, format: "%a") }.uniq.join(", ") %>):
+                    <%= start_times.map{ |t| l(t, format: "%H:%M") }.uniq.join(", ") %>
+                    <br>
                   <% end %>
-                  <br>
                 <% end %>
               <% else %>
                 <em>Rennen findet nicht statt</em>
