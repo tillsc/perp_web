@@ -63,7 +63,7 @@ module Services
       end
     end
 
-    def save!(raw_participant_ids, raw_times)
+    def save!(raw_participant_ids, raw_times, persist_result)
       participants = Array.wrap(raw_participant_ids).map { |p_id|
         p_id = p_id.presence&.to_i
         all_participants.find { |p| p.participant_id == p_id }
@@ -91,10 +91,15 @@ module Services
       res = participant_ids.zip(ftimes, rel_ftimes)
       @measurement_set.measurements = res
       @measurement_set.measurements_history||= {}
-      @measurement_set.measurements_history[DateTime.now] = res
+      last_history_date = @measurement_set.measurements_history.keys.last
+      if last_history_date.present? && @measurement_set.measurements_history[last_history_date] != res
+        @measurement_set.measurements_history[DateTime.now] = res
+      end
       @measurement_set.save!
 
-      persist_result!
+      if persist_result
+        persist_result!
+      end
 
       res
     end

@@ -36,12 +36,15 @@ class MeasurementsController < ApplicationController
 
   def save
     authorize! :create, @measuring.measurement_set
+    autosave = params[:autosave] == "1"
 
     MeasuringSession.transaction do
-      @res = @measuring.save!(params[:participants], params[:times])
+      @res = @measuring.save!(params[:participants], params[:times], autosave)
     end
 
-    if current_user.is_a?(MeasuringSession)
+    if autosave
+      redirect_to measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number)
+    elsif current_user.is_a?(MeasuringSession)
       redirect_to measuring_session_url(@regatta, current_user, anchor: "race_#{@measuring.race.event.number}_#{@measuring.race.number}")
     else
       redirect_to measurements_url(@regatta, anchor: "race_#{@measuring.race.event.number}_#{@measuring.race.number}")
