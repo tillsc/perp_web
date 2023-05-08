@@ -106,7 +106,7 @@ if (times) {
     stopTime();
     e.preventDefault();
     return false;
-  })
+  });
   document.addEventListener("keydown", function (e) {
     if (!e.handled && e.key == 'Enter') {
       stopTime();
@@ -114,6 +114,6 @@ if (times) {
       e.handled = true;
       return true;
     }
-  })
+  });
 
 }
