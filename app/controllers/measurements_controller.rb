@@ -39,7 +39,7 @@ class MeasurementsController < ApplicationController
     autosave = params[:autosave] == "1"
 
     MeasuringSession.transaction do
-      @res = @measuring.save!(params[:participants], params[:times], autosave)
+      @res = @measuring.save!(params[:participants], params[:times], !autosave)
     end
 
     if autosave
