@@ -5,7 +5,7 @@
 var selected = document.getElementById('participants');
 var selectable = document.getElementById('available_participants');
 
-var startedAt;
+var startedAt = null;
 if (document.getElementById('started_at') && document.getElementById('started_at').getAttribute('datetime')) {
   startedAt = moment(document.getElementById('started_at').getAttribute('datetime'));
 
