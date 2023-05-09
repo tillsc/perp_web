@@ -20,9 +20,8 @@
 <%= form_tag measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number) do %>
   <% if @measuring_session.present? %>
     <%= hidden_field_tag :measuring_session_id, @measuring_session&.to_param %>
-  <% else %>
-    <%= hidden_field_tag :measuring_point_number, params[:measuring_point_number] %>
   <% end %>
+  <%= hidden_field_tag :measuring_point_number, params[:measuring_point_number] %>
 
   <div class="participants_and_times <%= "hide_team_name" if @race.event.measuring_point_type(@measuring_point) != :start  %>">
     <div>

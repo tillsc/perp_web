@@ -2,12 +2,12 @@ class MeasurementsController < ApplicationController
 
   before_action except: :index do
     @measuring_session = MeasuringSession.for_regatta(@regatta).find_by(identifier: params[:measuring_session_id])
-    @measuring_point = if @measuring_session
-                         @measuring_session.active_measuring_point
-                       else
+    @measuring_point = if can?(:manage, MeasurementSet) && params[:measuring_point_number].present?
                          @regatta.measuring_points.find_by!(number: params[:measuring_point_number])
+                       else
+                         @measuring_session&.active_measuring_point
                        end
-    raise "Could not find valid MeasuringPoint!" unless @measuring_point
+    raise(ActionController::RoutingError, "Could not find valid MeasuringPoint!") unless @measuring_point
     @race = Race.
       for_regatta(@regatta).
       find_by!(event_number: params[:event_number], number: params[:race_number])

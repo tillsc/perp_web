@@ -20,6 +20,10 @@ module Services
           regatta: race.regatta,
           measuring_point: measuring_point
         )
+      if (@measurement_set.measuring_point.id != measuring_point.id)
+        @measurement_set.measuring_point = measuring_point
+        @measurement_set.save!
+      end
       if force_measuring_session_ownership && force_measuring_session_ownership.id != @measurement_set.measuring_session_id
         raise "Editing not allowed. This race is already handled by Session #{@measurement_set.measuring_session&.identifier.inspect}"
       end
