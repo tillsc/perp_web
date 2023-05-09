@@ -78,6 +78,10 @@ class MeasuringSessionsController < ApplicationController
       redirect_to measuring_sessions_url(@regatta)
     else
       if @measuring_session.update(measuring_session_params)
+        was_active_for_mp = MeasuringPoint.find_by(measuring_session: @measuring_session)
+        if (was_active_for_mp && was_active_for_mp.id != @measuring_session.measuring_point.id)
+          was_active_for_mp.update!(measuring_session: nil)
+        end
         flash[:info] = "Mess-Sitzung aktualisiert"
         redirect_to measuring_sessions_url(@regatta)
       else
