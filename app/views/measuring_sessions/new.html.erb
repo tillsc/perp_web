@@ -1,3 +1,19 @@
+<% if @last_measuring_session.present? %>
+  <div class="p-4 m-3 bg-light rounded-3 border-1">
+    <div class="container-fluid py-5">
+      <h1 class="display-6 fw-bold">Bestehende Mess-Sitzung erkannt</h1>
+      <p class="col-md-8">
+        Für Ihr Gerät ist bereits eine bestehende Mess-Sitzung bekannt. Dabei handelt es sich um
+        <em><%= @last_measuring_session.device_description.inspect %></em> bei <%= @last_measuring_session.measuring_point&.name %>.
+        <br>
+        Sollten Sie nicht bei <%= @last_measuring_session.measuring_point&.name %> messen, legen Sie unten bitte eine neue
+        Mess-Sitzung an.
+      </p>
+      <%= link_to "Mess-Sitzung fortsetzen", measuring_session_path(@regatta, @last_measuring_session), class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>
+
 <%= bootstrap_form_with model: @measuring_session, url: measuring_sessions_url(@regatta) do |f| %>
   <%= render 'form_fields', f: f %>
 

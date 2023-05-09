@@ -10,6 +10,10 @@ class MeasuringSessionsController < ApplicationController
     @measuring_session = MeasuringSession.for_regatta(@regatta).find_by!(identifier: params[:id])
     authorize! :show, @measuring_session
 
+    if cookies[:last_measuring_session_identifier] != @measuring_session.identifier
+      cookies[:last_measuring_session_identifier] = @measuring_session.identifier
+    end
+
     if @measuring_session.active_measuring_point
       races = Race.for_regatta(@regatta).
         preload(:event, :measurement_sets).
@@ -25,7 +29,12 @@ class MeasuringSessionsController < ApplicationController
   end
 
   def new
-    @measuring_session = MeasuringSession.new
+    if cookies[:last_measuring_session_identifier].present?
+      ms = MeasuringSession.find_by(identifier: cookies[:last_measuring_session_identifier])
+      @last_measuring_session = ms if ms&.regatta&.id == @regatta.id
+    end
+
+    @measuring_session = MeasuringSession.new(device_description: @last_measuring_session&.device_description, measuring_point_number: params[:measuring_point_number])
     authorize! :create, @measuring_session
 
     prepare_form

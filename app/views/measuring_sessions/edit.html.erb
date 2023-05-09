@@ -1,5 +1,5 @@
-<%= form_with model: @measuring_session, url: measuring_session_url(@regatta, @measuring_session) do |f| %>
+<%= bootstrap_form_with model: @measuring_session, url: measuring_session_url(@regatta, @measuring_session) do |f| %>
   <%= render 'form_fields', f: f %>
 
-  <%= f.button 'Los gehts', type: :submit, class: 'btn btn-primary' %>
+  <%= f.button 'Speichern', type: :submit, class: 'btn btn-primary' %>
 <% end %>
