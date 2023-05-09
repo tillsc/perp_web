@@ -9,7 +9,7 @@ class Result < ApplicationRecord
 
   belongs_to :participant, foreign_key: ['Regatta_ID', 'Rennen', 'TNr']
 
-  has_many :times, class_name: 'ResultTime', foreign_key: ['Regatta_ID', 'Rennen', 'Lauf', 'TNr']
+  has_many :times, class_name: 'ResultTime', foreign_key: ['Regatta_ID', 'Rennen', 'Lauf', 'TNr'], inverse_of: :result
 
   alias_attribute :race_number, 'Lauf'
   alias_attribute :disqualified, 'Ausgeschieden'
@@ -51,8 +51,14 @@ class Result < ApplicationRecord
     t = self.times.find { |t| t.measuring_point_number == mpn } ||
       self.times.build(measuring_point_number: mpn, result: self)
 
-    t.time = time
+    t.time = ResultTime.sanitize_time(time)
     t
+  end
+
+  def destroy_time_for!(measuring_point_or_measuring_point_number)
+    mpn = MeasuringPoint.number(measuring_point_or_measuring_point_number)
+
+    self.times.find { |t| t.measuring_point_number == mpn }&.destroy!
   end
 
 end

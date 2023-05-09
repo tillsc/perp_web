@@ -20,6 +20,10 @@ class ResultTime < ApplicationRecord
     order('Regatta_ID', 'Rennen', 'Lauf', 'MesspunktNr', 'Zeit')
   end
 
+  def self.sanitize_time(t)
+    t.to_s.gsub(/^00:/, "").gsub(".", ",").presence
+  end
+
   def to_time
     time && "00:#{time.gsub(',', '.')}".to_time
   end

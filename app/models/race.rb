@@ -14,7 +14,7 @@ class Race < ApplicationRecord
   belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
 
   has_many :starts, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
-  has_many :results, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
+  has_many :results, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf'], inverse_of: :race
 
   has_many :measurement_sets, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
 

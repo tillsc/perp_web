@@ -114,16 +114,23 @@ module Services
           result.lane_number = lane_number + 1
           result.save!
         end
-        race.started_at_time = @measurement_set.measurements.first&.second
+        time = @measurement_set.measurements.first&.second
+        race.started_at_time = time && DateTime.parse(time)
         race.save!
       else
+        present_participant_ids = []
         @measurement_set.measurements.each do |participant_id, _time, rel_time|
           if participant_id.to_i > 0 && rel_time.present?
             result = race.results.find { |res| res.participant_id == participant_id } ||
               race.results.build(participant_id: participant_id, race: race)
             result.set_time_for(@measurement_set.measuring_point, rel_time).save!
+            present_participant_ids << participant_id
           end
         end
+        # Delete all times which might be present from times before
+        race.results.
+          select { |res| !present_participant_ids.include?(res.participant_id)  }.
+          map { |res| res.destroy_time_for!(@measurement_set.measuring_point) }
       end
     end
 
