@@ -29,7 +29,7 @@
           </td>
           <td>
             <% if can?(:edit, ms) %>
-              <% if ms.active_measuring_point&.number == ms.measuring_point.number %>
+              <% if ms.active? %>
                 <%= form_tag measuring_session_url(@regatta, ms), method: :patch do %>
                   <button type="submit" name="deactivate" value="<%= ms.measuring_point.number %>" class="btn btn-danger">Deaktivieren</button>
                 <% end %>

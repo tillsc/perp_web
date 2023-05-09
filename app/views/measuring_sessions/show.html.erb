@@ -5,7 +5,7 @@
   dein Gerät heißt <em><%= @measuring_session.device_description.presence || @measuring_session.identifer %></em>
 </p>
 
-<% if @measuring_session.active_measuring_point %>
+<% if @measuring_session.active? %>
   <% if @my_races.present? %>
     <% latest = @my_races.select { |r| r.upcoming_measurement_for(@measuring_session.active_measuring_point) } %>
     <% if latest.present? %>
