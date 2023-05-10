@@ -7,8 +7,17 @@ class MeasuringSession < ApplicationRecord
 
   has_one :active_measuring_point, class_name: 'MeasuringPoint', foreign_key: 'measuring_session_id'
 
+  has_many :measurement_sets, inverse_of: :measuring_session, dependent: :nullify
+
   scope :for_regatta, -> (regatta) {
     where(regatta_id: regatta.id)
+  }
+
+  scope :with_stats, -> {
+    select("#{self.table_name}.*").
+      select("(SELECT COUNT(*) FROM #{MeasurementSet.table_name} mset WHERE mset.measuring_session_id = #{self.table_name}.id) AS measurement_set_count").
+      select("(SELECT MAX(mset.updated_at) FROM #{MeasurementSet.table_name} mset WHERE mset.measuring_session_id = #{self.table_name}.id) AS last_measurement_set_at").
+      order(created_at: :desc)
   }
 
   before_validation do

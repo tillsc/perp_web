@@ -3,7 +3,10 @@ class MeasuringSessionsController < ApplicationController
   def index
     authorize! :index, MeasuringSession
 
-    @measuring_sessions = MeasuringSession.for_regatta(@regatta).preload(:measuring_point, :active_measuring_point)
+    @measuring_sessions = MeasuringSession.
+      for_regatta(@regatta).
+      with_stats.
+      preload(:measuring_point, :active_measuring_point)
   end
 
   def show
@@ -90,6 +93,16 @@ class MeasuringSessionsController < ApplicationController
       end
     end
 
+  end
+
+  def destroy
+    measuring_session = MeasuringSession.for_regatta(@regatta).find_by!(identifier: params[:id])
+    authorize! :destroy, measuring_session
+
+    measuring_session.destroy!
+
+    flash[:info] = "Mess-Sitzung gelöscht"
+    redirect_to measuring_sessions_url(@regatta)
   end
 
   protected

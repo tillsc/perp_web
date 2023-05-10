@@ -7,6 +7,9 @@
         <th><%= MeasuringSession.human_attribute_name(:device_description) %></th>
         <th><%= MeasuringSession.human_attribute_name(:identifier) %></th>
         <th><%= MeasuringPoint.model_name.human %></th>
+        <th>Anzahl Messungen</th>
+        <th>Letzte Messung</th>
+        <th>Erstellt am</th>
         <th></th>
         <th></th>
       </tr>
@@ -15,13 +18,16 @@
       <% @measuring_sessions.each do |ms| %>
         <tr>
           <td><%= ms.device_description %></td>
-          <td><%= link_to ms.identifier, measuring_session_url(@regatta, ms) %></td>
+          <td><%= link_to ms.identifier.truncate(10), measuring_session_url(@regatta, ms) %></td>
           <td>
             <%= ms.measuring_point.name %>
             <% if ms.active? %>
               <span class="badge badge-info">Aktiv</span>
               <% end %>
           </td>
+          <td><%= ms.measurement_set_count %></td>
+          <td><%= ms.last_measurement_set_at && l(ms.last_measurement_set_at) %></td>
+          <td><%= l(ms.created_at) %></td>
           <td>
             <% if can?(:edit, ms) %>
               <%= link_to "✎", edit_measuring_session_path(@regatta, ms), class: 'btn btn-primary' %>
@@ -38,6 +44,11 @@
                   <button type="submit" name="activate" value="<%= ms.measuring_point.number %>" class="btn btn-success">Aktivieren</button>
                 <% end %>
               <% end %>
+            <% end %>
+          </td>
+          <td>
+            <% if can?(:destroy, ms) %>
+              <%= button_to "🗑", measuring_session_path(@regatta, ms), method: :delete, class: 'btn btn-danger' %>
             <% end %>
           </td>
         </tr>
