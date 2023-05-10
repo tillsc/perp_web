@@ -75,6 +75,11 @@ if (times) {
     time = now.format('HH:mm:ss.SS')
 
     if (startedAt) {
+      //Force `now` date to be on the same day (for loading old measurement sets from past days)
+      now.set('year', startedAt.year());
+      now.set('month', startedAt.month());
+      now.set('date', startedAt.date());
+
       relative = now.subtract(startedAt).utc().format('HH:mm:ss.SS').replace(/^00:/, '');
     }
 
