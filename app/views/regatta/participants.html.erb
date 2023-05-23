@@ -1,8 +1,8 @@
 <%= render 'header' %>
 
-<h3>Teilnehmer Rennen <%= @event.number %> <small><%= @event.name_short %></small></h3>
+<h3>Teilnehmer Rennen <%= @event&.number %> <small><%= @event&.name_short %></small></h3>
 <p class="lead">
-  <%= @event.name %>
+  <%= @event&.name %>
 </p>
 
 <table class="table">
@@ -17,7 +17,7 @@
   </thead>
   <tbody>
   <% rower_link = -> (rower, name) { link_to name, rower_path(@regatta, rower) } %>
-  <% @event.participants.each do |p| %>
+  <% @event&.participants&.each do |p| %>
     <tr class="<%= participant_state_classes(p) %>">
       <td><%= p.number %></td>
       <td><%= p.team.try(:country) %></td>
