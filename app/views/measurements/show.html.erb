@@ -41,7 +41,7 @@
 
     <div>
       <h6>Zeiten</h6>
-      <div id="times" class="item_list">
+      <div id="times" class="item_list" <%= "data-edit-times" if can?(:manage, MeasurementSet) %>>
         <% @measurements.values.each do |time| %>
             <%= hidden_field_tag 'times[]', time %>
         <% end %>

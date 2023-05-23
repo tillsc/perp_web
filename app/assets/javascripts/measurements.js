@@ -57,14 +57,85 @@ drake.on('dragend', function(el, source) {
   item.append(quickButton);
 })
 
-var times = document.getElementById('times')
+var times = document.getElementById('times');
 
 if (times) {
+  var editTimes = times.hasAttribute('data-edit-times');
 
-  function stopTime(time) {
-    var now, relative;
+  function getTime(timeItem) {
+    var timeElement = timeItem?.querySelector?.('.time');
+    var timeInputElement = timeItem?.querySelector?.('input');
+    return timeElement && moment(timeElement.innerText, "HH:mm:ss.SS");
+  }
+
+  function setTime(timeItem, time) {
+    var timeElement = timeItem?.querySelector?.('.time');
+    var relativeTimeElement = timeItem?.querySelector?.('.time.relative');
+    var timeInputElement = timeItem?.querySelector?.('input');
+
+    if (relativeTimeElement && startedAt) {
+      //Force `now` date to be on the same day (for loading old measurement sets from past days)
+      time.set('year', startedAt.year());
+      time.set('month', startedAt.month());
+      time.set('date', startedAt.date());
+      var relative = time.clone().subtract(startedAt).utc();
+
+      relativeTimeElement.innerText = relative.format('HH:mm:ss.SS').replace(/^00:/, '');
+    }
+
+    if (timeElement) {
+      timeElement.innerText = time.format('HH:mm:ss.SS');
+    }
+    if (timeInputElement) {
+      timeInputElement.value = time.format('HH:mm:ss.SS');
+    }
+  }
+
+  function increaseTime(timeItem, ms) {
+    var time = getTime(timeItem);
+    if (time) {
+      var max = getTime(timeItem.nextSibling);
+      var min = getTime(timeItem.previousSibling);
+      time.add(ms, 'ms');
+      if (max) {
+        time = moment.min(time, moment(max, 'HH:mm:ss.SS'));
+      }
+      if (min) {
+        time = moment.max(time, moment(min, 'HH:mm:ss.SS'));
+      }
+      setTime(timeItem, time);
+    }
+  }
+
+  function deltaMs(event) {
+    if (event.altKey) {
+      return 1000;
+    }
+    else if (event.shiftKey) {
+      return 100;
+    }
+    else {
+      return 10;
+    }
+  }
+
+  function clickPlus(event) {
+    increaseTime(event.target.closest('.item_list__item'), deltaMs(event));
+    event.cancelDefault;
+  }
+
+  function clickMinus(event) {
+    increaseTime(event.target.closest('.item_list__item'), -deltaMs(event));
+    event.cancelDefault;
+  }
+
+  function stopTime(time, after) {
+    var now;
     if (!time) {
       now = moment();
+    }
+    else if (moment.isMoment(time)) {
+      now = time.clone();
     }
     else if (time.includes("T")) {
       now = moment(time);
@@ -72,21 +143,41 @@ if (times) {
     else {
       now = moment(time, "HH:mm:ss.SS");
     }
-    time = now.format('HH:mm:ss.SS')
-
-    if (startedAt) {
-      //Force `now` date to be on the same day (for loading old measurement sets from past days)
-      now.set('year', startedAt.year());
-      now.set('month', startedAt.month());
-      now.set('date', startedAt.date());
-
-      relative = now.subtract(startedAt).utc().format('HH:mm:ss.SS').replace(/^00:/, '');
-    }
 
     var t = document.createElement('div');
     t.classList.add('item_list__item');
-    t.innerHTML = '<div><span class="text-nowrap time">' + time + '</span>' + (relative ? ' <small class="text-nowrap time">&rightarrow; ' + relative + '</small>' : '') + '<input type="hidden" name="times[]" value="' + time + '"></div>';
-    times.appendChild(t);
+    t.innerHTML = '<div><span class="text-nowrap time"></span>' + (editTimes ? '<span class="plus-minus mx-1 btn-group"></span>' : '') + '<small class="text-nowrap time relative"></small><input type="hidden" name="times[]" value="' + time + '"></div>';
+
+    setTime(t, now);
+    if (after) {
+      after.insertAdjacentElement("afterend", t);
+    }
+    else {
+      times.appendChild(t);
+    }
+
+    var plusMinus = t.querySelector('.plus-minus');
+    if (editTimes && plusMinus) {
+      var plusBtn = document.createElement('a');
+      plusBtn.classList.add('btn', 'btn-secondary', 'btn-sm');
+      plusBtn.innerHTML = '+';
+      plusBtn.addEventListener("click", clickPlus);
+      plusMinus.appendChild(plusBtn);
+
+      var minusBtn = document.createElement('a');
+      minusBtn.classList.add('btn', 'btn-secondary', 'btn-sm');
+      minusBtn.innerHTML = '-';
+      minusBtn.addEventListener("click", clickMinus);
+      plusMinus.appendChild(minusBtn);
+
+      var duplicateBtn = document.createElement('a');
+      duplicateBtn.classList.add('btn', 'btn-secondary', 'btn-sm', 'mx-1');
+      duplicateBtn.innerHTML = '⎘';
+      duplicateBtn.addEventListener("click", function() {
+        stopTime(getTime(t), t);
+      });
+      plusMinus.insertAdjacentElement("afterend", duplicateBtn);
+    }
 
     var delBtn = document.createElement('a');
     delBtn.classList.add('btn', 'btn-danger', 'btn-sm');
