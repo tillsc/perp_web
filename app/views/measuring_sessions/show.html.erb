@@ -2,7 +2,7 @@
 
 <p>
   Du sitzt bei <%= @measuring_session.measuring_point&.name %>,
-  dein Gerät heißt <em><%= @measuring_session.device_description.presence || @measuring_session.identifer %></em>
+  dein Gerät heißt <em><%= @measuring_session.device_description.presence || @measuring_session.identifier %></em>
 </p>
 
 <% if @measuring_session.active? %>
