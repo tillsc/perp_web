@@ -8,7 +8,7 @@
     <div class="col-3">
       <%= link_to "Bearbeiten", edit_internal_user_path(user), class: 'btn btn-primary' %>
       <% unless user.id == current_user.id %>
-        <%= button_to "Löschen", internal_user_path(user), method: :deltete, class: 'btn btn-danger', data: { confirm: "Sicher?" } %>
+        <%= button_to "Löschen", internal_user_path(user), method: :delete, class: 'btn btn-danger', data: { confirm: "Sicher?" } %>
       <% end %>
     </div>
   </div>

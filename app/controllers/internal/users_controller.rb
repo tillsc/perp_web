@@ -29,7 +29,7 @@ module Internal
       user = User.find(params[:id])
       authorize! :destroy, user
 
-      if @user.destroy
+      if user.destroy
         flash[:info] = "Benutzer erfolgreich gelöscht"
       else
         flash[:error] = "Benutzer konnte nicht gelöscht werden"
