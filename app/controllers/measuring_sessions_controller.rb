@@ -50,7 +50,9 @@ class MeasuringSessionsController < ApplicationController
     @measuring_session.regatta = @regatta
     if @measuring_session.save
       flash[:info] = 'Mess-Sitzung angelegt'
-      redirect_to measuring_session_url(@regatta, @measuring_session)
+      redirect_to current_user.is_a?(MeasuringSession) ?
+                    measuring_session_url(@regatta, @measuring_session) :
+                    measuring_sessions_url(@regatta)
     else
       flash[:danger] = "Mess-Sitzung konnte nicht angelegt werden:\n#{@measuring_session.errors.full_messages}"
       prepare_form
@@ -67,32 +69,38 @@ class MeasuringSessionsController < ApplicationController
 
   def update
     @measuring_session = MeasuringSession.for_regatta(@regatta).find_by!(identifier: params[:id])
-    authorize! :update, @measuring_session
 
     if params[:activate].present?
+      authorize! :activate, @measuring_session
+
       @measuring_session.measuring_point.update!(measuring_session: @measuring_session)
       flash[:info] = "Mess-Sitzung wurde aktiviert"
 
       redirect_to measuring_sessions_url(@regatta)
     elsif params[:deactivate].present?
+      authorize! :deactivate, @measuring_session
+
       @measuring_session.measuring_point.update!(measuring_session: nil)
       flash[:info] = "Mess-Sitzung wurde deaktiviert"
 
       redirect_to measuring_sessions_url(@regatta)
     else
+      authorize! :update, @measuring_session
+
       if @measuring_session.update(measuring_session_params)
         was_active_for_mp = MeasuringPoint.find_by(measuring_session: @measuring_session)
         if (was_active_for_mp && was_active_for_mp.id != @measuring_session.measuring_point.id)
           was_active_for_mp.update!(measuring_session: nil)
         end
         flash[:info] = "Mess-Sitzung aktualisiert"
-        redirect_to measuring_sessions_url(@regatta)
+        redirect_to current_user.is_a?(MeasuringSession) ?
+                      measuring_session_url(@regatta, @measuring_session) :
+                      measuring_sessions_url(@regatta)
       else
         prepare_form
         render :edit
       end
     end
-
   end
 
   def destroy
@@ -112,7 +120,7 @@ class MeasuringSessionsController < ApplicationController
   end
 
   def measuring_session_params
-    params.require(:measuring_session).permit(:device_description, :measuring_point_number)
+    params.require(:measuring_session).permit(:device_description, :measuring_point_number, :autoreload_disabled)
   end
 
 end

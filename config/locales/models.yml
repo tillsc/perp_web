@@ -4,3 +4,4 @@ de:
       measuring_session:
         device_description: Gerätebeschreibung
         measuring_point_number: Messpunkt
+        autoreload_disabled: Automatischen Reload deaktivieren

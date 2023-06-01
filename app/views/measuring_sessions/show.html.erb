@@ -1,28 +1,36 @@
-<h1>Zeitmessung</h1>
+<div class="d-flex justify-content-between align-items-baseline">
+  <div>
+    <h1>Zeitmessung</h1>
 
-<p>
-  Du sitzt bei <%= @measuring_session.measuring_point&.name %>,
-  dein Gerät heißt <em><%= @measuring_session.device_description.presence || @measuring_session.identifier %></em>
-</p>
+    <p>
+      Du sitzt bei <%= @measuring_session.measuring_point&.name %>,
+      dein Gerät heißt <em><%= @measuring_session.device_description.presence || @measuring_session.identifier %></em>
+    </p>
+  </div>
+  <div>
+    <%= link_to 'Einstellungen bearbeiten', edit_measuring_session_path(@regatta, @measuring_session), class: 'btn btn-secondary' %>
+  </div>
+</div>
+
 
 <% if @measuring_session.active? %>
   <% if @my_races.present? %>
     <% latest = @my_races.select { |r| r.upcoming_measurement_for(@measuring_session.active_measuring_point) } %>
     <% if latest.present? %>
-      <h3>Jetzt kommt:</h3>
+      <h2 class="h3">Jetzt kommt:</h2>
       <% latest.each do |race| %>
         <%= link_to race.full_name, measurement_path(@regatta, measuring_session_id: @measuring_session, event_number: race.event.number, race_number: race.number), class: "btn btn-primary" %>
       <% end %>
     <% end %>
 
-    <h3>Rennen zur Auswahl</h3>
+    <h2 class="h4 mt-5">Rennen zur Auswahl</h2>
     <%= render 'races_table', races: @my_races %>
   <% else %>
     Dir stehen leider keine Rennen zur Auswahl.
   <% end %>
 
   <% if @other_races.present? %>
-    <h3>Andere Messungen</h3>
+    <h2 class="h4 mt-5">Andere Messungen bei <%= @measuring_session.measuring_point&.name %></h2>
     <%= render 'races_table', races: @other_races %>
   <% end %>
 <% else %>
@@ -30,5 +38,9 @@
 <% end %>
 
 <script>
+  <% unless @measuring_session.autoreload_disabled %>
   autoreloadAfter(5000)
+  <% else %>
+  cancelAutoreload()
+  <% end %>
 </script>

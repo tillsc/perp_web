@@ -4,7 +4,6 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    can :create, MeasuringSession
     if user.is_a?(::User)
       can :access, :internal
 
@@ -19,7 +18,7 @@ class Ability
 
     elsif user.is_a?(MeasuringSession)
       measuring_session = user
-      can [:show], measuring_session
+      can [:show, :create, :update], measuring_session
       can [:create, :update], MeasurementSet, measuring_session: measuring_session
     end
   end

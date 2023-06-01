@@ -24,17 +24,18 @@ var scrollPosition,
 
 var cancelAutoreload = function () {
   if (autoreloadRunning) {
-    clearTimeout(autoreloadRunning);
+    clearTimeout(autoreloadRunning)
   }
+  autoreloadRunning = false
 }
 
 var autoreloadAfter = function(secs) {
-  cancelAutoreload();
-  autoreloadRunning = setTimeout(reloadWithTurbolinks, secs);
+  cancelAutoreload()
+  autoreloadRunning = setTimeout(reloadWithTurbolinks, secs)
 }
 
 var reloadWithTurbolinks = function () {
-  autoreloadRunning = false
+  cancelAutoreload()
   autoscroll = true
   Turbolinks.visit(window.location.toString(), { action: 'replace' })
 }
@@ -43,7 +44,7 @@ document.addEventListener('turbolinks:before-render', function() {
   if (autoscroll) {
     scrollPosition = [window.scrollX, window.scrollY]
   }
-});
+})
 
 document.addEventListener('turbolinks:load', function () {
   if (scrollPosition) {
@@ -54,5 +55,5 @@ document.addEventListener('turbolinks:load', function () {
 })
 
 jQuery(function () {
-  jQuery('[data-toggle="tooltip"]').tooltip();
-});
+  jQuery('[data-toggle="tooltip"]').tooltip()
+})
