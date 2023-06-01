@@ -18,6 +18,7 @@
       <ul>
         <li><%= link_to "Regatta-Übersicht", regatta_url(@regatta) %></li>
         <li><%= link_to "TV-Overlays", tv_url(@regatta) %></li>
+        <li><%= link_to "DRV Ergebnis-XML", results_url(@regatta, format: :xml) %></li>
       </ul>
     </div>
   </div>
