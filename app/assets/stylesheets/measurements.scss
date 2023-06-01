@@ -2,6 +2,10 @@
 *= require dragula
 */
 
+.time {
+  font-family: monospace;
+}
+
 .item_list {
   flex: 1;
   border: 1px solid #999;

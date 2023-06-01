@@ -10,10 +10,9 @@ if (document.getElementById('started_at') && document.getElementById('started_at
   startedAt = moment(document.getElementById('started_at').getAttribute('datetime'));
 
   var startTimer = document.createElement('span');
-  startTimer.classList.add('time');
   document.getElementById('started_at').parentElement.appendChild(startTimer);
   setInterval(() => {
-    startTimer.innerHTML = "&rightarrow; " + moment().subtract(startedAt).utc().format('HH:mm:ss').replace(/^00:/, '');
+    startTimer.innerHTML = '&rightarrow; <span class="time">' + moment().subtract(startedAt).utc().format('HH:mm:ss').replace(/^00:/, '') + '</span>';
   }, 500);
 }
 
@@ -61,6 +60,7 @@ var times = document.getElementById('times');
 
 if (times) {
   var editTimes = times.hasAttribute('data-edit-times');
+  var duplicateTimes = times.hasAttribute('data-edit-times');
 
   function getTime(timeItem) {
     var timeElement = timeItem?.querySelector?.('.time');
@@ -70,7 +70,7 @@ if (times) {
 
   function setTime(timeItem, time) {
     var timeElement = timeItem?.querySelector?.('.time');
-    var relativeTimeElement = timeItem?.querySelector?.('.time.relative');
+    var relativeTimeElement = timeItem?.querySelector?.('.relative');
     var timeInputElement = timeItem?.querySelector?.('input');
 
     if (relativeTimeElement && startedAt) {
@@ -80,7 +80,7 @@ if (times) {
       time.set('date', startedAt.date());
       var relative = time.clone().subtract(startedAt).utc();
 
-      relativeTimeElement.innerText = relative.format('HH:mm:ss.SS').replace(/^00:/, '');
+      relativeTimeElement.innerHTML = '<span class="d-none d-sm-inline">&rightarrow; </span><span class="time">' + relative.format('HH:mm:ss.SS').replace(/^00:/, '') + '</span>';
     }
 
     if (timeElement) {
@@ -146,7 +146,7 @@ if (times) {
 
     var t = document.createElement('div');
     t.classList.add('item_list__item');
-    t.innerHTML = '<div><span class="text-nowrap time"></span>' + (editTimes ? '<span class="plus-minus mx-1 btn-group"></span>' : '') + '<small class="text-nowrap time relative"></small><input type="hidden" name="times[]" value="' + time + '"></div>';
+    t.innerHTML = '<span class="text-nowrap time"></span><small class="text-nowrap relative"></small><input type="hidden" name="times[]" value="' + time + '">';
 
     setTime(t, now);
     if (after) {
@@ -156,8 +156,13 @@ if (times) {
       times.appendChild(t);
     }
 
-    var plusMinus = t.querySelector('.plus-minus');
-    if (editTimes && plusMinus) {
+    var relativeElement = t.querySelector('.relative');
+    if (editTimes && relativeElement) {
+
+      var plusMinus = document.createElement('span');
+      plusMinus.classList.add('btn-group');
+      relativeElement.insertAdjacentElement("beforebegin", plusMinus);
+
       var plusBtn = document.createElement('a');
       plusBtn.classList.add('btn', 'btn-secondary', 'btn-sm');
       plusBtn.innerHTML = '+';
@@ -169,14 +174,16 @@ if (times) {
       minusBtn.innerHTML = '-';
       minusBtn.addEventListener("click", clickMinus);
       plusMinus.appendChild(minusBtn);
+    }
 
+    if (duplicateTimes && relativeElement) {
       var duplicateBtn = document.createElement('a');
-      duplicateBtn.classList.add('btn', 'btn-secondary', 'btn-sm', 'mx-1');
+      duplicateBtn.classList.add('btn', 'btn-secondary', 'btn-sm');
       duplicateBtn.innerHTML = '⎘';
       duplicateBtn.addEventListener("click", function() {
         stopTime(getTime(t), t);
       });
-      plusMinus.insertAdjacentElement("afterend", duplicateBtn);
+      relativeElement.insertAdjacentElement("beforebegin", duplicateBtn);
     }
 
     var delBtn = document.createElement('a');
@@ -195,7 +202,14 @@ if (times) {
     if (existing[i].value != '') {
       stopTime(existing[i].value);
     }
-    existing[i].remove();
+    if (existing[i].closest('.item_list__item')) {
+      // This might happen when using browser back.
+      // Elements where dried out so they had to be re-initialized. But they can be thrown away now...
+      existing[i].closest('.item_list__item').remove();
+    }
+    else {
+      existing[i].remove();
+    }
   }
 
   document.getElementById('stop_time').addEventListener("click", function (e) {

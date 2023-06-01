@@ -28,7 +28,7 @@ class MeasurementsController < ApplicationController
     @measurements = @measuring.measurements
     @measurements_history = @measuring.measurement_set.measurements_history
     @measuring_session = @measuring.measurement_set.measuring_session
-    @no_main_nav = true
+    @no_main_nav = current_user.is_a?(MeasuringSession)
 
     render :show
   end
