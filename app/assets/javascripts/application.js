@@ -20,6 +20,7 @@
 
 var scrollPosition,
   autoreloadRunning = false,
+  autoscroll = false,
   status = 0
 
 var cancelAutoreload = function () {
@@ -31,6 +32,7 @@ var cancelAutoreload = function () {
 
 var autoreloadAfter = function(secs) {
   cancelAutoreload()
+  autoscroll = true
   autoreloadRunning = setTimeout(reloadWithTurbolinks, secs)
 }
 
@@ -47,19 +49,21 @@ document.addEventListener('turbolinks:before-render', function(event) {
   if (status >= 399) {
     console.log("HTTP Error: ", status)
     event.preventDefault()
+    event.stopImmediatePropagation()
     return false
   }
-  else {
+  else if (autoscroll) {
     scrollPosition = [window.scrollX, window.scrollY]
   }
 })
 
 document.addEventListener('turbolinks:load', function () {
-  if (scrollPosition) {
+  if (scrollPosition && autoscroll) {
     window.scroll(scrollPosition[0], scrollPosition[1])
     setTimeout(() => {
       window.scroll(scrollPosition[0], scrollPosition[1])
       scrollPosition = null
+      autoscroll = false
     }, 50);
   }
 })
