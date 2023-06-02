@@ -46,6 +46,7 @@ drake.on('dragend', function(el, source) {
   if (item.classList.contains("sub-header")) {
     return;
   }
+  item.querySelector('button.quick-button')?.remove();
   const quickButton = document.createElement('button');
   quickButton.classList.add('btn', 'btn-primary', 'quick-button', 'px-5');
   quickButton.innerText = '⤒';
