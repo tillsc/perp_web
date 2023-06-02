@@ -69,6 +69,10 @@ class Participant < ApplicationRecord
     }
   end
 
+  def active?
+    !withdrawn? && !disqualified.present?
+  end
+
   def state
     [].tap do |res|
       res << "Abgemeldet" if withdrawn?

@@ -9,6 +9,7 @@ module Services
       @race = race
       @all_participants = race.event.participants
       @lanes = (@race.results.presence || @race.starts).
+        select { |r| @all_participants.first { |p| p.id == r.participant_id }&.active? }.
         map { |r| r.lane_number && [r.participant_id, r.lane_number] }.
         compact.
         sort_by(&:second).
