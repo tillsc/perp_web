@@ -8,7 +8,9 @@
     </p>
   </div>
   <div>
-    <%= link_to 'Einstellungen bearbeiten', edit_measuring_session_path(@regatta, @measuring_session), class: 'btn btn-secondary' %>
+    <%= link_to edit_measuring_session_path(@regatta, @measuring_session), class: 'btn btn-outline-secondary' do %>
+      🛠 <span class="d-none d-md-inline">Einstellungen bearbeiten</span>
+    <% end %>
   </div>
 </div>
 
