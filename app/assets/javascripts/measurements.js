@@ -47,7 +47,7 @@ drake.on('dragend', function(el, source) {
     return;
   }
   const quickButton = document.createElement('button');
-  quickButton.classList.add('btn', 'btn-primary', 'quick-button');
+  quickButton.classList.add('btn', 'btn-primary', 'quick-button', 'px-5');
   quickButton.innerText = '⤒';
   quickButton.addEventListener('click', (e) => {
     selected.append(item);
