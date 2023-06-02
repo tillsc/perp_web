@@ -19,8 +19,8 @@
 //= require_tree .
 
 var scrollPosition,
-  autoscroll = false,
-  autoreloadRunning = false
+  autoreloadRunning = false,
+  status = 0
 
 var cancelAutoreload = function () {
   if (autoreloadRunning) {
@@ -36,21 +36,31 @@ var autoreloadAfter = function(secs) {
 
 var reloadWithTurbolinks = function () {
   cancelAutoreload()
-  autoscroll = true
   Turbolinks.visit(window.location.toString(), { action: 'replace' })
 }
 
-document.addEventListener('turbolinks:before-render', function() {
-  if (autoscroll) {
+document.addEventListener('turbolinks:request-end', function(event) {
+  status = event.data.xhr.status
+})
+
+document.addEventListener('turbolinks:before-render', function(event) {
+  if (status >= 399) {
+    console.log("HTTP Error: ", status)
+    event.preventDefault()
+    return false
+  }
+  else {
     scrollPosition = [window.scrollX, window.scrollY]
   }
 })
 
 document.addEventListener('turbolinks:load', function () {
   if (scrollPosition) {
-    window.scrollTo.apply(window, scrollPosition)
-    scrollPosition = null
-    autoscroll = false
+    window.scroll(scrollPosition[0], scrollPosition[1])
+    setTimeout(() => {
+      window.scroll(scrollPosition[0], scrollPosition[1])
+      scrollPosition = null
+    }, 50);
   }
 })
 

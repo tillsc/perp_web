@@ -2,6 +2,10 @@
 @import "results";
 @import "../components/auto-grid/auto-grid";
 
+html, :root {
+  scroll-behavior: auto;
+}
+
 .regatta-header {
   @media only print {
     padding-left: 0;
