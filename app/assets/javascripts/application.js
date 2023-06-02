@@ -58,12 +58,12 @@ document.addEventListener('turbolinks:before-render', function(event) {
 })
 
 document.addEventListener('turbolinks:load', function () {
-  if (scrollPosition && autoscroll) {
+  if (scrollPosition) {
+    autoscroll = false
     window.scroll(scrollPosition[0], scrollPosition[1])
     setTimeout(() => {
       window.scroll(scrollPosition[0], scrollPosition[1])
       scrollPosition = null
-      autoscroll = false
     }, 50);
   }
 })
