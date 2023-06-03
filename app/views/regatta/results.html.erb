@@ -59,7 +59,7 @@
 
         <div class="result-footer">
           <div class="started_at">
-            Startzeit: <%= l race.started_at %>
+            Startzeit: <%= race.started_at && l(race.started_at) %>
           </div>
           <div class="result_official">
             <%= race.is_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
