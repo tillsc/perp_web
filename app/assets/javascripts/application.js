@@ -32,12 +32,12 @@ var cancelAutoreload = function () {
 
 var autoreloadAfter = function(secs) {
   cancelAutoreload()
-  autoscroll = true
   autoreloadRunning = setTimeout(reloadWithTurbolinks, secs)
 }
 
 var reloadWithTurbolinks = function () {
   cancelAutoreload()
+  autoscroll = true
   Turbolinks.visit(window.location.toString(), { action: 'replace' })
 }
 
