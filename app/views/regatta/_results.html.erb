@@ -4,8 +4,10 @@
     <% res.each do |result| %>
       <li>
         <%= link_to result.race.event.label, event_results_path(@regatta, result.event, anchor: result.race) %> -
-        <%= result.race.name %> -
-        <strong><%= l result.race.started_at_time, format: '%H:%M' %> Uhr</strong>
+        <%= result.race.name %>
+        <% if result.race.started_at_time %>
+          - <strong><%= l result.race.started_at_time, format: '%H:%M' %> Uhr</strong>
+        <% end %>
         <br>
         <%= result.participant.number %>: <%= result.participant.team_name %><br>
         <em><%= result.participant.rower_names %></em>
