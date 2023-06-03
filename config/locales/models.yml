@@ -5,3 +5,4 @@ de:
         device_description: Gerätebeschreibung
         measuring_point_number: Messpunkt
         autoreload_disabled: Automatischen Reload deaktivieren
+        hide_team_names: Team-Namen verbergen

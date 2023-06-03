@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_01_093521) do
+ActiveRecord::Schema.define(version: 2023_06_03_042453) do
 
   create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "Titel", limit: 10
@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(version: 2023_06_01_093521) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "autoreload_disabled"
+    t.boolean "hide_team_names"
   end
 
   create_table "meldungen", primary_key: ["Regatta_ID", "Rennen", "TNr"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|

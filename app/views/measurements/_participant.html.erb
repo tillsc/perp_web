@@ -6,7 +6,9 @@
       <% if lane = measuring.lane_for(participant) %>
         (Bahn <%= lane %>)
       <% end %>
-      <span class="team_name">- <%= participant.team_name(hide_team_boat_number: true) %></span>
+      <% unless @measuring_session&.hide_team_names? %>
+        <span class="team_name">- <%= participant.team_name(hide_team_boat_number: true) %></span>
+      <% end %>
     </div>
   </div>
 <% end %>

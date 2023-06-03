@@ -3,3 +3,6 @@
 <%= f.select :measuring_point_number, @measuring_points.map { |mp| [ mp.name, mp.number ] } %>
 
 <%= f.check_box :autoreload_disabled %>
+
+<%= f.check_box :hide_team_names %>
+<br>
