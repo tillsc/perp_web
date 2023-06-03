@@ -74,11 +74,18 @@
   <%= link_to @measuring_session.identifier, measuring_session_url(@regatta, @measuring_session) %>
   (<%= @measuring_session.device_description %>@<%= @measuring_session.measuring_point.name %> - <%= @measuring_session.active? ? 'Aktiv' : 'Nicht aktiv' %>)
 <% end %>
-<% if @measurements_history.present? %>
-  <h6 class="mt-1">Historie</h6>
+<% if can?(:show, :measurements_history) && @measurements_history.present? %>
+  <h5 class="mt-4">Historie</h5>
   <% @measurements_history.reverse_each do |date, data| %>
-    <strong><%= date %></strong>
-    <pre><%= data %></pre>
+    <h6><%= date && l(DateTime.parse(date), format: :full) %></h6>
+    <div class="d-flex justify-content-between">
+    <% data.each do |k, v| %>
+      <div class="border p-3 bg-light">
+        <%= @measuring.find_participant(k)&.number || "TNR#{k}" %>:
+        <%= v %>
+      </div>
+    <% end %>
+    </div>
   <% end %>
 <% end %>
 

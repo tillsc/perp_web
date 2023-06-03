@@ -13,6 +13,7 @@ class Ability
       if user.role_admin
         can :manage, User
         can :manage, Address
+        can :show, :measurements_history
       end
 
 

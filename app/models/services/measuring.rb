@@ -96,7 +96,7 @@ module Services
       @measurement_set.measurements = res
       @measurement_set.measurements_history||= {}
       last_history_date = @measurement_set.measurements_history.keys.last
-      if last_history_date.present? && @measurement_set.measurements_history[last_history_date] != res
+      if last_history_date.blank? || @measurement_set.measurements_history[last_history_date] != res
         @measurement_set.measurements_history[DateTime.now] = res
       end
       @measurement_set.save!
