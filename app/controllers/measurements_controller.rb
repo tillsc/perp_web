@@ -18,6 +18,14 @@ class MeasurementsController < ApplicationController
     authorize! :index, MeasurementSet
 
     @races = Race.for_regatta(@regatta)
+    if params[:sort_by] == "start_time"
+      @races = @races.order(:planned_for)
+    end
+    if params[:filter] == "today"
+      @races = @races.planned_for_today
+    elsif params[:filter] == "nearby"
+      @races = @races.nearby
+    end
     @measuring_points = MeasuringPoint.for_regatta(@regatta)
     @measurement_sets = MeasurementSet.for_regatta(@regatta).preload(:race, :measuring_point)
   end

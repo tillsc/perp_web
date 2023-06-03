@@ -70,6 +70,10 @@ class Race < ApplicationRecord
         order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
   end
 
+  scope :planned_for_today, -> do
+    where('DATE(SollStartZeit) = ?', Date.today)
+  end
+
   #
   scope :current_start, -> do
     where(arel_table['IstStartZeit'].eq(nil).or(

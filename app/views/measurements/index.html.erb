@@ -1,4 +1,18 @@
 <h1>Messungen</h1>
+
+<p>
+  Sortieren nach:
+  <%= content_tag(params[:sort_by] == "start_time" ? :span : :a, "(Soll-)Startzeit", href: measurements_url(@regatta, filter: params[:filter], sort_by: "start_time")) %> |
+  <%= content_tag(params[:sort_by] != "start_time" ? :span : :a, "Rennnummer", href: measurements_url(@regatta, filter: params[:filter])) %>
+</p>
+
+<p>
+  Filtern:
+  <%= content_tag(params[:filter] == "today" ? :span : :a, "Nur Heute", href: measurements_url(@regatta, filter: "today", sort_by: params[:sort_by])) %> |
+  <%= content_tag(params[:filter] == "nearby" ? :span : :a, "Nur aktuelle", href: measurements_url(@regatta, filter: "nearby", sort_by: params[:sort_by])) %> |
+  <%= content_tag(!["today", "nearby"].include?(params[:filter]) ? :span : :a, "Alle", href: measurements_url(@regatta, sort_by: params[:sort_by])) %>
+</p>
+
 <div class="row">
   <div class="col-md-8 col-lg-9">
     <table class="table table-striped">
@@ -38,3 +52,7 @@
     <%= link_to 'Übersicht der Mess-Sitzungen', measuring_sessions_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
   </div>
 </div>
+
+<script>
+  autoreloadAfter(10000)
+</script>
