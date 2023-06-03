@@ -27,7 +27,7 @@ class MeasurementsController < ApplicationController
       @races = @races.nearby
     end
     @measuring_points = MeasuringPoint.for_regatta(@regatta)
-    @measurement_sets = MeasurementSet.for_regatta(@regatta).preload(:race, :measuring_point)
+    @measurement_sets = MeasurementSet.for_regatta(@regatta).preload(:measuring_point, race: :event)
   end
 
   def show

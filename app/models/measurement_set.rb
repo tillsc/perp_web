@@ -22,4 +22,11 @@ class MeasurementSet < ApplicationRecord
     self.measuring_session_id.nil? || self.measuring_session_id != measuring_session.id
   end
 
+  def correct?
+    return true unless self.measurements.is_a?(Array)
+
+    rel_time_required = self.race.event.measuring_point_type(self.measuring_point_number) != :start
+    self.measurements.all? { |m| m[0].to_i > 0 && m[1].present? && (!rel_time_required || m[2].present?) }
+  end
+
 end
