@@ -1,22 +1,22 @@
 <% if @race && @results.present? && @measuring_point  %>
-  <div class="sticky-top text-white px-3" style="background: var(--bg, rgba(0, 0, 0, 0.3))">
-    <strong><%= @race.event.try(:name) %>: <%= @race.name %></strong>
+  <div class="sticky-top text-white px-3" style="background: var(--bg, rgba(0, 0, 0, 0.3)); margin-left: <%= @header_space_left || 0 %>px;">
+    <strong><%= @race.event&.name %>: <%= @race.name %></strong>
     <span class="text-right"><%= '(Ergebnis vorläufig)' unless @race.is_official? %></span>
 
     <div class="row">
-      <p class="col-md-6">Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %>, bei <%= @measuring_point.position - (@race.event.try(:start_measuring_point).try(:position) || 0) %>m</p>
+      <p class="col-md-6">Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %>, bei <%= @measuring_point.position - (@race.event&.start_measuring_point&.position || 0) %>m</p>
       <p class="col-md-6 text-right"><%= @race.event.Zusatztext1 %></p>
     </div>
   </div>
 
-  <div class="text-white fixed-bottom">
+  <div class="text-white fixed-bottom" style="margin-left: <%= @footer_space_left || 0 %>px;">
     <div class="row">
     <% @results.each_with_index do |res,i| %>
       <div class="col-4">
         <div class="row px-2" style="background: var(--bg, rgba(0, 0, 0, 0.3)); margin-top: 10px; <%= "margin-right: 0px;" if ((i+1) % 3 != 0) %>">
-          <div class="col-1"><%= res.participant.try(:number) %></div>
-          <div class="col-8 text-truncate"><%= res.participant.try(:team).try(:name) %></div>
-          <div class="col-3"><%= res.time_for(@measuring_point).try(:time) %></div>
+          <div class="col-1"><%= res.participant&.number %></div>
+          <div class="col-8 text-truncate"><%= res.participant&.team&.name %></div>
+          <div class="col-3"><%= res.time_for(@measuring_point)&.time %></div>
         </div>
       </div>
     <% end %>
@@ -26,13 +26,13 @@
 
 <style>
   body {
-    --bg: <%= params[:bg] || 'rgba(0, 0, 0, 0.3)' %>;
+    --bg: <%= @background_color || 'rgba(0, 0, 0, 0.3)' %>;
     background-color: lime;
     color: black;
   //font-smooth: never;
   //-webkit-font-smoothing: none;
     font-weight: bold;
-    font-size: 32px;
+    font-size: <%= @font_size || 24 %>px;
   }
   h1 { font-weight: bold }
 </style>

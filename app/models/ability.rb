@@ -13,7 +13,8 @@ class Ability
       if user.role_admin
         can :manage, User
         can :manage, Address
-        can :show, :measurements_history
+        can :manage, :measurements_history
+        can :manage, :tv_settings
       end
 
 

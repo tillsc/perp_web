@@ -1,5 +1,14 @@
 class LatestRacesController < ApplicationController
 
+  TV_PARAMETER_KEYS = {
+    header_space_left: 'HeaderSpaceLeft',
+    footer_space_left: 'FooterSpaceLeft',
+    background_color: 'BackgroundColor',
+    font_size: 'FontSize'
+  }
+
+  before_action :load_settings
+
   def index
 
   end
@@ -36,6 +45,25 @@ class LatestRacesController < ApplicationController
     @event = @race && @race.event
 
     render :layout => 'minimal'
+  end
+
+  def update
+    authorize! :update, :tv_settings
+
+    TV_PARAMETER_KEYS.each do |param_name, key|
+    Parameter.set_value_for!("Tv", key, params[param_name].presence)
+    end
+
+    redirect_to tv_path(@regatta)
+  end
+
+  protected
+
+  def load_settings
+    parameters = Parameter.values_for('Tv').to_a
+    TV_PARAMETER_KEYS.each do |param_name, key|
+      instance_variable_set("@#{param_name}", parameters.find { |p| p.key == key }&.value.presence)
+    end
   end
 
 end

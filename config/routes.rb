@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resources :addresses
     end
     get '/tv' => 'latest_races#index'
+    put '/tv' => 'latest_races#update'
     get '/current_start' => 'latest_races#current_start'
     get '/latest_race' => 'latest_races#show'
     get '/latest_winner' => 'latest_races#latest_winner'
