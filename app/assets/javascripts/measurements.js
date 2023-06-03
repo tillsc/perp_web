@@ -27,8 +27,7 @@ document.addEventListener('touchmove', listener, { passive:false });
 
 var drake = dragula([selected, selectable], {
   moves: (el, _source, handle, _sibling) => {
-    console.log(handle)
-    return !(handle.classList.contains('quick-button') || el.classList.contains('sub-header'));
+    return !handle.classList.contains('quick-button') && el.closest('.participants_and_times');
   }
 });
 
