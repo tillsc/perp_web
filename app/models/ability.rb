@@ -14,6 +14,7 @@ class Ability
       if user.role_admin
         can :manage, User
         can :manage, Address
+        can :manage, Race
         can :manage, :tv_settings
       end
 

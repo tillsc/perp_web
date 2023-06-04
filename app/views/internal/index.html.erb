@@ -13,6 +13,16 @@
   </div>
 
   <div class="card">
+    <h5 class="card-header">Regatta-Verwaltung</h5>
+    <div class="card-body">
+      <ul>
+        <li><%= link_to("Rennen", internal_races_url(@regatta)) if can?(:edit, Race) %></li>
+        <li><%= link_to("Obleute", internal_addresses_url(@regatta)) if can?(:index, Address) %></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
     <h5 class="card-header">Öffentliche Links</h5>
     <div class="card-body">
       <ul>
@@ -28,7 +38,6 @@
     <div class="card-body">
       <ul>
         <li><%= link_to("Benutzerverwaltung", internal_users_url) if can?(:show, User) %></li>
-        <li><%= link_to("Obleute", internal_addresses_url(@regatta)) if can?(:index, Address) %></li>
       </ul>
     </div>
   </div>

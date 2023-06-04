@@ -8,6 +8,8 @@ class Regatta < ApplicationRecord
 
   has_many :events
 
+  has_many :races
+
   has_many :results
 
   has_many :teams
