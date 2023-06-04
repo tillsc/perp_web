@@ -9,11 +9,11 @@ class Ability
 
       can :manage, MeasurementSet
       can :manage, MeasuringSession
+      can :manage, :measurements_history
 
       if user.role_admin
         can :manage, User
         can :manage, Address
-        can :manage, :measurements_history
         can :manage, :tv_settings
       end
 
