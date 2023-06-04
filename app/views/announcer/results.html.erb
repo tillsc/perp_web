@@ -1,7 +1,7 @@
 <div class="row my-3">
   <div class="col-3">
     <% if @previous_race %>
-      <%= link_to "<< #{@previous_race.full_name}", announcer_results_path(@regatta, @previous_race.event, @previous_race, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block' %>
+      <%= link_to "<< #{@previous_race.full_name}", announcer_results_path(@regatta, @previous_race.event, @previous_race, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block prev-button' %>
     <% end %>
   </div>
   <div class="col-3">
@@ -11,7 +11,7 @@
   </div>
   <div class="col-3">
     <% if @next_race %>
-      <%= link_to ">> #{@next_race.full_name}", announcer_results_path(@regatta, @next_race.event, @next_race, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block' %>
+      <%= link_to ">> #{@next_race.full_name}", announcer_results_path(@regatta, @next_race.event, @next_race, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block next-button' %>
     <% end %>
   </div>
   <div class="col-3">
@@ -54,4 +54,21 @@
 
 <script>
   autoreloadAfter(3000)
+
+  window.addEventListener("keydown", function(event) {
+    if (event.defaultPrevented) {
+      return;
+    }
+    var b = null;
+    if (event.key == "ArrowLeft") {
+      b = document.querySelector('.prev-button')
+    }
+    else if (event.key == "ArrowRight") {
+      b = document.querySelector('.next-button')
+    }
+    if (b) {
+      b.click();
+      event.preventDefault();
+    }
+  })
 </script>
