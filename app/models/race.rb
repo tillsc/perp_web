@@ -41,6 +41,11 @@ class Race < ApplicationRecord
       where('zeiten.MesspunktNr = rennen.ZielMesspunktNr AND zeiten.Zeit IS NOT NULL')
   end
 
+  scope :with_times_at, -> (measuring_point_number) do
+    joins(:event, results: :times).
+      where('zeiten.MesspunktNr = ? AND zeiten.Zeit IS NOT NULL', measuring_point_number)
+  end
+
   scope :with_starts, -> do
     joins(:starts).group('laeufe.Rennen, laeufe.Lauf')
   end

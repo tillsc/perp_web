@@ -17,9 +17,14 @@ class LatestRacesController < ApplicationController
     scope = Race.joins(:results).for_regatta(@regatta).now
     scope = Race.with_finish_times if params[:testmode] == "1"
     scope = scope.by_type_short(params[:type_short].to_s.split(',')) if params[:type_short].present?
+    scope = scope.with_times_at(params[:measuring_point_number]) if params[:measuring_point_number].present?
     @race = scope.first
-    max_measuring_point_number = @race && @race.results.map { |r| r.times.map(&:measuring_point_number).max }.compact.max
-    @measuring_point = max_measuring_point_number && MeasuringPoint.find([@regatta.ID, max_measuring_point_number])
+    @measuring_point = if params[:measuring_point_number].present?
+                         MeasuringPoint.find([@regatta.ID, params[:measuring_point_number]])
+                       else
+                         max_measuring_point_number = @race && @race.results.map { |r| r.times.map(&:measuring_point_number).max }.compact.max
+                         max_measuring_point_number && MeasuringPoint.find([@regatta.ID, max_measuring_point_number])
+                       end
     @results = @race && @race.results.sort_by { |r| r.time_for(@measuring_point)&.sort_time_str || 'ZZZZZZZZZ' }
     render :layout => 'minimal'
   end
