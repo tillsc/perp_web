@@ -1,0 +1,64 @@
+<% has_comments = local_assigns.key?(:has_comments) ? local_assigns[:has_comments] : results.any? { |r| r.comment.present? } %>
+<div style="break-inside: avoid">
+  <a class="anchor" id="<%= race.to_param %>"></a>
+  <h3><%= local_assigns[:full_race_name] ? race.full_name : race.name %></h3>
+  <div class="result-row result-row__header">
+    <div class="position">Pos.</div>
+    <div class="number">Bugnr</div>
+    <div class="country">Land</div>
+    <div clasS="team">Teamname</div>
+    <div class="times">
+      <% measuring_points.each do |mp| %>
+        <div class="time"><%= mp.name %></div>
+      <% end %>
+      <% if has_comments %>
+        <div class="comment"></div>
+      <% end %>
+    </div>
+  </div>
+  <% position = 1 %>
+  <% last_position = position %>
+  <% last_time = nil %>
+  <% max_measuring_point_number = results.map { |r| r.times.map(&:measuring_point_number).max }.compact.max %>
+  <% results.sort_by { |r| r.time_for(max_measuring_point_number)&.sort_time_str || 'ZZZZZZZZZ' }.each do |r| %>
+    <% participant = (@event || race.event).participants.find { |p| p.participant_id == r.participant_id } %>
+    <% last_mp_time = r.time_for(max_measuring_point_number)&.time %>
+    <div class="result-row">
+      <div class="position">
+        <% if last_mp_time && last_mp_time != last_time %>
+          <%= last_position = position %>
+        <% elsif last_mp_time %>
+          <%= last_position %>
+        <% end %>
+      </div>
+      <% last_time = last_mp_time; position+= 1 %>
+      <div class="number">
+        <%= participant.number %>
+        <% if local_assigns[:with_lane] %>
+          (Bahn <%= r.lane_number %>)
+        <% end %>
+      </div>
+      <div class="country"><%= participant.team&.country %></div>
+      <div class="team"><%= participant.team_name %></div>
+      <div class="rower-names"><%= participant.rower_names %></div>
+      <div class="times">
+        <% measuring_points.each do |mp| %>
+          <div class="time"><%= r.time_for(mp)&.time %></div>
+        <% end %>
+        <% if has_comments %>
+          <div class="comment"><%= r.comment %></div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="result-footer">
+    <div class="started_at">
+      Startzeit: <%= race.started_at && l(race.started_at) %>
+    </div>
+    <div class="result_official">
+      <%= race.is_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
+      <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
+    </div>
+  </div>
+</div>

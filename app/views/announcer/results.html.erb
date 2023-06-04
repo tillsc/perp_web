@@ -1,0 +1,16 @@
+<%= render 'regatta/race_results', race: @race, results: @race.results, with_lane: true, full_race_name: true, measuring_points: @measuring_points %>
+
+<% if @previous_race %>
+  <%= link_to "Vorheriges Rennen #{@previous_race.full_name}", announcer_results_path(@regatta, @previous_race.event, @previous_race), class: 'btn btn-secondary' %>
+<% end %>
+<% if @next_race %>
+  <%= link_to "Nächstes Rennen #{@next_race.full_name}", announcer_results_path(@regatta, @next_race.event, @next_race), class: 'btn btn-secondary' %>
+<% end %>
+<% if @current_race %>
+  <%= link_to "Aktuelles Rennen #{@current_race.full_name}", announcer_results_path(@regatta, @current_race.event, @current_race), class: 'btn btn-secondary' %>
+<% end %>
+
+
+<script>
+  autoreloadAfter(3000)
+</script>

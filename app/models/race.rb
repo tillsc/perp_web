@@ -79,6 +79,18 @@ class Race < ApplicationRecord
     where('DATE(SollStartZeit) = ?', Date.today)
   end
 
+  scope :before_race, -> (race) do
+    where('DATE(SollStartZeit) <= ?', race.planned_for.to_date).
+      where('DATE(SollStartZeit) < ? OR IstStartZeit < ?', race.planned_for.to_date, I18n.l(race.started_at, format: '%H:%M:%S')).
+      order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
+  end
+
+  scope :following_race, -> (race) do
+    where('DATE(SollStartZeit) >= ?', race.planned_for.to_date).
+      where('DATE(SollStartZeit) > ? OR IstStartZeit > ?', race.planned_for.to_date, I18n.l(race.started_at, format: '%H:%M:%S')).
+      order('DATE(SollStartZeit), IstStartZeit')
+  end
+
   #
   scope :current_start, -> do
     where(arel_table['IstStartZeit'].eq(nil).or(

@@ -1,0 +1,21 @@
+<h1>Sprecher-Dashboard</h1>
+
+<% if @latest_races.present? %>
+  <h4>Letzte Ergebnisse</h4>
+  <% @latest_races.each do |race| %>
+    <div class="row mb-3">
+      <div class="col-md-6"><%= race.started_at && l(race.started_at, format: :short) %></div>
+      <div class="col-md-6">
+        <%= link_to announcer_results_path(@regatta, race.event, race) do %>
+          <%= race.event&.number %> -
+          <%= race.event&.name_short %> -
+          <%= race.name %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<script>
+  autoreloadAfter(5000)
+</script>
