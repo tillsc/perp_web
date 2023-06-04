@@ -38,13 +38,14 @@
       <% starts = @race.starts %>
       <% starts = starts.sort_by { |s| -s.lane_number.to_i } if params[:reverse_lanes].present? %>
       <% starts.each do |s| %>
-        <tr class="<%= participant_state_classes(s.participant) %>">
+        <% participant = @race.event.participants.find { |p| p.participant_id == s.participant_id } %>
+        <tr class="<%= participant_state_classes(participant) %>">
           <td><%= s.lane_number %></td>
-          <td><%= s.participant.number %></td>
-          <td><%= s.participant.team&.country %></td>
-          <td><%= s.participant.team_name %></td>
-          <td><%= s.participant.rower_names %></td>
-          <td><%= s.participant.state %></td>
+          <td><%= participant.number %></td>
+          <td><%= participant.team&.country %></td>
+          <td><%= participant.team_name %></td>
+          <td><%= participant.rower_names %></td>
+          <td><%= participant.state %></td>
         </tr>
       <% end %>
       </tbody>
@@ -53,22 +54,24 @@
 <% end %>
 
 <script>
-  autoreloadAfter(3000)
+  //autoreloadAfter(3000)
 
-  window.addEventListener("keydown", function(event) {
-    if (event.defaultPrevented) {
-      return;
-    }
-    var b = null;
-    if (event.key == "ArrowLeft") {
-      b = document.querySelector('.prev-button')
-    }
-    else if (event.key == "ArrowRight") {
-      b = document.querySelector('.next-button')
-    }
-    if (b) {
-      b.click();
-      event.preventDefault();
-    }
-  })
+  if (!window.perpKeyboardListenerInstalled) {
+    window.perpKeyboardListenerInstalled = true
+    window.addEventListener("keydown", function (event) {
+      if (event.defaultPrevented) {
+        return;
+      }
+      var b = null;
+      if (event.key == "ArrowLeft") {
+        b = document.querySelector('.prev-button')
+      } else if (event.key == "ArrowRight") {
+        b = document.querySelector('.next-button')
+      }
+      if (b) {
+        b.click();
+        event.preventDefault();
+      }
+    })
+  }
 </script>
