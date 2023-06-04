@@ -80,15 +80,13 @@ class Race < ApplicationRecord
   end
 
   scope :before_race, -> (race) do
-    where('DATE(SollStartZeit) <= ?', race.planned_for.to_date).
-      where('DATE(SollStartZeit) < ? OR IstStartZeit < ?', race.planned_for.to_date, I18n.l(race.started_at, format: '%H:%M:%S')).
-      order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
+    where('SollStartZeit < ?', race.planned_for).
+      order('SollStartZeit DESC')
   end
 
   scope :following_race, -> (race) do
-    where('DATE(SollStartZeit) >= ?', race.planned_for.to_date).
-      where('DATE(SollStartZeit) > ? OR IstStartZeit > ?', race.planned_for.to_date, I18n.l(race.started_at, format: '%H:%M:%S')).
-      order('DATE(SollStartZeit), IstStartZeit')
+    where('SollStartZeit > ?', race.planned_for).
+      order('SollStartZeit')
   end
 
   #

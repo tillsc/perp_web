@@ -1,14 +1,45 @@
-<%= render 'regatta/race_results', race: @race, results: @race.results, with_lane: true, full_race_name: true, measuring_points: @measuring_points %>
-
+<% if @race.results.any? %>
+  <%= render 'regatta/race_results', race: @race, results: @race.results, with_lane: true, full_race_name: true, measuring_points: @measuring_points %>
+<% else %>
+  <h4><%= @race.full_name %></h4>
+  <div><%= @race.planned_for && l(@race.planned_for) %></div>
+  <div class="table-responsive-md">
+    <table class="table">
+      <thead>
+      <th><%= link_to "Bahn", url_for(reverse_lanes: params[:reverse_lanes].present? ? nil : '1') %></th>
+      <th>Bugnr.</th>
+      <th>Land</th>
+      <th>Teamname</th>
+      <th>Ruderer</th>
+      <th>Status</th>
+      </thead>
+      <tbody>
+      <% starts = @race.starts %>
+      <% starts = starts.sort_by { |s| -s.lane_number.to_i } if params[:reverse_lanes].present? %>
+      <% starts.each do |s| %>
+        <tr class="<%= participant_state_classes(s.participant) %>">
+          <td><%= s.lane_number %></td>
+          <td><%= s.participant.number %></td>
+          <td><%= s.participant.team&.country %></td>
+          <td><%= s.participant.team_name %></td>
+          <td><%= s.participant.rower_names %></td>
+          <td><%= s.participant.state %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
 <% if @previous_race %>
-  <%= link_to "Vorheriges Rennen #{@previous_race.full_name}", announcer_results_path(@regatta, @previous_race.event, @previous_race), class: 'btn btn-secondary' %>
+  <%= link_to "Vorheriges Rennen #{@previous_race.full_name}", announcer_results_path(@regatta, @previous_race.event, @previous_race, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary' %>
+<% end %>
+<% if @current_race && @current_race.full_name != @race.full_name %>
+  <%= link_to "Aktuelles Rennen #{@current_race.full_name}", announcer_results_path(@regatta, @current_race.event, @current_race, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-primary' %>
 <% end %>
 <% if @next_race %>
-  <%= link_to "Nächstes Rennen #{@next_race.full_name}", announcer_results_path(@regatta, @next_race.event, @next_race), class: 'btn btn-secondary' %>
+  <%= link_to "Nächstes Rennen #{@next_race.full_name}", announcer_results_path(@regatta, @next_race.event, @next_race, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary' %>
 <% end %>
-<% if @current_race %>
-  <%= link_to "Aktuelles Rennen #{@current_race.full_name}", announcer_results_path(@regatta, @current_race.event, @current_race), class: 'btn btn-secondary' %>
-<% end %>
+<%= link_to "Zum Dashboard", announcer_path(@regatta, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-text' %>
 
 
 <script>
