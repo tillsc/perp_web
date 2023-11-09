@@ -11,6 +11,8 @@ class Ability
       can :manage, MeasuringSession
       can :manage, :measurements_history
 
+      can :manage, Weight
+
       if user.role_admin
         can :manage, User
         can :manage, Address

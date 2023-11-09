@@ -14,6 +14,10 @@ class Participant < ApplicationRecord
     belongs_to ALL_ROWERS[i], class_name: 'Rower', foreign_key: "ruderer#{name}_ID"
   end
 
+  scope :enabled, -> {
+    where(withdrawn: [nil, false])
+  }
+
   scope :for_teams, -> (teams) {
     where('Team_ID': Array.wrap(teams).map(&:id).uniq)
   }

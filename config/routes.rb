@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     scope '/internal', module: :internal, as: :internal do
       resources :addresses
       resources :races
+      resources :weighings
     end
     get '/tv' => 'latest_races#index'
     put '/tv' => 'latest_races#update'

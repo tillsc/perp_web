@@ -1,0 +1,48 @@
+<h1>Verwiegen</h1>
+
+<h3>Zu verwiegende Rennen</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Rennen</th>
+      <th>Name</th>
+      <th>Erster Start</th>
+      <th>Verwiegen bis</th>
+      <th>Ruderer verw.</th>
+      <th>Stm. verw.</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @events.each do |r| %>
+    <% problems = if DateTime.now + 2.hours > r.min_started_at
+                    if r.rower_weights_count < r.rower_count
+                      :danger
+                    else
+                      :secondary
+                    end
+                  else
+                    ''
+                  end
+    %>
+    <tr class="bg-<%= problems %>">
+      <td><%= r.label %></td>
+      <td><%= r.name_de %></td>
+      <td><%= r.min_started_at && l(r.min_started_at, format: :short) %></td>
+      <% if r.min_started_at %>
+        <% if DateTime.now + 2.hours > r.min_started_at %>
+          <td>
+            Vorbei seit <%= distance_of_time_in_words(DateTime.now + 2.hours, r.min_started_at) %>
+          </td>
+        <% else %>
+          <td>
+            Noch <%= distance_of_time_in_words(DateTime.now + 2.hours, r.min_started_at) %>
+          </td>
+        <% end %>
+      <% end %>
+      <td><%= r.rower_weights_count %> / <%= r.rower_count %></td>
+      <td><%= r.cox_weights_count %> / <%= r.cox_count %></td>
+      <td><%= r.approved %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

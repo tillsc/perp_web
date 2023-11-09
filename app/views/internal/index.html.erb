@@ -16,6 +16,7 @@
     <h5 class="card-header">Regatta-Verwaltung</h5>
     <div class="card-body">
       <ul>
+        <li><%= link_to("Verwiegen", internal_weighings_url(@regatta)) if can?(:edit, Weight) %></li>
         <li><%= link_to("Rennen", internal_races_url(@regatta)) if can?(:edit, Race) %></li>
         <li><%= link_to("Obleute", internal_addresses_url(@regatta)) if can?(:index, Address) %></li>
       </ul>
