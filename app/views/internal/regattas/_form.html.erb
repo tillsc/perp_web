@@ -1,0 +1,11 @@
+<%= bootstrap_form_for [:internal, @regatta] do |f| %>
+
+  <%= f.text_field :name %>
+
+  <%= f.collection_select :organizer_id, @organizers, :id, :name %>
+
+  <%= f.text_field :from_date, type: 'date', required: true %>
+  <%= f.text_field :to_date, type: 'date'  %>
+
+  <%= f.primary %>
+<% end %>

@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   before_action do
     @regatta = Regatta.find(params[:new_regatta_id]) if params[:new_regatta_id]
     @regatta||= Regatta.find(params[:regatta_id]) if params[:regatta_id]
-    @regattas = Regatta.valid
+    @regattas = Regatta.valid.order(:from_date)
 
     if cookies[:representative_public_private_id].present?
       @representative = Address.representative.

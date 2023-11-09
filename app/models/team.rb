@@ -7,6 +7,8 @@ class Team < ActiveRecord::Base
   alias_attribute :country, 'Land'
   alias_attribute :city, 'Stadt'
 
+  belongs_to :regatta, foreign_key: 'Regatta_ID'
+
   has_many :participants, foreign_key: ['Regatta_ID', 'Team_ID']
 
   scope :for_regatta, -> (regatta) {

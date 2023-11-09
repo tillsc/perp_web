@@ -18,6 +18,7 @@ class Ability
         can :manage, Address
         can :manage, Race
         can :manage, :tv_settings
+        can :manage, Regatta
       end
 
 

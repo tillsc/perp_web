@@ -3,6 +3,7 @@ class MeasuringPoint < ApplicationRecord
   self.table_name = 'messpunkte'
   self.primary_keys = 'Regatta_ID', 'MesspunktNr'
 
+  belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :measuring_session, optional: true
 
   alias_attribute :number, 'MesspunktNr'

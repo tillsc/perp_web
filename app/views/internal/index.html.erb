@@ -19,6 +19,7 @@
         <li><%= link_to("Verwiegen", internal_weighings_url(@regatta)) if can?(:edit, Weight) %></li>
         <li><%= link_to("Rennen", internal_races_url(@regatta)) if can?(:edit, Race) %></li>
         <li><%= link_to("Obleute", internal_addresses_url(@regatta)) if can?(:index, Address) %></li>
+        <li><%= link_to("Regatten", internal_regattas_url(@regatta)) if can?(:index, Regatta) %></li>
       </ul>
     </div>
   </div>

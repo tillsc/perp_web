@@ -1,0 +1,40 @@
+<h1>Regatta-Verwaltung</h1>
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Datum</th>
+        <th>Veranstalter</th>
+        <th>Rennen</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @regattas.each do |regatta| %>
+        <tr>
+          <td id="regatta_<%= regatta.id %>"><%= link_to regatta.name, regatta_url(regatta) %></td>
+          <td>
+            <%= regatta.from_date && l(regatta.from_date) %>
+          </td>
+          <td><%= regatta.organizer&.name %></td>
+          <td><%= link_to regatta.events.size.to_s, internal_events_url(regatta) %></td>
+          <td>
+            <%= link_to "Bearbeiten", edit_internal_regatta_url(regatta), class: 'btn btn-secondary' if can?(:edit, regatta) %>
+            <%= button_to("Löschen", internal_regatta_url(regatta), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, regatta) %>
+            <% if regatta.active? %>
+              <button class="btn btn-success" disabled>Ist Aktiv</button>
+            <% else %>
+              <%= button_to("Aktivieren", internal_regatta_activate_url(regatta), method: :put, class: 'btn btn-success') if can?(:activate, regatta) %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= link_to 'Neue Regatta', new_internal_regatta_path, class: 'btn btn-secondary d-block my-1' %>
+  </div>
+</div>

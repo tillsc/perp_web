@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     get '/internal', to: 'internal#index'
     scope '/internal', module: :internal, as: :internal do
       resources :addresses
+      resources :events
       resources :races
       resources :weighings
     end
@@ -48,6 +49,12 @@ Rails.application.routes.draw do
 
   get '/:regatta_id' => 'regatta#show', as: :regatta
 
-  root :to => redirect { |p, req| req.params["regatta_id"].presence || Parameter.current_regatta_id.to_s }
+  scope '/internal', module: :internal, as: :internal do
+    resources :regattas do
+      put :activate
+    end
+  end
+
+  root to: redirect { |p, req| req.params["regatta_id"].presence || Parameter.current_regatta_id.to_s }
 
 end
