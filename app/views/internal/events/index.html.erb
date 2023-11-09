@@ -1,0 +1,28 @@
+<h1>Rennen für <%= @regatta.name %></h1>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @events.each do |event| %>
+        <tr>
+          <td id="event_<%= event.id %>"><%= event.name %></td>
+          <td>
+            <%= link_to "Bearbeiten", edit_internal_event_url(@regatta, event), class: 'btn btn-secondary' if can?(:edit, event) %>
+            <%= button_to("Löschen", internal_event_url(@regatta, event), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, event) %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= link_to 'Neues Rennen', new_internal_event_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<%= bootstrap_form_for [:internal, @event] do |f| %>
+
+  <%= f.text_field :number, type: :number %>
+
+  <%= f.text_field :name_short, required: true %>
+
+  <%= f.text_field :name_de %>
+
+  <%= f.text_field :name_en %>
+
+  <%= f.collection_select :start_measuring_point_number, @measuring_points, :number, :name %>
+
+  <%= f.collection_select :finish_measuring_point_number, @measuring_points, :number, :name %>
+
+  <%= f.check_box :is_leightweigt %>
+
+  <%= f.check_box :has_cox %>
+
+  <%= f.primary %>
+<% end %>

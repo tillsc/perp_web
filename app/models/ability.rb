@@ -16,9 +16,13 @@ class Ability
       if user.role_admin
         can :manage, User
         can :manage, Address
+        can :manage, Event
         can :manage, Race
         can :manage, :tv_settings
         can :manage, Regatta
+        cannot :delete, Regatta do |r|
+          r.events.any?
+        end
       end
 
 

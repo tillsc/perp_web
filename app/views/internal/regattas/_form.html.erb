@@ -4,8 +4,11 @@
 
   <%= f.collection_select :organizer_id, @organizers, :id, :name %>
 
+  <%= f.text_field :year, type: 'number', required: true %>
   <%= f.text_field :from_date, type: 'date', required: true %>
   <%= f.text_field :to_date, type: 'date'  %>
+
+  <%= f.text_field :currency %>
 
   <%= f.primary %>
 <% end %>
