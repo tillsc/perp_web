@@ -148,6 +148,10 @@ de:
   helpers:
     select:
       prompt: Bitte wählen
+    titles:
+      new: "%{model} neu anlegen"
+      edit: "%{model} bearbeiten"
+      delete: "%{model} löschen"
     submit:
       create: "%{model} erstellen"
       submit: "%{model} speichern"

@@ -1,10 +1,10 @@
 de:
   activerecord:
+    models:
+      organiszer: Veranstalter
+      regatta: Regatta
+      event: Rennen
     attributes:
-      models:
-        organiszer: Veranstalter
-        regatta: Regatta
-        event: Rennen
       regatta:
         name: Name
         organizer: Veranstalter
