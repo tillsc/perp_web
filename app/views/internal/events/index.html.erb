@@ -8,6 +8,7 @@
         <th><%= Event.human_attribute_name(:number) %></th>
         <th><%= Event.human_attribute_name(:name_short) %></th>
         <th><%= Event.human_attribute_name(:name_de) %></th>
+        <th><%= Event.human_attribute_name(:distance) %></th>
         <th><%= Event.human_attribute_name(:is_lightweight) %> / <%= Event.human_attribute_name(:has_cox) %></th>
         <th></th>
       </tr>
@@ -25,6 +26,7 @@
           </td>
           <td>
             <%= link_to "Bearbeiten", edit_internal_event_url(@regatta, event), class: 'btn btn-secondary' if can?(:edit, event) %>
+            <%= link_to "⎘", new_internal_event_url(@regatta, copy_event_number: event.number), title: 'Kopieren', class: 'btn btn-secondary' if can?(:create, Event) %>
             <%= button_to("Löschen", internal_event_url(@regatta, event), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, event) %>
           </td>
         </tr>

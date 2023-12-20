@@ -6,17 +6,27 @@ module Internal
     end
 
     def new
-      last_event = @regatta.events.last
+      copy_event =  @regatta.events.find_by(number: params[:copy_event_number])  if params[:copy_event_number].present?
+      copy_or_last_event = copy_event || @regatta.events.last
       @event = @regatta.events.new(event_params(
                                      number: @regatta.events.maximum(:number).to_i + 1,
-                                     entry_fee: last_event&.entry_fee,
-                                     rower_count: last_event&.rower_count || 1,
-                                     maximum_average_weight: last_event&.maximum_average_weight,
-                                     maximum_single_weight: last_event&.maximum_single_weight,
-                                     maximum_cox_weight: last_event&.maximum_cox_weight,
-                                     start_measuring_point_number: last_event&.start_measuring_point_number,
-                                     finish_measuring_point_number: last_event&.finish_measuring_point_number,
-                                     additional_text_format: last_event&.additional_text_format))
+
+                                     divergent_regatta_name: copy_or_last_event&.divergent_regatta_name,
+                                     entry_fee: copy_or_last_event&.entry_fee,
+                                     maximum_average_weight: copy_or_last_event&.maximum_average_weight,
+                                     maximum_single_weight: copy_or_last_event&.maximum_single_weight,
+                                     maximum_cox_weight: copy_or_last_event&.maximum_cox_weight,
+                                     start_measuring_point_number: copy_or_last_event&.start_measuring_point_number,
+                                     finish_measuring_point_number: copy_or_last_event&.finish_measuring_point_number,
+                                     additional_text_format: copy_or_last_event&.additional_text_format,
+
+                                     name_short: copy_event&.name_short,
+                                     name_de: copy_event&.name_de,
+                                     name_en: copy_event&.name_en,
+                                     rower_count: copy_event&.rower_count || 1,
+                                     is_lightweight: copy_event&.is_lightweight,
+                                     has_cox: copy_event&.has_cox,
+                                     additional_text: copy_event&.additional_text))
       authorize! :new, @event
       prepare_form
     end
