@@ -6,6 +6,8 @@ ruby '>= 2.7'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.0'
 
+gem 'stringio', '0.1.0' # Problems with passenger
+
 gem 'mysql2'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
