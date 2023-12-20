@@ -1,20 +1,40 @@
-<%= bootstrap_form_for [:internal, @event] do |f| %>
+<%= bootstrap_form_for @event, url:
+  @event.persisted? ? internal_event_url(@regatta, @event) : internal_events_url(@regatta) do |f| %>
 
-  <%= f.text_field :number, type: :number %>
+  <div class="row">
+    <div class="col">
+      <%= f.text_field :number, type: :number %>
 
-  <%= f.text_field :name_short, required: true %>
+      <%= f.text_field :name_short, required: true %>
 
-  <%= f.text_field :name_de %>
+      <%= f.text_field :name_de %>
 
-  <%= f.text_field :name_en %>
+      <%= f.text_field :name_en %>
 
-  <%= f.collection_select :start_measuring_point_number, @measuring_points, :number, :name %>
+      <%= f.text_field :divergent_regatta_name, help: "Leer lassen für Standard-Regattaname (#{@regatta.name.inspect})" %>
 
-  <%= f.collection_select :finish_measuring_point_number, @measuring_points, :number, :name %>
+    </div>
 
-  <%= f.check_box :is_leightweigt %>
+    <div class="col">
+      <%= f.collection_select :start_measuring_point_number, @measuring_points, :number, :name %>
+      <%= f.collection_select :finish_measuring_point_number, @measuring_points, :number, :name %>
 
-  <%= f.check_box :has_cox %>
+      <%= f.text_field :rower_count, type: :number, help: 'Ohne Stm.' %>
+      <%= f.check_box :is_lightweight %>
+      <%= f.check_box :has_cox %>
+
+      <%= f.text_field :maximum_average_weight, type: :number, step: '0.1', append: 'kg' %>
+      <%= f.text_field :maximum_single_weight, type: :number, step: '0.1', append: 'kg' %>
+      <%= f.text_field :maximum_cox_weight, type: :number, step: '0.1', append: 'kg' %>
+    </div>
+
+    <div class="col">
+      <%= f.text_field :entry_fee, type: :number, append: @regatta.currency || '€' %>
+
+      <%= f.text_area :additional_text %>
+      <%= f.select :additional_text_format, Event::TEXT_FORMATS.invert %>
+    </div>
+  </div>
 
   <%= f.primary %>
 <% end %>

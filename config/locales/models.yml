@@ -4,12 +4,33 @@ de:
       models:
         organiszer: Veranstalter
         regatta: Regatta
+        event: Rennen
       regatta:
         name: Name
         organizer: Veranstalter
         organizer_id: Veranstalter
-        date_from: Von
-        date_to: Bis
+        year: Jahr
+        from_date: Von
+        to_date: Bis
+        currency: Währung
+      event:
+        number: Nummer
+        name_short: Kurzbezeichnung
+        name_de: Name (Deutsch)
+        name_en: Name (Englisch)
+        divergent_regatta_name: Abweichender Regattaname
+        is_lightweight: Leichtgewicht
+        has_cox: Mit Stm.
+        rower_count: Anzahl Ruderer
+        start_measuring_point_number: Start-Messpunktnummer
+        finish_measuring_point_number: Ziel-Messpunktnummer
+        entry_fee: Startgeld
+        maximum_average_weight: Maximales Durchschnittsgewicht
+        maximum_single_weight: Maximales Einzelgewicht
+        maximum_cox_weight: Maximales Steuermanngewicht
+        additional_text: Zusatztext
+        additional_text_format: Zusatztext-Format
+        distance: Distanz
       measuring_session:
         device_description: Gerätebeschreibung
         measuring_point_number: Messpunkt

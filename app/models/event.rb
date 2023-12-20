@@ -7,11 +7,26 @@ class Event < ApplicationRecord
   alias_attribute :name_short, 'NameK'
   alias_attribute :name_de, 'NameD'
   alias_attribute :name_en, 'NameE'
+
   alias_attribute :start_measuring_point_number, 'StartMesspunktNr'
   alias_attribute :finish_measuring_point_number, 'ZielMesspunktNr'
-  alias_attribute :is_leightweigt, 'Leichtgewicht'
+
+  alias_attribute :rower_count, 'RudererAnzahl'
+  alias_attribute :is_lightweight, 'Leichtgewicht'
   attribute 'Leichtgewicht', :boolean
   alias_attribute :has_cox, 'MitSteuermann'
+
+  alias_attribute :entry_fee, 'Startgeld'
+  alias_attribute :divergent_regatta_name, 'Regattaname'
+
+  alias_attribute :maximum_average_weight, 'MaximalesDurchschnittgewicht'
+  alias_attribute :maximum_single_weight, 'MaximalesEinzelgewicht'
+  alias_attribute :maximum_cox_weight, 'MinimalesSteuermanngewicht'
+
+  alias_attribute :additional_text, 'Zusatztext1'
+  alias_attribute :additional_text_format, 'Zusatztext1Format'
+
+  TEXT_FORMATS = { 0 => 'Keine Formatierung', 1 => 'HTML', 2 => 'RTF' }
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :start_measuring_point, class_name: "MeasuringPoint", foreign_key: ['Regatta_ID', 'StartMesspunktNr']
@@ -33,7 +48,7 @@ class Event < ApplicationRecord
   end
 
   scope :to_be_weighed, -> {
-    where(is_leightweigt: true).or(where(has_cox: true)).
+    where(is_lightweight: true).or(where(has_cox: true)).
       joins(:participants, races: :starts).
       #  merge(Participant.enabled).
       joins("LEFT JOIN gewichte g ON TO_DAYS(g.Datum) = TO_DAYS(#{Race.table_name}.Sollstartzeit) AND (#{Participant.table_name}.Ruderer1_ID = g.Ruderer_ID OR #{Participant.table_name}.Ruderer2_ID = g.Ruderer_ID OR #{Participant.table_name}.Ruderer3_ID = g.Ruderer_ID OR #{Participant.table_name}.Ruderer4_ID = g.Ruderer_ID OR #{Participant.table_name}.Ruderer5_ID = g.Ruderer_ID OR #{Participant.table_name}.Ruderer6_ID = g.Ruderer_ID OR #{Participant.table_name}.Ruderer7_ID = g.Ruderer_ID OR #{Participant.table_name}.Ruderer8_ID = g.Ruderer_ID)").
