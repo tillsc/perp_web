@@ -46,13 +46,13 @@ module Internal
     end
 
     def edit
-      @event = @regatta.events.find([params[:regatta_id], params[:id]])
+      @event = @regatta.events.find(params.extract_value(:id))
       authorize! :edit, @event
       prepare_form
     end
 
     def update
-      @event = @regatta.events.find([params[:regatta_id], params[:id]])
+      @event = @regatta.events.find(params.extract_value(:id))
       authorize! :update, @event
 
       if @event.update(event_params)
@@ -66,7 +66,7 @@ module Internal
     end
 
     def destroy
-      event = @regatta.events.find([params[:regatta_id], params[:id]])
+      event = @regatta.events.find(params.extract_value(:id))
       authorize! :destroy, event
 
       if event.destroy

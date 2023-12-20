@@ -1,0 +1,16 @@
+<%= bootstrap_form_for @race, url:
+  @race.persisted? ? internal_race_url(@regatta, @race) : internal_races_url(@regatta) do |f| %>
+
+  <div class="row">
+    <div class="col">
+      <%= f.collection_select :event_number, @regatta.events, :number, :label %>
+      <%= f.text_field :number %>
+    </div>
+    <div class="col">
+    </div>
+    <div class="col">
+    </div>
+  </div>
+
+    <%= f.primary %>
+<% end %>

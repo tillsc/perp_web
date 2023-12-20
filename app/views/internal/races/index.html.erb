@@ -1,31 +1,38 @@
-<h1>Lauf-Verwaltung</h1>
+<h1>Läufe für <%= @regatta.name %></h1>
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Rennen</th>
-    <th>Lauf</th>
-    <th>Startzeit</th>
-    <th>Startlisteneinträge</th>
-    <th>Gestartet um</th>
-    <th>Ergebnisse</th>
-    <th></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @races.each do |race| %>
-    <tr>
-      <td><%= race.event&.number %></td>
-      <td><%= race.name %></td>
-      <td><%= race.planned_for && l(race.planned_for, format: :short) %></td>
-      <td><%= race.started_at && l(race.started_at, format: :short) %></td>
-      <td><%= race.starts.size.instance_eval { |s| s != 0 ? s : '-' } %></td>
-      <td><%= race.results.size.instance_eval { |s| s != 0 ? s : '-' }  %></td>
-      <td>
-        <%= link_to "Bearbeiten", edit_internal_race_url(@regatta, race), class: 'btn btn-secondary' if can?(:edit, race) %>
-        <%= button_to("Löschen", internal_race_url(@regatta, race), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, race) %>
-      </td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Rennen</th>
+        <th>Lauf</th>
+        <th>Startzeit</th>
+        <th>Startlisteneinträge</th>
+        <th>Gestartet um</th>
+        <th>Ergebnisse</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @races.each do |race| %>
+        <tr>
+          <td><%= race.event&.number %></td>
+          <td><%= race.name %></td>
+          <td><%= race.planned_for && l(race.planned_for, format: :short) %></td>
+          <td><%= race.started_at && l(race.started_at, format: :short) %></td>
+          <td><%= race.starts.size.instance_eval { |s| s != 0 ? s : '-' } %></td>
+          <td><%= race.results.size.instance_eval { |s| s != 0 ? s : '-' }  %></td>
+          <td>
+            <%= link_to "Bearbeiten", edit_internal_race_url(@regatta, race), class: 'btn btn-secondary' if can?(:edit, race) %>
+            <%= button_to("Löschen", internal_race_url(@regatta, race), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, race) %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= link_to t('helpers.titles.new', model: Race.model_name.human), new_internal_race_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+  </div>
+</div>
