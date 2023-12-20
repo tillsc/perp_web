@@ -1,7 +1,7 @@
 class Race < ApplicationRecord
 
   self.table_name = 'laeufe'
-  self.primary_keys = 'Regatta_ID', 'Rennen', 'Lauf'
+  self.primary_key = 'Regatta_ID', 'Rennen', 'Lauf'
 
   alias_attribute :number, 'Lauf'
   alias_attribute :event_number, 'Rennen'
@@ -11,12 +11,12 @@ class Race < ApplicationRecord
   alias_attribute :result_corrected, 'ErgebnisKorrigiert'
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
-  belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
+  belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
 
-  has_many :starts, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
-  has_many :results, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf'], inverse_of: :race
+  has_many :starts, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf']
+  has_many :results, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf'], inverse_of: :race
 
-  has_many :measurement_sets, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
+  has_many :measurement_sets, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf']
 
   scope :latest, -> do
     where.not('IstStartZeit' => nil).order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
@@ -135,10 +135,6 @@ class Race < ApplicationRecord
     return unless started_at_time && planned_for
 
     DateTime.new(planned_for.year, planned_for.month, planned_for.day, started_at_time.hour, started_at_time.min, started_at_time.sec, planned_for.to_datetime.offset, 24)
-  end
-
-  def to_param
-    self.number
   end
 
   def measurement_set_for(measuring_point_or_measuring_point_number)

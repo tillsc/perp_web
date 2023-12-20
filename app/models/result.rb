@@ -1,15 +1,15 @@
 class Result < ApplicationRecord
 
   self.table_name = 'ergebnisse'
-  self.primary_keys = 'Regatta_ID', 'Rennen', 'Lauf', 'TNr'
+  self.primary_key = 'Regatta_ID', 'Rennen', 'Lauf', 'TNr'
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
-  belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
-  belongs_to :race, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
+  belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
+  belongs_to :race, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf']
 
-  belongs_to :participant, foreign_key: ['Regatta_ID', 'Rennen', 'TNr']
+  belongs_to :participant, query_constraints: ['Regatta_ID', 'Rennen', 'TNr']
 
-  has_many :times, class_name: 'ResultTime', foreign_key: ['Regatta_ID', 'Rennen', 'Lauf', 'TNr'], inverse_of: :result
+  has_many :times, class_name: 'ResultTime', query_constraints: ['Regatta_ID', 'Rennen', 'Lauf', 'TNr'], inverse_of: :result
 
   alias_attribute :race_number, 'Lauf'
   alias_attribute :disqualified, 'Ausgeschieden'
@@ -33,10 +33,6 @@ class Result < ApplicationRecord
 
   default_scope do
     order('Regatta_ID', 'Rennen', 'Lauf', 'TNr')
-  end
-
-  def to_param
-    self.participant_number.to_s
   end
 
   def time_for(measuring_point_or_measuring_point_number)

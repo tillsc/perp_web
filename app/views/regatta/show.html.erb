@@ -17,13 +17,13 @@
             </div>
             <% participants_count = event.participants.reject(&:withdrawn).size %>
             <div class="col-lg-2 col-4">
-              <%= link_to "#{participants_count} Meldungen", event_participants_path(@regatta, event) if participants_count > 0 %>
+              <%= link_to "#{participants_count} Meldungen", event_participants_path(@regatta, event.number) if participants_count > 0 %>
             </div>
             <div class="col-lg-2 col-4">
-              <%= link_to "#{event.starts_count} Starts", event_starts_path(@regatta, event) if event.starts_count > 0 %>
+              <%= link_to "#{event.starts_count} Starts", event_starts_path(@regatta, event.number) if event.starts_count > 0 %>
             </div>
             <div class="col-lg-2 col-4">
-              <%= link_to "#{event.results_count} Ergebnisse", event_results_path(@regatta, event) if event.results_count > 0 %>
+              <%= link_to "#{event.results_count} Ergebnisse", event_results_path(@regatta, event.number) if event.results_count > 0 %>
             </div>
             <div class="col-12">
               <% if event.starts_count > 0 or participants_count > 1 %>

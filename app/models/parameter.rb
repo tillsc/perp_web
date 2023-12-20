@@ -1,7 +1,7 @@
 class Parameter < ApplicationRecord
 
   self.table_name = 'parameter'
-  self.primary_keys = 'Sektion', 'Schluessel'
+  self.primary_key = 'Sektion', 'Schluessel'
 
   alias_attribute :section, 'Sektion'
   alias_attribute :key, 'Schluessel'

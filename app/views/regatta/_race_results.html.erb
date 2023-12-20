@@ -1,6 +1,6 @@
 <% has_comments = local_assigns.key?(:has_comments) ? local_assigns[:has_comments] : results.any? { |r| r.comment.present? } %>
 <div style="break-inside: avoid">
-  <a class="anchor" id="<%= race.to_param %>"></a>
+  <a class="anchor" id="<%= race.number %>"></a>
   <h3><%= local_assigns[:full_race_name] ? race.full_name : race.name %></h3>
   <div class="result-row result-row__header">
     <div class="position">Pos.</div>

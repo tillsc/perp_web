@@ -1,6 +1,6 @@
 class Team < ActiveRecord::Base
 
-  self.primary_keys = 'Regatta_ID', 'ID'
+  self.primary_key = 'Regatta_ID', 'ID'
 
   alias_attribute :id, 'ID'
   alias_attribute :name, 'Teamname'
@@ -9,7 +9,7 @@ class Team < ActiveRecord::Base
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
 
-  has_many :participants, foreign_key: ['Regatta_ID', 'Team_ID']
+  has_many :participants, query_constraints: ['Regatta_ID', 'Team_ID']
 
   scope :for_regatta, -> (regatta) {
     where(regatta_id: regatta)

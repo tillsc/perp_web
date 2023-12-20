@@ -14,9 +14,9 @@
         <%= race.name %></div>
       <div class="col-md-3">
         <% if race.starts.any? %>
-          <%= link_to "Startlisten", event_starts_path(@regatta, race.event, anchor: race)  %>
+          <%= link_to "Startlisten", event_starts_path(@regatta, race.event.number, anchor: race.number)  %>
         <% else %>
-          <%= link_to "Noch nicht gesetzt", event_participants_path(@regatta, race.event, anchor: race)  %>
+          <%= link_to "Noch nicht gesetzt", event_participants_path(@regatta, race.event.number, anchor: race.number)  %>
         <% end %>
       </div>
     </div>

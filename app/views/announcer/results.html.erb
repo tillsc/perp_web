@@ -1,17 +1,17 @@
 <div class="row my-3">
   <div class="col-3">
     <% if @previous_race %>
-      <%= link_to "<< #{@previous_race.full_name}", announcer_results_path(@regatta, @previous_race.event, @previous_race, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block prev-button' %>
+      <%= link_to "<< #{@previous_race.full_name}", announcer_results_path(@regatta, @previous_race.event.number, @previous_race.number, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block prev-button' %>
     <% end %>
   </div>
   <div class="col-3">
     <% if @current_race && @current_race.full_name != @race.full_name %>
-      <%= link_to "Aktuell #{@current_race.full_name}", announcer_results_path(@regatta, @current_race.event, @current_race, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-primary d-block' %>
+      <%= link_to "Aktuell #{@current_race.full_name}", announcer_results_path(@regatta, @current_race.event.number, @current_race.number, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-primary d-block' %>
     <% end %>
   </div>
   <div class="col-3">
     <% if @next_race %>
-      <%= link_to ">> #{@next_race.full_name}", announcer_results_path(@regatta, @next_race.event, @next_race, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block next-button' %>
+      <%= link_to ">> #{@next_race.full_name}", announcer_results_path(@regatta, @next_race.event.number, @next_race.number, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block next-button' %>
     <% end %>
   </div>
   <div class="col-3">

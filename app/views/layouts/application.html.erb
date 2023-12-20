@@ -26,7 +26,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <% if @regatta&.persisted? %>
             <li class="nav-item">
-              <%= link_to "Regatta-Übersicht", regatta_path(@regatta), class: "nav-link#{" active" unless ["upcoming", "representative"].include?(params[:action])}" %>
+              <%= link_to "Regatta-Übersicht", regatta_path(regatta_id: @regatta), class: "nav-link#{" active" unless ["upcoming", "representative"].include?(params[:action])}" %>
             </li>
             <li class="nav-item">
               <%= link_to "Geplante Starts", upcoming_path(@regatta), class: "nav-link#{" active" if params[:action] == "upcoming"}" %>

@@ -3,7 +3,7 @@
   <ul>
     <% st.each do |start| %>
       <li>
-        <%= link_to start.race.event.label, event_starts_path(@regatta, start.event, anchor: start.race) %> -
+        <%= link_to start.race.event.label, event_starts_path(@regatta, start.event.number, anchor: start.race.number) %> -
         <%= start.race.name %> -
         <strong><%= l start.race.planned_for, format: '%H:%M' %> Uhr</strong>
         <% if start.race.event.is_lightweight? || start.race.event.has_cox? %>
@@ -15,7 +15,7 @@
         <% end %>
         <br>
         <%= start.participant.number %>: <%= start.participant.team_name %><br>
-        <em><%= start.participant.rower_names %></em>
+        <em><%= start.participant.rower_names(rower_link: local_assigns[:rower_link]) %></em>
       </li>
     <% end %>
   </ul>

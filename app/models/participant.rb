@@ -4,12 +4,12 @@ class Participant < ApplicationRecord
   ALL_ROWERS = ALL_ROWER_IDX.map { |i| "rower#{i}".to_sym }
 
   self.table_name = 'meldungen'
-  self.primary_keys = 'Regatta_ID', 'Rennen', 'TNr'
+  self.primary_key = 'Regatta_ID', 'Rennen', 'TNr'
 
-  belongs_to :team, foreign_key: ['Regatta_ID', 'Team_ID']
+  belongs_to :team, query_constraints: ['Regatta_ID', 'Team_ID']
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
-  belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
+  belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
   ALL_ROWER_IDX.each_with_index do |name, i|
     belongs_to ALL_ROWERS[i], class_name: 'Rower', foreign_key: "ruderer#{name}_ID"
   end
@@ -40,10 +40,6 @@ class Participant < ApplicationRecord
   alias_attribute :entry_changed, 'Umgemeldet'
   alias_attribute :history, 'Historie'
   alias_attribute :disqualified, 'Ausgeschieden'
-
-  def to_param
-    self.tnr.to_s
-  end
 
   def team_name(options = {})
     "#{self.team.try(:name)}".tap do |n|

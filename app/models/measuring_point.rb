@@ -1,7 +1,7 @@
 class MeasuringPoint < ApplicationRecord
 
   self.table_name = 'messpunkte'
-  self.primary_keys = 'Regatta_ID', 'MesspunktNr'
+  self.primary_key = 'Regatta_ID', 'MesspunktNr'
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :measuring_session, optional: true
@@ -24,10 +24,6 @@ class MeasuringPoint < ApplicationRecord
 
   def name
     self.position.to_s + 'm'
-  end
-
-  def to_param
-    self.number.to_s
   end
 
   def self.number(measuring_point_or_measuring_point_number)

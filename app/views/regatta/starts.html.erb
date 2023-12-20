@@ -8,7 +8,7 @@
 <% rower_link = -> (rower, name) { link_to name, rower_path(@regatta, rower) } %>
 <% @starts.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, starts| %>
   <div class="row">
-    <a class="anchor" id="<%= race.to_param %>"></a>
+    <a class="anchor" id="<%= race.number %>"></a>
     <h4 class="col-auto mr-auto"><%= race.name %></h4>
     <div class="col-auto"><%= l race.planned_for %></div>
   </div>

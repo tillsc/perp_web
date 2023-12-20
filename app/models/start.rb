@@ -1,13 +1,13 @@
 class Start < ApplicationRecord
 
   self.table_name = 'startlisten'
-  self.primary_keys = 'Regatta_ID', 'Rennen', 'Lauf', 'TNr'
+  self.primary_key = 'Regatta_ID', 'Rennen', 'Lauf', 'TNr'
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
-  belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
-  belongs_to :race, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
+  belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
+  belongs_to :race, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf']
 
-  belongs_to :participant, foreign_key: ['Regatta_ID', 'Rennen', 'TNr']
+  belongs_to :participant, query_constraints: ['Regatta_ID', 'Rennen', 'TNr']
 
   alias_attribute :race_number, 'Lauf'
   alias_attribute :participant_id, 'TNr'
@@ -37,10 +37,6 @@ class Start < ApplicationRecord
 
   def race_type_short
     self.race_number.to_s[0]
-  end
-
-  def to_param
-    self.participant_number.to_s
   end
 
 end
