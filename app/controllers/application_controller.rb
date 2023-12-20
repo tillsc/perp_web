@@ -2,7 +2,8 @@ class ApplicationController < ActionController::Base
 
   before_action do
     @regatta = Regatta.find(params[:new_regatta_id]) if params[:new_regatta_id]
-    @regatta||= Regatta.find(params[:regatta_id]) if params[:regatta_id]
+    @regatta||= Regatta.find_by(id: params[:regatta_id]) if params[:regatta_id]
+    @regatta||= Regatta.last
     @regattas = Regatta.valid.order(:from_date)
 
     if cookies[:representative_public_private_id].present?
