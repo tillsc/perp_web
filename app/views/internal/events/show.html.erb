@@ -2,11 +2,25 @@
 
 <div class="row">
   <div class="col-md-8 col-lg-9">
+    <dl>
+      <dt><%= Event.human_attribute_name(:name_de) %></dt>
+      <dd><%= @event.name_de %></dd>
+      <dt><%= Event.human_attribute_name(:name_en) %></dt>
+      <dd><%= @event.name_en %></dd>
+    </dl>
   </div>
   <div class="col-md-4 col-lg-3">
     <%= link_to t('helpers.titles.edit', model: Event.model_name.human), edit_internal_event_path(@regatta, @event), class: 'btn btn-secondary d-block my-1' if can?(:edit, @event) %>
     <%= link_to t('helpers.titles.copy', model: Event.model_name.human), new_internal_event_url(@regatta, copy_event_number: @event.number), class: 'btn btn-secondary d-block my-1' if can?(:create, Event) %>
     <%= button_to("Löschen", internal_event_url(@regatta, @event), method: :delete, data: { confirm: "Sicher?"},
                   class: 'btn btn-danger d-block', form_class: 'd-block my-1') if can?(:delete, @event) %>
+    <hr>
+    <%= link_to t('helpers.titles.new', model: Race.model_name.human), new_internal_race_path(@regatta, race: {event_number: @event.number}), class: 'btn btn-secondary d-block my-1' if can?(:create, Race) %>
+
   </div>
 </div>
+
+<hr>
+
+<h2>Läufe</h2>
+<%= render 'internal/races/list', races: @event.races %>
