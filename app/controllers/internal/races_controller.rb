@@ -19,7 +19,7 @@ module Internal
 
       if @race.save
         flash[:info] = 'Lauf angelegt'
-        redirect_to internal_races_url(@regatta, anchor: "race#{@race.id}")
+        redirect_to internal_races_url(@regatta, anchor: "race_#{@race.to_param}")
       else
         flash[:danger] = "Lauf konnte nicht angelegt werden:\n#{@race.errors.full_messages}"
         prepare_form
@@ -39,7 +39,7 @@ module Internal
 
       if @race.update(race_params)
         flash[:info] = 'Lauf aktualisiert'
-        redirect_to internal_races_url(@regatta, anchor: "race_#{@race.id}")
+        redirect_to internal_races_url(@regatta, anchor: "race_#{@race.to_param}")
       else
         flash[:danger] = "Lauf konnte nicht gespeichert werden:\n#{@race.errors.full_messages}"
         prepare_form
@@ -66,7 +66,10 @@ module Internal
     end
 
     def race_params(default = {})
-      params.fetch(:race, default).permit(:event_number, :number)
+      params.fetch(:race, default).permit(:event_number, :type_short, :number_short,
+                                          :planned_for, :started_at_time,
+                                          :result_official_since, :result_corrected,
+                                          :weight_list_approved_at, :weight_list_approved_by)
     end
 
   end

@@ -152,6 +152,8 @@ de:
       new: "%{model} neu anlegen"
       edit: "%{model} bearbeiten"
       delete: "%{model} löschen"
+      show: "%{model} %{label}"
+      copy: "%{model} kopieren"
     submit:
       create: "%{model} erstellen"
       submit: "%{model} speichern"

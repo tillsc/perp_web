@@ -33,6 +33,13 @@ class Parameter < ApplicationRecord
     @types_short_to_long[type_short] ||= get_value_for('Uebersetzer_Lauftypen', type_short)
   end
 
+  def self.all_race_type_names
+    @types_short_to_long = values_for('Uebersetzer_Lauftypen').inject({}) do |h, param|
+      h.merge(param.key => param.value)
+    end
+
+  end
+
   def self.race_sorter
     race_type_list = get_value_for('Global', 'LauftypSortierung').to_s
     @sorter||= -> (race) {

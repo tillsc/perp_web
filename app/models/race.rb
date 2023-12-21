@@ -7,11 +7,20 @@ class Race < ApplicationRecord
   alias_attribute :event_number, 'Rennen'
   alias_attribute :started_at_time, 'IstStartZeit'
   alias_attribute :planned_for, 'SollStartZeit'
-  alias_attribute :official_since, 'ErgebnisEndgueltig'
+
+  alias_attribute :result_official_since, 'ErgebnisEndgueltig'
   alias_attribute :result_corrected, 'ErgebnisKorrigiert'
+
+  alias_attribute :weight_list_approved_at, 'WiegelisteFreigegeben'
+  alias_attribute :weight_list_approved_by, 'WiegelisteFreigegebenVon'
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
+
+  belongs_to :referee_starter, class_name: 'Address', foreign_key: "Schiedsrichter_ID_Starter", optional: true
+  belongs_to :referee_aligner, class_name: 'Address', foreign_key: "Schiedsrichter_ID_Aligner", optional: true
+  belongs_to :referee_umpire, class_name: 'Address', foreign_key: "Schiedsrichter_ID_Umpire", optional: true
+  belongs_to :referee_finish_judge, class_name: 'Address', foreign_key: "Schiedsrichter_ID_Judge", optional: true
 
   has_many :starts, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf']
   has_many :results, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf'], inverse_of: :race
@@ -110,16 +119,32 @@ class Race < ApplicationRecord
     Parameter.race_type_name(self.type_short)
   end
 
-  def is_official?
-    self.official_since.present?
+  def result_official?
+    self.result_official_since.present?
   end
 
   def type_short
     self.number.to_s[0]
   end
 
+  def type_short=(s)
+    if s.present?
+      self.number = "#{s[0]}#{self.number.to_s[1] || 'A'}"
+    else
+      self.number = nil
+    end
+  end
+
   def number_short
     self.number.to_s[1]
+  end
+
+  def number_short=(s)
+    if s.present?
+      self.number = "#{self.number.to_s[0] || 'V'}#{s[0]}"
+    else
+      self.number = nil
+    end
   end
 
   def numeric_number

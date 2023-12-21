@@ -5,6 +5,11 @@ module Internal
       @events = @regatta.events
     end
 
+    def show
+      @event = @regatta.events.find(params.extract_value(:id))
+      authorize! :show, @event
+    end
+
     def new
       copy_event =  @regatta.events.find_by(number: params[:copy_event_number])  if params[:copy_event_number].present?
       copy_or_last_event = copy_event || @regatta.events.last

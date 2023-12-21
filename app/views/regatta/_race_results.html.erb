@@ -57,7 +57,7 @@
       Startzeit: <%= race.started_at && l(race.started_at) %>
     </div>
     <div class="result_official">
-      <%= race.is_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
+      <%= race.result_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
       <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
     </div>
   </div>

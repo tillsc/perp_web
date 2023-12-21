@@ -4,6 +4,7 @@ de:
       organiszer: Veranstalter
       regatta: Regatta
       event: Rennen
+      race: Lauf
     attributes:
       regatta:
         name: Name
@@ -31,6 +32,17 @@ de:
         additional_text: Zusatztext
         additional_text_format: Zusatztext-Format
         distance: Distanz
+      race:
+        event_number: Rennen
+        number: Nummer
+        type_short: Lauftyp
+        number_short: Laufnummer
+        planned_for: Start geplant für
+        stated_at_time: Gestartet um
+        result_official_since: Ergebniss offiziell seit
+        result_corrected: Ergebniss wurde korrigiert
+        weight_list_approved_at: Wiegeliste freigegeben um
+        weight_list_approved_by: Wiegeliste freigegeben durch
       measuring_session:
         device_description: Gerätebeschreibung
         measuring_point_number: Messpunkt
