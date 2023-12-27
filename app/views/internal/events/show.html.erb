@@ -2,20 +2,48 @@
 
 <div class="row">
   <div class="col-md-8 col-lg-9">
-    <dl>
-      <dt><%= Event.human_attribute_name(:name_de) %></dt>
-      <dd><%= @event.name_de %></dd>
-      <dt><%= Event.human_attribute_name(:name_en) %></dt>
-      <dd><%= @event.name_en %></dd>
-    </dl>
+    <div class="row">
+      <dl class="col">
+        <dt><%= Event.human_attribute_name(:name_de) %></dt>
+        <dd><%= @event.name_de %></dd>
+        <dt><%= Event.human_attribute_name(:name_en) %></dt>
+        <dd><%= @event.name_en %></dd>
+        <dt><%= Event.human_attribute_name(:divergent_regatta_name) %></dt>
+        <dd><%= @event.divergent_regatta_name.presence || '-' %></dd>
+        <dt><%= Event.human_attribute_name(:distance) %></dt>
+        <dd><%= @event.distance %>&thinsp;m</dd>
+      </dl>
+      <dl class="col">
+        <dt>Typ</dt>
+        <dd>
+          <%= @event.rower_count %>
+          <%= @event.is_lightweight ? 'Leichtgewichte' : 'Ruderer' %>
+          <%= @event.has_cox? ? 'mit Stm.' : '' %>
+        </dd>
+        <% weights = {}.
+          merge(@event.is_lightweight? ? {maximum_average_weight: 'Mittel', maximum_single_weight: 'Einzel'} : {}).
+          merge(@event.has_cox? ? {maximum_cox_weight: 'Stm.'} : {})
+        %>
+        <% if weights.any? %>
+          <dt>Maximalgewichte (<%= weights.values.join(' / ') %>)</dt>
+          <dd>
+            <%= weights.keys.map { |weight_attr| @event.send(weight_attr) && "#{number_with_precision(@event.send(weight_attr)) }&thinsp;kg" || '-' }.join(' / ').html_safe %>
+          </dd>
+        <% end %>
+        <dt><%= Event.human_attribute_name(:entry_fee) %></dt>
+        <dd><%= @event.entry_fee %>&thinsp;<%= @regatta.currency %></dd>
+        <dt><%= Event.human_attribute_name(:additional_text) %></dt>
+        <dd><%= @event.additional_text.presence || '-' %></dd>
+      </dl>
+    </div>
   </div>
   <div class="col-md-4 col-lg-3">
     <%= link_to t('helpers.titles.edit', model: Event.model_name.human), edit_internal_event_path(@regatta, @event), class: 'btn btn-secondary d-block my-1' if can?(:edit, @event) %>
     <%= link_to t('helpers.titles.copy', model: Event.model_name.human), new_internal_event_url(@regatta, copy_event_number: @event.number), class: 'btn btn-secondary d-block my-1' if can?(:create, Event) %>
     <%= button_to("Löschen", internal_event_url(@regatta, @event), method: :delete, data: { confirm: "Sicher?"},
-                  class: 'btn btn-danger d-block', form_class: 'd-block my-1') if can?(:delete, @event) %>
+                  class: 'btn btn-danger d-block w-100', form_class: 'd-block my-1') if can?(:delete, @event) %>
     <hr>
-    <%= link_to t('helpers.titles.new', model: Race.model_name.human), new_internal_race_path(@regatta, race: {event_number: @event.number}), class: 'btn btn-secondary d-block my-1' if can?(:create, Race) %>
+    <%= link_to t('helpers.titles.new', model: Race.model_name.human), new_internal_race_path(@regatta, race: {event_number: @event.number}, referrer: current_url), class: 'btn btn-secondary d-block my-1' if can?(:create, Race) %>
 
   </div>
 </div>
@@ -23,4 +51,4 @@
 <hr>
 
 <h2>Läufe</h2>
-<%= render 'internal/races/list', races: @event.races %>
+<%= render 'internal/races/list', races: @event.races, referrer: current_url %>

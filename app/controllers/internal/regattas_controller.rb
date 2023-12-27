@@ -26,7 +26,7 @@ module Internal
       Regatta.transaction do
         if @regatta.save
           flash[:info] = 'Regatta angelegt'
-          redirect_to internal_regattas_url(anchor: "regatta_#{@regatta.id}")
+          redirect_to back_or_default
         else
           flash[:danger] = "Regatta konnte nicht angelegt werden:\n#{@regatta.errors.full_messages}"
           prepare_form
@@ -47,7 +47,7 @@ module Internal
 
       if @regatta.update(regatta_params)
         flash[:info] = 'Regatta aktualisiert'
-        redirect_to internal_regattas_url(anchor: "regatta_#{@regatta.id}")
+        redirect_to back_or_default
       else
         flash[:danger] = "Regatta konnte nicht gespeichert werden:\n#{@regatta.errors.full_messages}"
         prepare_form
@@ -62,7 +62,7 @@ module Internal
       Parameter.set_value_for!('Global', 'AktRegatta', @regatta.id)
 
       flash[:info] = 'Regatta wurde als aktive Regatta gesetzt'
-      redirect_to internal_regattas_url(anchor: "regatta_#{@regatta.id}")
+      redirect_to back_or_default
     end
 
     def destroy
@@ -74,10 +74,15 @@ module Internal
       else
         flash[:danger] = "Rennen konnte nicht gelöscht:\n#{regatta.errors.full_messages}"
       end
-      redirect_to internal_regattas_url
+      redirect_to back_or_default
     end
 
     protected
+
+    def default_url
+      anchor = "regatta_#{@regatta.id}" if @regatta
+      internal_regattas_url(anchor: anchor)
+    end
 
     def prepare_form
       @organizers = Organizer.all

@@ -16,8 +16,8 @@
       <tbody>
       <% @events.each do |event| %>
         <tr>
-          <td id="event_<%= event.id %>"><%= event.number %></td>
-          <td><%= event.name_short %></td>
+          <td id="event_<%= event.id %>"><%= link_to event.number, internal_event_url(@regatta, event) %></td>
+          <td><%= link_to event.name_short, internal_event_url(@regatta, event)  %></td>
           <td><%= event.name %></td>
           <td><%= event.distance %>m</td>
           <td>

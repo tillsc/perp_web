@@ -18,7 +18,7 @@ module Internal
 
       if @address.update(address_params)
         flash[:info] = "Benutzer erfolgreich aktualisiert"
-        redirect_to internal_addresses_url(@regatta)
+        redirect_to back_or_default
       else
         flash[:error] = "Benutzer konnte nicht aktualisiert werden"
         render :edit
@@ -26,6 +26,10 @@ module Internal
     end
 
     protected
+
+    def default_url
+      internal_addresses_url(@regatta)
+    end
 
     def address_params
       params.require(:address).permit(:email, :first_name, :last_name)

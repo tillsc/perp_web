@@ -18,7 +18,7 @@ module Internal
 
       if @user.update(user_params)
         flash[:info] = "Benutzer erfolgreich aktualisiert"
-        redirect_to internal_users_url
+        redirect_to back_or_default
       else
         flash[:error] = "Benutzer konnte nicht aktualisiert werden"
         render :edit
@@ -35,10 +35,14 @@ module Internal
         flash[:error] = "Benutzer konnte nicht gelöscht werden"
       end
 
-      redirect_to internal_users_url
+      redirect_to back_or_default
     end
 
     protected
+
+    def default_url
+      internal_users_url
+    end
 
     def user_params
       params.require(:user).permit(:email, :password, :password_confirmation, :role_admin)

@@ -42,7 +42,7 @@ module Internal
 
       if @event.save
         flash[:info] = 'Rennen angelegt'
-        redirect_to internal_events_url(@regatta, anchor: "event#{@event.id}")
+        redirect_to back_or_default
       else
         flash[:danger] = "Rennen konnte nicht angelegt werden:\n#{@event.errors.full_messages}"
         prepare_form
@@ -62,7 +62,7 @@ module Internal
 
       if @event.update(event_params)
         flash[:info] = 'Rennen aktualisiert'
-        redirect_to internal_events_url(@regatta, anchor: "event_#{@event.id}")
+        redirect_to back_or_default
       else
         flash[:danger] = "Rennen konnte nicht gespeichert werden:\n#{@event.errors.full_messages}"
         prepare_form
@@ -79,10 +79,15 @@ module Internal
       else
         flash[:danger] = "Rennen konnte nicht gelöscht:\n#{event.errors.full_messages}"
       end
-      redirect_to internal_events_url(@regatta)
+      redirect_to back_or_default
     end
 
     protected
+
+    def default_url
+      anchor = "event#{@event.id}" if @event
+      internal_events_url(@regatta, anchor: anchor)
+    end
 
     def prepare_form
       @measuring_points = @regatta.measuring_points

@@ -1,6 +1,7 @@
 <h1>Benutzer bearbeiten</h1>
 
 <%= bootstrap_form_for [:internal, @user] do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
 
   <%= f.email_field :email %>
 

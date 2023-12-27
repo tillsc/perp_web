@@ -15,6 +15,7 @@ class Event < ApplicationRecord
   alias_attribute :is_lightweight, 'Leichtgewicht'
   attribute 'Leichtgewicht', :boolean
   alias_attribute :has_cox, 'MitSteuermann'
+  attribute 'MitSteuermann', :boolean
 
   alias_attribute :entry_fee, 'Startgeld'
   alias_attribute :divergent_regatta_name, 'Regattaname'

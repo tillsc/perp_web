@@ -19,7 +19,7 @@ module Internal
 
       if @race.save
         flash[:info] = 'Lauf angelegt'
-        redirect_to internal_races_url(@regatta, anchor: "race_#{@race.to_param}")
+        redirect_to back_or_default
       else
         flash[:danger] = "Lauf konnte nicht angelegt werden:\n#{@race.errors.full_messages}"
         prepare_form
@@ -39,7 +39,7 @@ module Internal
 
       if @race.update(race_params)
         flash[:info] = 'Lauf aktualisiert'
-        redirect_to internal_races_url(@regatta, anchor: "race_#{@race.to_param}")
+        redirect_to back_or_default
       else
         flash[:danger] = "Lauf konnte nicht gespeichert werden:\n#{@race.errors.full_messages}"
         prepare_form
@@ -56,10 +56,15 @@ module Internal
       else
         flash[:danger] = "Lauf konnte nicht gelöscht:\n#{race.errors.full_messages}"
       end
-      redirect_to internal_races_url(@regatta)
+      redirect_to back_or_default
     end
 
     protected
+
+    def default_url
+      anchor = "race_#{@race.to_param}" if @race
+      internal_races_url(@regatta, anchor: anchor)
+    end
 
     def prepare_form
       @measuring_points = @regatta.measuring_points

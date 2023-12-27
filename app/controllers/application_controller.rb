@@ -14,10 +14,17 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def default_url
+    if @regatta
+      regatta_url(@regatta)
+    else
+      root_url
+    end
+  end
+
   def after_sign_in_path_for(resource)
     params[:referrer] || internal_url(Parameter.current_regatta_id.to_s)
   end
-
 
   rescue_from CanCan::AccessDenied do |exception|
     if !current_user

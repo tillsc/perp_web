@@ -1,5 +1,6 @@
 <%= bootstrap_form_for @race, url:
   @race.persisted? ? internal_race_url(@regatta, @race) : internal_races_url(@regatta) do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
 
   <div class="row">
     <div class="col">

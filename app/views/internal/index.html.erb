@@ -13,13 +13,20 @@
   </div>
 
   <div class="card">
-    <h5 class="card-header">Regatta-Verwaltung</h5>
+    <h5 class="card-header">Wiegen</h5>
     <div class="card-body">
       <ul>
         <% if can?(:edit, Weight) %>
           <li><%= link_to("Verwiegen", internal_weighings_url(@regatta)) %></li>
         <% end %>
+      </ul>
+    </div>
+  </div>
 
+  <div class="card">
+    <h5 class="card-header">Regatta-Verwaltung</h5>
+    <div class="card-body">
+      <ul>
         <% if can?(:index, Event) %>
           <li><%= link_to("Rennen", internal_events_url(@regatta)) %></li>
         <% end %>
@@ -30,10 +37,6 @@
 
         <% if can?(:index, Address) %>
           <li><%= link_to("Obleute", internal_addresses_url(@regatta)) %></li>
-        <% end %>
-
-        <% if can?(:index, Regatta) %>
-          <li><%= link_to("Regatten", internal_regattas_url(@regatta)) %></li>
         <% end %>
       </ul>
     </div>
@@ -54,7 +57,12 @@
     <h5 class="card-header">Administration</h5>
     <div class="card-body">
       <ul>
-        <li><%= link_to("Benutzerverwaltung", internal_users_url) if can?(:show, User) %></li>
+        <% if can?(:index, Regatta) %>
+          <li><%= link_to("Regatten", internal_regattas_url(@regatta)) %></li>
+        <% end %>
+        <% if can?(:show, User) %>
+          <li><%= link_to("Benutzerverwaltung", internal_users_url) %></li>
+        <% end %>
       </ul>
     </div>
   </div>

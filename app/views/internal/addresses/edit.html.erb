@@ -1,6 +1,7 @@
 <h1>Adresse bearbeiten</h1>
 
 <%= bootstrap_form_for @address, url: internal_address_url(@regatta, @address) do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
 
   <%= f.text_field :first_name %>
   <%= f.text_field :last_name %>

@@ -20,8 +20,8 @@
       <td><%= race.starts.size.instance_eval { |s| s != 0 ? s : '-' } %></td>
       <td><%= race.results.size.instance_eval { |s| s != 0 ? s : '-' }  %></td>
       <td>
-        <%= link_to "Bearbeiten", edit_internal_race_url(@regatta, race), class: 'btn btn-secondary' if can?(:edit, race) %>
-        <%= button_to("Löschen", internal_race_url(@regatta, race), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, race) %>
+        <%= link_to "Bearbeiten", edit_internal_race_url(@regatta, race, referrer: local_assigns[:referrer]), class: 'btn btn-secondary' if can?(:edit, race) %>
+        <%= button_to("Löschen", internal_race_url(@regatta, race, referrer: local_assigns[:referrer]), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, race) %>
       </td>
     </tr>
   <% end %>
