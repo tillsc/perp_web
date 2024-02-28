@@ -6,7 +6,7 @@
     <div class="col">
       <%= f.collection_select :event_number, @regatta.events, :number, :label %>
       <%= f.select :type_short, Parameter.all_race_type_names.invert %>
-      <%= f.text_field :number_short %>
+      <%= f.text_field :number_short, required: true %>
     </div>
 
     <div class="col">
