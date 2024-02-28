@@ -91,7 +91,7 @@ module Internal
     end
 
     def regatta_params
-      params.fetch(:regatta, {}).permit(:name, :organizer_id, :year, :from_date, :to_date, :currency)
+      params.fetch(:regatta, {year: Date.today.year}).permit(:name, :organizer_id, :year, :from_date, :to_date, :currency)
     end
 
   end

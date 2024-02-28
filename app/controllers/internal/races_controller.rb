@@ -9,7 +9,7 @@ module Internal
 
 
     def new
-      @race = @regatta.races.new(race_params)
+      @race = @regatta.races.new(race_params(number_short: 1, planned_for: DateTime.now))
 
       authorize! :new, @race
       prepare_form
