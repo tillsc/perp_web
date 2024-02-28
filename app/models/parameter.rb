@@ -6,6 +6,7 @@ class Parameter < ApplicationRecord
   alias_attribute :section, 'Sektion'
   alias_attribute :key, 'Schluessel'
   alias_attribute :value, 'Wert'
+  alias_attribute :additional, 'Zusatz'
 
   scope :values_for, -> (section) do
     where('Sektion' => section)
