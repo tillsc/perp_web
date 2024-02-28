@@ -1,6 +1,8 @@
 module Internal
   class EventsController < ApplicationController
 
+    is_internal!
+
     def index
       @events = @regatta.events
     end

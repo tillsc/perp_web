@@ -1,6 +1,8 @@
 module Internal
   class UsersController < ApplicationController
 
+    is_internal!
+
     def index
       authorize! :show, User
 

@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
 
   before_action do
+    if self.class.is_internal?
+      authorize! :access, :internal
+    end
     @regatta = Regatta.find(params[:new_regatta_id]) if params[:new_regatta_id]
     @regatta||= Regatta.find_by(id: params[:regatta_id]) if params[:regatta_id]
     @regatta||= Regatta.last
@@ -13,6 +16,15 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
+  @is_internal_controller = false
+  def self.is_internal?
+    @is_internal_controller
+  end
+
+  def self.is_internal!
+    @is_internal_controller = true
+  end
 
   def default_url
     if @regatta

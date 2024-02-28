@@ -1,6 +1,8 @@
 module Internal
   class RegattasController < ApplicationController
 
+    is_internal!
+
     def index
       @regattas = Regatta.preload(:events).order(from_date: :desc)
     end

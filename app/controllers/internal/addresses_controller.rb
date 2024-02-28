@@ -1,6 +1,8 @@
 module Internal
   class AddressesController < ApplicationController
 
+    is_internal!
+
     def index
       authorize! :index, Address
 

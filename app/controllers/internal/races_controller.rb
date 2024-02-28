@@ -1,6 +1,8 @@
 module Internal
   class RacesController < ApplicationController
 
+    is_internal!
+
     def index
       @races = @regatta.races.preload(:event, :starts, :results)
     end
