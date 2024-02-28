@@ -35,7 +35,8 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    params[:referrer] || internal_url(Parameter.current_regatta_id.to_s)
+    regatta_id = Parameter.current_regatta_id.to_s.presence
+    params[:referrer] || (regatta_id && internal_url(regatta_id)) || internal_regattas_url
   end
 
   rescue_from CanCan::AccessDenied do |exception|

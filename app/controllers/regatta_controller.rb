@@ -1,6 +1,11 @@
 class RegattaController < ApplicationController
 
   def show
+    unless @regatta
+      redirect_to internal_regattas_url
+      return
+    end
+
     @events = @regatta.events.
       with_counts.
       includes(:participants).

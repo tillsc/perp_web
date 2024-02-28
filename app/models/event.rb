@@ -74,7 +74,11 @@ class Event < ApplicationRecord
   end
 
   def distance
-    finish_measuring_point.position - start_measuring_point.position
+    if finish_measuring_point && start_measuring_point
+      finish_measuring_point.position - start_measuring_point.position
+    else
+      0
+    end
   end
 
   def distance_for(measuring_point)
