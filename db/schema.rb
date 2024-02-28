@@ -10,9 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_03_042453) do
-
-  create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+ActiveRecord::Schema[7.1].define(version: 2023_06_03_042453) do
+  create_table "addressen", primary_key: "ID", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "Titel", limit: 10
     t.string "Vorname", limit: 100
     t.string "Name", limit: 200
@@ -35,22 +34,7 @@ ActiveRecord::Schema.define(version: 2023_06_03_042453) do
     t.string "PublicPrivateID", limit: 80
   end
 
-  create_table "crexport", id: false, charset: "latin1", force: :cascade do |t|
-    t.string "GH1_programmheft_RennName", limit: 42
-    t.string "GH1_2", limit: 11
-    t.string "GH1_programmheft_RennNameD"
-    t.string "GH1_programmheft_RennNameE"
-    t.text "GH1_programmheft_Zusatztext1", size: :medium
-    t.string "GH1_6", limit: 34
-    t.integer "DE_programmheft_BugNr"
-    t.string "DE_programmheft_Land", limit: 10
-    t.string "DE_3"
-    t.string "DE_Namen"
-    t.string "GF1_1", limit: 37
-    t.string "PF_1", limit: 34
-  end
-
-  create_table "ergebnisse", primary_key: ["Regatta_ID", "Rennen", "Lauf", "TNr"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "ergebnisse", primary_key: ["Regatta_ID", "Rennen", "Lauf", "TNr"], charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Regatta_ID", default: 0, null: false, unsigned: true
     t.integer "Rennen", default: 0, null: false, unsigned: true
     t.string "Lauf", limit: 2, default: "", null: false
@@ -61,33 +45,33 @@ ActiveRecord::Schema.define(version: 2023_06_03_042453) do
     t.index ["Regatta_ID", "Rennen", "Lauf"], name: "SECONDARY"
   end
 
-  create_table "gewichte", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "gewichte", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Ruderer_ID", default: 0, null: false, unsigned: true
-    t.datetime "Datum", null: false
+    t.datetime "Datum", precision: nil, null: false
     t.float "Gewicht", default: 0.0, null: false
     t.index ["Datum"], name: "Datum"
     t.index ["Ruderer_ID", "Datum"], name: "Eindeutig", unique: true
     t.index ["Ruderer_ID"], name: "Ruderer_IDs"
   end
 
-  create_table "laeufe", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "laeufe", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Regatta_ID", default: 0, null: false, unsigned: true
     t.integer "Rennen", default: 0, null: false, unsigned: true
     t.string "Lauf", limit: 3, default: "", null: false
     t.time "IstStartZeit"
-    t.datetime "SollStartZeit"
+    t.datetime "SollStartZeit", precision: nil
     t.integer "Schiedsrichter_ID_Starter", unsigned: true
     t.integer "Schiedsrichter_ID_Aligner", unsigned: true
     t.integer "Schiedsrichter_ID_Umpire", unsigned: true
     t.integer "Schiedsrichter_ID_Judge", unsigned: true
     t.integer "ErgebnisKorrigiert", limit: 2, default: 0, null: false, unsigned: true
-    t.datetime "WiegelisteFreigegeben"
+    t.datetime "WiegelisteFreigegeben", precision: nil
     t.string "WiegelisteFreigegebenVon", limit: 150
-    t.datetime "ErgebnisEndgueltig"
+    t.datetime "ErgebnisEndgueltig", precision: nil
     t.index ["Regatta_ID", "Rennen", "Lauf"], name: "UNIQUE", unique: true
   end
 
-  create_table "measurement_sets", charset: "utf8", force: :cascade do |t|
+  create_table "measurement_sets", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "measuring_session_id"
     t.integer "Regatta_ID", null: false
     t.integer "Rennen", null: false
@@ -95,22 +79,22 @@ ActiveRecord::Schema.define(version: 2023_06_03_042453) do
     t.integer "MesspunktNr"
     t.text "measurements"
     t.text "measurements_history"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "measuring_sessions", charset: "utf8", force: :cascade do |t|
+  create_table "measuring_sessions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "device_description"
     t.integer "Regatta_ID"
     t.integer "MesspunktNr"
     t.string "identifier"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "autoreload_disabled"
     t.boolean "hide_team_names"
   end
 
-  create_table "meldungen", primary_key: ["Regatta_ID", "Rennen", "TNr"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "meldungen", primary_key: ["Regatta_ID", "Rennen", "TNr"], charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Regatta_ID", default: 0, null: false, unsigned: true
     t.integer "Rennen", default: 0, null: false
     t.integer "TNr", default: 0, null: false
@@ -135,21 +119,21 @@ ActiveRecord::Schema.define(version: 2023_06_03_042453) do
     t.index ["Team_ID"], name: "SECONDARY"
   end
 
-  create_table "messpunkte", primary_key: ["Regatta_ID", "MesspunktNr"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "messpunkte", primary_key: ["Regatta_ID", "MesspunktNr"], charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Regatta_ID", default: 0, null: false, unsigned: true
     t.integer "MesspunktNr", limit: 2, default: 0, null: false, unsigned: true
     t.integer "Position", default: 0, null: false, unsigned: true
     t.integer "measuring_session_id"
   end
 
-  create_table "parameter", primary_key: ["Sektion", "Schluessel"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "parameter", primary_key: ["Sektion", "Schluessel"], charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "Sektion", limit: 40, default: "", null: false
     t.string "Schluessel", limit: 40, default: "", null: false
     t.string "Wert", limit: 100
     t.text "Zusatz"
   end
 
-  create_table "regatten", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "regatten", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Jahr", default: 0, null: false, unsigned: true
     t.string "Kurzbezeichnung", limit: 10, default: "", null: false
     t.string "DefName"
@@ -163,7 +147,7 @@ ActiveRecord::Schema.define(version: 2023_06_03_042453) do
     t.index ["Jahr", "Kurzbezeichnung"], name: "SECONDARY", unique: true
   end
 
-  create_table "rennen", primary_key: ["Regatta_ID", "Rennen"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "rennen", primary_key: ["Regatta_ID", "Rennen"], charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Regatta_ID", default: 0, null: false, unsigned: true
     t.integer "Rennen", default: 0, null: false
     t.string "NameK", limit: 20
@@ -183,7 +167,7 @@ ActiveRecord::Schema.define(version: 2023_06_03_042453) do
     t.integer "Zusatztext1Format", limit: 1, default: 0, null: false, unsigned: true
   end
 
-  create_table "ruderer", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "ruderer", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "VName", limit: 20, default: "", null: false
     t.string "NName", limit: 50, default: "", null: false
     t.string "JahrG", limit: 4, default: "", null: false
@@ -192,16 +176,16 @@ ActiveRecord::Schema.define(version: 2023_06_03_042453) do
     t.integer "HoehereZulassung", limit: 1, default: 0, null: false, unsigned: true
     t.string "Startberechtigt", limit: 50
     t.string "Zusatz", limit: 100
-    t.datetime "AenderungsDatum", null: false
+    t.datetime "AenderungsDatum", precision: nil, null: false
     t.index ["NName", "VName", "JahrG"], name: "SECONDARY"
   end
 
-  create_table "schiedsrichterliste", primary_key: ["Regatta_ID", "Schiedsrichter_ID"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "schiedsrichterliste", primary_key: ["Regatta_ID", "Schiedsrichter_ID"], charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Regatta_ID", default: 0, null: false, unsigned: true
     t.integer "Schiedsrichter_ID", default: 0, null: false, unsigned: true
   end
 
-  create_table "startlisten", primary_key: ["Regatta_ID", "Rennen", "Lauf", "Bahn"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "startlisten", primary_key: ["Regatta_ID", "Rennen", "Lauf", "Bahn"], charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Regatta_ID", default: 0, null: false, unsigned: true
     t.integer "Rennen", default: 0, null: false
     t.string "Lauf", limit: 2, default: "", null: false
@@ -209,7 +193,7 @@ ActiveRecord::Schema.define(version: 2023_06_03_042453) do
     t.integer "TNr", default: 0, null: false
   end
 
-  create_table "teams", primary_key: ["Regatta_ID", "ID"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "teams", primary_key: ["Regatta_ID", "ID"], charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Regatta_ID", default: 0, null: false, unsigned: true
     t.integer "ID", default: 0, null: false, unsigned: true
     t.string "Land", limit: 4
@@ -220,41 +204,41 @@ ActiveRecord::Schema.define(version: 2023_06_03_042453) do
     t.integer "Meldegeldrabatt", limit: 1, default: 0, null: false, unsigned: true
   end
 
-  create_table "users", charset: "utf8", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at"
+    t.datetime "locked_at", precision: nil
     t.text "roles"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  create_table "veranstalter", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "veranstalter", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "Name", limit: 200, default: "", null: false
     t.text "BriefkopfRechts"
     t.string "BriefkopfAbsender"
     t.text "BriefFuss"
   end
 
-  create_table "zeiten", primary_key: ["Regatta_ID", "Rennen", "Lauf", "TNr", "MesspunktNr"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "zeiten", primary_key: ["Regatta_ID", "Rennen", "Lauf", "TNr", "MesspunktNr"], charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Regatta_ID", default: 0, null: false, unsigned: true
     t.integer "Rennen", default: 0, null: false, unsigned: true
     t.string "Lauf", limit: 2, default: "", null: false
