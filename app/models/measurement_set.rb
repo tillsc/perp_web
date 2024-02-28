@@ -9,8 +9,8 @@ class MeasurementSet < ApplicationRecord
 
   belongs_to :measuring_session, optional: true
 
-  serialize :measurements, JSON
-  serialize :measurements_history, JSON
+  serialize :measurements, coder: JSON
+  serialize :measurements_history, coder: JSON
 
   alias_attribute :race_number, 'Lauf'
 

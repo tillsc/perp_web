@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :trackable
 
-  serialize :roles, JSON
+  serialize :roles, coder: JSON
 
   def role_admin
     self.roles&.include?('admin')
