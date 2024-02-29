@@ -20,8 +20,8 @@ module Internal
 
                                      divergent_regatta_name: copy_or_last_event&.divergent_regatta_name,
                                      entry_fee: copy_or_last_event&.entry_fee,
-                                     maximum_average_weight: copy_or_last_event&.maximum_average_weight,
-                                     maximum_single_weight: copy_or_last_event&.maximum_single_weight,
+                                     maximum_average_rower_weight: copy_or_last_event&.maximum_average_rower_weight,
+                                     maximum_rower_weight: copy_or_last_event&.maximum_rower_weight,
                                      maximum_cox_weight: copy_or_last_event&.maximum_cox_weight,
                                      start_measuring_point_number: copy_or_last_event&.start_measuring_point_number,
                                      finish_measuring_point_number: copy_or_last_event&.finish_measuring_point_number,
@@ -99,7 +99,7 @@ module Internal
       params.fetch(:event, default).permit(:number, :name_short, :name_de, :name_en, :divergent_regatta_name,
                                            :start_measuring_point_number, :finish_measuring_point_number,
                                            :is_lightweight, :has_cox, :rower_count,
-                                           :maximum_average_weight, :maximum_single_weight, :maximum_cox_weight,
+                                           :maximum_average_rower_weight, :maximum_rower_weight, :maximum_cox_weight,
                                            :entry_fee,
                                            :additional_text, :additional_text_format
       )

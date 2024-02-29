@@ -18,6 +18,8 @@ class Regatta < ApplicationRecord
 
   has_many :results, foreign_key: 'Regatta_ID', inverse_of: :regatta
 
+  has_many :participants, foreign_key: 'Regatta_ID', inverse_of: :regatta
+
   has_many :teams, foreign_key: 'Regatta_ID', inverse_of: :regatta
 
   has_many :measuring_points, foreign_key: 'Regatta_ID', inverse_of: :regatta

@@ -26,8 +26,8 @@ de:
         start_measuring_point_number: Start-Messpunktnummer
         finish_measuring_point_number: Ziel-Messpunktnummer
         entry_fee: Startgeld
-        maximum_average_weight: Maximales Durchschnittsgewicht
-        maximum_single_weight: Maximales Einzelgewicht
+        maximum_average_rower_weight: Maximales Durchschnittsgewicht
+        maximum_rower_weight: Maximales Einzelgewicht
         maximum_cox_weight: Maximales Steuermanngewicht
         additional_text: Zusatztext
         additional_text_format: Zusatztext-Format

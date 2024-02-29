@@ -85,7 +85,11 @@ class Race < ApplicationRecord
   end
 
   scope :planned_for_today, -> do
-    where('DATE(SollStartZeit) = ?', Date.today)
+    planned_for(Date.today)
+  end
+
+  scope :planned_for, -> (date) do
+    where('DATE(SollStartZeit) = ?', date.to_date)
   end
 
   scope :before_race, -> (race) do

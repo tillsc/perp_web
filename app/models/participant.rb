@@ -2,6 +2,7 @@ class Participant < ApplicationRecord
 
   ALL_ROWER_IDX = (1..8).to_a + ["s"]
   ALL_ROWERS = ALL_ROWER_IDX.map { |i| "rower#{i}".to_sym }
+  ALL_ROWERS_WITH_WEIGHTS = ALL_ROWERS.inject({}) { |h, rel_name| h.merge(rel_name => :weights) }
 
   self.table_name = 'meldungen'
   self.primary_key = 'Regatta_ID', 'Rennen', 'TNr'
@@ -13,6 +14,8 @@ class Participant < ApplicationRecord
   ALL_ROWER_IDX.each_with_index do |name, i|
     belongs_to ALL_ROWERS[i], class_name: 'Rower', foreign_key: "ruderer#{name}_ID"
   end
+
+  has_many :starts, query_constraints: ['Regatta_ID', 'Rennen', 'TNr']
 
   scope :enabled, -> {
     where(withdrawn: [nil, false])
@@ -26,6 +29,14 @@ class Participant < ApplicationRecord
     where(ALL_ROWER_IDX.map { |name|
       arel_table["ruderer#{name}_ID"].eq(rower.id)
     }.inject { |sc, cond| sc.or(cond) })
+  }
+
+  scope :with_weight_info, -> (date) {
+    scope = joins(:event, starts: :race).
+      merge(Race.planned_for(date))
+    Weight.apply_info_scope(scope, date).
+      select("#{self.table_name}.*").
+      group("#{Participant.table_name}.TNr")
   }
 
   default_scope do

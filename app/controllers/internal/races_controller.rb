@@ -7,7 +7,6 @@ module Internal
       @races = @regatta.races.preload(:event, :starts, :results)
     end
 
-
     def new
       @race = @regatta.races.new(race_params(number_short: 1, planned_for: DateTime.now))
 

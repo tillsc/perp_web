@@ -21,7 +21,7 @@
           <%= @event.has_cox? ? 'mit Stm.' : '' %>
         </dd>
         <% weights = {}.
-          merge(@event.is_lightweight? ? {maximum_average_weight: 'Mittel', maximum_single_weight: 'Einzel'} : {}).
+          merge(@event.is_lightweight? ? {maximum_average_rower_weight: 'Mittel', maximum_rower_weight: 'Einzel'} : {}).
           merge(@event.has_cox? ? {maximum_cox_weight: 'Stm.'} : {})
         %>
         <% if weights.any? %>

@@ -17,7 +17,10 @@ Rails.application.routes.draw do
       resources :addresses
       resources :events
       resources :races
-      resources :weighings
+      get '/weighings/:date' => 'weighings#index', as: :weighings
+      get '/weighings/:date/event/:id' => 'weighings#event', as: :event_weighings
+      get '/weighings/:date/rower/:id' => 'weighings#rower', as: :rower_weighings
+      put '/weighings/:date/rower/:id' => 'weighings#save_weight'
     end
     get '/tv' => 'latest_races#index'
     put '/tv' => 'latest_races#update'

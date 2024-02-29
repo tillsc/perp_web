@@ -1,0 +1,44 @@
+<h1>Teilnehmer <%= @rower.name %> verwiegen</h1>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <%= bootstrap_form_with layout: :horizontal, label_col: 'col-md-7', control_col: 'col-md-5',
+        url: internal_rower_weighings_url(@regatta, @date, @rower, referrer: params[:referrer]),
+        method: :put do |f| %>
+      <number-live-ocr>
+        <%= f.number_field :weight, step: "0.01",
+                           value: @rower.weight_for(@date)&.weight&.round(2),
+                           label: @date.today? ? 'Heute gemessenes Gewicht' : "Am #{l @date.to_date} gemessenes Gewicht",
+                           append: 'kg'
+        %>
+      </number-live-ocr>
+      <%= f.time_field :time, step: 1,
+                       value: (@rower.weight_for(@date)&.date || DateTime.now)&.strftime('%H:%M:%S'),
+                       label: "Uhrzeit der Messung"
+      %>
+      <%= f.submit 'Speichern', class: 'offset-md-7 col-md-5 btn btn-primary' %>
+    <% end %>
+
+    <h3>Alle gemessenen Gewichte:</h3>
+    <table class="table">
+      <% @rower.weights.reverse.each do |weight| %>
+        <tr>
+          <td><%= l weight.date.to_date %></td>
+          <td><%= l weight.date, format: '%H:%M:%S' %></td>
+          <td class="text-end">
+            <%= link_to internal_rower_weighings_path(@regatta, weight.date.to_date, @rower, referrer: params[:referrer]) do %>
+              <%= number_with_precision(weight.weight, precision: 2) %>&thinsp;kg
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <div class="col-md-4 col-lg-3">
+    <% if params[:referrer].present? %>
+      <%= link_to "Zurück", params[:referrer], class: 'btn btn-primary d-block my-1' %>
+    <% end %>
+    <%= link_to "Zurück zur Übersicht", internal_weighings_url(@regatta, date: @date), class: 'btn btn-secondary d-block' %>
+  </div>
+</div>
