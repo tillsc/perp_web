@@ -17,6 +17,7 @@
 //= require activestorage
 //= require turbolinks
 //= require_tree .
+//= require_tree ../components
 
 var scrollPosition,
   autoreloadRunning = false,

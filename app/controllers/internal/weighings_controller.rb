@@ -16,6 +16,28 @@ module Internal
         preload(:team, Participant::ALL_ROWERS_WITH_WEIGHTS)
     end
 
+    def rowers
+      @rowers = @regatta.participants.
+        merge(Event.to_be_weighed). # :event is joined by .with_weight_info
+        with_weight_info(@date).
+        preload(:event, :team, Participant::ALL_ROWERS_WITH_WEIGHTS).
+        inject({}) { |hash, p|
+          fields = []
+          if (p.event.is_lightweight?)
+            fields+= (Participant::ALL_ROWERS - [:rowers])
+          end
+          if (p.event.has_cox?)
+            fields<< :rowers
+          end
+          fields.each do |fn|
+            next unless r = p.send(fn)
+            hash[r]||= []
+            hash[r] << p
+          end
+          hash
+        }.sort_by { |r, _p| [r.last_name, r.first_name] }.to_h
+    end
+
     def rower
       @rower = Rower.find(params[:id])
     end

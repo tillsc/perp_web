@@ -19,8 +19,9 @@ Rails.application.routes.draw do
       resources :races
       get '/weighings/:date' => 'weighings#index', as: :weighings
       get '/weighings/:date/event/:id' => 'weighings#event', as: :event_weighings
-      get '/weighings/:date/rower/:id' => 'weighings#rower', as: :rower_weighings
-      put '/weighings/:date/rower/:id' => 'weighings#save_weight'
+      get '/weighings/:date/rowers' => 'weighings#rowers', as: :rowers_weighings
+      get '/weighings/:date/rowers/:id' => 'weighings#rower', as: :rower_weighings
+      put '/weighings/:date/rowers/:id' => 'weighings#save_weight'
     end
     get '/tv' => 'latest_races#index'
     put '/tv' => 'latest_races#update'

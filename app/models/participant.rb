@@ -36,7 +36,7 @@ class Participant < ApplicationRecord
       merge(Race.planned_for(date))
     Weight.apply_info_scope(scope, date).
       select("#{self.table_name}.*").
-      group("#{Participant.table_name}.TNr")
+      group("#{Participant.table_name}.Rennen, #{Participant.table_name}.TNr")
   }
 
   default_scope do
@@ -69,9 +69,11 @@ class Participant < ApplicationRecord
   end
 
 
-  def all_rowers
+  def all_rowers(no_cox: false)
     i = 1
     ALL_ROWERS.each_with_object({}) { |assoc, res|
+      next if no_cox && assoc == :rowers
+
       rower = self.send(assoc)
       if rower
         res[i] = rower

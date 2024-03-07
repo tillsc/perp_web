@@ -1,0 +1,45 @@
+<h1>Zu verwiegende Ruderer</h1>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <weighings-rower-list>
+      <% @rowers.each do |rower, participants| %>
+        <div class="col-rower" data-row-id="rower_<%= rower.id %>">
+          <%= link_to internal_rower_weighings_path(@regatta, @date, rower, referrer: url_for) do %>
+            <%= rower.last_name %>, <%= rower.first_name %> (<%= rower.year_of_birth %>)
+          <% end %>
+        </div>
+        <div class="col-weight" data-row-id="rower_<%= rower.id %>">
+          <% w = rower.weight_for(@date)&.weight %>
+          <%= w && "#{number_with_precision(w, precision: 2)}&thinsp;kg".html_safe || "✘" %>
+        </div>
+        <div class="col-participants" data-row-id="rower_<%= rower.id %>">
+          <% participants.each do |p| %>
+            <div><%= p.event.number %> - <%= p.event.name_short %>:</div>
+            <div><%= p.number %> - <%= p.team.name %></div>
+          <% end %>
+        </div>
+        <hr data-row-id="rower_<%= rower.id %>">
+      <% end %>
+    </weighings-rower-list>
+  </div>
+
+  <div class="col-md-4 col-lg-3">
+    <%= bootstrap_form_with url: internal_rowers_weighings_url(@regatta), method: :get do |f| %>
+      <%= f.date_field :date, value: @date, label: "Für Datum" %>
+      <%= f.submit 'Filtern', class: 'btn btn-secondary d-block w-100' %>
+    <% end %>
+
+    <hr>
+
+    <% if !@date.today? %>
+      <%= link_to "Heute anzeigen", internal_rowers_weighings_url(@regatta, date: Date.today), class: 'btn btn-primary d-block' %>
+    <% else %>
+      <%= link_to "Ersten Regattatag anzeigen", internal_rowers_weighings_url(@regatta, date: @regatta.from_date), class: 'btn btn-secondary d-block' %>
+    <% end %>
+
+    <hr>
+
+    <%= link_to "Liste der Rennen anzeigen", internal_weighings_url(@regatta, date: params[:date]), class: 'btn btn-secondary d-block' %>
+  </div>
+</div>

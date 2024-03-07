@@ -70,5 +70,9 @@
     <% else %>
       <%= link_to "Ersten Regattatag anzeigen", internal_weighings_url(@regatta, date: @regatta.from_date), class: 'btn btn-secondary d-block' %>
     <% end %>
+
+    <hr>
+
+    <%= link_to "Rudererliste anzeigen", internal_rowers_weighings_url(@regatta, date: params[:date]), class: 'btn btn-secondary d-block' %>
   </div>
 </div>
