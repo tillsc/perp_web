@@ -15,6 +15,7 @@ weighings-rower-list {
 
   & > .col-weight {
     grid-column: 2;
+    text-align: right;
     @media (max-width: map-get($grid-breakpoints, "lg")) {
       grid-column: 1;
     }

@@ -45,6 +45,7 @@ class Participant < ApplicationRecord
 
   alias_attribute :participant_id, 'TNr'
   alias_attribute :number, 'BugNr'
+  alias_attribute :event_number, 'Rennen'
   alias_attribute :team_boat_number, 'TeamBoot'
   alias_attribute :withdrawn, 'Abgemeldet'
   alias_attribute :late_entry, 'Nachgemeldet'

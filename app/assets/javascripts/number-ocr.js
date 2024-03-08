@@ -23,7 +23,7 @@ class NumberLiveOcrElement extends HTMLElement {
   }
 
   async enhanceInput() {
-    const btn = document.createElement('button');
+    const btn = document.createElement('a');
     btn.innerText = 'OCR';
     btn.addEventListener('click', (e) => {
       if (this.snapshotCanvas) {

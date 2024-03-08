@@ -3,53 +3,10 @@
 <div class="row">
   <div class="col-md-8 col-lg-9">
     <h3>Zu verwiegende Ruderer</h3>
-    <table class="table">
-      <thead>
-      <tr>
-        <th>BugNr</th>
-        <th>Team</th>
-        <th>Ruderer</th>
-        <% if @event.is_lightweight? %>
-          <th>Durchschnitt</th>
-        <% end %>
-      </tr>
-      </thead>
-      <% @participants.each do |participant| %>
-        <tr>
-          <td>
-            <%= participant.number %>
-          </td>
-          <td>
-            <%= participant.team_name %></td>
-          </td>
-          <td>
-            <div class="d-grid" style="grid-template-columns: 1fr auto; ">
-              <% participant.all_rowers.each do |index, rower| %>
-                <%- next unless rower -%>
-                <% if (index <= 8 && @event.is_lightweight?) || (index == 9 && @event.has_cox?) %>
-                  <div>
-                    <%= link_to rower.name, internal_rower_weighings_path(@regatta, @date, rower, referrer: url_for) %>
-                  </div>
-                  <div class="text-end">
-                    <% w = rower.weight_for(@date)&.weight %>
-                    <%= w && "#{number_with_precision(w, precision: 2)}&thinsp;kg".html_safe || "✘" %>
-                  </div>
-                <% else %>
-                  <div><%= rower.name %></div>
-                  <div></div>
-                <% end %>
-              <% end %>
-            </div>
-          </td>
-          <% if @event.is_lightweight? %>
-            <td class="text-end"><%= participant.average_rower_weight && "#{number_with_precision(participant.average_rower_weight, precision: 2)}&thinsp;kg".html_safe || "-" %></td>
-          <% end %>
-        </tr>
-      <% end %>
-    </table>
+    <%= render 'participants_table', participants: @participants, event: @event %>
   </div>
 
   <div class="col-md-4 col-lg-3">
-    <%= link_to "Zurück zur Übersicht", internal_weighings_url(@regatta, date: @date), class: 'btn btn-primary d-block' %>
+    <%= link_to "Zurück zur Übersicht", internal_weighings_url(@regatta, @filters), class: 'btn btn-primary d-block' %>
   </div>
 </div>

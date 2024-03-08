@@ -3,9 +3,13 @@
 <div class="row">
   <div class="col-md-8 col-lg-9">
     <weighings-rower-list>
+      <strong class="col-rower">Ruderer</strong>
+      <strong class="col-weight">Gewicht</strong>
+      <strong class="col-participants"><div>Rennen</div><div>Team</div></strong>
+      <hr>
       <% @rowers.each do |rower, participants| %>
         <div class="col-rower" data-row-id="rower_<%= rower.id %>">
-          <%= link_to internal_rower_weighings_path(@regatta, @date, rower, referrer: url_for) do %>
+          <%= link_to internal_rower_weighings_path(@regatta, rower, @filters.merge(referrer: url_for)) do %>
             <%= rower.last_name %>, <%= rower.first_name %> (<%= rower.year_of_birth %>)
           <% end %>
         </div>
@@ -15,7 +19,7 @@
         </div>
         <div class="col-participants" data-row-id="rower_<%= rower.id %>">
           <% participants.each do |p| %>
-            <div><%= p.event.number %> - <%= p.event.name_short %>:</div>
+            <div><%= p.event.label %>:</div>
             <div><%= p.number %> - <%= p.team.name %></div>
           <% end %>
         </div>
@@ -27,6 +31,12 @@
   <div class="col-md-4 col-lg-3">
     <%= bootstrap_form_with url: internal_rowers_weighings_url(@regatta), method: :get do |f| %>
       <%= f.date_field :date, value: @date, label: "Für Datum" %>
+
+      <%= f.check_box :only_not_weighed, label: "Nur nicht-verwogene", checked: @filters[:only_not_weighed] %>
+
+      <%= f.number_field :event_number_from, label: "Ab Rennen", value: @filters[:event_number_from] %>
+      <%= f.number_field :event_number_to, label: "Bis Rennen", value: @filters[:event_number_to] %>
+
       <%= f.submit 'Filtern', class: 'btn btn-secondary d-block w-100' %>
     <% end %>
 
@@ -40,6 +50,6 @@
 
     <hr>
 
-    <%= link_to "Liste der Rennen anzeigen", internal_weighings_url(@regatta, date: params[:date]), class: 'btn btn-secondary d-block' %>
+    <%= link_to "Liste der Rennen anzeigen", internal_weighings_url(@regatta, @filters), class: 'btn btn-secondary d-block' %>
   </div>
 </div>

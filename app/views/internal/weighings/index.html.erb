@@ -27,7 +27,7 @@
                       end
         %>
         <tr class="bg-<%= problems %>">
-          <td><%= link_to r.label, internal_event_weighings_url(@regatta, r, date: @date) %></td>
+          <td><%= link_to r.label, internal_event_weighings_url(@regatta, r, @filters) %></td>
           <td><%= r.name_de %></td>
           <td><%= r.min_started_at && l(r.min_started_at, format: :short) %></td>
           <% if r.min_started_at %>
@@ -59,20 +59,29 @@
   </div>
   <div class="col-md-4 col-lg-3">
     <%= bootstrap_form_with url: internal_weighings_url(@regatta), method: :get do |f| %>
+      <% @filters.except(:date).each do |field, value| %>
+        <%= hidden_field_tag field, value %>
+      <% end %>
       <%= f.date_field :date, value: @date, label: "Für Datum" %>
+
+      <%= f.check_box :only_not_weighed, label: "Nur nicht-verwogene", checked: @filters[:only_not_weighed] %>
+
+      <%= f.number_field :event_number_from, label: "Ab Rennen", value: @filters[:event_number_from] %>
+      <%= f.number_field :event_number_to, label: "Bis Rennen", value: @filters[:event_number_to] %>
+
       <%= f.submit 'Filtern', class: 'btn btn-secondary d-block w-100' %>
     <% end %>
 
     <hr>
 
     <% if !@date.today? %>
-      <%= link_to "Heute anzeigen", internal_weighings_url(@regatta, date: Date.today), class: 'btn btn-primary d-block' %>
+      <%= link_to "Heute anzeigen", internal_weighings_url(@regatta, @filters.merge(date: Date.today)), class: 'btn btn-primary d-block' %>
     <% else %>
-      <%= link_to "Ersten Regattatag anzeigen", internal_weighings_url(@regatta, date: @regatta.from_date), class: 'btn btn-secondary d-block' %>
+      <%= link_to "Ersten Regattatag anzeigen", internal_weighings_url(@regatta, @filters.merge(date: @regatta.from_date)), class: 'btn btn-secondary d-block' %>
     <% end %>
 
     <hr>
 
-    <%= link_to "Rudererliste anzeigen", internal_rowers_weighings_url(@regatta, date: params[:date]), class: 'btn btn-secondary d-block' %>
+    <%= link_to "Rudererliste anzeigen", internal_rowers_weighings_url(@regatta, @filters), class: 'btn btn-secondary d-block' %>
   </div>
 </div>
