@@ -28,9 +28,7 @@
         <div class="d-grid" style="grid-template-columns: 1fr auto; ">
           <% participant.all_rowers.each do |index, rower| %>
             <%- next unless rower -%>
-            <% if (rower != @rower) &&
-                ((index <= 8 && participant_event.is_lightweight?) ||
-                 (index == 9 && participant_event.has_cox?)) %>
+            <% if (index <= 8 && participant_event.is_lightweight?) || (index == 9 && participant_event.has_cox?) %>
               <div>
                 <%= link_to rower.name, internal_rower_weighings_path(@regatta, rower, @filters.merge(referrer: params[:referrer] || url_for(@filters))) %>
               </div>
