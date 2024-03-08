@@ -21,7 +21,7 @@ class Weight < ApplicationRecord
       joins("LEFT JOIN gewichte gSt ON TO_DAYS(gSt.Datum) = TO_DAYS('#{date.to_date}') AND (#{Participant.table_name}.RudererS_ID = gSt.Ruderer_ID)").
       select("AVG(g.Gewicht) AS average_rower_weight").
       select("MAX(g.Gewicht) AS maximum_rower_weight").
-      select("MAX(gSt.Gewicht) AS maximum_cox_weight").
+      select("MAX(gSt.Gewicht) AS minimum_cox_weight").
       select("COUNT(DISTINCT #{Participant.table_name}.TNr) AS participants_count").
       select("COUNT(DISTINCT g.Ruderer_ID) AS rower_weights_count").
       select("COUNT(DISTINCT #{Participant.table_name}.TNr) * #{Event.table_name}.RudererAnzahl AS expected_rower_weights_count").

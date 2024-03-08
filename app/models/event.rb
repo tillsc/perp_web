@@ -22,7 +22,7 @@ class Event < ApplicationRecord
 
   alias_attribute :maximum_average_rower_weight, 'MaximalesDurchschnittgewicht'
   alias_attribute :maximum_rower_weight, 'MaximalesEinzelgewicht'
-  alias_attribute :maximum_cox_weight, 'MinimalesSteuermanngewicht'
+  alias_attribute :minimum_cox_weight, 'MinimalesSteuermanngewicht'
 
   alias_attribute :additional_text, 'Zusatztext1'
   alias_attribute :additional_text_format, 'Zusatztext1Format'

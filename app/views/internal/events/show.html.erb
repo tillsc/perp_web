@@ -22,7 +22,7 @@
         </dd>
         <% weights = {}.
           merge(@event.is_lightweight? ? {maximum_average_rower_weight: 'Mittel', maximum_rower_weight: 'Einzel'} : {}).
-          merge(@event.has_cox? ? {maximum_cox_weight: 'Stm.'} : {})
+          merge(@event.has_cox? ? {minimum_cox_weight: 'Stm.'} : {})
         %>
         <% if weights.any? %>
           <dt>Maximalgewichte (<%= weights.values.join(' / ') %>)</dt>

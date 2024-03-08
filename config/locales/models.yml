@@ -28,7 +28,7 @@ de:
         entry_fee: Startgeld
         maximum_average_rower_weight: Maximales Durchschnittsgewicht
         maximum_rower_weight: Maximales Einzelgewicht
-        maximum_cox_weight: Maximales Steuermanngewicht
+        minimum_cox_weight: Minimales Steuermanngewicht
         additional_text: Zusatztext
         additional_text_format: Zusatztext-Format
         distance: Distanz

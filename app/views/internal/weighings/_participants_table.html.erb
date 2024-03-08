@@ -13,9 +13,10 @@
   </tr>
   </thead>
   <% participants.each do |participant| %>
+    <% participant_event = (local_assigns[:event] || participant.event) %>
     <tr>
       <% if local_assigns[:event].nil? %>
-        <td><%= participant.event.label %></td>
+        <td><%= participant_event.label %></td>
       <% end %>
       <td>
         <%= participant.number %>
@@ -28,13 +29,18 @@
           <% participant.all_rowers.each do |index, rower| %>
             <%- next unless rower -%>
             <% if (rower != @rower) &&
-                ((index <= 8 && (local_assigns[:event] || participant.event).is_lightweight?) ||
-                 (index == 9 && (local_assigns[:event] || participant.event).has_cox?)) %>
+                ((index <= 8 && participant_event.is_lightweight?) ||
+                 (index == 9 && participant_event.has_cox?)) %>
               <div>
                 <%= link_to rower.name, internal_rower_weighings_path(@regatta, rower, @filters.merge(referrer: params[:referrer] || url_for(@filters))) %>
               </div>
-              <div class="text-end">
-                <% w = rower.weight_for(@date)&.weight %>
+              <% w = rower.weight_for(@date)&.weight %>
+              <% not_ok = if index == 9
+                        w && participant_event.minimum_cox_weight&.nonzero? && w < participant_event.minimum_cox_weight
+                      else
+                        w && participant_event.maximum_rower_weight&.nonzero? && w > participant_event.maximum_rower_weight
+                      end %>
+              <div class="text-end text-nowrap <%= "fw-bold text-danger" if not_ok %>">
                 <%= w && "#{number_with_precision(w, precision: 2)}&thinsp;kg".html_safe || "✘" %>
               </div>
             <% else %>
@@ -45,7 +51,9 @@
         </div>
       </td>
       <% if local_assigns[:event].nil? || local_assigns[:event].is_lightweight? %>
-        <td class="text-end"><%= participant.average_rower_weight && "#{number_with_precision(participant.average_rower_weight, precision: 2)}&thinsp;kg".html_safe || "-" %></td>
+        <td class="text-end text-nowrap <%= "fw-bold text-danger" if participant.average_rower_weight&.nonzero? && participant_event.maximum_average_rower_weight&.nonzero? && participant.average_rower_weight > participant_event.maximum_average_rower_weight %>">
+          <%= participant.average_rower_weight && "#{number_with_precision(participant.average_rower_weight, precision: 2)}&thinsp;kg".html_safe || "-" %>
+        </td>
       <% end %>
     </tr>
   <% end %>

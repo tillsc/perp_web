@@ -2,11 +2,28 @@
 
 <div class="row">
   <div class="col-md-8 col-lg-9">
+      <% { :is_lightweight => [:maximum_rower_weight, :maximum_average_rower_weight],
+           :has_cox => [:minimum_cox_weight] }.each do |guard_field, fields| %>
+        <% if @event.send(guard_field) %>
+        <dl class="d-flex row-gap-3 column-gap-3">
+          <% fields.each do |field| %>
+            <dt><%= Event.human_attribute_name(field) %>:</dt>
+            <dd class="me-5">
+              <%= @event.send(field)&.nonzero? && number_with_precision(@event.send(field), precision: 2) || '-' %>&thinsp;kg
+            </dd>
+          <% end %>
+        </dl>
+      <% end %>
+    <% end %>
     <h3>Zu verwiegende Ruderer</h3>
     <%= render 'participants_table', participants: @participants, event: @event %>
   </div>
 
   <div class="col-md-4 col-lg-3">
     <%= link_to "Zurück zur Übersicht", internal_weighings_url(@regatta, @filters), class: 'btn btn-primary d-block' %>
+    <% if can?(:update, @event) %>
+      <hr>
+      <%= link_to "Rennen #{@event.number} bearbeiten", edit_internal_event_url(@regatta, @event), class: 'btn btn-secondary d-block' %>
+    <% end %>
   </div>
 </div>
