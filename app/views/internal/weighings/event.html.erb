@@ -2,19 +2,20 @@
 
 <div class="row">
   <div class="col-md-8 col-lg-9">
+    <dl class="d-md-grid column-gap-3" style="grid-template-columns: auto 1fr auto 1fr">
       <% { :is_lightweight => [:maximum_rower_weight, :maximum_average_rower_weight],
            :has_cox => [:minimum_cox_weight] }.each do |guard_field, fields| %>
         <% if @event.send(guard_field) %>
-        <dl class="d-flex row-gap-3 column-gap-3">
           <% fields.each do |field| %>
             <dt><%= Event.human_attribute_name(field) %>:</dt>
-            <dd class="me-5">
+            <dd>
               <%= @event.send(field)&.nonzero? && number_with_precision(@event.send(field), precision: 2) || '-' %>&thinsp;kg
             </dd>
           <% end %>
-        </dl>
+        <% end %>
       <% end %>
-    <% end %>
+    </dl>
+
     <h3>Zu verwiegende Ruderer</h3>
     <%= render 'participants_table', participants: @participants, event: @event %>
   </div>
