@@ -40,7 +40,7 @@ class WeighingsRowerList extends HTMLElement {
       });
       [...this.querySelectorAll("[data-row-id]")].forEach((e) => e.style.display = 'none');
       allWordRowIds
-        .reduce((a, b) => a.filter(value => b.includes(value)))
+        .reduce((a, b) => a.filter(value => b.includes(value))) // Intersect all rows (logical AND)
         .forEach(rowId => {
           [...this.querySelectorAll("[data-row-id=" + rowId + "]")].forEach((e) => e.style.display = '');
         });
@@ -49,10 +49,6 @@ class WeighingsRowerList extends HTMLElement {
       [...this.querySelectorAll("[data-row-id]")].forEach((e) => e.style.display = '');
     }
   }
-}
-
-function intersect(s1, s2) {
-  return
 }
 
 customElements.define('weighings-rower-list', WeighingsRowerList);
