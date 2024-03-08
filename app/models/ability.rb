@@ -7,11 +7,20 @@ class Ability
     if user.is_a?(::User)
       can :access, :internal
 
-      can :manage, MeasurementSet
-      can :manage, MeasuringSession
-      can :manage, :measurements_history
+      if user.role_timekeeping || user.role_admin
+        can :manage, MeasurementSet
+        can :manage, MeasuringSession
+        can :manage, :measurements_history
+      end
 
-      can :manage, Weight
+      if user.role_weighing || user.role_admin
+        can :manage, Weight
+      end
+
+      if user.role_registration || user.role_admin
+        can :manage, Participant
+        can :manage, Team
+      end
 
       if user.role_admin
         can :manage, User

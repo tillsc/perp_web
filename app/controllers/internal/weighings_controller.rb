@@ -6,6 +6,8 @@ module Internal
     before_action :init_filters
 
     def index
+      authorize! :index, Weight
+
       @events = @regatta.events.to_be_weighed.with_weight_info(@date)
       @events = @events.where(Event.arel_table[:number].gteq(@filters[:event_number_from])) if @filters[:event_number_from]
       @events = @events.where(Event.arel_table[:number].lteq(@filters[:event_number_to])) if @filters[:event_number_to]
@@ -19,6 +21,8 @@ module Internal
     end
 
     def event
+      authorize! :index, Weight
+
       @event = @regatta.events.to_be_weighed.find(params.extract_value(:id))
       @participants = @event.participants.
         with_weight_info(@date).
@@ -26,6 +30,8 @@ module Internal
     end
 
     def rowers
+      authorize! :index, Weight
+
       participants = @regatta.participants.
         merge(Event.to_be_weighed). # :event is joined by .with_weight_info
         with_weight_info(@date).
@@ -53,6 +59,8 @@ module Internal
     end
 
     def rower
+      authorize! :edit, Weight
+
       @rower = Rower.find(params[:id])
       @participants = @regatta.participants.
         merge(Event.to_be_weighed). # :event is joined by .with_weight_info
@@ -65,12 +73,14 @@ module Internal
       rower = Rower.find(params[:id])
       weight = rower.weight_for(@date) || rower.weights.build(date: @date)
       if params[:weight].present?
+        authorize! :update, weight
         time = DateTime.parse(params[:time])
         weight.date = weight.date.change(hour: time.hour, min: time.minute, sec: time.second)
         weight.weight = params[:weight]
         weight.save!
         flash[:info] = "Gewicht gespeichert"
       elsif weight.persisted?
+        authorize! :destroy, weight
         weight.destroy!
         flash[:info] = "Gewicht gelöscht"
       end

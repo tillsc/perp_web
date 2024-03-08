@@ -2,13 +2,13 @@
 
 <% @users.each do |user| %>
   <div class="row">
-    <div class="col-3"><%= user.email %></div>
-    <div class="col-3"><%= Array.wrap(user.roles).presence&.join(", ") || "-" %></div>
+    <div class="col-3 align-middle"><%= user.email %></div>
+    <div class="col-3"><%= Array.wrap(user.roles).presence&.map { |r| User.human_attribute_name("role_#{r}")}&.join(", ") || "-" %></div>
     <div class="col-3"><%= user.last_sign_in_at && l(user.last_sign_in_at) || "-" %></div>
     <div class="col-3">
-      <%= link_to "Bearbeiten", edit_internal_user_path(user), class: 'btn btn-primary' %>
+      <%= link_to "Bearbeiten", edit_internal_user_path(user), class: 'btn btn-primary mb-1' %>
       <% unless user.id == current_user.id %>
-        <%= button_to "Löschen", internal_user_path(user), method: :delete, class: 'btn btn-danger', data: { confirm: "Sicher?" } %>
+        <%= button_to "Löschen", internal_user_path(user), method: :delete, class: 'btn btn-danger mb-1', data: { confirm: "Sicher?" } %>
       <% end %>
     </div>
   </div>

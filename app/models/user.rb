@@ -7,16 +7,20 @@ class User < ApplicationRecord
 
   serialize :roles, coder: JSON
 
-  def role_admin
-    self.roles&.include?('admin')
-  end
+  ALL_ROLES = [:admin, :weighing, :registration, :timekeeping]
 
-  def role_admin=(v)
-    self.roles = [] unless self.roles.is_a?(Array)
-    if v.present? && v != "0"
-      self.roles<< 'admin' unless self.role_admin
-    else
-      self.roles = self.roles - ['admin']
+  ALL_ROLES.each do |role|
+    define_method "role_#{role}" do
+      self.roles&.include?(role.to_s)
+    end
+
+    define_method "role_#{role}=" do |v|
+      self.roles = [] unless self.roles.is_a?(Array)
+      if v.present? && v != "0"
+        self.roles << role.to_s unless self.send("role_#{role}")
+      else
+        self.roles = self.roles - [role.to_s]
+      end
     end
   end
 end

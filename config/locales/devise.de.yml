@@ -4,6 +4,9 @@ de:
       user:
         roles: Rollen
         role_admin: Administrator
+        role_weighing: Waage
+        role_registration: Meldewesen
+        role_timekeeping: Zeitmessung
         confirmation_sent_at: Bestätigung gesendet am
         confirmation_token: Bestätigungs-Token
         confirmed_at: Bestätigt am

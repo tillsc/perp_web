@@ -2,45 +2,53 @@
 
 <auto-grid style="--min-width: 20em">
 
-  <div class="card">
-    <h5 class="card-header">Zeitmessung</h5>
-    <div class="card-body">
-      <ul>
-        <li><%= link_to "Messungen", measurements_url(@regatta) %></li>
-        <li><%= link_to "Mess-Sitzungen", measuring_sessions_url(@regatta) %></li>
-      </ul>
+  <% if can?(:index, MeasurementSet) || can?(:index, MeasuringSession) %>
+    <div class="card">
+      <h5 class="card-header">Zeitmessung</h5>
+      <div class="card-body">
+        <ul>
+          <% if can?(:index, MeasurementSet) %>
+            <li><%= link_to "Messungen", measurements_url(@regatta) %></li>
+          <% end %>
+          <% if can?(:index, MeasurementSet) %>
+            <li><%= link_to "Mess-Sitzungen", measuring_sessions_url(@regatta) %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
-  </div>
+  <% end %>
 
-  <div class="card">
-    <h5 class="card-header">Wiegen</h5>
-    <div class="card-body">
-      <ul>
-        <% if can?(:edit, Weight) %>
+  <% if can?(:edit, Weight) %>
+    <div class="card">
+      <h5 class="card-header">Wiegen</h5>
+      <div class="card-body">
+        <ul>
           <li><%= link_to("Verwiegen", internal_weighings_url(@regatta, date: Date.today)) %></li>
-        <% end %>
-      </ul>
+        </ul>
+      </div>
     </div>
-  </div>
+  <% end %>
 
-  <div class="card">
-    <h5 class="card-header">Regatta-Verwaltung</h5>
-    <div class="card-body">
-      <ul>
-        <% if can?(:index, Event) %>
-          <li><%= link_to("Rennen", internal_events_url(@regatta)) %></li>
-        <% end %>
+  <% if can?(:index, Event) || can?(:index, Race) || can?(:index, Address) %>
+    <div class="card">
+      <h5 class="card-header">Regatta-Verwaltung</h5>
+      <div class="card-body">
+        <ul>
+          <% if can?(:index, Event) %>
+            <li><%= link_to("Rennen", internal_events_url(@regatta)) %></li>
+          <% end %>
 
-        <% if can?(:index, Race) %>
-          <li><%= link_to("Läufe", internal_races_url(@regatta)) %></li>
-        <% end %>
+          <% if can?(:index, Race) %>
+            <li><%= link_to("Läufe", internal_races_url(@regatta)) %></li>
+          <% end %>
 
-        <% if can?(:index, Address) %>
-          <li><%= link_to("Obleute", internal_addresses_url(@regatta)) %></li>
-        <% end %>
-      </ul>
+          <% if can?(:index, Address) %>
+            <li><%= link_to("Obleute", internal_addresses_url(@regatta)) %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="card">
     <h5 class="card-header">Öffentliche Links</h5>
@@ -53,19 +61,21 @@
     </div>
   </div>
 
-  <div class="card">
-    <h5 class="card-header">Administration</h5>
-    <div class="card-body">
-      <ul>
-        <% if can?(:index, Regatta) %>
-          <li><%= link_to("Regatten", internal_regattas_url(@regatta)) %></li>
-        <% end %>
-        <% if can?(:show, User) %>
-          <li><%= link_to("Benutzerverwaltung", internal_users_url) %></li>
-        <% end %>
-      </ul>
+  <% if can?(:index, Regatta) || can?(:show, User) %>
+    <div class="card">
+      <h5 class="card-header">Administration</h5>
+      <div class="card-body">
+        <ul>
+          <% if can?(:index, Regatta) %>
+            <li><%= link_to("Regatten", internal_regattas_url(@regatta)) %></li>
+          <% end %>
+          <% if can?(:show, User) %>
+            <li><%= link_to("Benutzerverwaltung", internal_users_url) %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="card">
     <h5 class="card-header">Mein Account</h5>
