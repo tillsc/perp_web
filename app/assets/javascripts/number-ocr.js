@@ -10,21 +10,23 @@ class NumberLiveOcrElement extends HTMLElement {
   }
 
   connectedCallback() {
-      this.tasseractWorkerFuture.then((worker) => {
-        this.tasseractWorker = worker;
-        this.input = this.querySelector('input[type=number]');
-        if (!this.input) {
-          console.log("No input[type=number] child found in number-ocr element", this);
-        }
-        else {
+    [...this.querySelectorAll('.number-ocr-generated')].forEach((e) => e.remove());
+    this.tasseractWorkerFuture.then((worker) => {
+      this.tasseractWorker = worker;
+      this.input = this.querySelector('input[type=number]');
+      if (!this.input) {
+        console.log("No input[type=number] child found in number-ocr element", this);
+      }
+      else {
         this.enhanceInput();
-        }
-      });
+      }
+    });
   }
 
   async enhanceInput() {
     const btn = document.createElement('a');
     btn.innerText = 'OCR';
+    btn.classList.add('number-ocr-generated');
     btn.addEventListener('click', (e) => {
       if (this.snapshotCanvas) {
         this.stopCapture();

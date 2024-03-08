@@ -1,8 +1,9 @@
 class WeighingsRowerList extends HTMLElement {
 
   connectedCallback() {
+    [...this.querySelectorAll('.weighings-rower-list-generated')].forEach((e) => e.remove());
     const searchBox = document.createElement('label');
-    searchBox.classList.add('col-search');
+    searchBox.classList.add('col-search', 'weighings-rower-list-generated');
     searchBox.innerText = 'Suchen: ';
 
     this.searchInput = document.createElement('input');
