@@ -6,6 +6,14 @@
       <% if lane = measuring.lane_for(participant) %>
         (Bahn <%= lane %>)
       <% end %>
+      <% if local_assigns[:show_cox_weight] && @race.event.has_cox? && @race.planned_for %>
+        <% if w = participant.rowers&.weight_for(@race.planned_for) %>
+          - Stm. Gew.: <%= number_with_precision(w.weight, precision: 2) %>&thinsp;kg
+          <% if @race.event.minimum_cox_weight&.nonzero? && w.weight < @race.event.minimum_cox_weight %>
+            - <strong class="text-danger">Zusatzgew.: <%= number_with_precision(@race.event.minimum_cox_weight - w.weight, precision: 2) %>&thinsp;kg</strong>
+          <% end %>
+        <% end %>
+      <% end %>
       <% unless @measuring_session&.hide_team_names? %>
         <span class="team_name">- <%= participant.team_name(hide_team_boat_number: true) %></span>
       <% end %>

@@ -1,10 +1,11 @@
 <%= stylesheet_link_tag 'measurements' %>
 
+<% is_start = @race.event.measuring_point_type(@measuring_point) == :start %>
 <h4>
   Rennen <%= @race.event.number %> - <%= @race.name %> bei <%= @measuring_point.name %>
 </h4>
 <p><small>
-  <% if @race.event.measuring_point_type(@measuring_point) != :start %>
+  <% if is_start %>
     Gestartet:
       <% if @race.started_at %>
         <time id="started_at" datetime="<%=  @race.started_at %>"><%= l(@race.started_at, format: :short) %></time>
@@ -23,10 +24,10 @@
   <% end %>
   <%= hidden_field_tag :measuring_point_number, params[:measuring_point_number] %>
 
-  <div class="participants_and_times <%= "hide_team_name" if @race.event.measuring_point_type(@measuring_point) != :start  %>">
+  <div class="participants_and_times <%= "hide_team_name" unless is_start  %>">
     <div>
       <h6>
-        <% if @race.event.measuring_point_type(@measuring_point) != :start %>
+        <% if !is_start %>
           Reihenfolge
         <% else %>
           Bahnbelegung
@@ -34,7 +35,7 @@
       </h6>
       <div id="participants" class="item_list">
         <% @measurements.keys.each do |p| %>
-          <%= render 'participant', participant: p, measuring: @measuring %>
+          <%= render 'participant', participant: p, measuring: @measuring, show_cox_weight: is_start %>
         <% end %>
       </div>
     </div>
