@@ -33,12 +33,12 @@ class Race < ApplicationRecord
 
   scope :upcoming, -> do
     where(arel_table['SollStartZeit'].gteq(1.hour.ago)).where('IstStartZeit' => nil).
-      where("(SELECT COUNT(*) FROM #{Participant.table_name} m WHERE m.Regatta_ID = #{Event.table_name}.Regatta_ID AND m.Rennen = #{Event.table_name}.Rennen) > 1 OR (SELECT COUNT(*) FROM #{Start.table_name} s WHERE s.Regatta_ID = #{Event.table_name}.Regatta_ID AND s.Rennen = #{Event.table_name}.Rennen) > 0").
+      where("(SELECT COUNT(*) FROM #{Participant.table_name} m WHERE m.Regatta_ID = #{Race.table_name}.Regatta_ID AND m.Rennen = #{Race.table_name}.Rennen) > 1 OR (SELECT COUNT(*) FROM #{Start.table_name} s WHERE s.Regatta_ID = #{Race.table_name}.Regatta_ID AND s.Rennen = #{Race.table_name}.Rennen) > 0").
       order('SollStartZeit')
   end
 
   scope :for_regatta, -> (regatta) do
-    includes(:event).where(Event.table_name => { regatta_id: regatta.id })
+    where(regatta_id: regatta.id)
   end
 
   scope :with_results, -> do
