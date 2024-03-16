@@ -10,8 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery3
-//= require popper
 //= require bootstrap
 //= require rails-ujs
 //= require activestorage
@@ -67,8 +65,4 @@ document.addEventListener('turbolinks:load', function () {
       scrollPosition = null
     }, 50);
   }
-})
-
-jQuery(function () {
-  jQuery('[data-toggle="tooltip"]').tooltip()
 })

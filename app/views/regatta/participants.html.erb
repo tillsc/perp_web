@@ -23,7 +23,7 @@
       <td><%= p.team.try(:country) %></td>
       <td><%= p.team_name %></td>
       <td><%= p.rower_names(rower_link: rower_link) %></td>
-      <td title="<%= p.history %>" data-toggle="tooltip" data-html="true"><%= p.state %></td>
+      <td><%= p.state %></td>
     </tr>
   <% end %>
   </tbody>
