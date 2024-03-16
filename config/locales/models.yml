@@ -5,6 +5,10 @@ de:
       regatta: Regatta
       event: Rennen
       race: Lauf
+      participant: Meldung
+      team: Team
+      rower: Ruderer
+      weight: Gewicht
     attributes:
       regatta:
         name: Name
@@ -48,3 +52,12 @@ de:
         measuring_point_number: Messpunkt
         autoreload_disabled: Automatischen Reload deaktivieren
         hide_team_names: Team-Namen verbergen
+      participant:
+        number: Bugnummer
+        event_number: Rennen
+        team_boat_number: Team-Bootsnummer
+        withdrawn: Abgemeldet
+        late_entry: Nachgemeldet
+        entry_changed: Umgemeldet
+        disqualified: Disqualifiziert (mit Grund)
+        history: Historie

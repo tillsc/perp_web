@@ -42,6 +42,11 @@
             <li><%= link_to("Läufe", internal_races_url(@regatta)) %></li>
           <% end %>
 
+          <% if can?(:index, Participant) %>
+            <li><%= link_to("Meldungen", internal_participants_url(@regatta)) %></li>
+          <% end %>
+
+
           <% if can?(:index, Address) %>
             <li><%= link_to("Obleute", internal_addresses_url(@regatta)) %></li>
           <% end %>

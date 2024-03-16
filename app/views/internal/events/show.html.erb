@@ -32,6 +32,8 @@
         <% end %>
         <dt><%= Event.human_attribute_name(:entry_fee) %></dt>
         <dd><%= @event.entry_fee %>&thinsp;<%= @regatta.currency %></dd>
+        <dt>Meldungen</dt>
+        <dd><%= link_to @event.participants.count, internal_participants_url(event_number: @event.number) %></dd>
         <dt><%= Event.human_attribute_name(:additional_text) %></dt>
         <dd><%= @event.additional_text.presence || '-' %></dd>
       </dl>

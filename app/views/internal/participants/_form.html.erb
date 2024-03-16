@@ -1,0 +1,44 @@
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/css/autoComplete.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.7/dist/autoComplete.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+
+
+<%= bootstrap_form_for @participant, url:
+  @participant.persisted? ? internal_participant_url(@regatta, @participant) : internal_participants_url(@regatta) do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
+
+  <div class="row">
+    <div class="col">
+      <%= f.number_field :number %>
+      <%= f.select :team_id, @regatta.teams.map { |t| [t.name, t.id] }.sort_by(&:first) %>
+      <%= f.number_field :team_boat_number %>
+    </div>
+
+    <div class="col">
+    </div>
+
+    <div class="col">
+      <%= f.check_box :withdrawn %>
+      <%= f.check_box :late_entry %>
+      <%= f.check_box :entry_changed %>
+      <%= f.text_field :disqualified %>
+    </div>
+  </div>
+
+  <div class="d-flex">
+    <% f.object.event&.rower_count&.times.each do |i| %>
+      <div class="me-2  py-1 px-2  border rounded-2">Ruderer <%= i+1 %>: <%= f.object.send("rower#{i+1}")&.name %></div>
+    <% end %>
+  </div>
+
+  <div class="my-3">
+    <h5><%= Participant.human_attribute_name(:history) %></h5>
+    <%= f.hidden_field :history %>
+    <trix-editor input="participant_history"></trix-editor>
+  </div>
+
+  <div>
+    <%= f.primary  %>
+  </div>
+<% end %>
