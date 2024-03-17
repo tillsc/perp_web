@@ -11,6 +11,8 @@ gem 'stringio', '0.1.0' # Problems with passenger
 gem 'mysql2'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
+
+gem 'importmap-rails'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 gem 'sassc-rails'
@@ -30,7 +32,6 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem 'jquery-rails'
 gem 'bootstrap', '~> 5.0'
 gem "bootstrap_form"
 

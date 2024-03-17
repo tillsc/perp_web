@@ -2,9 +2,8 @@ class NumberLiveOcrElement extends HTMLElement {
 
   constructor() {
     super();
-    this.tasseractWorkerFuture = import('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.esm.min.js').
+    this.tasseractWorkerFuture = import('tesseract.js').
     then(({default: Tesseract}) => {
-      this.Tasseract = Tesseract;
       return Tesseract.createWorker('eng');
     });
   }
@@ -105,7 +104,7 @@ class NumberLiveOcrElement extends HTMLElement {
       if (match) {
         let num = parseFloat(match[0].replace(',', '.'));
         while (num > 200) { // No comma detected?
-          num = num / 10;
+          num = (num / 10).toFixed(2);
         }
         this.input.value = num.toString();
       }
