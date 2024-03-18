@@ -2,8 +2,12 @@
 
 <p>Hallo <%= @representative.first_name %> <%= @representative.last_name %></p>
 
+<% if can?(:access, :internal) %>
+  <%= link_to t('helpers.titles.edit', model: Address.model_name.human), edit_internal_address_url(@regatta, @representative), class: 'btn btn-primary' %>
+<% end %>
+
 <% rower_link = -> (rower, name) { link_to name, rower_path(@regatta, rower) } %>
-<div class="row">
+<div class="row mt-3">
   <% if @starts.present? %>
     <div class="col-lg-6">
       <h2>Starts</h2>

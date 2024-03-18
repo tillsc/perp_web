@@ -2,10 +2,10 @@ class NumberLiveOcrElement extends HTMLElement {
 
   constructor() {
     super();
-    this.tasseractWorkerFuture = import('tesseract.js').
-    then(({default: Tesseract}) => {
-      return Tesseract.createWorker('eng');
-    });
+    this.tasseractWorkerFuture = import('tesseract.js')
+      .then(({default: Tesseract}) => {
+        return Tesseract.createWorker('eng');
+      });
   }
 
   connectedCallback() {

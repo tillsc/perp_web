@@ -1,9 +1,13 @@
-<table class="table">
+<table class="table table-striped table-hover">
   <thead>
   <tr>
     <th>Rennen</th>
     <th>Bugnr</th>
     <th>Team</th>
+    <th>Abg.</th>
+    <th>Nachg.</th>
+    <th>Umg.</th>
+    <th>Disq.</th>
     <th></th>
   </tr>
   </thead>
@@ -12,10 +16,14 @@
     <tr id="participant_<%= participant.to_param %>">
       <td><%=  participant.event && link_to(participant.event.label, internal_event_url(@regatta, participant)) || '!' %></td>
       <td><%= participant.number %></td>
-      <td><%= participant.team_name %></td>
+      <td><%= link_to participant.team_name, internal_team_path(@regatta, participant.team) %></td>
+      <td><%= participant.withdrawn ? '✓' : '' %></td>
+      <td><%= participant.late_entry ? '✓' : '' %></td>
+      <td><%= participant.entry_changed ? '✓' : '' %></td>
+      <td><%= participant.disqualified %></td>
       <td>
-        <%= link_to "Bearbeiten", edit_internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]), class: 'btn btn-secondary' if can?(:edit, participant) %>
-        <%= button_to("Löschen", internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, participant) %>
+        <%= link_to "Bearbeiten", edit_internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]), class: 'btn btn-secondary btn-sm' if can?(:edit, participant) %>
+        <%= button_to("Löschen", internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger btn-sm') if can?(:delete, participant) %>
       </td>
     </tr>
   <% end %>

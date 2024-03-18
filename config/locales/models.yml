@@ -9,6 +9,7 @@ de:
       team: Team
       rower: Ruderer
       weight: Gewicht
+      address: Adresse
     attributes:
       regatta:
         name: Name
@@ -53,6 +54,7 @@ de:
         autoreload_disabled: Automatischen Reload deaktivieren
         hide_team_names: Team-Namen verbergen
       participant:
+        event: Rennen
         number: Bugnummer
         event_number: Rennen
         team_boat_number: Team-Bootsnummer
@@ -61,3 +63,33 @@ de:
         entry_changed: Umgemeldet
         disqualified: Disqualifiziert (mit Grund)
         history: Historie
+        rower1: Ruderer 1
+        rower2: Ruderer 2
+        rower3: Ruderer 3
+        rower4: Ruderer 4
+        rower5: Ruderer 5
+        rower6: Ruderer 6
+        rower7: Ruderer 7
+        rower8: Ruderer 8
+        rowers: Steuermann
+        rower1_id: Ruderer 1
+        rower2_id: Ruderer 2
+        rower3_id: Ruderer 3
+        rower4_id: Ruderer 4
+        rower5_id: Ruderer 5
+        rower6_id: Ruderer 6
+        rower7_id: Ruderer 7
+        rower8_id: Ruderer 8
+        rowers_id: Steuermann
+      team:
+        name: Name
+        country: Land
+        city: Stadt
+        representative: Obmann
+        representative_id: Obmann
+        no_entry_fee: Meldegeldbefreit
+        entry_fee_discount: Meldegeldrabatt
+      address:
+        first_name: Vorname
+        last_name: Nachname
+        email: E-Mail

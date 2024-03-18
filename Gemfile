@@ -49,6 +49,8 @@ gem 'capistrano-rbenv', group: :development
 gem 'devise'
 gem 'devise-i18n'
 
+gem 'kaminari'
+
 gem 'rubocop'
 
 gem "sentry-rails"

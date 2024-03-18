@@ -46,7 +46,7 @@ module Internal
         flash[:info] = 'Rennen angelegt'
         redirect_to back_or_default
       else
-        flash[:danger] = "Rennen konnte nicht angelegt werden:\n#{@event.errors.full_messages}"
+        flash[:danger] = "Rennen konnte nicht angelegt werden:\n#{@event.errors.full_messages.join(', ')}"
         prepare_form
         render :new
       end
@@ -66,7 +66,7 @@ module Internal
         flash[:info] = 'Rennen aktualisiert'
         redirect_to back_or_default
       else
-        flash[:danger] = "Rennen konnte nicht gespeichert werden:\n#{@event.errors.full_messages}"
+        flash[:danger] = "Rennen konnte nicht gespeichert werden:\n#{@event.errors.full_messages.join(', ')}"
         prepare_form
         render :edit
       end
@@ -79,7 +79,7 @@ module Internal
       if event.destroy
         flash[:info] = 'Rennen gelöscht'
       else
-        flash[:danger] = "Rennen konnte nicht gelöscht:\n#{event.errors.full_messages}"
+        flash[:danger] = "Rennen konnte nicht gelöscht:\n#{event.errors.full_messages.join(', ')}"
       end
       redirect_to back_or_default
     end

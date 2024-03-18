@@ -1,0 +1,30 @@
+<h1>Teams für <%= @regatta.name %></h1>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th><%= Team.human_attribute_name(:name) %></th>
+        <th><%= Team.human_attribute_name(:representative) %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @teams.each do |team| %>
+        <tr>
+          <td id="team_<%= team.id %>"><%= link_to team.name, internal_team_path(@regatta, team) %></td>
+          <td><%= link_to team.representative&.full_name, representative_url(@regatta, team.representative.public_private_id)  %></td>
+          <td>
+            <%= link_to "Bearbeiten", edit_internal_team_url(@regatta, team), class: 'btn btn-secondary' if can?(:edit, team) %>
+            <%= button_to("Löschen", internal_team_url(@regatta, team), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, team) %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= link_to t('helpers.titles.new', model: Team.model_name.human), new_internal_team_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+  </div>
+</div>

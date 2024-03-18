@@ -54,7 +54,7 @@ class MeasuringSessionsController < ApplicationController
                     measuring_session_url(@regatta, @measuring_session) :
                     measuring_sessions_url(@regatta)
     else
-      flash[:danger] = "Mess-Sitzung konnte nicht angelegt werden:\n#{@measuring_session.errors.full_messages}"
+      flash[:danger] = "Mess-Sitzung konnte nicht angelegt werden:\n#{@measuring_session.errors.full_messages.join(', ')}"
       prepare_form
       render :new
     end

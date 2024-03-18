@@ -12,7 +12,7 @@ class Participant < ApplicationRecord
   belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
   ALL_ROWER_IDX.each_with_index do |name, i|
-    belongs_to ALL_ROWERS[i], class_name: 'Rower', foreign_key: "ruderer#{name}_ID"
+    belongs_to ALL_ROWERS[i], class_name: 'Rower', foreign_key: "ruderer#{name}_ID", optional: i > 0
   end
 
   has_many :starts, query_constraints: ['Regatta_ID', 'Rennen', 'TNr']
@@ -53,6 +53,9 @@ class Participant < ApplicationRecord
   alias_attribute :entry_changed, 'Umgemeldet'
   alias_attribute :history, 'Historie'
   alias_attribute :disqualified, 'Ausgeschieden'
+  ALL_ROWER_IDX.each_with_index do |idx|
+    alias_attribute "rower#{idx}_id", "ruderer#{idx}_ID"
+  end
 
   def team_name(options = {})
     "#{self.team.try(:name)}".tap do |n|
@@ -84,6 +87,12 @@ class Participant < ApplicationRecord
     }
   end
 
+  def rower_fields
+    not_used = ((self.event.rower_count + 1)..8).map { |i| "rower#{i}".to_sym }
+    not_used += [:rowers] unless self.event.has_cox?
+    ALL_ROWERS - not_used
+  end
+
   def active?
     !withdrawn? && !disqualified.present?
   end
@@ -95,6 +104,12 @@ class Participant < ApplicationRecord
       res << "Umgemeldet" if entry_changed?
       res << disqualified if disqualified.present?
     end.join(', ')
+  end
+
+  def set_participant_id
+    unless self['TNr']&.nonzero?
+      self['TNr'] = self.event.participants.maximum('TNr').to_i + 1
+    end
   end
 
 end

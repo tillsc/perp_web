@@ -19,14 +19,19 @@ module Internal
 
     def create
       @participant = @regatta.participants.new(participant_params)
+      @participant.set_participant_id
       authorize! :create, @participant
 
-      if @participant.save
-        flash[:info] = 'Lauf angelegt'
-        redirect_to back_or_default
+      if @participant.event
+        if @participant.save
+          flash[:info] = 'Meldung angelegt'
+          redirect_to back_or_default
+        else
+          flash[:danger] = "Meldung konnte nicht angelegt werden:\n#{@participant.errors.full_messages.join(', ')}"
+          prepare_form
+          render :new
+        end
       else
-        flash[:danger] = "Lauf konnte nicht angelegt werden:\n#{@participant.errors.full_messages}"
-        prepare_form
         render :new
       end
     end
@@ -45,7 +50,7 @@ module Internal
         flash[:info] = 'Meldung aktualisiert'
         redirect_to back_or_default
       else
-        flash[:danger] = "Meldung konnte nicht gespeichert werden:\n#{@participant.errors.full_messages}"
+        flash[:danger] = "Meldung konnte nicht gespeichert werden:\n#{@participant.errors.full_messages.join(', ')}"
         prepare_form
         render :edit
       end
@@ -58,7 +63,7 @@ module Internal
       if participant.destroy
         flash[:info] = 'Meldung gelöscht'
       else
-        flash[:danger] = "Meldung konnte nicht gelöscht werden:\n#{participant.errors.full_messages}"
+        flash[:danger] = "Meldung konnte nicht gelöscht werden:\n#{participant.errors.full_messages.join(', ')}"
       end
       redirect_to back_or_default
     end
@@ -76,7 +81,7 @@ module Internal
     def participant_params(default = {})
       params.fetch(:participant, default).permit(:event_number, :team_id,  :number, :team_boat_number,
                                                  :withdrawn, :late_entry, :entry_changed, :disqualified,
-                                                 :history)
+                                                 :history, *Participant::ALL_ROWERS.map{ |field| "#{field}_id" })
     end
 
   end

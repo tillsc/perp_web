@@ -30,7 +30,7 @@ module Internal
           flash[:info] = 'Regatta angelegt'
           redirect_to back_or_default
         else
-          flash[:danger] = "Regatta konnte nicht angelegt werden:\n#{@regatta.errors.full_messages}"
+          flash[:danger] = "Regatta konnte nicht angelegt werden:\n#{@regatta.errors.full_messages.join(', ')}"
           prepare_form
           render :new
         end
@@ -51,7 +51,7 @@ module Internal
         flash[:info] = 'Regatta aktualisiert'
         redirect_to back_or_default
       else
-        flash[:danger] = "Regatta konnte nicht gespeichert werden:\n#{@regatta.errors.full_messages}"
+        flash[:danger] = "Regatta konnte nicht gespeichert werden:\n#{@regatta.errors.full_messages.join(', ')}"
         prepare_form
         render :edit
       end
@@ -74,7 +74,7 @@ module Internal
       if regatta.destroy
         flash[:info] = 'Regatta gelöscht'
       else
-        flash[:danger] = "Rennen konnte nicht gelöscht:\n#{regatta.errors.full_messages}"
+        flash[:danger] = "Rennen konnte nicht gelöscht:\n#{regatta.errors.full_messages.join(', ')}"
       end
       redirect_to back_or_default
     end

@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       resources :events
       resources :races
       resources :participants
+      resources :teams
+      resources :rowers
 
       get '/weighings/:date' => 'weighings#index', as: :weighings
       get '/weighings/:date/event/:id' => 'weighings#event', as: :event_weighings
