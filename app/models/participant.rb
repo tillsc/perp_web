@@ -73,7 +73,6 @@ class Participant < ApplicationRecord
     }.compact.join(", ").html_safe
   end
 
-
   def all_rowers(no_cox: false)
     i = 1
     ALL_ROWERS.each_with_object({}) { |assoc, res|

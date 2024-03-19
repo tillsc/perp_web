@@ -1,0 +1,55 @@
+<h1><%= t('helpers.titles.show', model: Rower.model_name.human, label: @rower.name) %></h1>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <div class="row">
+      <dl class="col">
+        <dt><%= Rower.human_attribute_name(:first_name) %></dt>
+        <dd><%= @rower.first_name %></dd>
+        <dt><%= Rower.human_attribute_name(:last_name) %></dt>
+        <dd><%= @rower.last_name %></dd>
+        <dt><%= Rower.human_attribute_name(:year_of_birth) %></dt>
+        <dd><%= @rower.year_of_birth %></dd>
+      </dl>
+    </div>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= link_to t('helpers.titles.edit', model: Rower.model_name.human), edit_internal_rower_path(@regatta, @rower), class: 'btn btn-secondary d-block my-1' if can?(:edit, @rower) %>
+    <%= button_to("Löschen", internal_rower_url(@regatta, @rower), method: :delete, data: { confirm: "Sicher?"},
+                  class: 'btn btn-danger d-block w-100', form_class: 'd-block my-1') if can?(:delete, @rower) %>
+  </div>
+</div>
+
+<% @rower.participants.preload(:regatta, :team, :event).group_by {|p| p.regatta == @regatta }.each do |this_regatta, ps| %>
+  <h4><% if this_regatta %>
+      Teilnahmen an dieser Regatta
+    <% else %>
+      Andere Regatten
+    <% end %>
+  </h4>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <% unless this_regatta %>
+      <th><%= Regatta.model_name.human %></th>
+    <% end %>
+    <th><%= Event.model_name.human %></th>
+    <th><%= Participant.human_attribute_name(:number) %></th>
+    <th><%= Participant.human_attribute_name(:team) %></th>
+  </tr>
+  </thead>
+  <% ps.each do |participant| %>
+  <tr>
+    <% if this_regatta %>
+      <td><%= link_to participant.event.label, internal_participants_url(@regatta, event_number: participant.event.number, anchor: participant.to_anchor) %></td>
+      <td><%= link_to participant.number, internal_participants_url(@regatta, event_number: participant.event.number, anchor: participant.to_anchor) %></td>
+    <% else %>
+      <td><%= participant.regatta.name %></td>
+      <td><%= link_to participant.event.label, event_participants_url(participant.regatta, participant.event.number) %></td>
+      <td><%= participant.number %></td>
+    <% end %>
+    <td><%= participant.team_name %></td>
+  </tr>
+  <% end %>
+</table>
+<% end %>

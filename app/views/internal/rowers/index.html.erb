@@ -1,0 +1,49 @@
+<h1>
+  <% if params[:query].blank? %>
+    Alle Ruderer
+  <% else %>
+    Ruderer für <%= params[:query].inspect %>
+  <% end %>
+</h1>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <%= pagi = paginate(@rowers, theme: 'bootstrap-5') %>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th><%= Rower.human_attribute_name(:first_name) %></th>
+        <th><%= Rower.human_attribute_name(:last_name) %></th>
+        <th><%= Rower.human_attribute_name(:year_of_birth) %></th>
+        <th><%= Rower.human_attribute_name(:club) %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @rowers.each do |rower| %>
+        <tr>
+          <td id="rower_<%= rower.id %>"><%= link_to rower.first_name, internal_rower_path(@regatta, rower) %></td>
+          <td><%= link_to rower.last_name, internal_rower_path(@regatta, rower) %></td>
+          <td><%= rower.year_of_birth %></td>
+          <td><%= rower.club && link_to(rower.club.full_name, internal_address_url(@regatta, rower.club)) || rower.club_name %></td>
+          <td>
+            <%= link_to "Bearbeiten", edit_internal_rower_url(@regatta, rower), class: 'btn btn-secondary' if can?(:edit, rower) %>
+            <%= button_to("Löschen", internal_rower_url(@regatta, rower), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, rower) %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <%= pagi %>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= bootstrap_form_with url: internal_rowers_url(@regatta), method: :get do |f| %>
+      <%= f.text_field :query, label: "Suchen nach", value: params[:query] %>
+      <%= f.submit 'Filtern', class: 'btn btn-secondary d-block w-100' %>
+    <% end %>
+
+    <hr>
+
+    <%= link_to t('helpers.titles.new', model: Rower.model_name.human), new_internal_rower_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+  </div>
+</div>

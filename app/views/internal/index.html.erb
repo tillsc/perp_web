@@ -43,9 +43,12 @@
           <% end %>
 
           <% if can?(:index, Participant) %>
-            <li><%= link_to("Meldungen", internal_participants_url(@regatta)) %></li>
+            <li><%= link_to(Participant.model_name.human, internal_participants_url(@regatta)) %></li>
           <% end %>
 
+          <% if can?(:index, Rower) %>
+            <li><%= link_to(Rower.model_name.human, internal_rowers_url(@regatta)) %></li>
+          <% end %>
 
           <% if can?(:index, Address) %>
             <li><%= link_to("Obleute", internal_addresses_url(@regatta)) %></li>

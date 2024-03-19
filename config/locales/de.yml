@@ -8,6 +8,13 @@ de:
           has_one: Datensatz kann nicht gelöscht werden, da ein abhängiger %{record}-Datensatz
             existiert.
           has_many: Datensatz kann nicht gelöscht werden, da abhängige %{record} existieren.
+  views:
+    pagination:
+      first: "« Start"
+      last: Ende »
+      next: Weiter &rsaquo;
+      previous: "&lsaquo; Zurück"
+      truncate: "&hellip;"
   date:
     abbr_day_names:
     - So
@@ -146,6 +153,14 @@ de:
         one: 'Konnte %{model} nicht speichern: ein Fehler.'
         other: 'Konnte %{model} nicht speichern: %{count} Fehler.'
   helpers:
+    page_entries_info:
+      more_pages:
+        display_entries: Zeige %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> von insgesamt <b>%{total}</b>
+      one_page:
+        display_entries:
+          one: Zeige <b>%{count}</b> %{entry_name}
+          other: Zeige <b>alle %{count}</b> %{entry_name}
+          zero: Kein %{entry_name} gefunden
     select:
       prompt: Bitte wählen
     titles:

@@ -71,7 +71,7 @@ module Internal
     protected
 
     def default_url
-      anchor = "participant_#{@participant.to_param}" if @participant
+      anchor = @participant&.to_anchor
       internal_participants_url(@regatta, anchor: anchor)
     end
 

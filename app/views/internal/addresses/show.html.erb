@@ -1,0 +1,21 @@
+<h1><%= t('helpers.titles.show', model: Address.model_name.human, label: @address.full_name) %></h1>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <div class="row">
+      <dl class="col">
+        <dt><%= Address.human_attribute_name(:first_name) %></dt>
+        <dd><%= @address.first_name %></dd>
+        <dt><%= Address.human_attribute_name(:last_name) %></dt>
+        <dd><%= @address.last_name %></dd>
+        <dt><%= Address.human_attribute_name(:email) %></dt>
+        <dd><%= @address.email.presence || '-' %></dd>
+      </dl>
+    </div>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= link_to t('helpers.titles.edit', model: Address.model_name.human), edit_internal_address_path(@regatta, @address), class: 'btn btn-secondary d-block my-1' if can?(:edit, @address) %>
+    <%= button_to("Löschen", internal_address_url(@regatta, @address), method: :delete, data: { confirm: "Sicher?"},
+                  class: 'btn btn-danger d-block w-100', form_class: 'd-block my-1') if can?(:delete, @address) %>
+  </div>
+</div>

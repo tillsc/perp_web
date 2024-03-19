@@ -9,10 +9,22 @@ class Rower < ActiveRecord::Base
   alias_attribute :last_name, 'NName'
   alias_attribute :year_of_birth, 'JahrG'
   alias_attribute :external_id, 'ExterneID1'
-  alias_attribute :club_external_id, 'Verein_ID'
   alias_attribute :club_name, 'Zusatz'
 
+  alias_attribute :club_id, 'Verein_ID'
+  belongs_to :club, class_name: 'Address', foreign_key: 'Verein_ID', optional: true
+
   has_many :weights, foreign_key: 'Ruderer_ID'
+
+  Participant::ALL_ROWERS.each do |field|
+    has_many "#{field}_in".to_sym, class_name: "Participant", foreign_key: field, dependent: :restrict_with_error
+  end
+  has_many :participants, ->(rower) {
+    query = Participant::ALL_ROWERS.map { |field|
+      Participant.arel_table["#{field}_id"].eq(rower.id)
+    }.inject(:or)
+    unscope(:where).where(query)
+  }
 
   scope :by_filter, -> (query) do
     query.squish.split(' ').inject(self) do |scope, word|

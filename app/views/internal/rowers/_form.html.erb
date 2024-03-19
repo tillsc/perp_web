@@ -1,0 +1,23 @@
+<%= bootstrap_form_for @rower, url:
+  @rower.persisted? ? internal_rower_url(@regatta, @rower) : internal_rowers_url(@regatta) do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
+
+  <div class="row">
+    <div class="col">
+      <%= f.text_field :first_name, required: true %>
+      <%= f.text_field :last_name, required: true %>
+      <%= f.number_field :year_of_birth %>
+    </div>
+
+    <div class="col">
+      <%= f.text_field :external_id %>
+    </div>
+
+    <div class="col">
+      <%= f.collection_select :club_id, Address.club, :id, :full_name, include_blank: true %>
+      <%= f.text_field :club_name %>
+    </div>
+  </div>
+
+  <%= f.primary %>
+<% end %>

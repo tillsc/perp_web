@@ -7,12 +7,15 @@ module Internal
     def index
       @rowers = Rower.all
       @rowers = @rowers.by_filter(params[:query]) if params[:query].present?
-      respond_with @rowers.order(year_of_birth: :desc, last_name: :asc, first_name: :asc).
-        page(params[:page])
+
+      @rowers = @rowers.
+        order(year_of_birth: :desc, last_name: :asc, first_name: :asc).
+        page(params[:page] || 1)
+      respond_with @rowers
     end
 
     def show
-      @rower = Rower.find(params.extract_value(:id))
+      @rower = Rower.find(params[:id])
       respond_with @rower
     end
 
@@ -38,13 +41,13 @@ module Internal
     end
 
     def edit
-      @rower = Rower.find(params.extract_value(:id))
+      @rower = Rower.find(params[:id])
       authorize! :edit, @rower
       prepare_form
     end
 
     def update
-      @rower = Rower.find(params.extract_value(:id))
+      @rower = Rower.find(params[:id])
       authorize! :update, @rower
 
       if @rower.update(rower_params)
@@ -58,7 +61,7 @@ module Internal
     end
 
     def destroy
-      rower = Rower.find(params.extract_value(:id))
+      rower = Rower.find(params[:id])
       authorize! :destroy, rower
 
       if rower.destroy
@@ -81,7 +84,7 @@ module Internal
     end
 
     def rower_params(default = {})
-      params.fetch(:rower, default).permit(:first_name, :last_name, :year_of_birth)
+      params.fetch(:rower, default).permit(:first_name, :last_name, :year_of_birth, :external_id, :club_id, :club_name)
     end
 
   end

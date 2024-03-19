@@ -90,6 +90,22 @@ de:
         no_entry_fee: Meldegeldbefreit
         entry_fee_discount: Meldegeldrabatt
       address:
+        title: Titel
         first_name: Vorname
         last_name: Nachname
+        name_suffix: Namenszusatz
+        is_female: Ist weiblich
         email: E-Mail
+        external_id: Externe ID
+        telefone_private: Telefon (privat)
+        telefone_business: Telefon (geschäftlich)
+        telefone_mobile: Telefon (mobil)
+        telefone_fax: Fax
+        street: Strasse
+        zipcode: PLZ
+        city: Stadt
+        country: Land
+      rower:
+        first_name: Vorname
+        last_name: Nachname
+        year_of_birth: Geburtsjahr

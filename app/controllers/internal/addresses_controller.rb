@@ -9,6 +9,11 @@ module Internal
       @addresses = Address.order_by_name.representative_for(@regatta)
     end
 
+    def show
+      @address = Address.find(params[:id])
+      authorize! :show, @address
+    end
+
     def edit
       @address = Address.find(params[:id])
       authorize! :edit, @address

@@ -13,7 +13,7 @@
   </thead>
   <tbody>
   <% participants.each do |participant| %>
-    <tr id="participant_<%= participant.to_param %>">
+    <tr id="<%= participant.to_anchor %>">
       <td><%=  participant.event && link_to(participant.event.label, internal_event_url(@regatta, participant)) || '!' %></td>
       <td><%= participant.number %></td>
       <td><%= link_to participant.team_name, internal_team_path(@regatta, participant.team) %></td>
