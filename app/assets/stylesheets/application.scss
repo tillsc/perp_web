@@ -33,7 +33,7 @@ a.anchor {
   font-style: italic;
 }
 
-.multi-coulmn {
+.multi-column {
   column-gap: 3em;
   column-count: 2;
   @media (min-width: map-get($grid-breakpoints, "lg")) {

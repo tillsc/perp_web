@@ -22,7 +22,7 @@ module Internal
         flash[:info] = 'Lauf angelegt'
         redirect_to back_or_default
       else
-        flash[:danger] = "Lauf konnte nicht angelegt werden:\n#{@race.errors.full_messages.join(', ')}"
+        flash[:danger] = "Lauf konnte nicht angelegt werden:<br>\n#{@race.errors.full_messages.join('<br>')}".html_safe
         prepare_form
         render :new
       end
@@ -42,7 +42,7 @@ module Internal
         flash[:info] = 'Lauf aktualisiert'
         redirect_to back_or_default
       else
-        flash[:danger] = "Lauf konnte nicht gespeichert werden:\n#{@race.errors.full_messages.join(', ')}"
+        flash[:danger] = "Lauf konnte nicht gespeichert werden:<br>\n#{@race.errors.full_messages.join('<br>')}".html_safe
         prepare_form
         render :edit
       end
@@ -55,7 +55,7 @@ module Internal
       if race.destroy
         flash[:info] = 'Lauf gelöscht'
       else
-        flash[:danger] = "Lauf konnte nicht gelöscht:\n#{race.errors.full_messages.join(', ')}"
+        flash[:danger] = "Lauf konnte nicht gelöscht:\n#{race.errors.full_messages.join('<br>')}".html_safe
       end
       redirect_to back_or_default
     end

@@ -14,7 +14,7 @@
       <% @teams.each do |team| %>
         <tr>
           <td id="team_<%= team.id %>"><%= link_to team.name, internal_team_path(@regatta, team) %></td>
-          <td><%= link_to team.representative&.full_name, representative_url(@regatta, team.representative.public_private_id)  %></td>
+          <td><%= link_to team.representative&.name, representative_url(@regatta, team.representative.public_private_id)  %></td>
           <td>
             <%= link_to "Bearbeiten", edit_internal_team_url(@regatta, team), class: 'btn btn-secondary' if can?(:edit, team) %>
             <%= button_to("Löschen", internal_team_url(@regatta, team), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, team) %>

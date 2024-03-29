@@ -14,7 +14,7 @@
     </div>
 
     <div class="col">
-      <%= f.collection_select :club_id, Address.club, :id, :full_name, include_blank: true %>
+      <%= f.collection_select :club_id, Address.club, :id, :name, include_blank: true %>
       <%= f.text_field :club_name %>
     </div>
   </div>

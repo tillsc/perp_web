@@ -115,7 +115,7 @@ de:
       second: Sekunde
       year: Jahr
   errors:
-    format: "%{attribute} %{message}"
+    format: "%{attribute}: %{message}"
     messages:
       accepted: muss akzeptiert werden
       blank: muss ausgefüllt werden
@@ -173,6 +173,12 @@ de:
       create: "%{model} erstellen"
       submit: "%{model} speichern"
       update: "%{model} aktualisieren"
+    success:
+      create: "%{model} erfolgreich erstellt"
+      update: "%{model} erfolgreich aktualsiert"
+      destroy: "%{model} erfolgreich gelöscht"
+    failed:
+      destroy: "%{model} konnte nicht gelöscht werden"
   number:
     currency:
       format:

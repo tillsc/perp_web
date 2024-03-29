@@ -91,8 +91,8 @@ de:
         entry_fee_discount: Meldegeldrabatt
       address:
         title: Titel
-        first_name: Vorname
-        last_name: Nachname
+        first_name: "Vorname (Verein: Langname)"
+        last_name: "Nachname (Verein: Kurzname)"
         name_suffix: Namenszusatz
         is_female: Ist weiblich
         email: E-Mail
@@ -105,7 +105,16 @@ de:
         zipcode: PLZ
         city: Stadt
         country: Land
+        is_referee: Schiedsrichter
+        is_club: Verein
+        is_representative: Obmann
+        is_staff: Regattastab
+        public_private_id: Zugangs-ID
       rower:
         first_name: Vorname
         last_name: Nachname
         year_of_birth: Geburtsjahr
+    errors:
+      models:
+        address:
+          select_at_least_one: Es muss mindestens eine Rolle für diese Adresse ausgewählt sein

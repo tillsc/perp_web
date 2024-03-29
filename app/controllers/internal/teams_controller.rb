@@ -31,7 +31,7 @@ module Internal
         flash[:info] = 'Team angelegt'
         redirect_to back_or_default
       else
-        flash[:danger] = "Team konnte nicht angelegt werden:\n#{@team.errors.full_messages.join(', ')}"
+        flash[:danger] = "Team konnte nicht angelegt werden:<br>\n#{@team.errors.full_messages.join('<br>')}".html_safe
         prepare_form
         render :new
       end
@@ -51,7 +51,7 @@ module Internal
         flash[:info] = 'Team aktualisiert'
         redirect_to back_or_default
       else
-        flash[:danger] = "Team konnte nicht gespeichert werden:\n#{@team.errors.full_messages.join(', ')}"
+        flash[:danger] = "Team konnte nicht gespeichert werden:<br>\n#{@team.errors.full_messages.join('<br>')}".html_safe
         prepare_form
         render :edit
       end
@@ -64,7 +64,7 @@ module Internal
       if team.destroy
         flash[:info] = 'Team gelöscht'
       else
-        flash[:danger] = "Team konnte nicht gelöscht:\n#{team.errors.full_messages.join(', ')}"
+        flash[:danger] = "Team konnte nicht gelöscht:\n#{team.errors.full_messages.join('<br>')}".html_safe
       end
       redirect_to back_or_default
     end

@@ -34,7 +34,7 @@ module Internal
         flash[:info] = 'Ruderer angelegt'
         redirect_to back_or_default
       else
-        flash[:danger] = "Ruderer konnte nicht angelegt werden:\n#{@rower.errors.full_messages.join(', ')}"
+        flash[:danger] = "Ruderer konnte nicht angelegt werden:<br>\n#{@rower.errors.full_messages.join('<br>')}".html_safe
         prepare_form
         render :new
       end
@@ -54,7 +54,7 @@ module Internal
         flash[:info] = 'Ruderer aktualisiert'
         redirect_to back_or_default
       else
-        flash[:danger] = "Ruderer konnte nicht gespeichert werden:\n#{@rower.errors.full_messages.join(', ')}"
+        flash[:danger] = "Ruderer konnte nicht gespeichert werden:<br>\n#{@rower.errors.full_messages.join('<br>')}".html_safe
         prepare_form
         render :edit
       end
@@ -67,7 +67,7 @@ module Internal
       if rower.destroy
         flash[:info] = 'Ruderer gelöscht'
       else
-        flash[:danger] = "Ruderer konnte nicht gelöscht:\n#{rower.errors.full_messages.join(', ')}"
+        flash[:danger] = "Ruderer konnte nicht gelöscht:\n#{rower.errors.full_messages.join('<br>')}".html_safe
       end
       redirect_to back_or_default
     end

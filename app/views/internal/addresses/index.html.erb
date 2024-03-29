@@ -1,14 +1,62 @@
-<h1>Obleute für <%= @regatta.name %></h1>
+<h1>Adressen</h1>
 
-<% @addresses.each do |address| %>
-  <div class="row">
-    <div class="col-3"><%= address.full_name %> (<%= address.id %>)</div>
-    <div class="col-3"><%= address.email %></div>
-    <div class="col-3">
-      <% if address.public_private_id %>
-        <%= link_to "Zur Obleute-Ansicht", representative_path(@regatta, public_private_id: address.public_private_id, no_cookie: 1), class: 'btn btn-secondary my-1' %>
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <%= pagi = paginate(@addresses, theme: 'bootstrap-5') %>
+    <table class="table table-striped">
+      <tbody>
+      <% @addresses.each do |address| %>
+        <tr>
+          <td>
+            <%= link_to address.name, internal_address_path(@regatta, address) %>
+            <% if address.public_private_id.present? %>
+              <%= link_to '🌍', representative_path(@regatta, public_private_id: address.public_private_id, no_cookie: 1), class: 'btn btn-outline-secondary btn-sm' %>
+            <% end %>
+          </td>
+          <td><%= address.email %></td>
+          <td><%= address.status_label %></td>
+          <td>
+            <% if address.is_referee? %>
+              <% if address.referee_for?(@regatta) %>
+                ✓
+                <%= button_to '-', internal_address_regatta_referee_path(@regatta, address, referrer: current_url),
+                              method: :delete,
+                              class: 'btn btn-info btn-sm',
+                              title: 'Für diese Regatta entfernen' %>
+              <% else %>
+                ︎✗
+                <%= button_to '+', internal_address_regatta_referee_path(@regatta, address, referrer: current_url),
+                              method: :put,
+                              class: 'btn btn-info btn-sm',
+                              title: 'Für diese Regatta entfernen' %>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to "Bearbeiten", edit_internal_address_path(@regatta, address, referrer: current_url), class: 'btn btn-primary  btn-sm' if can?(:edit, address) %>
+            <% if address.deletable? && can?(:delete, address) %>
+              <%= button_to "Löschen", internal_address_path(@regatta, address, referrer: current_url), method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: "Sicher?" } %>
+            <% end %>
+          </td>
+        </tr>
+        </tbody>
       <% end %>
-      <%= link_to "Bearbeiten", edit_internal_address_path(@regatta, address), class: 'btn btn-primary' %>
-    </div>
+      </table>
+    <%= pagi %>
   </div>
-<% end %>
+
+  <div class="col-md-4 col-lg-3">
+    <%= bootstrap_form_with url: internal_addresses_url(@regatta), method: :get do |f| %>
+      <%= f.text_field :query, label: "Suchen nach", value: params[:query] %>
+
+      <%= f.select :only_role, @all_roles,
+                   label: "Nur mit Rolle",
+                   selected: params[:only_role], include_blank: '- Alle -' %>
+      <%= f.submit 'Filtern', class: 'btn btn-secondary d-block w-100' %>
+    <% end %>
+
+    <hr>
+
+    <%= link_to t('helpers.titles.new', model: Address.model_name.human), new_internal_address_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+  </div>
+</div>

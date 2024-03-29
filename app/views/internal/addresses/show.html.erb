@@ -1,15 +1,30 @@
-<h1><%= t('helpers.titles.show', model: Address.model_name.human, label: @address.full_name) %></h1>
+<h1><%= t('helpers.titles.show', model: Address.model_name.human, label: @address.name) %></h1>
 
 <div class="row">
   <div class="col-md-8 col-lg-9">
     <div class="row">
       <dl class="col">
-        <dt><%= Address.human_attribute_name(:first_name) %></dt>
-        <dd><%= @address.first_name %></dd>
-        <dt><%= Address.human_attribute_name(:last_name) %></dt>
-        <dd><%= @address.last_name %></dd>
-        <dt><%= Address.human_attribute_name(:email) %></dt>
-        <dd><%= @address.email.presence || '-' %></dd>
+        <%= dl_entry @address, :first_name %>
+        <%= dl_entry @address, :last_name %>
+        <%= dl_entry @address, :title %>
+        <%= dl_entry @address, :name_suffix %>
+        <%= dl_entry @address, :external_id %>
+      </dl>
+
+      <dl class="col">
+        <%= dl_entry @address, :email %>
+
+        <%= dl_entry @address, :telefone_private %>
+        <%= dl_entry @address, :telefone_business %>
+        <%= dl_entry @address, :telefone_mobile %>
+        <%= dl_entry @address, :telefone_fax %>
+      </dl>
+
+      <dl class="col">
+        <%= dl_entry @address, :street %>
+        <%= dl_entry @address, :zipcode %>
+        <%= dl_entry @address, :city %>
+        <%= dl_entry @address, :country %>
       </dl>
     </div>
   </div>
@@ -19,3 +34,44 @@
                   class: 'btn btn-danger d-block w-100', form_class: 'd-block my-1') if can?(:delete, @address) %>
   </div>
 </div>
+
+<% if @address.teams.any? %>
+  <h3>Gemeldete Teams</h3>
+  <table class="table table-striped">
+    <% @address.teams.group_by { |t| t.regatta == @regatta ? 1 : 2 }.sort.each do |this_regatta, teams|  %>
+      <thead>
+      <tr><th><%= this_regatta == 1 ? 'Diese Regatta' : 'Andere Regatten' %></th></tr>
+      </thead>
+      <tbody>
+      <% teams.each do |team| %>
+        <tr>
+          <td>
+            <% if this_regatta != 1 %>
+              <%= team.regatta&.name %>
+            <% end %>
+          </td>
+          <td><%= link_to team.name, internal_team_path(team.regatta, team) %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    <% end %>
+  </table>
+<% end %>
+
+<% if @address.regatta_referees.any? %>
+  <h3>Schiedsrichter bei</h3>
+  <ul>
+    <% @address.regatta_referees.each do |rr| %>
+      <li><%= rr.regatta&.name %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @address.rowers.any? %>
+  <h3>Ruderer dieses Vereins</h3>
+  <ul class="multi-column">
+    <% @address.rowers.each do |rower| %>
+      <li><%= link_to rower.name, internal_rower_path(@regatta, rower) %></li>
+    <% end %>
+  </ul>
+<% end %>
