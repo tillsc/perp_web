@@ -43,10 +43,10 @@ module Internal
       authorize! :create, @event
 
       if @event.save
-        flash[:info] = 'Rennen angelegt'
+        flash[:info] = helpers.success_message_for(:create, @event)
         redirect_to back_or_default
       else
-        flash[:danger] = "Rennen konnte nicht angelegt werden:<br>\n#{@event.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:create, @event)
         prepare_form
         render :new
       end
@@ -63,10 +63,10 @@ module Internal
       authorize! :update, @event
 
       if @event.update(event_params)
-        flash[:info] = 'Rennen aktualisiert'
+        flash[:info] = helpers.success_message_for(:update, @event)
         redirect_to back_or_default
       else
-        flash[:danger] = "Rennen konnte nicht gespeichert werden:<br>\n#{@event.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:update, @event)
         prepare_form
         render :edit
       end
@@ -77,9 +77,9 @@ module Internal
       authorize! :destroy, event
 
       if event.destroy
-        flash[:info] = 'Rennen gelöscht'
+        flash[:info] = helpers.success_message_for(:destroy, event)
       else
-        flash[:danger] = "Rennen konnte nicht gelöscht:\n#{event.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:destroy, event)
       end
       redirect_to back_or_default
     end

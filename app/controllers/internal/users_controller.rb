@@ -19,10 +19,10 @@ module Internal
       authorize! :update, @user
 
       if @user.update(user_params)
-        flash[:info] = "Benutzer erfolgreich aktualisiert"
+        flash[:info] = helpers.success_message_for(:update, @user)
         redirect_to back_or_default
       else
-        flash[:error] = "Benutzer konnte nicht aktualisiert werden"
+        flash[:danger] = helpers.error_message_for(:update, @user)
         render :edit
       end
     end
@@ -32,9 +32,9 @@ module Internal
       authorize! :destroy, user
 
       if user.destroy
-        flash[:info] = "Benutzer erfolgreich gelöscht"
+        flash[:info] = helpers.success_message_for(:destroy, user)
       else
-        flash[:error] = "Benutzer konnte nicht gelöscht werden"
+        flash[:danger] =  helpers.error_message_for(:destroy, user)
       end
 
       redirect_to back_or_default

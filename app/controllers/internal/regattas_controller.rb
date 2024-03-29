@@ -27,10 +27,10 @@ module Internal
 
       Regatta.transaction do
         if @regatta.save
-          flash[:info] = 'Regatta angelegt'
+          flash[:info] = helpers.success_message_for(:create, @regatta)
           redirect_to back_or_default
         else
-          flash[:danger] = "Regatta konnte nicht angelegt werden:<br>\n#{@regatta.errors.full_messages.join('<br>')}".html_safe
+          flash[:danger] = helpers.error_message_for(:create, @regatta)
           prepare_form
           render :new
         end
@@ -48,10 +48,10 @@ module Internal
       authorize! :update, @regatta
 
       if @regatta.update(regatta_params)
-        flash[:info] = 'Regatta aktualisiert'
+        flash[:info] = helpers.success_message_for(:update, @regatta)
         redirect_to back_or_default
       else
-        flash[:danger] = "Regatta konnte nicht gespeichert werden:<br>\n#{@regatta.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:update, @regatta)
         prepare_form
         render :edit
       end
@@ -72,9 +72,9 @@ module Internal
       authorize! :destroy, regatta
 
       if regatta.destroy
-        flash[:info] = 'Regatta gelöscht'
+        flash[:info] = helpers.success_message_for(:destroy, regatta)
       else
-        flash[:danger] = "Rennen konnte nicht gelöscht:\n#{regatta.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:destroy, regatta)
       end
       redirect_to back_or_default
     end

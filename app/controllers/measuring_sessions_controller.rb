@@ -49,12 +49,12 @@ class MeasuringSessionsController < ApplicationController
 
     @measuring_session.regatta = @regatta
     if @measuring_session.save
-      flash[:info] = 'Mess-Sitzung angelegt'
+      flash[:info] = helpers.success_message_for(:create, @measuring_session)
       redirect_to current_user.is_a?(MeasuringSession) ?
                     measuring_session_url(@regatta, @measuring_session) :
                     measuring_sessions_url(@regatta)
     else
-      flash[:danger] = "Mess-Sitzung konnte nicht angelegt werden:\n#{@measuring_session.errors.full_messages.join(', ')}"
+      flash[:danger] = helpers.error_message_for(create, @measuring_session)
       prepare_form
       render :new
     end
@@ -92,11 +92,12 @@ class MeasuringSessionsController < ApplicationController
         if (was_active_for_mp && was_active_for_mp.id != @measuring_session.measuring_point.id)
           was_active_for_mp.update!(measuring_session: nil)
         end
-        flash[:info] = "Mess-Sitzung aktualisiert"
+        flash[:info] = helpers.success_message_for(:update, @measuring_session)
         redirect_to current_user.is_a?(MeasuringSession) ?
                       measuring_session_url(@regatta, @measuring_session) :
                       measuring_sessions_url(@regatta)
       else
+        flash[:danger] = helpers.error_message_for(:update, @measuring_session)
         prepare_form
         render :edit
       end
@@ -109,7 +110,7 @@ class MeasuringSessionsController < ApplicationController
 
     measuring_session.destroy!
 
-    flash[:info] = "Mess-Sitzung gelöscht"
+    flash[:info] = helpers.success_message_for(:destroy, measuring_session)
     redirect_to measuring_sessions_url(@regatta)
   end
 

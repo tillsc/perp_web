@@ -19,10 +19,10 @@ module Internal
       authorize! :create, @race
 
       if @race.save
-        flash[:info] = 'Lauf angelegt'
+        flash[:info] = helpers.success_message_for(:create, @race)
         redirect_to back_or_default
       else
-        flash[:danger] = "Lauf konnte nicht angelegt werden:<br>\n#{@race.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:create, @race)
         prepare_form
         render :new
       end
@@ -39,10 +39,10 @@ module Internal
       authorize! :update, @race
 
       if @race.update(race_params)
-        flash[:info] = 'Lauf aktualisiert'
+        flash[:info] = helpers.success_message_for(:update, @race)
         redirect_to back_or_default
       else
-        flash[:danger] = "Lauf konnte nicht gespeichert werden:<br>\n#{@race.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:update, @race)
         prepare_form
         render :edit
       end
@@ -53,9 +53,9 @@ module Internal
       authorize! :destroy, race
 
       if race.destroy
-        flash[:info] = 'Lauf gelöscht'
+        flash[:info] = helpers.success_message_for(:destroy, race)
       else
-        flash[:danger] = "Lauf konnte nicht gelöscht:\n#{race.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:destroy, race)
       end
       redirect_to back_or_default
     end

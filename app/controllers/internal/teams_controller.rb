@@ -28,10 +28,10 @@ module Internal
       authorize! :create, Team
 
       if @team.save
-        flash[:info] = 'Team angelegt'
+        flash[:info] = helpers.success_message_for(:create, @team)
         redirect_to back_or_default
       else
-        flash[:danger] = "Team konnte nicht angelegt werden:<br>\n#{@team.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:create, @team)
         prepare_form
         render :new
       end
@@ -48,10 +48,10 @@ module Internal
       authorize! :update, @team
 
       if @team.update(team_params)
-        flash[:info] = 'Team aktualisiert'
+        flash[:info] = helpers.success_message_for(:update, @team)
         redirect_to back_or_default
       else
-        flash[:danger] = "Team konnte nicht gespeichert werden:<br>\n#{@team.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:update, @team)
         prepare_form
         render :edit
       end
@@ -62,9 +62,9 @@ module Internal
       authorize! :destroy, team
 
       if team.destroy
-        flash[:info] = 'Team gelöscht'
+        flash[:info] = helpers.success_message_for(:destroy, team)
       else
-        flash[:danger] = "Team konnte nicht gelöscht:\n#{team.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:destroy, team)
       end
       redirect_to back_or_default
     end

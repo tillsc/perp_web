@@ -31,10 +31,10 @@ module Internal
       authorize! :create, Rower
 
       if @rower.save
-        flash[:info] = 'Ruderer angelegt'
+        flash[:info] = helpers.success_message_for(:create, @rower)
         redirect_to back_or_default
       else
-        flash[:danger] = "Ruderer konnte nicht angelegt werden:<br>\n#{@rower.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:create, @rower)
         prepare_form
         render :new
       end
@@ -51,10 +51,10 @@ module Internal
       authorize! :update, @rower
 
       if @rower.update(rower_params)
-        flash[:info] = 'Ruderer aktualisiert'
+        flash[:info] = helpers.success_message_for(:update, @rower)
         redirect_to back_or_default
       else
-        flash[:danger] = "Ruderer konnte nicht gespeichert werden:<br>\n#{@rower.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:update, @rower)
         prepare_form
         render :edit
       end
@@ -65,9 +65,9 @@ module Internal
       authorize! :destroy, rower
 
       if rower.destroy
-        flash[:info] = 'Ruderer gelöscht'
+        flash[:info] = helpers.success_message_for(:destroy, rower)
       else
-        flash[:danger] = "Ruderer konnte nicht gelöscht:\n#{rower.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:destroy, rower)
       end
       redirect_to back_or_default
     end

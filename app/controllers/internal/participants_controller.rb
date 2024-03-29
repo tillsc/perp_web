@@ -24,10 +24,10 @@ module Internal
 
       if @participant.event
         if @participant.save
-          flash[:info] = 'Meldung angelegt'
+          flash[:info] = helpers.success_message_for(:create, @participant)
           redirect_to back_or_default
         else
-          flash[:danger] = "Meldung konnte nicht angelegt werden:<br>\n#{@participant.errors.full_messages.join('<br>')}".html_safe
+          flash[:danger] = helpers.error_message_for(:create, @participant)
           prepare_form
           render :new
         end
@@ -47,10 +47,10 @@ module Internal
       authorize! :update, @participant
 
       if @participant.update(participant_params)
-        flash[:info] = 'Meldung aktualisiert'
+        flash[:info] = helpers.success_message_for(:update, @participant)
         redirect_to back_or_default
       else
-        flash[:danger] = "Meldung konnte nicht gespeichert werden:<br>\n#{@participant.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:update, @participant)
         prepare_form
         render :edit
       end
@@ -61,9 +61,9 @@ module Internal
       authorize! :destroy, participant
 
       if participant.destroy
-        flash[:info] = 'Meldung gelöscht'
+        flash[:info] = helpers.success_message_for(:destroy, participant)
       else
-        flash[:danger] = "Meldung konnte nicht gelöscht werden:\n#{participant.errors.full_messages.join('<br>')}".html_safe
+        flash[:danger] = helpers.error_message_for(:destroy, participant)
       end
       redirect_to back_or_default
     end
