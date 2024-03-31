@@ -3,6 +3,7 @@ class Participant < ApplicationRecord
   ALL_ROWER_IDX = (1..8).to_a + ["s"]
   ALL_ROWERS = ALL_ROWER_IDX.map { |i| "rower#{i}".to_sym }
   ALL_ROWERS_WITH_WEIGHTS = ALL_ROWERS.inject({}) { |h, rel_name| h.merge(rel_name => :weights) }
+  ALL_ROWERS_WITH_CLUBS = ALL_ROWERS.inject({}) { |h, rel_name| h.merge(rel_name => :club) }
 
   self.table_name = 'meldungen'
   self.primary_key = 'Regatta_ID', 'Rennen', 'TNr'

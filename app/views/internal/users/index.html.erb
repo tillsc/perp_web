@@ -1,15 +1,33 @@
 <h1>Benutzer</h1>
 
-<% @users.each do |user| %>
-  <div class="row">
-    <div class="col-3 align-middle"><%= user.email %></div>
-    <div class="col-3"><%= Array.wrap(user.roles).presence&.map { |r| User.human_attribute_name("role_#{r}")}&.join(", ") || "-" %></div>
-    <div class="col-3"><%= user.last_sign_in_at && l(user.last_sign_in_at) || "-" %></div>
-    <div class="col-3">
-      <%= link_to "Bearbeiten", edit_internal_user_path(user), class: 'btn btn-primary mb-1' %>
-      <% unless user.id == current_user.id %>
-        <%= button_to "Löschen", internal_user_path(user), method: :delete, class: 'btn btn-danger mb-1', data: { confirm: "Sicher?" } %>
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th><%= User.human_attribute_name(:email) %></th>
+        <th><%= User.human_attribute_name(:roles) %></th>
+        <th><%= User.human_attribute_name(:last_sign_in_at) %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.email %></td>
+          <td><%= Array.wrap(user.roles).presence&.map { |r| User.human_attribute_name("role_#{r}")}&.join(", ") || "-" %></td>
+          <td><%= user.last_sign_in_at && l(user.last_sign_in_at) || "-" %></td>
+          <td>
+            <%= link_to "Bearbeiten", edit_internal_user_path(user), class: 'btn btn-primary btn-sm mb-1' %>
+            <% unless user.id == current_user.id %>
+              <%= button_to "Löschen", internal_user_path(user), method: :delete, class: 'btn btn-danger btn-sm mb-1', data: { confirm: "Sicher?" } %>
+            <% end %>
+          </td>
+        </tr>
       <% end %>
-    </div>
+      </tbody>
+    </table>
   </div>
-<% end %>
+  <div class="col-md-4 col-lg-3">
+  </div>
+</div>
