@@ -58,7 +58,9 @@ class RegattaController < ApplicationController
 
   def all_results
     @results = {}
-    @regatta.results.preload(:times, race: {event: [:start_measuring_point, :finish_measuring_point]}, participant: [:team] + Participant::ALL_ROWERS).each do |result|
+    @regatta.results.preload(:times,
+                             race: { event: [:start_measuring_point, :finish_measuring_point] },
+                             participant: [:team, Participant::ALL_ROWERS_WITH_CLUBS]).each do |result|
       @results[result.race.event]||= {}
       @results[result.race.event][result.race]||= []
       @results[result.race.event][result.race].push(result)

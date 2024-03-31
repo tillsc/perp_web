@@ -14,13 +14,13 @@ xml.re :Ergebnisse, "xmlns:re" => "http://schemas.rudern.de/service/ergebnisse/2
               result.participant.all_rowers.each_with_index do |(position, rower), i|
                 attrs = {Position: i+1}
                 attrs[:istSteuermann] = true if (position == 9)
-                attrs[:VereinsID] = rower.club_external_id if rower.club_external_id.to_i > 0
+                attrs[:VereinsID] = rower.club.external_id if rower.club&.external_id.present?
                 attrs[:AktivenID] = rower.external_id if rower.external_id.present?
                 xml.Sportler attrs do
                   xml.Nachname rower.last_name
                   xml.Vorname rower.first_name
                   xml.Jahrgang rower.year_of_birth.presence || 1900
-                  xml.VereinsName rower.club_name if rower.club_name
+                  xml.VereinsName rower.club&.name || rower.club_name if rower.club&.name || rower.club_name
                 end
               end
               time = result.time_for(race.finish_measuring_point).try(:to_time)
