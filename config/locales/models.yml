@@ -89,6 +89,7 @@ de:
         representative: Obmann
         representative_id: Obmann
         no_entry_fee: Meldegeldbefreit
+        no_entry_fee?: Meldegeldbefreit
         entry_fee_discount: Meldegeldrabatt
       address:
         title: Titel
@@ -115,6 +116,19 @@ de:
         first_name: Vorname
         last_name: Nachname
         year_of_birth: Geburtsjahr
+        external_id: Externe ID
+        club: Verein
+        club_id: Verein
+        club_name: Name des Vereins (Zusätzlich)
+        rower1_in: Meldungen als Ruderer 1
+        rower2_in: Meldungen als Ruderer 2
+        rower3_in: Meldungen als Ruderer 3
+        rower4_in: Meldungen als Ruderer 4
+        rower5_in: Meldungen als Ruderer 5
+        rower6_in: Meldungen als Ruderer 6
+        rower7_in: Meldungen als Ruderer 7
+        rower8_in: Meldungen als Ruderer 8
+        rowers_in: Meldungen als Steuermann
     errors:
       models:
         address:

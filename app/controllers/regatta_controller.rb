@@ -77,28 +77,6 @@ class RegattaController < ApplicationController
       preload(:starts, :event)
   end
 
-  def representative
-    @noindex = true
-
-    @representative = Address.representative.
-      find_by!(public_private_id: params[:public_private_id])
-    cookies[:representative_public_private_id] = @representative.public_private_id unless params[:no_cookie]
-
-    @teams = (@regatta.teams.merge(@representative.teams)).preload(participants: [:team] + Participant::ALL_ROWERS)
-
-    @starts = Start.for_regatta(@regatta).
-      upcoming.
-      for_teams(@teams).
-      preload(race: :event, participant: [:team] + Participant::ALL_ROWERS).
-      reorder('SollStartZeit')
-
-    @results = Result.for_regatta(@regatta).
-      for_teams(@teams).
-      preload(:times, race: {event: :finish_measuring_point}, participant: [:team] + Participant::ALL_ROWERS).
-      joins(:race).
-      reorder('IstStartZeit')
-  end
-
   def rower
     @rower = Rower.find(params[:rower_id])
 

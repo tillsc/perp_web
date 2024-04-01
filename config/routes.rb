@@ -38,8 +38,12 @@ Rails.application.routes.draw do
     get '/results' => 'regatta#all_results'
     get '/upcoming' => 'regatta#upcoming'
     get '/status' => 'state#index'
-    get 'representative/:public_private_id' => 'regatta#representative', as: :representative
     get '/rower/:rower_id' => 'regatta#rower', as: :rower
+
+    # Legacy
+    get 'representative/:public_private_id', to: redirect(status: 307) { |p, req| "#{req.params["regatta_id"]}/my/#{req.params["public_private_id"]}" }
+
+    get 'my/:public_private_id' => 'my#index', as: :my
 
     get '/announcer' => 'announcer#index'
     get '/announcer/results/:event_number/:race_number' => 'announcer#results', as: :announcer_results

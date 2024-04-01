@@ -1,0 +1,48 @@
+<%= render 'regatta/header' %>
+
+<p>Hallo <%= @address.salutation %></p>
+
+<% if can?(:access, :internal) %>
+  <%= link_to "Interne Details", internal_address_url(@regatta, @address), class: 'btn btn-primary' %>
+  <%= link_to t('helpers.titles.edit', model: Address.model_name.human), edit_internal_address_url(@regatta, @address), class: 'btn btn-secondary' %>
+<% end %>
+
+<% if @participants %>
+  <% rower_link = -> (rower, name) { link_to name, rower_path(@regatta, rower) } %>
+  <div class="row mt-3">
+    <% if @starts.present? %>
+      <div class="col-lg-6">
+        <h2>Starts</h2>
+        <%= render 'regatta/starts', starts: @starts, rower_link: rower_link %>
+      </div>
+    <% end %>
+
+    <% if @results.present? %>
+      <div class="col-lg-6">
+        <h2>Ergebnisse</h2>
+        <%= render 'regatta/results', results: @results, rower_link: rower_link %>
+      </div>
+    <% end %>
+  </div>
+
+  <h3>Meine Meldungen</h3>
+
+  <% @participants.group_by(&:event).each do |event, participants| %>
+    <%= link_to event.label, event_participants_path(@regatta, event.number) %>
+    [<%= link_to "Starts", event_starts_path(@regatta, event.number) %>,
+    <%= link_to "Ergebnisse", event_results_path(@regatta, event.number) %>]
+    <ul>
+      <% participants.sort_by{ |p| p.number.to_i }.each do |participant| %>
+        <li>
+          <%= participant.number %>:
+          <%= participant.team_name %><br>
+          <em><%= participant.rower_names(rower_link: rower_link) %></em>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
+
+<script>
+  autoreloadAfter(15000)
+</script>

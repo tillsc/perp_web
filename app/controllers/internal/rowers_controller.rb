@@ -7,15 +7,18 @@ module Internal
     def index
       @rowers = Rower.all
       @rowers = @rowers.by_filter(params[:query]) if params[:query].present?
+      @rowers = @rowers.for_regatta(@regatta) if params[:only_this_regatta] == '1'
+      @rowers = @rowers.with_encoding_problems if params[:only_with_encoding_problems] == '1'
 
       @rowers = @rowers.
-        order(year_of_birth: :desc, last_name: :asc, first_name: :asc).
+        order(last_name: :asc, first_name: :asc).
         page(params[:page] || 1)
       respond_with @rowers
     end
 
     def show
       @rower = Rower.find(params[:id])
+      @weights = Weight.where(rower: @rower)
       respond_with @rower
     end
 

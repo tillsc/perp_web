@@ -22,14 +22,26 @@ class Participant < ApplicationRecord
     where(withdrawn: [nil, false])
   }
 
+  scope :for_regatta, -> (regatta) do
+    where(regatta_id: regatta.id)
+  end
+
   scope :for_teams, -> (teams) {
-    where('Team_ID': Array.wrap(teams).map(&:id).uniq)
+    where('Team_ID': Array.wrap(teams).map(&:team_id).uniq)
   }
 
   scope :for_rower, -> (rower) {
     where(ALL_ROWER_IDX.map { |name|
       arel_table["ruderer#{name}_ID"].eq(rower.id)
-    }.inject { |sc, cond| sc.or(cond) })
+    }.inject(&:or))
+  }
+
+  scope :for_club, -> (club_address) {
+    where(
+      'EXISTS (:rower)',
+      rower: Rower.for_club(club_address).
+        where(ALL_ROWER_IDX.map { |name| arel_table["ruderer#{name}_ID"].eq(Rower.arel_table[:id]) }.inject(&:or))
+    )
   }
 
   scope :with_weight_info, -> (date) {

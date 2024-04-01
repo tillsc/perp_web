@@ -9,9 +9,9 @@ class ApplicationController < ActionController::Base
     @regatta||= Regatta.last
     @regattas = Regatta.valid.order(:from_date)
 
-    if cookies[:representative_public_private_id].present?
-      @representative = Address.representative.
-        find_by(public_private_id: cookies[:representative_public_private_id])
+    if cookies[:my_public_private_id].present?
+      @my_address = Address.
+        find_by(public_private_id: cookies[:my_public_private_id])
     end
   end
 

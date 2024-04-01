@@ -10,7 +10,7 @@
           <td>
             <%= link_to address.name, internal_address_path(@regatta, address) %>
             <% if address.public_private_id.present? %>
-              <%= link_to '🌍', representative_path(@regatta, public_private_id: address.public_private_id, no_cookie: 1), class: 'btn btn-outline-secondary btn-sm' %>
+              <%= link_to '🌍', my_path(@regatta, public_private_id: address.public_private_id, no_cookie: 1), class: 'btn btn-outline-secondary btn-sm' %>
             <% end %>
           </td>
           <td><%= address.email %></td>

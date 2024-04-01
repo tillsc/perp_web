@@ -26,6 +26,10 @@ class Start < ApplicationRecord
       merge(Participant.for_rower(rower))
   }
 
+  scope :for_participants, -> (participants) {
+    where(participant_id: participants.map(&:participant_id))
+  }
+
   scope :upcoming, -> {
     joins(race: :event).
       merge(Race.upcoming)

@@ -12,23 +12,31 @@ module ApplicationHelper
   end
 
   def error_message_for(action, record)
-    if action == :destroy
+    s = if action == :destroy
       t(action, scope: 'helpers.failed', model: record.class.model_name.human)
     else
-      s = t('errors.template.header', model: record.class.model_name.human, count: record.errors.count)
-      s << '<br><br>'
-      s << t('errors.template.body')
-      s << '<ul>'
-      s << record.errors.map { |err| content_tag(:li, err.full_message) }.join("\n")
-      s << '</ul>'
-      s.html_safe
+      t('errors.template.header', model: record.class.model_name.human, count: record.errors.count)
     end
+    s << '<br><br>'
+    s << t('errors.template.body')
+    s << '<ul>'
+    s << record.errors.map { |err| content_tag(:li, err.full_message) }.join("\n")
+    s << '</ul>'
+    s.html_safe
   end
 
-  def dl_entry(record, attribute, sub_method = nil, &block)
+  def dl_entry(record, attribute, sub_method: nil, unit: nil, precision: nil, &block)
     val = record.send(attribute)
     val = val.send(sub_method) if sub_method.present?
-    val = block.call(val) if block.present?
+    if val.is_a?(Numeric)
+      val = number_with_precision(val, precision: precision) if precision
+      val = "#{val}&thinsp;#{unit}".html_safe if unit
+    elsif val === true
+      val = I18n.t("helpers.yes")
+    elsif val === false
+      val = I18n.t("helpers.no")
+    end
+    val = block.call(val, record) if block.present?
     content_tag(:dt, record.class.human_attribute_name(attribute)) +
       content_tag(:dd, val&.to_s&.presence || '-')
   end

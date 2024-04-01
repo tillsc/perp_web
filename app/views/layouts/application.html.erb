@@ -32,9 +32,9 @@
             <li class="nav-item">
               <%= link_to "Geplante Starts", upcoming_path(@regatta), class: "nav-link#{" active" if params[:action] == "upcoming"}" %>
             </li>
-            <% if @representative.present? %>
+            <% if @my_address.present? %>
               <li class="nav-item">
-                <%= link_to "Obleute-Ansicht", representative_path(@regatta, @representative.public_private_id), class: "nav-link#{" active" if params[:action] == "representative"}" %>
+                <%= link_to "Meine Seite", my_path(@regatta, @my_address.public_private_id), class: "nav-link#{" active" if params[:controller] == "my"}" %>
               </li>
             <% end %>
           <% end %>
@@ -59,7 +59,7 @@
 <div class="container">
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>">
-      <%= value %>
+      <%= value.html_safe %>
     </div>
   <% end %>
 

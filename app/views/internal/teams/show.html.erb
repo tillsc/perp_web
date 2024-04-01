@@ -4,8 +4,16 @@
   <div class="col-md-8 col-lg-9">
     <div class="row">
       <dl class="col">
-        <dt><%= Team.human_attribute_name(:name) %></dt>
-        <dd><%= @team.name %></dd>
+        <%= dl_entry @team, :name %>
+        <%= dl_entry(@team, :country)  %>
+        <%= dl_entry(@team, :city) %>
+      </dl>
+      <dl class="col">
+        <%= dl_entry(@team, :representative) { |r| link_to(r.name, internal_address_path(@regatta, r)) } %>
+      </dl>
+      <dl class="col">
+        <%= dl_entry(@team, :no_entry_fee?) %>
+        <%= dl_entry(@team, :entry_fee_discount, precision: 2, unit: @regatta.currency) %>
       </dl>
     </div>
   </div>
@@ -16,3 +24,18 @@
                   class: 'btn btn-danger d-block w-100', form_class: 'd-block my-1') if can?(:delete, @team) %>
   </div>
 </div>
+
+<h3>Meldungen</h3>
+
+<table class="table table-striped">
+  <thead></thead>
+  <tbody>
+  <% @team.participants.preload(:event, *Participant::ALL_ROWERS).each do |participant| %>
+    <tr>
+      <td><%= link_to participant.event.label, internal_participants_url(@regatta, event_number: participant.event.number) %></td>
+      <td><%= link_to participant.number, internal_participant_url(@regatta, participant) %></td>
+      <td><%= participant.rower_names(rower_link: -> (r, n) { link_to n, internal_rower_path(@regatta, r) }) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

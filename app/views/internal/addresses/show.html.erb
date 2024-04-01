@@ -70,7 +70,7 @@
 <% if @address.rowers.any? %>
   <h3>Ruderer dieses Vereins</h3>
   <ul class="multi-column">
-    <% @address.rowers.each do |rower| %>
+    <% @address.rowers.order(:last_name, :first_name).each do |rower| %>
       <li><%= link_to rower.name, internal_rower_path(@regatta, rower) %></li>
     <% end %>
   </ul>

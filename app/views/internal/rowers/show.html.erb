@@ -7,8 +7,18 @@
         <%= dl_entry @rower, :first_name %>
         <%= dl_entry @rower, :last_name %>
         <%= dl_entry @rower, :year_of_birth %>
-        <%= dl_entry(@rower, :club) { |c| link_to(c.name, internal_address_path(@regatta, c)) } %>
       </dl>
+      <dl class="col">
+        <%= dl_entry @rower, :external_id %>
+        <%= dl_entry(@rower, :club) { |c| c.present? ? link_to(c.name, internal_address_path(@regatta, c)) : @rower.club_name.presence } %>
+      </dl>
+      <div class="col">
+        <% if @weights&.any? %>
+          <% @weights.each do |w| %>
+            <% w %>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
   <div class="col-md-4 col-lg-3">
@@ -18,8 +28,9 @@
   </div>
 </div>
 
-<% @rower.participants.preload(:regatta, :team, :event).group_by {|p| p.regatta == @regatta }.each do |this_regatta, ps| %>
-  <h4><% if this_regatta %>
+<% @rower.participants.preload(:regatta, :team, :event).
+  group_by { |r| r.regatta == @regatta ? 1 : 2 }.sort.each do |this_regatta, ps| %>
+  <h4><% if this_regatta == 1 %>
       Teilnahmen an dieser Regatta
     <% else %>
       Andere Regatten
@@ -28,7 +39,7 @@
 <table class="table table-striped">
   <thead>
   <tr>
-    <% unless this_regatta %>
+    <% if this_regatta != 1 %>
       <th><%= Regatta.model_name.human %></th>
     <% end %>
     <th><%= Event.model_name.human %></th>
@@ -38,15 +49,16 @@
   </thead>
   <% ps.each do |participant| %>
   <tr>
-    <% if this_regatta %>
+    <% if this_regatta == 1 %>
       <td><%= link_to participant.event.label, internal_participants_url(@regatta, event_number: participant.event.number, anchor: participant.to_anchor) %></td>
-      <td><%= link_to participant.number, internal_participants_url(@regatta, event_number: participant.event.number, anchor: participant.to_anchor) %></td>
+      <td><%= link_to participant.number.presence || '-', internal_participants_url(@regatta, event_number: participant.event.number, anchor: participant.to_anchor) %></td>
+      <td><%= link_to participant.team_name, internal_team_path(@regatta, participant.team) %></td>
     <% else %>
       <td><%= participant.regatta.name %></td>
       <td><%= link_to participant.event.label, event_participants_url(participant.regatta, participant.event.number) %></td>
-      <td><%= participant.number %></td>
+      <td><%= participant.number || '-' %></td>
+      <td><%= participant.team_name %></td>
     <% end %>
-    <td><%= participant.team_name %></td>
   </tr>
   <% end %>
 </table>

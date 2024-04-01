@@ -82,6 +82,14 @@ class Address < ApplicationRecord
     end
   end
 
+  def salutation
+    if is_club?
+      last_name.presence || first_name.presence
+    else
+      [is_female? ? 'Frau' : 'Herr', title.presence, last_name.presence, ].compact.join(' ')
+    end
+  end
+
   def referee_for?(regatta)
     self.regatta_referees.any? { |rr| rr.regatta_id == regatta.id }
   end

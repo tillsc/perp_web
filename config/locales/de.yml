@@ -153,6 +153,8 @@ de:
         one: 'Konnte %{model} nicht speichern: ein Fehler.'
         other: 'Konnte %{model} nicht speichern: %{count} Fehler.'
   helpers:
+    "yes": Ja
+    "no": Nein
     page_entries_info:
       more_pages:
         display_entries: Zeige %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> von insgesamt <b>%{total}</b>

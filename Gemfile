@@ -52,6 +52,8 @@ gem 'devise-i18n'
 gem 'kaminari'
 gem 'bootstrap5-kaminari-views'
 
+gem 'ruby-progressbar'
+
 gem 'rubocop'
 
 gem "sentry-rails"
