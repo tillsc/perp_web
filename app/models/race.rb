@@ -18,9 +18,16 @@ class Race < ApplicationRecord
   belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
 
   belongs_to :referee_starter, class_name: 'Address', foreign_key: "Schiedsrichter_ID_Starter", optional: true
+  alias_attribute :referee_starter_id, 'Schiedsrichter_ID_Starter'
+
   belongs_to :referee_aligner, class_name: 'Address', foreign_key: "Schiedsrichter_ID_Aligner", optional: true
+  alias_attribute :referee_aligner_id, 'Schiedsrichter_ID_Aligner'
+
   belongs_to :referee_umpire, class_name: 'Address', foreign_key: "Schiedsrichter_ID_Umpire", optional: true
+  alias_attribute :referee_umpire_id, 'Schiedsrichter_ID_Umpire'
+
   belongs_to :referee_finish_judge, class_name: 'Address', foreign_key: "Schiedsrichter_ID_Judge", optional: true
+  alias_attribute :referee_finish_judge_id, 'Schiedsrichter_ID_Judge'
 
   has_many :starts, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf']
   has_many :results, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf'], inverse_of: :race

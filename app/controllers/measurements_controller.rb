@@ -46,7 +46,7 @@ class MeasurementsController < ApplicationController
     autosave = params[:autosave] == "1"
 
     MeasuringSession.transaction do
-      @res = @measuring.save!(params[:participants], params[:times], !autosave)
+      @res = @measuring.save!(params[:participants], params[:times], !autosave, measurement_set_params)
     end
 
     if autosave
@@ -56,6 +56,12 @@ class MeasurementsController < ApplicationController
     else
       redirect_to measurements_url(@regatta, anchor: "race_#{@measuring.race.event.number}_#{@measuring.race.number}")
     end
+  end
+
+  protected
+
+  def measurement_set_params
+    params[:measurement_set]&.permit(:referee_starter_id, :referee_aligner_id, :referee_umpire_id, :referee_finish_judge_id)
   end
 
 end

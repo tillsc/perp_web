@@ -67,7 +67,7 @@ module Services
       end
     end
 
-    def save!(raw_participant_ids, raw_times, persist_result)
+    def save!(raw_participant_ids, raw_times, persist_result, measurement_set_attributes = nil)
       participants = Array.wrap(raw_participant_ids).map { |p_id|
         p_id = p_id.presence&.to_i
         all_participants.find { |p| p.participant_id == p_id }
@@ -93,6 +93,9 @@ module Services
         participant_ids.push(-i)
       end
       res = participant_ids.zip(ftimes, rel_ftimes)
+      if measurement_set_attributes.present?
+        @measurement_set.attributes = measurement_set_attributes
+      end
       @measurement_set.measurements = res
       @measurement_set.measurements_history||= {}
       last_history_date = @measurement_set.measurements_history.keys.last
@@ -135,6 +138,13 @@ module Services
         race.results.
           select { |res| !present_participant_ids.include?(res.participant_id)  }.
           map { |res| res.destroy_time_for!(@measurement_set.measuring_point) }
+        if race.event.measuring_point_type(@measurement_set.measuring_point) == :finish
+          race.referee_starter_id = @measurement_set.referee_starter_id
+          race.referee_aligner_id = @measurement_set.referee_aligner_id
+          race.referee_umpire_id = @measurement_set.referee_umpire_id
+          race.referee_finish_judge_id = @measurement_set.referee_finish_judge_id
+          race.save!
+        end
       end
     end
 

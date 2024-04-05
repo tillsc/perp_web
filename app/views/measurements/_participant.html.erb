@@ -2,7 +2,7 @@
   <div class="item_list__item">
     <div>
       <%= hidden_field_tag 'participants[]', participant.participant_id %>
-      <%= participant.number %>
+      <%= participant.number || "<<ID: #{participant.participant_id}>>" %>
       <% if lane = measuring.lane_for(participant) %>
         (Bahn <%= lane %>)
       <% end %>

@@ -9,6 +9,11 @@ class MeasurementSet < ApplicationRecord
 
   belongs_to :measuring_session, optional: true
 
+  belongs_to :referee_starter, class_name: 'Address', optional: true
+  belongs_to :referee_aligner, class_name: 'Address', optional: true
+  belongs_to :referee_umpire, class_name: 'Address', optional: true
+  belongs_to :referee_finish_judge, class_name: 'Address', optional: true
+
   serialize :measurements, coder: JSON
   serialize :measurements_history, coder: JSON
 

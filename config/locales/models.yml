@@ -49,11 +49,28 @@ de:
         result_corrected: Ergebniss wurde korrigiert
         weight_list_approved_at: Wiegeliste freigegeben um
         weight_list_approved_by: Wiegeliste freigegeben durch
+        referee_starter: Starter
+        referee_starter_id: Starter
+        referee_aligner: Ausrichter
+        referee_aligner_id: Ausrichter
+        referee_umpire: Schiedsrichter
+        referee_umpire_id: Schiedsrichter
+        referee_finish_judge: Zielrichter
+        referee_finish_judge_id: Zielrichter
       measuring_session:
         device_description: Gerätebeschreibung
         measuring_point_number: Messpunkt
         autoreload_disabled: Automatischen Reload deaktivieren
         hide_team_names: Team-Namen verbergen
+      measurement_set:
+        referee_starter: Starter
+        referee_starter_id: Starter
+        referee_aligner: Ausrichter
+        referee_aligner_id: Ausrichter
+        referee_umpire: Schiedsrichter
+        referee_umpire_id: Schiedsrichter
+        referee_finish_judge: Zielrichter
+        referee_finish_judge_id: Zielrichter
       participant:
         event: Rennen
         number: Bugnummer

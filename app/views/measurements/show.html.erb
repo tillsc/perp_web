@@ -18,7 +18,9 @@
 </small></p>
 
 
-<%= form_tag measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number) do %>
+<%= bootstrap_form_with model: @measuring.measurement_set,
+              url: measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number),
+              method: :post do |f| %>
   <% if @measuring_session.present? %>
     <%= hidden_field_tag :measuring_session_id, @measuring_session&.to_param %>
   <% end %>
@@ -49,8 +51,24 @@
       </div>
     </div>
   </div>
+  <% if @race.event.measuring_point_type(@measuring_point) == :finish %>
+    <div class="row">
+      <div class="col-md-6 col-xl-3">
+        <%= f.select :referee_starter_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <%= f.select :referee_aligner_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <%= f.select :referee_umpire_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <%= f.select :referee_finish_judge_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
+      </div>
+    </div>
+  <% end %>
 
-  <%= submit_tag "Fertig", class: 'btn btn-success' %>
+  <%= f.submit "Fertig" %>
   <%= link_to "Zeit Stoppen", '#', id: 'stop_time', class: 'btn btn-primary' %>
 
 <% end %>

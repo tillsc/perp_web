@@ -24,6 +24,9 @@ class Regatta < ApplicationRecord
 
   has_many :measuring_points, foreign_key: 'Regatta_ID', inverse_of: :regatta
 
+  has_many :regatta_referees, foreign_key: 'Regatta_ID', inverse_of: :regatta
+  has_many :referees, through: :regatta_referees, source: :address
+
   scope :valid, -> { where(Regatta.arel_table[:ID].gteq(1032)) }
 
   validates :name, presence: true, length: { minimum: 4 }, uniqueness: true

@@ -60,5 +60,9 @@
       <%= race.result_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
       <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
     </div>
+    <div class="referees">
+      <%= Race.human_attribute_name(:referee_umpire) %>: <%= race.referee_umpire&.name || '-' %>;
+      <%= Race.human_attribute_name(:referee_finish_judge) %>: <%= race.referee_finish_judge&.name || '-' %>
+    </div>
   </div>
 </div>
