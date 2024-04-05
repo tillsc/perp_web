@@ -74,9 +74,11 @@ class Address < ApplicationRecord
       order_by_name
   end
 
-  def name
+  def name(first_name_last_name: false)
     if is_club?
       last_name.presence || first_name.presence
+    elsif first_name_last_name
+      [first_name.presence, last_name.presence].compact.join(' ')
     else
       [last_name.presence, first_name.presence].compact.join(', ')
     end

@@ -40,7 +40,9 @@
       </div>
       <div class="country"><%= participant.team&.country %></div>
       <div class="team"><%= participant.team_name %></div>
-      <div class="rower-names"><%= participant.rower_names %></div>
+      <div class="rower-names">
+        <%= participant.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r)) }) %>
+      </div>
       <div class="times">
         <% measuring_points.each do |mp| %>
           <div class="time"><%= r.time_for(mp)&.time %></div>
@@ -61,8 +63,8 @@
       <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
     </div>
     <div class="referees">
-      <%= Race.human_attribute_name(:referee_umpire) %>: <%= race.referee_umpire&.name || '-' %>;
-      <%= Race.human_attribute_name(:referee_finish_judge) %>: <%= race.referee_finish_judge&.name || '-' %>
+      <%= Race.human_attribute_name(:referee_umpire) %>: <%= race.referee_umpire&.name(first_name_last_name: true) || '-' %>;
+      <%= Race.human_attribute_name(:referee_finish_judge) %>: <%= race.referee_finish_judge&.name(first_name_last_name: true) || '-' %>
     </div>
   </div>
 </div>
