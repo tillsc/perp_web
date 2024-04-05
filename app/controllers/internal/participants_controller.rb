@@ -71,8 +71,7 @@ module Internal
     protected
 
     def default_url
-      anchor = @participant&.to_anchor
-      internal_participants_url(@regatta, anchor: anchor)
+      internal_participants_url(@regatta, anchor: @participant&.to_anchor)
     end
 
     def prepare_form

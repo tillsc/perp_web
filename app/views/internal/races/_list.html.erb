@@ -12,7 +12,7 @@
   </thead>
   <tbody>
   <% races.each do |race| %>
-    <tr id="race_<%= race.to_param %>">
+    <tr id="<%= race.to_anchor %>">
       <td><%=  race.event && link_to(race.event.label, internal_event_url(@regatta, race)) || '!' %></td>
       <td><%= race.name %></td>
       <td><%= race.planned_for && l(race.planned_for, format: :short) || '-' %></td>

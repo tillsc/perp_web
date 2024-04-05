@@ -63,8 +63,7 @@ module Internal
     protected
 
     def default_url
-      anchor = "race_#{@race.to_param}" if @race
-      internal_races_url(@regatta, anchor: anchor)
+      internal_races_url(@regatta, anchor: @race&.to_anchor)
     end
 
     def prepare_form

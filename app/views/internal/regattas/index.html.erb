@@ -14,7 +14,7 @@
       <tbody>
       <% @regattas.each do |regatta| %>
         <tr>
-          <td id="regatta_<%= regatta.id %>"><%= link_to regatta.name, regatta_url(regatta) %></td>
+          <td id="<%= regatta.to_anchor %>"><%= link_to regatta.name, regatta_url(regatta) %></td>
           <td>
             <%= regatta.from_date && l(regatta.from_date) %>
           </td>

@@ -82,8 +82,7 @@ module Internal
     protected
 
     def default_url
-      anchor = "regatta_#{@regatta.id}" if @regatta
-      internal_regattas_url(anchor: anchor)
+      internal_regattas_url(anchor: @regatta&.to_anchor)
     end
 
     def prepare_form
