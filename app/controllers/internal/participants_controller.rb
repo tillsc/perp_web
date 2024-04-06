@@ -11,6 +11,7 @@ module Internal
     end
 
     def new
+      @participant_params = participant_params
       @participant = @regatta.participants.new(participant_params)
 
       authorize! :new, @participant

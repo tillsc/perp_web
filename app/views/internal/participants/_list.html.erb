@@ -21,9 +21,14 @@
       <td><%= participant.late_entry ? '✓' : '' %></td>
       <td><%= participant.entry_changed ? '✓' : '' %></td>
       <td><%= participant.disqualified %></td>
-      <td>
-        <%= link_to "Bearbeiten", edit_internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]), class: 'btn btn-secondary btn-sm' if can?(:edit, participant) %>
-        <%= button_to("Löschen", internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger btn-sm') if can?(:delete, participant) %>
+      <td class="text-nowrap">
+        <%= link_to(t('helpers.actions.edit_icon'), edit_internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]),
+                    class: 'btn btn-outline-primary btn-sm',
+                    title: t('helpers.actions.edit')) if can?(:edit, participant) %>
+        <%= button_to(t('helpers.actions.delete_icon'), internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]),
+                      method: :delete, data: { confirm: "Sicher?"},
+                      class: 'btn btn-outline-danger btn-sm',
+                      title: t('helpers.actions.delete')) if can?(:delete, participant) %>
       </td>
     </tr>
   <% end %>

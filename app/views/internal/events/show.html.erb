@@ -18,8 +18,8 @@
         <%= dl_entry(@event, :distance, unit: 'm') %>
         <dt>Details</dt>
         <dd>
-          <%= link_to "#{@event.participants.count} Meldungen", internal_participants_url(event_number: @event.number) %>,
-          <%= link_to "#{@event.starts.count} Starts", internal_event_starts_path(@regatta, @event) %>,
+          <%= link_to "#{@event.participants.count} Meldungen", internal_participants_url(event_number: @event.number) %><br>
+          <%= link_to "#{@event.starts.count} Starts", internal_event_starts_path(@regatta, @event) %><br>
           <%= link_to "#{@event.results.count} Ergebnisse", "#" %>
         </dd>
       </dl>

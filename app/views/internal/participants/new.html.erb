@@ -7,6 +7,9 @@
 <% else %>
 
   <%= bootstrap_form_for @participant, url: new_internal_participant_path(@regatta), method: :get do |f| %>
+    <% @participant_params.keys.each do |attr| %>
+      <%= f.hidden_field attr %>
+    <% end %>
     <%= f.collection_select :event_number, @regatta.events, :number, :label %>
     <%= f.primary "Weiter" %>
   <% end %>

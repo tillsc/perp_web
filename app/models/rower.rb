@@ -1,4 +1,4 @@
-class Rower < ActiveRecord::Base
+class Rower < ApplicationRecord
 
   include AliasAttributesInJson
 

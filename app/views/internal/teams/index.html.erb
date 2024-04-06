@@ -14,10 +14,17 @@
       <% @teams.each do |team| %>
         <tr>
           <td id="<%= team.to_anchor %>"><%= link_to team.name, internal_team_path(@regatta, team) %></td>
-          <td><%= link_to team.representative&.name, representative_url(@regatta, team.representative.public_private_id)  %></td>
-          <td>
-            <%= link_to "Bearbeiten", edit_internal_team_url(@regatta, team), class: 'btn btn-secondary' if can?(:edit, team) %>
-            <%= button_to("Löschen", internal_team_url(@regatta, team), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger') if can?(:delete, team) %>
+          <td><%= link_to team.representative&.name, internal_address_url(@regatta, team.representative)  %></td>
+          <td class="text-nowrap">
+            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_team_url(@regatta, team),
+                        class: 'btn btn-outline-primary btn-sm',
+                        title: t('helpers.actions.edit')) if can?(:edit, team) %>
+            <%= button_to(t('helpers.actions.delete_icon'), internal_team_url(@regatta, team),
+                          method: :delete, data: { confirm: "Sicher?"},
+                          class: 'btn btn-outline-danger btn-sm',
+                          title: t('helpers.actions.delete')) if can?(:delete, team) %>
+            <%= link_to("Neue Meldung", new_internal_participant_path(participant: {team_id: team.team_id}),
+                        class: 'btn btn-outline-secondary btn-sm') %>
           </td>
         </tr>
       <% end %>

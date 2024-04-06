@@ -24,14 +24,23 @@
             <%= event.is_lightweight? ? '✔︎︎' : '✘' %> /
             <%= event.has_cox? ? '✔︎︎' : '✘' %>
           </td>
-          <td>
-            <%= link_to "Bearbeiten", edit_internal_event_url(@regatta, event), class: 'btn btn-secondary btn-sm' if can?(:edit, event) %>
-            <%= link_to "⎘", new_internal_event_url(@regatta, copy_event_number: event.number), title: 'Kopieren', class: 'btn btn-secondary btn-sm' if can?(:create, Event) %>
-            <%= button_to("Löschen", internal_event_url(@regatta, event), method: :delete, data: { confirm: "Sicher?"}, class: 'btn btn-danger btn-sm') if can?(:delete, event) %>
+          <td class="text-nowrap">
+            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_event_url(@regatta, event),
+                        class: 'btn btn-outline-primary btn-sm',
+                        title: t('helpers.actions.edit')) if can?(:edit, event) %>
+            <%= link_to(t('helpers.actions.copy_icon'), new_internal_event_url(@regatta, copy_event_number: event.number),
+                        class: 'btn btn-outline-secondary btn-sm',
+                        title: t('helpers.actions.copy')) if can?(:create, Event) %>
+            <%= button_to(t('helpers.actions.delete_icon'), internal_event_url(@regatta, event),
+                          method: :delete, data: { confirm: "Sicher?"},
+                          class: 'btn btn-outline-danger btn-sm',
+                          title: t('helpers.actions.delete')) if can?(:delete, event) %>
           </td>
-          <td>
-            <%= link_to "Meldungen", internal_participants_url(@regatta, event_number: event.number), class: 'btn btn-outline-secondary btn-sm' %>
-            <%= link_to "Starts", internal_event_starts_path(@regatta, event), class: 'btn btn-outline-secondary btn-sm' %>
+          <td class="text-nowrap">
+            <%= link_to "Meldungen", internal_participants_url(@regatta, event_number: event.number),
+                        class: 'btn btn-outline-secondary btn-sm' %>
+            <%= link_to "Starts", internal_event_starts_path(@regatta, event),
+                        class: 'btn btn-outline-secondary btn-sm' %>
           </td>
         </tr>
       <% end %>

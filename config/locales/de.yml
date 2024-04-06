@@ -167,8 +167,11 @@ de:
       prompt: Bitte wählen
     actions:
       edit: Bearbeiten
+      edit_icon: ✎
       delete: Löschen
+      delete_icon: 🗑️
       copy: Kopieren
+      copy_icon: ⎘
     titles:
       new: "%{model} neu anlegen"
       edit: "%{model} bearbeiten"

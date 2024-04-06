@@ -17,10 +17,15 @@
           <td><%= user.email %></td>
           <td><%= Array.wrap(user.roles).presence&.map { |r| User.human_attribute_name("role_#{r}")}&.join(", ") || "-" %></td>
           <td><%= user.last_sign_in_at && l(user.last_sign_in_at) || "-" %></td>
-          <td>
-            <%= link_to "Bearbeiten", edit_internal_user_path(user), class: 'btn btn-primary btn-sm mb-1' %>
+          <td class="text-nowrap">
+            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_user_path(user),
+                        class: 'btn btn-outline-primary btn-sm',
+                        title: t('helpers.actions.edit')) %>
             <% unless user.id == current_user.id %>
-              <%= button_to "Löschen", internal_user_path(user), method: :delete, class: 'btn btn-danger btn-sm mb-1', data: { confirm: "Sicher?" } %>
+              <%= button_to(t('helpers.actions.delete_icon'), internal_user_path(user),
+                            method: :delete, data: { confirm: "Sicher?" },
+                            class: 'btn btn-outline-danger btn-sm',
+                            title: t('helpers.actions.delete')) %>
             <% end %>
           </td>
         </tr>
