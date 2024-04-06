@@ -18,7 +18,11 @@ Rails.application.routes.draw do
         delete '/regatta/referee' => :remove_regatta_referee
         put '/regatta/referee' => :add_regatta_referee
       end
-      resources :events
+      resources :events do
+        get '/starts' => 'starts#index'
+        get '/starts/:race_type' => 'starts#edit', as: 'race_type_starts'
+        put '/starts/:race_type' => 'starts#save'
+      end
       resources :races
       resources :participants
       resources :teams

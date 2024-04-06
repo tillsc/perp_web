@@ -76,6 +76,10 @@ class Participant < ApplicationRecord
     end.html_safe
   end
 
+  def label
+    "#{self.number} - #{self.team_name}".html_safe
+  end
+
   def rower_names(options = {})
     ALL_ROWERS.map { |assoc| self.send(assoc) }.each_with_index.map { |rower, i|
       if rower
@@ -107,6 +111,10 @@ class Participant < ApplicationRecord
 
   def active?
     !withdrawn? && !disqualified.present?
+  end
+
+  def disqualified?
+    disqualified.present?
   end
 
   def state

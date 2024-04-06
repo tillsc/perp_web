@@ -1,0 +1,40 @@
+<%= stylesheet_link_tag 'startlists' %>
+
+<h1>Starts für Rennen <%= @event.label %> - <%= Parameter.race_type_name(@race_type) %></h1>
+
+<div class="startlists">
+
+  <div class="column">
+    <h6>Verfügbare Teilnehmer</h6>
+    <div class="item_list participants remaining-participants">
+      <%= render partial: 'participant', collection: @remaining_participants %>
+      <%= render 'empty_lane' %>
+    </div>
+  </div>
+
+  <%= bootstrap_form_with url: internal_event_race_type_starts_path(@regatta, @event),
+                          method: :put, class: 'races' do |f| %>
+
+
+    <% @races.each do |race| %>
+      <div class="column">
+        <h6><%= race.name %></h6>
+        <%= hidden_field_tag 'starts[]', race.number %>
+        <div class="item_list participants">
+          <% lanes = race.starts.map(&:lane_number).presence || [0] %>
+          <% (1..(lanes.max)).each do |lane| %>
+            <% if part = race.starts.find { |s| s.lane_number == lane }&.participant %>
+              <%= render 'participant', participant: part %>
+            <% else %>
+              <%= render 'empty_lane' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    </div>
+
+    <%= f.primary %>
+  <% end %>
+
+  <%= javascript_include_tag 'startlists' %>

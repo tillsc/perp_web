@@ -1,0 +1,41 @@
+<h1>Starts für Rennen <%= @event.label %></h1>
+
+<table class="table table-striped">
+  <% @race_types.each do |race_type| %>
+    <thead>
+    <tr>
+      <th colspan="2" class="fs-4">
+        <%= Parameter.race_type_name(race_type) %>
+      </th>
+      <td>
+        <%= link_to t('helpers.actions.edit'), internal_event_race_type_starts_path(@regatta, @event, race_type), class: 'btn btn-primary' %>
+      </td>
+    </tr>
+    <tr>
+      <th><%= Start.human_attribute_name(:lane_number) %></th>
+      <th><%= Participant.human_attribute_name(:number) %></th>
+      <th><%= Participant.human_attribute_name(:team) %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% if @starts[race_type] %>
+      <% @starts[race_type].group_by { |s| s.race.name }.each do |race_name, starts| %>
+        <tr>
+          <th colspan="3" class="fs-6"><%= race_name %></th>
+        </tr>
+        <% starts.sort_by(&:lane_number).each do |s| %>
+          <tr>
+            <td><%= s.lane_number %></td>
+            <td><%= s.participant.number %></td>
+            <td><%= s.participant.team_name %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="3">Keine Startlisten vorhanden</td>
+      </tr>
+    <% end %>
+    </tbody>
+  <% end %>
+</table>

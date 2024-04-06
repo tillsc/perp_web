@@ -3,23 +3,28 @@
 <div class="row">
   <div class="col-md-8 col-lg-9">
     <div class="row">
-      <dl class="col">
-        <dt><%= Event.human_attribute_name(:name_de) %></dt>
-        <dd><%= @event.name_de %></dd>
-        <dt><%= Event.human_attribute_name(:name_en) %></dt>
-        <dd><%= @event.name_en %></dd>
-        <dt><%= Event.human_attribute_name(:divergent_regatta_name) %></dt>
-        <dd><%= @event.divergent_regatta_name.presence || '-' %></dd>
-        <dt><%= Event.human_attribute_name(:distance) %></dt>
-        <dd><%= @event.distance %>&thinsp;m</dd>
-      </dl>
-      <dl class="col">
+      <dl class="col-md-4">
+        <%= dl_entry(@event, :name_de) %>
+        <%= dl_entry(@event, :name_en) %>
         <dt>Typ</dt>
         <dd>
           <%= @event.rower_count %>
           <%= @event.is_lightweight ? 'Leichtgewichte' : 'Ruderer' %>
           <%= @event.has_cox? ? 'mit Stm.' : '' %>
         </dd>
+        <%= dl_entry(@event, :divergent_regatta_name) %>
+      </dl>
+      <dl class="col-md-4">
+        <%= dl_entry(@event, :distance, unit: 'm') %>
+        <dt>Details</dt>
+        <dd>
+          <%= link_to "#{@event.participants.count} Meldungen", internal_participants_url(event_number: @event.number) %>,
+          <%= link_to "#{@event.starts.count} Starts", internal_event_starts_path(@regatta, @event) %>,
+          <%= link_to "#{@event.results.count} Ergebnisse", "#" %>
+        </dd>
+      </dl>
+      <dl class="col-md-4">
+        <%= dl_entry(@event, :entry_fee, unit: @regatta.currency ) %>
         <% weights = {}.
           merge(@event.is_lightweight? ? {maximum_average_rower_weight: 'Mittel', maximum_rower_weight: 'Einzel'} : {}).
           merge(@event.has_cox? ? {minimum_cox_weight: 'Stm.'} : {})
@@ -30,12 +35,7 @@
             <%= weights.keys.map { |weight_attr| @event.send(weight_attr) && "#{number_with_precision(@event.send(weight_attr)) }&thinsp;kg" || '-' }.join(' / ').html_safe %>
           </dd>
         <% end %>
-        <dt><%= Event.human_attribute_name(:entry_fee) %></dt>
-        <dd><%= @event.entry_fee %>&thinsp;<%= @regatta.currency %></dd>
-        <dt>Meldungen</dt>
-        <dd><%= link_to @event.participants.count, internal_participants_url(event_number: @event.number) %></dd>
-        <dt><%= Event.human_attribute_name(:additional_text) %></dt>
-        <dd><%= @event.additional_text.presence || '-' %></dd>
+        <%= dl_entry(@event, :additional_text) %>
       </dl>
     </div>
   </div>

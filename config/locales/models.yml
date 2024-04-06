@@ -146,6 +146,8 @@ de:
         rower7_in: Meldungen als Ruderer 7
         rower8_in: Meldungen als Ruderer 8
         rowers_in: Meldungen als Steuermann
+      start:
+        lane_number: Bahn
     errors:
       models:
         address:

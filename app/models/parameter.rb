@@ -31,7 +31,7 @@ class Parameter < ApplicationRecord
 
   def self.race_type_name(type_short)
     @types_short_to_long ||= {}
-    @types_short_to_long[type_short] ||= get_value_for('Uebersetzer_Lauftypen', type_short)
+    @types_short_to_long[type_short] ||= get_value_for('Uebersetzer_Lauftypen', type_short) || type_short
   end
 
   def self.all_race_type_names

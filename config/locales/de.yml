@@ -165,6 +165,10 @@ de:
           zero: Kein %{entry_name} gefunden
     select:
       prompt: Bitte wählen
+    actions:
+      edit: Bearbeiten
+      delete: Löschen
+      copy: Kopieren
     titles:
       new: "%{model} neu anlegen"
       edit: "%{model} bearbeiten"
