@@ -8,7 +8,7 @@ module Internal
     def index
       @race_types = @event.races.map(&:type_short).uniq
       @starts = @event.starts.preload(:race, participant: :team).
-        group_by { |s| s.race.type_short }
+        group_by { |s| s.race&.type_short }
     end
 
     def edit
@@ -26,9 +26,10 @@ module Internal
         map { |sub_arr| [sub_arr.shift, sub_arr] }.
         to_h
       Start.transaction do
+        # Delete old start list entries
+        @event.starts.by_type_short(race_type).destroy_all
         starts.each do |race_number, st|
           race = races.find { |r| r.number == race_number } || raise("Couldn't find rafe for race_number #{race_number.inspect} in #{races}")
-          race.starts.destroy_all
           st.each_with_index do |participant_id, i|
             if participant_id.present?
               race.starts.create!(lane_number: i + 1, participant_id: participant_id)

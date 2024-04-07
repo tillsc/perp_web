@@ -35,6 +35,15 @@ class Start < ApplicationRecord
       merge(Race.upcoming)
   }
 
+  scope :by_type_short, -> (type_short) do
+    ts = Array(type_short).dup
+    scope = arel_table['Lauf'].matches("#{ts.pop}%")
+    while ts.any?
+      scope = scope.or(arel_table['Lauf'].matches("#{ts.pop}%"))
+    end
+    where(scope)
+  end
+
   default_scope do
     order('Regatta_ID', 'Rennen', 'Lauf')
   end
