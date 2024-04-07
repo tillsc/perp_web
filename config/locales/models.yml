@@ -2,15 +2,32 @@ de:
   activerecord:
     models:
       organiszer: Veranstalter
-      regatta: Regatta
+      regatta:
+        one: Regatta
+        other: Regatten
       event: Rennen
-      race: Lauf
-      participant: Meldung
-      team: Team
+      race:
+        one: Lauf
+        other: Läufe
+      participant:
+        one: Meldung
+        other: Meldungen
+      team:
+        one: Team
+        other: Teams
       rower: Ruderer
-      weight: Gewicht
-      address: Adresse
-      measuring_session: Mess-Sitzung
+      weight:
+        one: Gewicht
+        other: Gewichte
+      address:
+        one: Adresse
+        other: Adressen
+      measurement_set:
+        one: Messung
+        other: Messungen
+      measuring_session:
+        one: Mess-Sitzung
+        other: Mess-Sitzungen
     attributes:
       regatta:
         name: Name

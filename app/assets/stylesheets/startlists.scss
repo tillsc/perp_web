@@ -36,6 +36,7 @@
 .startlists {
   display: flex;
   justify-content: stretch;
+  column-gap: 1rem;
 
   .remaining-participants {
     width: 300px;
@@ -44,11 +45,17 @@
   form.races {
     flex: 2 1 auto;
     display: grid;
+    column-gap: 1rem;
+    row-gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 
   h6 {
     font-size: 0.9rem;
+  }
+
+  .actions {
+    grid-column: 1;
   }
 
 }

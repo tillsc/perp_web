@@ -1,6 +1,6 @@
 <%= stylesheet_link_tag 'startlists' %>
 
-<h1>Starts für Rennen <%= @event.label %> - <%= Parameter.race_type_name(@race_type) %></h1>
+<h1>Starts für Rennen <%= link_to(@event.label, internal_event_path(@regatta, @event)) %> - <%= Parameter.race_type_name(@race_type) %></h1>
 
 <div class="startlists">
 
@@ -14,7 +14,6 @@
 
   <%= bootstrap_form_with url: internal_event_race_type_starts_path(@regatta, @event),
                           method: :put, class: 'races' do |f| %>
-
 
     <% @races.each do |race| %>
       <div class="column">
@@ -32,9 +31,12 @@
         </div>
       </div>
     <% end %>
-    </div>
 
-    <%= f.primary %>
+    <div class="actions">
+      <%= f.primary %>
+    </div>
   <% end %>
 
-  <%= javascript_include_tag 'startlists' %>
+</div>
+
+<%= javascript_include_tag 'startlists' %>

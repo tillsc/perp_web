@@ -1,4 +1,4 @@
-<h1>Starts für Rennen <%= @event.label %></h1>
+<h1>Starts für Rennen <%= link_to(@event.label, internal_event_path(@regatta, @event)) %></h1>
 
 <table class="table table-striped">
   <% @race_types.each do |race_type| %>

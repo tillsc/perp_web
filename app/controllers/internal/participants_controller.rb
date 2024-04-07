@@ -10,6 +10,11 @@ module Internal
       end
     end
 
+    def show
+      @participant = @regatta.participants.find(params.extract_value(:id))
+      authorize! :show, @participant
+    end
+
     def new
       @participant_params = participant_params
       @participant = @regatta.participants.new(participant_params)

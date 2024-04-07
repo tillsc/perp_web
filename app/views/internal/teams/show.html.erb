@@ -28,7 +28,13 @@
 <h3>Meldungen</h3>
 
 <table class="table table-striped">
-  <thead></thead>
+  <thead>
+  <tr>
+    <th><%= Event.model_name.human %></th>
+    <th><%= Participant.human_attribute_name(:number) %></th>
+    <th><%= Rower.model_name.human(count: 2) %></th>
+  </tr>
+  </thead>
   <tbody>
   <% @team.participants.preload(:event, *Participant::ALL_ROWERS).each do |participant| %>
     <tr>
