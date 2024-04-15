@@ -25,6 +25,7 @@ class FindReferenceElement extends HTMLElement {
         showAllSuggestions: true, // Stop Autocomplete searching in JSON again
         suggestionsThreshold: 3, // 3 letters required before fetching
         notFoundMessage: 'Nix gefunden. Sorry.',
+        fixed: true,
         noCache: false, // Disable timestamp query param
         valueField: this.valueField, labelField: this.labelField,
         onSelectItem: (item) => this.selectItem(item)

@@ -30,7 +30,6 @@ module Internal
 
     def create
       @rower = Rower.new(rower_params)
-      @rower.set_rower_id
       authorize! :create, Rower
 
       if @rower.save

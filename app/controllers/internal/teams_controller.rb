@@ -25,11 +25,12 @@ module Internal
     def create
       @team = @regatta.teams.new(team_params)
       @team.set_team_id
+      @team.entry_fee_discount||= 0
       authorize! :create, Team
 
       if @team.save
         flash[:info] = helpers.success_message_for(:create, @team)
-        redirect_to back_or_default
+        redirect_to back_or_default_with_uri_params(closeDialog: 1)
       else
         flash[:danger] = helpers.error_message_for(:create, @team)
         prepare_form

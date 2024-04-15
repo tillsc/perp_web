@@ -18,7 +18,7 @@ class Team < ApplicationRecord
 
   belongs_to :representative, class_name: 'Address', foreign_key: 'Obmann_ID'
 
-  has_many :participants, query_constraints: ['Regatta_ID', 'Team_ID']
+  has_many :participants, query_constraints: ['Regatta_ID', 'Team_ID'], dependent: :restrict_with_error
 
   validates :name, uniqueness: { scope: 'Regatta_ID' }
 

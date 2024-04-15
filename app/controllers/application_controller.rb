@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
       @my_address = Address.
         find_by(public_private_id: cookies[:my_public_private_id])
     end
+
+    self.class.layout params[:_layout] == "false" ? "minimal" : nil
   end
 
   protected
@@ -32,6 +34,13 @@ class ApplicationController < ActionController::Base
     else
       root_url
     end
+  end
+
+  def back_or_default_with_uri_params(default: nil, **additional_uri_params)
+    uri = URI.parse(back_or_default(default).to_s)
+    all_params = Hash[URI.decode_www_form(String(uri.query))].merge(additional_uri_params)
+    uri.query = URI.encode_www_form(all_params)
+    uri.to_s
   end
 
   def after_sign_in_path_for(resource)

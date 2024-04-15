@@ -10,6 +10,7 @@ class Rower < ApplicationRecord
   alias_attribute :year_of_birth, 'JahrG'
   alias_attribute :external_id, 'ExterneID1'
   alias_attribute :club_name, 'Zusatz'
+  alias_attribute :updated_at, 'AenderungsDatum'
 
   alias_attribute :club_id, 'Verein_ID'
   belongs_to :club, class_name: 'Address', foreign_key: 'Verein_ID', optional: true
