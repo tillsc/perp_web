@@ -15,7 +15,7 @@
   <% participants.each do |participant| %>
     <tr id="<%= participant.to_anchor %>">
       <td><%=  participant.event && link_to(participant.event.label, internal_event_url(@regatta, participant)) || '!' %></td>
-      <td><%= participant.number %></td>
+      <td><%= link_to(participant.number || '-', internal_participant_path(@regatta, participant)) %></td>
       <td><%= link_to participant.team_name, internal_team_path(@regatta, participant.team) %></td>
       <td><%= participant.withdrawn ? '✓' : '' %></td>
       <td><%= participant.late_entry ? '✓' : '' %></td>

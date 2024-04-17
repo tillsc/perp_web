@@ -132,4 +132,42 @@ class Participant < ApplicationRecord
     end
   end
 
+  before_update :write_history
+  def write_history
+    if self.entry_changed
+      changes = []
+
+      if self.changed.include?("Team_ID")
+        old_team = self.regatta.teams.find_by(id: self.changed_attributes["Team_ID"])
+        changes << "#{old_team.name} &rArr; #{self.team&.name || '-'}" if old_team
+      end
+
+      ALL_ROWER_IDX.each do |idx|
+        field = "ruderer#{idx}_ID"
+        if self.changed.include?(field)
+          old_rower = Rower.find_by(id: self.changed_attributes[field])
+          changes << "#{old_rower.name} &rArr; #{self.send("rower#{idx}")&.name || '-'}" if old_rower
+        end
+      end
+
+      if self.changed.include?("BugNr")
+        changes << "BugNr #{self.changed_attributes["BugNr"]} &rArr; #{self.number}"
+      end
+
+      if changes.any?
+        prepend_history_entry('Ummeldung', changes.join(' - '))
+      end
+    end
+
+    if self.changed.include?("Abgemeldet")
+      prepend_history_entry(self.withdrawn? ? "Abmeldung" : "Anmeldung")
+    end
+  end
+
+  def prepend_history_entry(what_happened, details = nil)
+    new_entry = "#{DateTime.now.strftime("%d.%m.%Y %T")}: <b>#{what_happened}</b>"
+    new_entry += " - #{details}" if details.present?
+    self.history = "#{new_entry}<br>\n#{self.history}"
+  end
+
 end
