@@ -8,6 +8,14 @@ html, :root {
   scroll-behavior: auto;
 }
 
+body.internal {
+  background: #fff9f9;
+
+  nav {
+    background: #5e0403 !important;
+  }
+}
+
 .regatta-header {
   @media only print {
     padding-left: 0;

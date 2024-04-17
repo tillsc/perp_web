@@ -1,5 +1,6 @@
 class MeasuringSessionsController < ApplicationController
 
+  is_internal!
   def index
     authorize! :index, MeasuringSession
 
