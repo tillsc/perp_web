@@ -18,6 +18,7 @@ module Internal
     def new
       copy_team =  @regatta.teams.find_by(team_id: params[:copy_team]) if params[:copy_team].present?
       @team = @regatta.teams.new(team_params(Team::COPY_FIELDS.inject({}) { |h, f| h.merge(f => copy_team&.send(f)) }))
+      @team.name = @team.name.presence || params[:default]&.camelcase
       authorize! :new, Team
       prepare_form
     end
@@ -30,7 +31,7 @@ module Internal
 
       if @team.save
         flash[:info] = helpers.success_message_for(:create, @team)
-        redirect_to back_or_default_with_uri_params(closeDialog: 1)
+        redirect_to back_or_default_with_uri_params(dialog_finished_with: @team.id)
       else
         flash[:danger] = helpers.error_message_for(:create, @team)
         prepare_form

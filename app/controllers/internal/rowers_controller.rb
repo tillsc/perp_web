@@ -24,6 +24,23 @@ module Internal
 
     def new
       @rower = Rower.new(rower_params)
+      defaults = params[:default]&.split(" ")
+      if defaults
+        if defaults.last && defaults.last =~ /^(\d{2})?\d{2}$/
+          default_year = defaults.pop.to_i
+          if !$1.present?
+            default_year+= Date.today.year - (Date.today.year % 100)
+            default_year-= 100 if default_year > Date.today.year - 6
+          end
+          @rower.year_of_birth = @rower.year_of_birth.presence || default_year
+        end
+        if defaults.length > 1
+          @rower.last_name = @rower.last_name.presence || defaults.pop.camelcase
+        end
+        @rower.first_name = @rower.first_name.presence || defaults.join(" ").camelcase
+
+
+      end
       authorize! :new, Rower
       prepare_form
     end
@@ -34,7 +51,7 @@ module Internal
 
       if @rower.save
         flash[:info] = helpers.success_message_for(:create, @rower)
-        redirect_to back_or_default
+        redirect_to back_or_default_with_uri_params(dialog_finished_with: @rower.id)
       else
         flash[:danger] = helpers.error_message_for(:create, @rower)
         prepare_form

@@ -14,8 +14,16 @@ class DialogOpener extends HTMLElement {
 </div>`;
 
   connectedCallback() {
+    this.init();
+  }
+
+  init() {
     const link = this.querySelector("a");
     if (link) {
+      if (this.hasAttribute('local-reload') && !this.id) {
+        console.log("<dialog-opener> Problem: Element has local-reload attribute but no id!", this);
+      }
+
       link.addEventListener("click", (e) => {
         e.preventDefault();
         this.findOrCreateDialog(this.prepareLink(link.getAttribute("href")));
@@ -26,7 +34,21 @@ class DialogOpener extends HTMLElement {
   }
 
   prepareLink(src) {
-    let s = new URL(src, document.location.href);
+    const s = new URL(src, document.location.href);
+
+    const defaultValues = [...this.querySelectorAll('input')].map((input) => {
+      if (input.type !== 'hidden' && input.value) {
+        return input.value;
+      }
+      else {
+        return null;
+      }
+    }).filter(item => item !== null);
+
+    if (defaultValues !== []) {
+      s.searchParams.set("default", defaultValues.join(","));
+    }
+
     s.searchParams.set("_layout", false);
     return s.toString();
   }
@@ -43,26 +65,58 @@ class DialogOpener extends HTMLElement {
     this.modal = new bootstrap.Modal(this.dialog.querySelector(".modal"));
   }
 
-  enhanceIFrame() {
+   enhanceIFrame() {
     this.iframe = this.dialog.querySelector("iframe");
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
       this.iframe.addEventListener("load", (e) => {
-        let uri = new URL(this.iframe.contentWindow.location);
-        if (uri.searchParams.has("closeDialog")) {
-          this.modal.hide();
-          uri.searchParams.delete("_layout");
-          uri.searchParams.delete("closeDialog");
-          uri.searchParams.set("dummy", Math.random(100000));
-          window.location.href = uri.toString();
-          reject()
-        }
-        else {
-          this.moveElementsToOuterActions();
-          this.iframe.display = 'unset';
-          resolve();
-        }
+        this.iFrameLoad(e).then(resolve);
       });
     });
+  }
+
+  async iFrameLoad(e) {
+    let uri = new URL(this.iframe.contentWindow.location);
+    if (uri.searchParams.has("dialog_finished_with")) {
+      this.modal.hide();
+      uri.searchParams.delete("_layout");
+      uri.searchParams.set("dummy", Math.random(100000));
+      const localReloadWorked = await this.tryLocalReload(uri);
+      if (!localReloadWorked) {
+          window.location.href = uri.toString();
+      }
+    }
+    else {
+      this.moveElementsToOuterActions();
+      this.iframe.display = 'unset';
+    }
+  }
+
+  async tryLocalReload(newUri) {
+    let mustReloadWindow = true;
+    const currentUri = new URL(window.location.href);
+    if (currentUri.hostname !== newUri.hostname || currentUri.pathname !== newUri.pathname || currentUri.protocol !== newUri.protocol) {
+      console.log(`<dialog-opener> Warning: local-reload got different base uri (${newUri.toString()}) then window has (${currentUri.toString()}). This might lead to problems, but we'll try it anyway.`);
+    }
+
+    if (this.hasAttribute('local-reload') && this.id) {
+      newUri.searchParams.set('local_reload', this.id);
+      const res = await fetch(newUri);
+      if (res.ok) {
+        const html = await res.text();
+        const newDocument = (new DOMParser()).parseFromString(html, 'text/html');
+        const fragment = newDocument.getElementById(this.id);
+        if (fragment) {
+          this.replaceChildren(...fragment.children);
+          this.init();
+          return true;
+        }
+        else {
+          console.log(`<dialog-opener> Problem: Element with id "${this.id}" not found in new serverside fragment`, html);
+        }
+      }
+    }
+
+    return false;
   }
 
   moveElementsToOuterActions() {

@@ -29,10 +29,10 @@
           <td><%= rower.club && link_to(rower.club.name, internal_address_url(@regatta, rower.club)) || rower.club_name %></td>
           <td><%= rower.external_id %></td>
           <td class="text-nowrap">
-            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_rower_url(@regatta, rower),
+            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_rower_url(@regatta, rower, referrer: current_url),
                         class: 'btn btn-outline-primary btn-sm',
                         title: t('helpers.actions.edit')) if can?(:edit, rower) %>
-            <%= button_to(t('helpers.actions.delete_icon'), internal_rower_url(@regatta, rower),
+            <%= button_to(t('helpers.actions.delete_icon'), internal_rower_url(@regatta, rower, referrer: current_url),
                           method: :delete, data: { confirm: "Sicher?"},
                           class: 'btn btn-outline-danger btn-sm',
                           title: t('helpers.actions.delete')) if can?(:delete, rower) %>

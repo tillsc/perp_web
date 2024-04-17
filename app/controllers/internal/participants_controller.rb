@@ -81,6 +81,16 @@ module Internal
     end
 
     def prepare_form
+      if params['local_reload'].present? && params['dialog_finished_with'].present?
+        if params['local_reload'] == 'dialog-opener-team'
+          new_team = @regatta.teams.find_by(team_id:  params['dialog_finished_with'])
+          @participant.team = new_team if new_team
+        elsif  params['local_reload'] =~ /dialog-opener-(rower.)/ && Participant::ALL_ROWERS.map(&:to_s).include?($1)
+          rel = $1
+          new_rower = Rower.find_by(id: params['dialog_finished_with'])
+          @participant.send("#{rel}=", new_rower) if new_rower
+        end
+      end
     end
 
     def participant_params(default = {})

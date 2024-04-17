@@ -12,14 +12,14 @@
     </div>
 
     <div class="col">
-      <%= content_tag 'find-reference', href: internal_teams_url(@regatta),
-                      'value-field': 'team_id', 'label-field': 'name',
-                      'initial-label': f.object.team&.name do %>
-        <dialog-opener move-out="primary">
+      <dialog-opener move-out="primary" local-reload id="dialog-opener-team">
+        <%= content_tag 'find-reference', href: internal_teams_url(@regatta),
+                        'value-field': 'team_id', 'label-field': 'name',
+                        'initial-label': f.object.team&.name do %>
           <%= f.text_field :team_id, required: true,
                            append: link_to("+", new_internal_team_path(@regatta, referrer: current_url), class: "btn btn-secondary") %>
-        </dialog-opener>
-      <% end %>
+        <% end %>
+      </dialog-opener>
       <%= f.number_field :team_boat_number %>
     </div>
 
@@ -36,14 +36,14 @@
   <div class="row">
     <% f.object.rower_fields.each do |field| %>
       <div class="col-md-4">
-      <%= content_tag 'find-reference', href: internal_rowers_url(@regatta),
-                      'value-field': 'id', 'label-field': 'name',
-                      'initial-label': f.object.send(field)&.name do %>
-          <dialog-opener move-out="primary">
+        <dialog-opener move-out="primary" local-reload id="dialog-opener-<%= field %>">
+          <%= content_tag 'find-reference', href: internal_rowers_url(@regatta),
+                          'value-field': 'id', 'label-field': 'name',
+                          'initial-label': f.object.send(field)&.name do %>
             <%= f.text_field "#{field}_id", required: true,
                              append: link_to("+", new_internal_rower_path(@regatta, referrer: current_url), class: "btn btn-secondary")%>
-          </dialog-opener>
-      <% end %>
+          <% end %>
+        </dialog-opener>
       </div>
     <% end %>
   </div>

@@ -32,7 +32,15 @@ class FindReferenceElement extends HTMLElement {
       });
     });
 
+    this.addEventListener("dialog-opener:finished", (e) => {
+      e.preventDefault();
+    });
   }
+
+  fetchLabel(id) {
+
+  }
+
 
   selectItem(item) {
     this.input.value = item[this.valueField];
