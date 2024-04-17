@@ -22,13 +22,13 @@ namespace :cleanup do
     desc "Removes all duplicate rowers having no external id, replacing them in their start lists and results"
     task rowers: :environment do
       scope = Rower.
-        where(external_id: nil).
+        where(external_id: [nil, ""]).
         where(<<-QUERY)
 EXISTS (
 SELECT 1 FROM ruderer r2 WHERE 
   r2.ID <> ruderer.ID AND 
-  r2.VName = ruderer.VName AND r2.NName = ruderer.NName AND 
-  (r2.JahrG = ruderer.JahrG OR (IFNULL(ruderer.JahrG, '') = '' AND ruderer.Verein_ID = r2.Verein_ID))
+  r2.VName = TRIM(ruderer.VName) AND r2.NName = TRIM(ruderer.NName) AND 
+  (TRIM(IFNULL(r2.JahrG, '')) = TRIM(IFNULL(ruderer.JahrG, '')) OR (IFNULL(ruderer.JahrG, '') = '' AND ruderer.Verein_ID = r2.Verein_ID))
 )
 QUERY
 
