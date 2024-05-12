@@ -30,25 +30,25 @@
           <td><%= l(ms.created_at) %></td>
           <td>
             <% if can?(:edit, ms) %>
-              <%= link_to "✎", edit_measuring_session_path(@regatta, ms), class: 'btn btn-primary' %>
+              <%= link_to "✎", edit_measuring_session_path(@regatta, ms), class: 'btn btn-outline-primary' %>
             <% end %>
           </td>
           <td>
             <% if can?(:edit, ms) %>
               <% if ms.active? %>
                 <%= form_tag measuring_session_url(@regatta, ms), method: :patch do %>
-                  <button type="submit" name="deactivate" value="<%= ms.measuring_point.number %>" class="btn btn-danger">Deaktivieren</button>
+                  <button type="submit" name="deactivate" value="<%= ms.measuring_point.number %>" class="btn btn-outline-danger">Deaktivieren</button>
                 <% end %>
               <% else %>
                 <%= form_tag measuring_session_url(@regatta, ms), method: :patch do %>
-                  <button type="submit" name="activate" value="<%= ms.measuring_point.number %>" class="btn btn-success">Aktivieren</button>
+                  <button type="submit" name="activate" value="<%= ms.measuring_point.number %>" class="btn btn-outline-success">Aktivieren</button>
                 <% end %>
               <% end %>
             <% end %>
           </td>
           <td>
             <% if can?(:destroy, ms) %>
-              <%= button_to "🗑", measuring_session_path(@regatta, ms), method: :delete, class: 'btn btn-danger' %>
+              <%= button_to "🗑", measuring_session_path(@regatta, ms), method: :delete, class: 'btn btn-outline-danger' %>
             <% end %>
           </td>
         </tr>

@@ -36,7 +36,7 @@
                 <% ms = @measurement_sets.find { |ms| ms.race == race && ms.measuring_point == mp } %>
                 <% url = measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number) %>
                 <% if ms %>
-                  <%= link_to "Edit", url, class: "btn #{ms.correct? ? 'btn-secondary' : 'btn-warning'}" %>
+                  <%= link_to "Edit", url, class: "btn #{ms.correct? ? 'btn-outline-secondary' : 'btn-outline-warning'}" %>
                 <% else %>
                   <%= link_to "Neu", url %>
                 <% end %>
