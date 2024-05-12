@@ -30,3 +30,6 @@
 /config/master.key
 .idea
 config/database.yml
+
+/public/data
+/public/js
