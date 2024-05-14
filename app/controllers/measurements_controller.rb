@@ -46,7 +46,11 @@ class MeasurementsController < ApplicationController
     autosave = params[:autosave] == "1"
 
     MeasuringSession.transaction do
-      @res = @measuring.save!(params[:participants], params[:times], !autosave, measurement_set_params)
+      @res = if (params[:participant_times]) # finish cam
+               @measuring.save_finish_cam!(params[:participant_times].permit!.to_h, !autosave, measurement_set_params)
+             else
+               @measuring.save!(params[:participants], params[:times], !autosave, measurement_set_params)
+             end
     end
 
     if autosave
@@ -58,10 +62,22 @@ class MeasurementsController < ApplicationController
     end
   end
 
+  def finish_cam
+    authorize! :create, @measuring.measurement_set
+
+    @measurements = @measuring.measurements
+    @measuring_session = @measuring.measurement_set.measuring_session
+    @no_main_nav = current_user.is_a?(MeasuringSession)
+
+    render :finish_cam
+  end
+
   protected
 
   def measurement_set_params
-    params[:measurement_set]&.permit(:referee_starter_id, :referee_aligner_id, :referee_umpire_id, :referee_finish_judge_id)
+    params[:measurement_set]&.permit(:referee_starter_id, :referee_aligner_id,
+                                     :referee_umpire_id, :referee_finish_judge_id,
+                                     :finish_cam_metadata)
   end
 
 end

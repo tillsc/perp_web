@@ -1,22 +1,5 @@
-<%= stylesheet_link_tag 'measurements' %>
-
+<%= render 'header' %>
 <% is_start = @race.event.measuring_point_type(@measuring_point) == :start %>
-<h4>
-  Rennen <%= @race.event.number %> - <%= @race.name %> bei <%= @measuring_point.name %>
-</h4>
-<p><small>
-  <% if is_start %>
-    Gestartet:
-      <% if @race.started_at %>
-        <time id="started_at" datetime="<%=  @race.started_at %>"><%= l(@race.started_at, format: :short) %></time>
-      <% else %>
-        -
-      <% end %>
-  <% elsif @race.started_at %>
-    Vorhandene Startzeit: <time datetime="<%=  @race.started_at %>"><%= l(@race.started_at, format: :short) %></time>
-  <% end %>
-</small></p>
-
 
 <%= bootstrap_form_with model: @measuring.measurement_set,
               url: measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number),
@@ -51,22 +34,8 @@
       </div>
     </div>
   </div>
-  <% if @race.event.measuring_point_type(@measuring_point) == :finish %>
-    <div class="row">
-      <div class="col-md-6 col-xl-3">
-        <%= f.select :referee_starter_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
-      </div>
-      <div class="col-md-6 col-xl-3">
-        <%= f.select :referee_aligner_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
-      </div>
-      <div class="col-md-6 col-xl-3">
-        <%= f.select :referee_umpire_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
-      </div>
-      <div class="col-md-6 col-xl-3">
-        <%= f.select :referee_finish_judge_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
-      </div>
-    </div>
-  <% end %>
+
+  <%= render 'referees', f: f %>
 
   <%= f.submit "Fertig" %>
   <%= link_to "Zeit Stoppen", '#', id: 'stop_time', class: 'btn btn-primary' %>

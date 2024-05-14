@@ -43,6 +43,10 @@ module Services
       @lanes[participant_id]
     end
 
+    def participant_for_lane(lane)
+      find_participant(@lanes.invert[lane])
+    end
+
     def find_participant(participant_id)
       all_participants.find { |p| p.participant_id == participant_id&.to_i }
     end
@@ -67,7 +71,7 @@ module Services
       end
     end
 
-    def save!(raw_participant_ids, raw_times, persist_result, measurement_set_attributes = nil)
+    def save!(raw_participant_ids, raw_times, publish_result, measurement_set_attributes = nil)
       participants = Array.wrap(raw_participant_ids).map { |p_id|
         p_id = p_id.presence&.to_i
         all_participants.find { |p| p.participant_id == p_id }
@@ -93,27 +97,43 @@ module Services
         participant_ids.push(-i)
       end
       res = participant_ids.zip(ftimes, rel_ftimes)
-      if measurement_set_attributes.present?
-        @measurement_set.attributes = measurement_set_attributes
-      end
-      @measurement_set.measurements = res
-      @measurement_set.measurements_history||= {}
-      last_history_date = @measurement_set.measurements_history.keys.last
-      if last_history_date.blank? || @measurement_set.measurements_history[last_history_date] != res
-        @measurement_set.measurements_history[DateTime.now] = res
-      end
-      @measurement_set.save!
 
-      if persist_result
-        persist_result!
+      save_measurements_hash!(res, publish_result, measurement_set_attributes)
+    end
+
+    def save_finish_cam!(raw_participant_times, publish_result, measurement_set_attributes = nil)
+      res = raw_participant_times.map do |raw_participant_id, raw_time|
+        raw_participant_id = raw_participant_id.presence&.to_i
+        participant = all_participants.find { |p| p.participant_id == raw_participant_id }
+        ftimes, rel_ftimes = calc_times([raw_time.presence].compact, race.started_at)
+        [participant&.participant_id || raw_participant_id, ftimes.first, rel_ftimes.first]
       end
 
-      res
+      save_measurements_hash!(res, publish_result, measurement_set_attributes)
     end
 
     protected
 
-    def persist_result!
+    def save_measurements_hash!(measurements_hash, publish_result, measurement_set_attributes)
+      if measurement_set_attributes.present?
+        @measurement_set.attributes = measurement_set_attributes
+      end
+      @measurement_set.measurements = measurements_hash
+      @measurement_set.measurements_history||= {}
+      last_history_date = @measurement_set.measurements_history.keys.last
+      if last_history_date.blank? || @measurement_set.measurements_history[last_history_date] != measurements_hash
+        @measurement_set.measurements_history[DateTime.now] = measurements_hash
+      end
+      @measurement_set.save!
+
+      if publish_result
+        publish_result!
+      end
+
+      measurements_hash
+    end
+
+    def publish_result!
       if race.event.measuring_point_type(@measurement_set.measuring_point) == :start
         @measurement_set.measurements.each_with_index do |(participant_id, _start_time, _), lane_number|
           result = race.results.find { |res| res.participant_id == participant_id } ||

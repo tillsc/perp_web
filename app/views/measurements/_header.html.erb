@@ -1,0 +1,18 @@
+<%= stylesheet_link_tag 'measurements' %>
+
+<% is_start = @race.event.measuring_point_type(@measuring_point) == :start %>
+<h4>
+  Rennen <%= @race.event.number %> - <%= @race.name %> bei <%= @measuring_point.name %>
+</h4>
+<p><small>
+  <% if is_start %>
+    Gestartet:
+    <% if @race.started_at %>
+      <time id="started_at" datetime="<%=  @race.started_at %>"><%= l(@race.started_at, format: :short) %></time>
+    <% else %>
+      -
+    <% end %>
+  <% elsif @race.started_at %>
+    Vorhandene Startzeit: <time datetime="<%=  @race.started_at %>"><%= l(@race.started_at, format: :short) %></time>
+  <% end %>
+</small></p>

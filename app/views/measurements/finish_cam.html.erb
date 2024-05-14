@@ -1,0 +1,63 @@
+<%= render 'header' %>
+<script type="module" src="<%= URI.join(@measuring_point.finish_cam_base_url, "js/measuring/index.js") %>"></script>
+
+<%= bootstrap_form_with model: @measuring.measurement_set,
+                        url: measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number),
+                        method: :post, class: 'finish_cam_form' do |f| %>
+  <% if @measuring_session.present? %>
+    <%= hidden_field_tag :measuring_session_id, @measuring_session&.to_param %>
+  <% end %>
+  <%= hidden_field_tag :measuring_point_number, params[:measuring_point_number] %>
+
+  <div class="finish_cam_container">
+    <perp-fc-browser href="<%= URI.join(@measuring_point.finish_cam_base_url, "data") %>">
+      <% (1..8).each do |lane| %>
+        <label>
+          <% participant = @measuring.participant_for_lane(lane) %>
+          <% if participant %>
+            <%= participant.number || "<<ID: #{participant.participant_id}>>" %>
+          <% end %>
+          (Bahn <%= lane %>)
+          <%= text_field_tag "participant_times[#{participant&.participant_id || -lane}]",
+                             @measurements[participant || -lane],
+                             class: "form-control" %>
+        </label>
+      <% end %>
+      <label slot="metadata">
+        Metadata
+        <%= f.text_field_without_bootstrap :finish_cam_metadata, class: "form-control" %>
+      </label>
+    </perp-fc-browser>
+  </div>
+
+  <div>
+    <%= render 'referees', f: f %>
+
+    <%= f.submit "Fertig" %>
+  </div>
+  </div>
+
+<% end %>
+
+
+<style>
+  html, body {
+    height: 100%;
+  }
+  .container,  .finish_cam_form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .finish_cam_form {
+    margin-bottom: 5rem;
+  }
+  .finish_cam_container {
+    flex: 1 1 auto;
+    position: relative;
+  }
+</style>
+
+<script>
+  cancelAutoreload();
+</script>

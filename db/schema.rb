@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_05_092809) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_12_101259) do
   create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "Titel", limit: 10
     t.string "Vorname", limit: 100
@@ -100,6 +100,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_05_092809) do
     t.integer "referee_aligner_id"
     t.integer "referee_umpire_id"
     t.integer "referee_finish_judge_id"
+    t.text "finish_cam_metadata"
   end
 
   create_table "measuring_sessions", charset: "utf8", force: :cascade do |t|
@@ -153,6 +154,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_05_092809) do
     t.integer "MesspunktNr", limit: 2, default: 0, null: false, unsigned: true
     t.integer "Position", default: 0, null: false, unsigned: true
     t.integer "measuring_session_id"
+    t.string "finish_cam_base_url"
   end
 
   create_table "parameter", primary_key: ["Sektion", "Schluessel"], charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|

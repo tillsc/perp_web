@@ -35,11 +35,12 @@
               <% if race.event.measuring_point_type(mp) %>
                 <% ms = @measurement_sets.find { |ms| ms.race == race && ms.measuring_point == mp } %>
                 <% url = measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number) %>
-                <% if ms %>
-                  <%= link_to "Edit", url, class: "btn #{ms.correct? ? 'btn-outline-secondary' : 'btn-outline-warning'}" %>
-                <% else %>
-                  <%= link_to "Neu", url %>
-                <% end %>
+                <div class="btn-group">
+                  <%= link_to ms ? "Edit" : "Neu", url, class: "btn #{ms && !ms.correct? ? 'btn-outline-warning' : 'btn-outline-secondary'}" %>
+                  <% if  mp.finish_cam_base_url.present? %>
+                    <%= link_to("🎥", finish_cam_measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number), class: 'btn btn-outline-primary') %>
+                  <% end %>
+                </div>
               <% end %>
             </td>
           <% end %>
