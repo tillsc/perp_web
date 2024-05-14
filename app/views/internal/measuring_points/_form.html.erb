@@ -1,0 +1,17 @@
+<%= bootstrap_form_for @measuring_point, url:
+  @measuring_point.persisted? ? internal_measuring_point_url(@regatta, @measuring_point) : internal_measuring_points_url(@regatta) do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
+
+  <div class="row">
+    <div class="col">
+      <%= f.number_field :number, required: true %>
+      <%= f.number_field :position, required: true, append: 'm' %>
+    </div>
+    <div class="col">
+      <%= f.url_field :finish_cam_base_url %>
+    </div>
+
+  </div>
+
+  <%= f.primary %>
+<% end %>

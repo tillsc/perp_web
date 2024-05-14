@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       resources :participants
       resources :teams
       resources :rowers
+      resources :measuring_points
 
       get '/weighings/:date' => 'weighings#index', as: :weighings
       get '/weighings/:date/event/:id' => 'weighings#event', as: :event_weighings
@@ -55,6 +56,8 @@ Rails.application.routes.draw do
     get '/measurements' => 'measurements#index', as: :measurements
     get '/measurements/:event_number/:race_number' => 'measurements#show', as: :measurement
     post '/measurements/:event_number/:race_number' => 'measurements#save'
+
+    get '/finish_cam/:event_number/:race_number' => 'measurements#finish_cam', as: :finish_cam_measurement
 
     resources :measuring_sessions
 

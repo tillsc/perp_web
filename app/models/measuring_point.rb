@@ -9,6 +9,9 @@ class MeasuringPoint < ApplicationRecord
   alias_attribute :number, 'MesspunktNr'
   alias_attribute :position, 'Position'
 
+  validates :number, uniqueness: {scope: :Regatta_ID}
+  validates :position, uniqueness: {scope: :Regatta_ID}
+
   default_scope do
     order('Regatta_ID', 'MesspunktNr')
   end

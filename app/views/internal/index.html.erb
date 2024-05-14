@@ -13,6 +13,9 @@
           <% if can?(:index, MeasuringSession) %>
             <li><%= link_to MeasuringSession.model_name.human(count: 2), measuring_sessions_url(@regatta) %></li>
           <% end %>
+          <% if can?(:index, MeasuringPoint) %>
+            <li><%= link_to MeasuringPoint.model_name.human(count: 2), internal_measuring_points_url(@regatta) %></li>
+          <% end %>
         </ul>
       </div>
     </div>

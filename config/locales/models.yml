@@ -28,6 +28,9 @@ de:
       measuring_session:
         one: Mess-Sitzung
         other: Mess-Sitzungen
+      measuring_point:
+        one: Messpunkt
+        other: Messpunkte
     attributes:
       regatta:
         name: Name
@@ -88,6 +91,11 @@ de:
         referee_umpire_id: Schiedsrichter
         referee_finish_judge: Zielrichter
         referee_finish_judge_id: Zielrichter
+      measuring_point:
+        number: Nummer
+        position: Position
+        name: Name
+        finish_cam_base_url: Zielkamera URL
       participant:
         event: Rennen
         number: Bugnummer

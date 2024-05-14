@@ -1,0 +1,43 @@
+<h1><%= MeasuringPoint.model_name.human(count: 2) %> für <%= @regatta.name %></h1>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <table class="table">
+      <thead>
+      <tr>
+        <th><%= MeasuringPoint.human_attribute_name(:number) %></th>
+        <th><%= MeasuringPoint.human_attribute_name(:name) %></th>
+        <th><%= MeasuringSession.model_name.human %></th>
+        <th><%= MeasuringPoint.human_attribute_name(:finish_cam_base_url) %></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @measuring_points.each do |measuring_point| %>
+        <tr>
+          <td><%= measuring_point.number %></td>
+          <td><%= measuring_point.name %></td>
+          <td>
+            <% if measuring_point.measuring_session %>
+              <%= link_to measuring_point.measuring_session&.identifier, measuring_session_path(@regatta, measuring_point.measuring_session) %>
+            <% end %>
+          </td>
+          <td><%= link_to(measuring_point.finish_cam_base_url, measuring_point.finish_cam_base_url) if measuring_point.finish_cam_base_url.present? %></td>
+          <td class="text-nowrap">
+            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_measuring_point_url(@regatta, measuring_point, referrer: local_assigns[:referrer]),
+                        class: 'btn btn-outline-primary',
+                        title: t('helpers.actions.edit')) if can?(:edit, measuring_point) %>
+            <%= button_to(t('helpers.actions.delete_icon'), internal_measuring_point_url(@regatta, measuring_point, referrer: local_assigns[:referrer]),
+                          method: :delete, data: { confirm: "Sicher?"},
+                          class: 'btn btn-outline-danger',
+                          title: t('helpers.actions.delete')) if can?(:delete, measuring_point) %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= link_to t('helpers.titles.new', model: MeasuringPoint.model_name.human), new_internal_measuring_point_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+  </div>
+</div>

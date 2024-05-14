@@ -24,6 +24,8 @@ class Regatta < ApplicationRecord
 
   has_many :measuring_points, foreign_key: 'Regatta_ID', inverse_of: :regatta
 
+  has_many :measuring_sessions, foreign_key: 'Regatta_ID', inverse_of: :regatta
+
   has_many :regatta_referees, foreign_key: 'Regatta_ID', inverse_of: :regatta
   has_many :referees, through: :regatta_referees, source: :address
 
