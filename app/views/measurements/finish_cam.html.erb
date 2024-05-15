@@ -10,7 +10,7 @@
   <%= hidden_field_tag :measuring_point_number, params[:measuring_point_number] %>
 
   <div class="finish_cam_container">
-    <perp-fc-browser href="<%= URI.join(@measuring_point.finish_cam_base_url, "data") %>">
+    <perp-fc-browser start-time="<%= @race.started_at.iso8601(4) %>" href="<%= URI.join(@measuring_point.finish_cam_base_url, "data") %>">
       <% (1..8).each do |lane| %>
         <label>
           <% participant = @measuring.participant_for_lane(lane) %>
@@ -54,6 +54,7 @@
   }
   .finish_cam_container {
     flex: 1 1 auto;
+    min-height: 300px;
     position: relative;
   }
 </style>

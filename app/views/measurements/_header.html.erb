@@ -13,6 +13,6 @@
       -
     <% end %>
   <% elsif @race.started_at %>
-    Vorhandene Startzeit: <time datetime="<%=  @race.started_at %>"><%= l(@race.started_at, format: :short) %></time>
+    Vorhandene Startzeit: <time datetime="<%= @race.started_at %>"><%= l(@race.started_at, format: :short) %></time>
   <% end %>
 </small></p>
