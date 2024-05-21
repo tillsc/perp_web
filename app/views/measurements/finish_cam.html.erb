@@ -1,5 +1,8 @@
-<%= render 'header' %>
 <script type="module" src="<%= URI.join(@measuring_point.finish_cam_base_url, "js/measuring/index.js") %>"></script>
+
+<div class="d-flex justify-content-between">
+  <%= render 'header' %>
+</div>
 
 <%= bootstrap_form_with model: @measuring.measurement_set,
                         url: measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number),
@@ -10,14 +13,11 @@
   <%= hidden_field_tag :measuring_point_number, params[:measuring_point_number] %>
 
   <div class="finish_cam_container">
-    <perp-fc-browser start-time="<%= @race.started_at.iso8601(4) %>" href="<%= URI.join(@measuring_point.finish_cam_base_url, "data") %>">
-      <% (1..8).each do |lane| %>
+    <perp-fc-browser start-time="<%= @race.started_at&.iso8601(4) %>" href="<%= URI.join(@measuring_point.finish_cam_base_url, "data") %>">
+      <% (1..8).to_a.reverse.each do |lane| %>
         <label>
           <% participant = @measuring.participant_for_lane(lane) %>
-          <% if participant %>
-            <%= participant.number || "<<ID: #{participant.participant_id}>>" %>
-          <% end %>
-          (Bahn <%= lane %>)
+          <%= participant&.number || "<B.#{lane}>" %>
           <%= text_field_tag "participant_times[#{participant&.participant_id || -lane}]",
                              @measurements[participant || -lane],
                              class: "form-control" %>
@@ -44,7 +44,7 @@
   html, body {
     height: 100%;
   }
-  .container,  .finish_cam_form {
+  .main,  .finish_cam_form {
     height: 100%;
     display: flex;
     flex-direction: column;

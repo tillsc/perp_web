@@ -69,7 +69,12 @@ class MeasurementsController < ApplicationController
     @measuring_session = @measuring.measurement_set.measuring_session
     @no_main_nav = current_user.is_a?(MeasuringSession)
 
-    render :finish_cam
+    respond_to do |format|
+      format.html do
+        @page_container_suffix = "-fluid"
+        render :finish_cam
+      end
+    end
   end
 
   protected
