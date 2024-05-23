@@ -17,6 +17,18 @@ class ApplicationController < ActionController::Base
     self.class.layout params[:_layout] == "false" ? "minimal" : nil
   end
 
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    if params[:new_regatta_id]
+      if self.class.is_internal?
+        redirect_to internal_path(params[:new_regatta_id])
+      else
+        redirect_to regatta_path(params[:new_regatta_id])
+      end
+    else
+      raise exception
+    end
+  end
+
   protected
 
   @is_internal_controller = false
