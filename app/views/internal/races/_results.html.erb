@@ -1,19 +1,29 @@
 <% if object.results.any? %>
   <table class="table table-striped">
     <thead>
-    <th><%= Race.model_name.human %></th>
+    <% unless object.class == Race %>
+      <th><%= Race.model_name.human %></th>
+    <% end %>
+    <th><%= Result.human_attribute_name(:lane_number) %></th>
+    <% unless object.class == Participant %>
     <th><%= Participant.human_attribute_name(:number) %></th>
-    <th><%= Participant.human_attribute_name(:team) %></th>
+      <th><%= Participant.human_attribute_name(:team) %></th>
+    <% end %>
     <th><%= Result.human_attribute_name(:times) %></th>
     <th></th>
     </thead>
     <tbody>
-    <% object.results.each do |result| %>
+    <% object.results.sort_by { |r| r.time_for(object.event.finish_measuring_point_number)&.sort_time_str || "ZZZZZZZZZ#{r.lane_number}" }.each do |result| %>
       <tr>
-        <td><%= link_to result.race.full_name, internal_race_path(@regatta, result.race) %></td>
-        <td><%= link_to result.participant.number || '-', internal_participant_path(@regatta, result.participant) if result.participant %></td>
-        <td><%= link_to result.participant.team_name, internal_participant_path(@regatta, result.participant) if result.participant %></td>
-        <td><%= safe_join(result.times.map{ |t| "#{t.measuring_point&.name}: #{t.time}" }, "<br>")  %></td>
+        <% unless object.class == Race %>
+          <td><%= link_to result.race.full_name, internal_race_path(@regatta, result.race) %></td>
+        <% end %>
+        <td><%= result.lane_number %></td>
+        <% unless object.class == Participant %>
+          <td><%= link_to result.participant.number || '-', internal_participant_path(@regatta, result.participant) if result.participant %></td>
+          <td><%= link_to result.participant.team_name, internal_participant_path(@regatta, result.participant) if result.participant %></td>
+        <% end %>
+        <td><%= safe_join(result.times.map{ |t| "#{t.measuring_point&.name}: #{t.time}" }, raw("<br>"))  %></td>
         <td>
           <%= button_to(t('helpers.actions.delete'), internal_race_result_path(@regatta, result.race, result, referrer: current_url),
                         method: :delete, data: { confirm: "Sicher?"},
@@ -26,4 +36,4 @@
   </table>
 <% else %>
   <p>Keine Ergebnisse</p>
-<% end %>
+<% end %>)

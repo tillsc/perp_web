@@ -2,19 +2,27 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th><%= Race.model_name.human %></th>
+        <% unless object.class == Race %>
+          <th><%= Race.model_name.human %></th>
+        <% end %>
         <th><%= Start.human_attribute_name(:lane_number) %></th>
-        <th><%= Participant.human_attribute_name(:number) %></th>
-        <th><%= Participant.human_attribute_name(:team) %></th>
+        <% unless object.class == Participant %>
+          <th><%= Participant.human_attribute_name(:number) %></th>
+          <th><%= Participant.human_attribute_name(:team) %></th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
     <% object.starts.each do |start| %>
       <tr>
-        <td><%= start.race.name %></td>
+        <% unless object.class == Race %>
+          <td><%= link_to start.race.full_name, internal_race_path(@regatta, start.race) %></td>
+        <% end %>
         <td><%= start.lane_number %></td>
-        <td><%= start.participant&.number %></td>
-        <td><%= start.participant&.team_name %></td>
+        <% unless object.class == Participant %>
+          <td><%= start.participant&.number %></td>
+          <td><%= start.participant&.team_name %></td>
+        <% end %>
       </tr>
     <% end %>
     </tbody>

@@ -59,6 +59,7 @@ de:
         additional_text_format: Zusatztext-Format
         distance: Distanz
       race:
+        event: Rennen
         event_number: Rennen
         number: Nummer
         type_short: Lauftyp
@@ -173,6 +174,9 @@ de:
         rowers_in: Meldungen als Steuermann
       start:
         lane_number: Bahn
+      result:
+        lane_number: Bahn
+        times: Zeiten
     errors:
       models:
         address:
