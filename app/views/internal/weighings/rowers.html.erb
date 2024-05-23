@@ -29,8 +29,8 @@
   </div>
 
   <div class="col-md-4 col-lg-3">
-    <%= bootstrap_form_with url: internal_rowers_weighings_url(@regatta), method: :get do |f| %>
-      <%= f.date_field :date, value: @date, label: "Für Datum" %>
+    <%= bootstrap_form_with url: internal_rowers_weighings_url(@regatta, @date), method: :get do |f| %>
+      <%= f.date_field :new_date, value: @date, label: "Für Datum" %>
 
       <%= f.check_box :only_not_weighed, label: "Nur nicht-verwogene", checked: @filters[:only_not_weighed] %>
 

@@ -9,7 +9,8 @@ class Result < ApplicationRecord
 
   belongs_to :participant, query_constraints: ['Regatta_ID', 'Rennen', 'TNr']
 
-  has_many :times, class_name: 'ResultTime', query_constraints: ['Regatta_ID', 'Rennen', 'Lauf', 'TNr'], inverse_of: :result
+  has_many :times, class_name: 'ResultTime', query_constraints: ['Regatta_ID', 'Rennen', 'Lauf', 'TNr'],
+           inverse_of: :result, dependent: :destroy
 
   alias_attribute :race_number, 'Lauf'
   alias_attribute :disqualified, 'Ausgeschieden'

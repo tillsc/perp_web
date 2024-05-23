@@ -24,11 +24,11 @@
       <tbody>
       <% starts.each do |s| %>
         <tr class="<%= participant_state_classes(s.participant) %>">
-          <td><%= s.participant.number %></td>
-          <td><%= s.participant.team.try(:country) %></td>
-          <td><%= s.participant.team_name %></td>
-          <td><%= s.participant.rower_names(rower_link: rower_link) %></td>
-          <td><%= s.participant.state %></td>
+          <td><%= s.participant&.number %></td>
+          <td><%= s.participant&.team&.country %></td>
+          <td><%= s.participant&.team_name %></td>
+          <td><%= s.participant&.rower_names(rower_link: rower_link) %></td>
+          <td><%= s.participant&.state %></td>
         </tr>
       <% end %>
       </tbody>

@@ -18,6 +18,7 @@ class FindReferenceElement extends HTMLElement {
       this.queryInput.required = this.input.required;
       this.queryInput.type = 'text';
       this.queryInput.value = this.getAttribute('initial-label');
+      this.queryInput.addEventListener("keydown", this);
       this.input.after(this.queryInput);
       this.input.type = 'hidden';
       this.autocomplete = new Autocomplete(this.queryInput, {
@@ -32,15 +33,30 @@ class FindReferenceElement extends HTMLElement {
       });
     });
 
-    this.addEventListener("dialog-opener:finished", (e) => {
-      e.preventDefault();
-    });
+    this.addEventListener("dialog-opener:finished", this);
+  }
+
+  handleEvent(e) {
+    if (e.target == this.queryInput) {
+      switch (e.type) {
+        case "keydown":
+          if (e.key == 'Enter') {
+            this.autocomplete._dropElement?.querySelector('a')?.click();
+            e.preventDefault();
+          }
+          break;
+      }
+    }
+    switch (e.type) {
+      case "dialog-opener:finished":
+        e.preventDefault();
+        break;
+    }
   }
 
   fetchLabel(id) {
 
   }
-
 
   selectItem(item) {
     this.input.value = item[this.valueField];

@@ -28,6 +28,7 @@ class Ability
         can :manage, Address
         can :manage, Event
         can :manage, Race
+        can :manage, Result
         can :manage, MeasuringPoint
         can :manage, :tv_settings
         can :manage, Regatta

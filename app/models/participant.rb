@@ -16,7 +16,10 @@ class Participant < ApplicationRecord
     belongs_to ALL_ROWERS[i], class_name: 'Rower', foreign_key: "ruderer#{name}_ID", optional: i > 0
   end
 
-  has_many :starts, query_constraints: ['Regatta_ID', 'Rennen', 'TNr']
+  has_many :starts, query_constraints: ['Regatta_ID', 'Rennen', 'TNr'],
+           inverse_of: :participant, dependent: :destroy
+  has_many :results, query_constraints: ['Regatta_ID', 'Rennen', 'TNr'],
+           inverse_of: :participant, dependent: :restrict_with_error
 
   scope :enabled, -> {
     where(withdrawn: [nil, false])

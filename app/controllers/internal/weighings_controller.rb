@@ -94,7 +94,7 @@ module Internal
     protected
 
     def init_filters
-      @date = params[:date].to_date
+      @date = params[:new_date]&.to_date || params[:date].to_date
 
       @filters = { date: @date }
       if params[:event_number_from].present?

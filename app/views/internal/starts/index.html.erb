@@ -27,8 +27,8 @@
         <% starts.sort_by(&:lane_number).each do |s| %>
           <tr>
             <td><%= s.lane_number %></td>
-            <td><%= s.participant.number %></td>
-            <td><%= s.participant.team_name %></td>
+            <td><%= s.participant&.number %></td>
+            <td><%= s.participant&.team_name %></td>
           </tr>
         <% end %>
       <% end %>

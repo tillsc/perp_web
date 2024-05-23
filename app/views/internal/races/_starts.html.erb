@@ -1,0 +1,24 @@
+<% if object.starts.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th><%= Race.model_name.human %></th>
+        <th><%= Start.human_attribute_name(:lane_number) %></th>
+        <th><%= Participant.human_attribute_name(:number) %></th>
+        <th><%= Participant.human_attribute_name(:team) %></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% object.starts.each do |start| %>
+      <tr>
+        <td><%= start.race.name %></td>
+        <td><%= start.lane_number %></td>
+        <td><%= start.participant&.number %></td>
+        <td><%= start.participant&.team_name %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Keine Starts</p>
+<% end %>

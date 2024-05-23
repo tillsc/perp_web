@@ -1,0 +1,29 @@
+<% if object.results.any? %>
+  <table class="table table-striped">
+    <thead>
+    <th><%= Race.model_name.human %></th>
+    <th><%= Participant.human_attribute_name(:number) %></th>
+    <th><%= Participant.human_attribute_name(:team) %></th>
+    <th><%= Result.human_attribute_name(:times) %></th>
+    <th></th>
+    </thead>
+    <tbody>
+    <% object.results.each do |result| %>
+      <tr>
+        <td><%= link_to result.race.full_name, internal_race_path(@regatta, result.race) %></td>
+        <td><%= link_to result.participant.number || '-', internal_participant_path(@regatta, result.participant) if result.participant %></td>
+        <td><%= link_to result.participant.team_name, internal_participant_path(@regatta, result.participant) if result.participant %></td>
+        <td><%= safe_join(result.times.map{ |t| "#{t.measuring_point&.name}: #{t.time}" }, "<br>")  %></td>
+        <td>
+          <%= button_to(t('helpers.actions.delete'), internal_race_result_path(@regatta, result.race, result, referrer: current_url),
+                        method: :delete, data: { confirm: "Sicher?"},
+                        class: 'btn btn-danger d-block w-100',
+                        form_class: 'd-block my-1') if can?(:delete, result) %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Keine Ergebnisse</p>
+<% end %>

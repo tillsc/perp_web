@@ -33,15 +33,15 @@
       </div>
       <% last_time = last_mp_time; position+= 1 %>
       <div class="number">
-        <%= participant.number %>
+        <%= participant&.number %>
         <% if local_assigns[:with_lane] %>
           (Bahn <%= r.lane_number %>)
         <% end %>
       </div>
-      <div class="country"><%= participant.team&.country %></div>
-      <div class="team"><%= participant.team_name %></div>
+      <div class="country"><%= participant&.team&.country %></div>
+      <div class="team"><%= participant&.team_name %></div>
       <div class="rower-names">
-        <%= participant.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r)) }) %>
+        <%= participant&.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r)) }) %>
       </div>
       <div class="times">
         <% measuring_points.each do |mp| %>

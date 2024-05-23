@@ -26,16 +26,25 @@
 
     <div class="my-3">
       <h4><%= Participant.human_attribute_name(:history) %></h4>
-      <%= @participant.history.html_safe %>
+      <%= @participant.history&.html_safe %>
     </div>
   </div>
   <div class="col-md-4 col-lg-3">
     <%= link_to(t('helpers.titles.edit', model: Participant.model_name.human),
                 edit_internal_participant_path(@regatta, @participant, referrer: current_url),
                 class: 'btn btn-secondary d-block my-1') if can?(:edit, @participant) %>
-    <%= button_to(t('helpers.actions.delete'), internal_participant_path(@regatta, @participant, referrer: current_url),
+    <%= button_to(t('helpers.actions.delete'), internal_participant_path(@regatta, @participant),
                   method: :delete, data: { confirm: "Sicher?"},
                   class: 'btn btn-danger d-block w-100',
                   form_class: 'd-block my-1') if can?(:delete, @participant) %>
   </div>
 </div>
+
+<hr>
+
+
+<h2>Starts</h2>
+<%= render 'internal/races/starts', object: @participant %>
+
+<h2>Ergebnisse</h2>
+<%= render 'internal/races/results', object: @participant %>

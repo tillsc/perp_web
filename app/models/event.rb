@@ -33,10 +33,14 @@ class Event < ApplicationRecord
   belongs_to :start_measuring_point, class_name: "MeasuringPoint", query_constraints: ['Regatta_ID', 'StartMesspunktNr']
   belongs_to :finish_measuring_point, class_name: "MeasuringPoint", query_constraints: ['Regatta_ID', 'ZielMesspunktNr']
 
-  has_many :participants, query_constraints: ['Regatta_ID', 'Rennen']
-  has_many :races, query_constraints: ['Regatta_ID', 'Rennen']
-  has_many :starts, query_constraints: ['Regatta_ID', 'Rennen']
-  has_many :results, query_constraints: ['Regatta_ID', 'Rennen']
+  has_many :participants, query_constraints: ['Regatta_ID', 'Rennen'],
+           inverse_of: :event, dependent: :restrict_with_error
+  has_many :races, query_constraints: ['Regatta_ID', 'Rennen'],
+           inverse_of: :event, dependent: :restrict_with_error
+  has_many :starts, query_constraints: ['Regatta_ID', 'Rennen'],
+           inverse_of: :event, dependent: :restrict_with_error
+  has_many :results, query_constraints: ['Regatta_ID', 'Rennen'],
+           inverse_of: :event, dependent: :restrict_with_error
 
   scope :with_counts, -> {
     select('rennen.*, COUNT(DISTINCT startlisten.tnr, startlisten.lauf) starts_count, COUNT(DISTINCT ergebnisse.tnr, ergebnisse.lauf) results_count').
