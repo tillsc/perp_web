@@ -12,21 +12,32 @@ class Regatta < ApplicationRecord
 
   belongs_to :organizer, foreign_key: 'Veranstalter_ID'
 
-  has_many :events, foreign_key: 'Regatta_ID', inverse_of: :regatta
+  has_many :events, foreign_key: 'Regatta_ID',
+           inverse_of: :regatta, dependent: :restrict_with_error
 
-  has_many :races, foreign_key: 'Regatta_ID', inverse_of: :regatta
+  has_many :races, foreign_key: 'Regatta_ID',
+           inverse_of: :regatta, dependent: :restrict_with_error
 
-  has_many :results, foreign_key: 'Regatta_ID', inverse_of: :regatta
+  has_many :results, foreign_key: 'Regatta_ID',
+           inverse_of: :regatta, dependent: :restrict_with_error
 
-  has_many :participants, foreign_key: 'Regatta_ID', inverse_of: :regatta
+  has_many :starts, foreign_key: 'Regatta_ID',
+           inverse_of: :regatta, dependent: :restrict_with_error
 
-  has_many :teams, foreign_key: 'Regatta_ID', inverse_of: :regatta
+  has_many :participants, foreign_key: 'Regatta_ID',
+           inverse_of: :regatta, dependent: :restrict_with_error
 
-  has_many :measuring_points, foreign_key: 'Regatta_ID', inverse_of: :regatta
+  has_many :teams, foreign_key: 'Regatta_ID',
+           inverse_of: :regatta, dependent: :restrict_with_error
 
-  has_many :measuring_sessions, foreign_key: 'Regatta_ID', inverse_of: :regatta
+  has_many :measuring_points, foreign_key: 'Regatta_ID',
+           inverse_of: :regatta, dependent: :destroy
 
-  has_many :regatta_referees, foreign_key: 'Regatta_ID', inverse_of: :regatta
+  has_many :measuring_sessions, foreign_key: 'Regatta_ID',
+           inverse_of: :regatta, dependent: :restrict_with_error
+
+  has_many :regatta_referees, foreign_key: 'Regatta_ID',
+           inverse_of: :regatta, dependent: :destroy
   has_many :referees, through: :regatta_referees, source: :address
 
   scope :valid, -> { where(Regatta.arel_table[:ID].gteq(1032)) }
