@@ -61,7 +61,7 @@ module Internal
     def rower
       authorize! :edit, Weight
 
-      @rower = Rower.find(params[:id])
+      @rower = Rower.preload(:weights).find(params[:id])
       @participants = @regatta.participants.
         merge(Event.to_be_weighed). # :event is joined by .with_weight_info
         with_weight_info(@date).

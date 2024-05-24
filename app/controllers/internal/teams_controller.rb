@@ -11,7 +11,7 @@ module Internal
     end
 
     def show
-      @team = @regatta.teams.find(params.extract_value(:id))
+      @team = @regatta.teams.preload(:representative).find(params.extract_value(:id))
       respond_with @team
     end
 

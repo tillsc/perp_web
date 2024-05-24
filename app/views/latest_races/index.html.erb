@@ -8,7 +8,7 @@
   <li class="list-group-item">
     <%= link_to 'Letztes Endergebnis', latest_race_path %>
     (<%= link_to 'Nur Finale', latest_race_path(type_short: 'F') %> |
-    <% @regatta.measuring_points.each do |mp| %>
+    <% @measuring_points.each do |mp| %>
       <%= link_to mp.name, latest_race_path(measuring_point_number: mp.number) %> |
     <% end %>
     <%= link_to 'Testmodus', latest_race_path(testmode: '1') %>)

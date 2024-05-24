@@ -86,6 +86,7 @@ module Internal
     end
 
     def prepare_form
+      @regatta.events = @regatta.events.preload([])
       @measuring_points = @regatta.measuring_points
     end
 

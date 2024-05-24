@@ -1,23 +1,36 @@
 class MeasurementsController < ApplicationController
 
   before_action except: :index do
-    @measuring_session = MeasuringSession.for_regatta(@regatta).find_by(identifier: params[:measuring_session_id])
+    @measuring_session = MeasuringSession.for_regatta(@regatta).
+      preload(:measuring_point).
+      find_by(identifier: params[:measuring_session_id])
+
     @measuring_point = if can?(:manage, MeasurementSet) && params[:measuring_point_number].present?
                          @regatta.measuring_points.find_by!(number: params[:measuring_point_number])
                        else
                          @measuring_session&.active_measuring_point
                        end
     raise(ActionController::RoutingError, "Could not find valid MeasuringPoint!") unless @measuring_point
+
+    ev = @regatta.events.find_by!(number: params[:event_number])
+    preload_participants = if ev.measuring_point_type(@measuring_point) == :start
+                             [:team, rowers: :weights]
+                           else
+                             :team
+                           end
+
     @race = Race.
       for_regatta(@regatta).
+      preload(:regatta, :results, event: [participants: preload_participants]).
       find_by!(event_number: params[:event_number], number: params[:race_number])
+
     @measuring = Services::Measuring.new(@race, @measuring_point, @measuring_session)
   end
 
   def index
     authorize! :index, MeasurementSet
 
-    @races = Race.for_regatta(@regatta)
+    @races = Race.for_regatta(@regatta).preload(:event)
     if params[:sort_by] == "start_time"
       @races = @races.order(:planned_for)
     end

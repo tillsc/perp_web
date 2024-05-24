@@ -15,6 +15,7 @@ module Services
         to_h
       @measurement_set = MeasurementSet.
         create_with(measuring_session: force_measuring_session_ownership).
+        preload(:measuring_point, measuring_session: [:active_measuring_point, :measuring_point]).
         find_or_initialize_by(
           race: race,
           regatta: race.regatta,

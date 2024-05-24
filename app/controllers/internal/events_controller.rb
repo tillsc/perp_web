@@ -4,11 +4,13 @@ module Internal
     is_internal!
 
     def index
-      @events = @regatta.events
+      @events = @regatta.events.preload(:start_measuring_point, :finish_measuring_point)
     end
 
     def show
-      @event = @regatta.events.find(params.extract_value(:id))
+      @event = @regatta.events.
+        preload(:start_measuring_point, :finish_measuring_point, :races).
+        find(params.extract_value(:id))
       authorize! :show, @event
     end
 
@@ -91,7 +93,7 @@ module Internal
     end
 
     def prepare_form
-      @measuring_points = @regatta.measuring_points
+      @measuring_points = @regatta.measuring_points.preload([])
     end
 
     def event_params(default = {})

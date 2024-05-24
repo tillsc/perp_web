@@ -28,7 +28,7 @@ module Internal
     end
 
     def show
-      @address = Address.find(params[:id])
+      @address = Address.preload(teams: :regatta, regatta_referees: :regatta).find(params[:id])
       authorize! :show, @address
     end
 

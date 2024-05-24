@@ -11,14 +11,15 @@ module Internal
       @rowers = @rowers.with_encoding_problems if params[:only_with_encoding_problems] == '1'
 
       @rowers = @rowers.
+        preload(:club).
         order(last_name: :asc, first_name: :asc).
         page(params[:page] || 1)
       respond_with @rowers
     end
 
     def show
-      @rower = Rower.find(params[:id])
-      @weights = Weight.where(rower: @rower)
+      @rower = Rower.preload(:club, :weights).find(params[:id])
+
       respond_with @rower
     end
 

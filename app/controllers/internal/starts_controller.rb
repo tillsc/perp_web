@@ -15,7 +15,7 @@ module Internal
       @race_type = params[:race_type]
       @races = @event.races.by_type_short(@race_type).preload(starts: { participant: :team })
       participant_ids = @races.flat_map { |r| r.starts.map(&:participant_id) }
-      @remaining_participants = @event.participants.reject { |p| participant_ids.include?(p.participant_id) }
+      @remaining_participants = @event.participants.preload(:team).reject { |p| participant_ids.include?(p.participant_id) }
     end
 
     def save
@@ -43,7 +43,7 @@ module Internal
     protected
 
     def load_event
-      @event = @regatta.events.find(params.extract_value(:event_id))
+      @event = @regatta.events.preload(:races).find(params.extract_value(:event_id))
     end
 
     def default_url

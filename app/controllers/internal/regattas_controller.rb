@@ -4,7 +4,7 @@ module Internal
     is_internal!
 
     def index
-      @regattas = Regatta.preload(:events).order(from_date: :desc)
+      @regattas = Regatta.preload(:organizer, :events).order(from_date: :desc)
     end
 
     def new

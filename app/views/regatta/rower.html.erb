@@ -18,6 +18,38 @@
   <% end %>
 </div>
 
+<% @rower.participants.preload(:regatta, :team, :event).
+  group_by { |r| r.regatta == @regatta ? 1 : 2 }.sort.each do |this_regatta, ps| %>
+  <h4><% if this_regatta == 1 %>
+      Teilnahmen an dieser Regatta
+    <% else %>
+      Andere Regatten
+    <% end %>
+  </h4>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <% if this_regatta != 1 %>
+        <th><%= Regatta.model_name.human %></th>
+      <% end %>
+      <th><%= Event.model_name.human %></th>
+      <th><%= Participant.human_attribute_name(:number) %></th>
+      <th><%= Participant.human_attribute_name(:team) %></th>
+    </tr>
+    </thead>
+    <% ps.each do |participant| %>
+      <tr>
+        <% if this_regatta != 1 %>
+          <td><%= participant.regatta.name %></td>
+        <% end %>
+        <td><%= link_to participant.event.label, event_participants_url(participant.regatta, participant.event.number) %></td>
+        <td><%= participant.number || '-' %></td>
+        <td><%= participant.team_name %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
 <script>
-  autoreloadAfter(15000)
+  autoreloadAfter(60000)
 </script>

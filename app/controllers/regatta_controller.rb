@@ -14,6 +14,7 @@ class RegattaController < ApplicationController
       with_results.
       for_regatta(@regatta).
       latest.
+      preload(:event).
       limit(10)
     @next_races = Race.
       for_regatta(@regatta).
@@ -38,7 +39,7 @@ class RegattaController < ApplicationController
       preload(:starts, :races, participants: [:team] + Participant::ALL_ROWERS).
       find([params[:regatta_id], params[:event_id]])
 
-    @results = @event.results.preload(:times, :race)
+    @results = @event.results.preload(:times, race: [:referee_umpire, :referee_finish_judge])
 
     @missing = {not_at_start: {}, withdrawn: {}, disqualified: {}}
     @results.group_by { |r| r.race.type_short.upcase }.each do |race_type, results|
@@ -88,7 +89,7 @@ class RegattaController < ApplicationController
 
     @results = Result.for_regatta(@regatta).
       for_rower(@rower).
-      preload(:times, race: {event: :finish_measuring_point}, participant: [:team] + Participant::ALL_ROWERS).
+      preload(:times, race: [event: :finish_measuring_point], participant: [:team] + Participant::ALL_ROWERS).
       joins(:race).
       reorder('IstStartZeit')
   end

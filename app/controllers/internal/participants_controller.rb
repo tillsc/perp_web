@@ -11,7 +11,9 @@ module Internal
     end
 
     def show
-      @participant = @regatta.participants.find(params.extract_value(:id))
+      @participant = @regatta.participants.
+        preload(:event, :team, *Participant::ALL_ROWERS, starts: {race: :event}, results: [times: :measuring_point, race: :event]).
+        find(params.extract_value(:id))
       authorize! :show, @participant
     end
 

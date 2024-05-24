@@ -10,7 +10,7 @@ class LatestRacesController < ApplicationController
   before_action :load_settings
 
   def index
-
+    @measuring_points = MeasuringPoint.for_regatta(@regatta)
   end
 
   def show
@@ -18,7 +18,7 @@ class LatestRacesController < ApplicationController
     scope = Race.with_finish_times if params[:testmode] == "1"
     scope = scope.by_type_short(params[:type_short].to_s.split(',')) if params[:type_short].present?
     scope = scope.with_times_at(params[:measuring_point_number]) if params[:measuring_point_number].present?
-    @race = scope.first
+    @race = scope.preload(event: [:start_measuring_point, :finish_measuring_point], results: [:times, participant: :team]).first
     @measuring_point = if params[:measuring_point_number].present?
                          MeasuringPoint.find([@regatta.ID, params[:measuring_point_number]])
                        else
@@ -33,7 +33,7 @@ class LatestRacesController < ApplicationController
     scope = Race.for_regatta(@regatta).with_finish_times.stated_minutes_ago(30)
     scope = Race.with_finish_times if params[:testmode] == "1"
     scope = scope.by_type_short(params[:type_short].to_s.split(',')) if params[:type_short].present?
-    @race = scope.first
+    @race = scope.preload(event: [:start_measuring_point, :finish_measuring_point], results: [:times, participant: [:team, *Participant::ALL_ROWERS]]).first
     @event = @race && @race.event
     @result = @race && @event && @race.results.
         select { |r| r.time_for(@event.finish_measuring_point)&.time }.
@@ -46,7 +46,7 @@ class LatestRacesController < ApplicationController
     scope = Race.with_starts.for_regatta(@regatta).current_start
     scope = Race.with_starts if params[:testmode] == "1"
     scope = scope.by_type_short(params[:type_short].to_s.split(',')) if params[:type_short].present?
-    @race = scope.first
+    @race = scope.preload(:event, starts: { participant: :team }).first
     @event = @race && @race.event
 
     render :layout => 'minimal'

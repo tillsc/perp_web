@@ -11,7 +11,9 @@ class MeasuringSessionsController < ApplicationController
   end
 
   def show
-    @measuring_session = MeasuringSession.for_regatta(@regatta).find_by!(identifier: params[:id])
+    @measuring_session = MeasuringSession.for_regatta(@regatta).
+      preload(:active_measuring_point, :measuring_point).
+      find_by!(identifier: params[:id])
     authorize! :show, @measuring_session
 
     if cookies[:last_measuring_session_identifier] != @measuring_session.identifier
@@ -20,7 +22,7 @@ class MeasuringSessionsController < ApplicationController
 
     if @measuring_session.active_measuring_point
       races = Race.for_regatta(@regatta).
-        preload(:event, :measurement_sets).
+        preload(event: [:start_measuring_point, :finish_measuring_point], measurement_sets: :measuring_session).
         order(:planned_for).
         group_by{ |r|
           !r.measurement_set_for(@measuring_session.active_measuring_point)&.locked_for?(@measuring_session) &&

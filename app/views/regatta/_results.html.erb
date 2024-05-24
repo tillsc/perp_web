@@ -3,7 +3,7 @@
   <ul>
     <% res.each do |result| %>
       <li>
-        <%= link_to result.race.event.label, event_results_path(@regatta, result.event.number, anchor: result.race.number) %> -
+        <%= link_to result.race.event.label, event_results_path(@regatta, result.race.event.number, anchor: result.race.number) %> -
         <%= result.race.name %>
         <% if result.race.started_at_time %>
           - <strong><%= l result.race.started_at_time, format: '%H:%M' %> Uhr</strong>
