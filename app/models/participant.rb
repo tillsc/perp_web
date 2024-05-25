@@ -10,6 +10,10 @@ class Participant < ApplicationRecord
 
   belongs_to :team, query_constraints: ['Regatta_ID', 'Team_ID']
 
+  has_many :race_team_participants, class_name: 'Participant',
+           query_constraints: ['Regatta_ID', 'Team_ID', 'Rennen'],
+           primary_key: ['Regatta_ID', 'Team_ID', 'Rennen']
+
   belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
   ALL_ROWER_IDX.each_with_index do |name, i|
@@ -59,6 +63,7 @@ class Participant < ApplicationRecord
     order('Regatta_ID', 'Rennen', 'BugNr', 'TNr')
   end
 
+  alias_attribute :regatta_id, 'Regatta_ID'
   alias_attribute :participant_id, 'TNr'
   alias_attribute :number, 'BugNr'
   alias_attribute :event_number, 'Rennen'
@@ -77,6 +82,25 @@ class Participant < ApplicationRecord
     "#{self.team.try(:name)}".tap do |n|
       n << "&thinsp;<em>(Boot #{self.team_boat_number})</em>" if !options[:hide_team_boat_number] && self.team_boat_number
     end.html_safe
+  end
+
+  def problem_with_team_boat_number?(all_participants)
+    other_race_team_participants = all_participants.select do |p|
+      p.regatta_id == self.regatta_id && p.event_number == self.event_number &&
+        p.team&.name == self.team&.name &&
+        p.participant_id != self.participant_id
+    end
+    if other_race_team_participants.length > 0
+      if self.team_boat_number.to_i <= 0
+        true
+      else
+        other_race_team_participants.any? do |p|
+          p.team_boat_number.to_i == self.team_boat_number.to_i
+        end
+      end
+    else
+      self.team_boat_number.present?
+    end
   end
 
   def label

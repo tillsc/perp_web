@@ -83,6 +83,7 @@ module Internal
     end
 
     def prepare_form
+      @participant.strict_loading!(false)
       if params['local_reload'].present? && params['dialog_finished_with'].present?
         if params['local_reload'] == 'dialog-opener-team'
           new_team = @regatta.teams.find_by(team_id:  params['dialog_finished_with'])
