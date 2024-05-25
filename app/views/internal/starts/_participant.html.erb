@@ -1,5 +1,6 @@
 <% if participant.is_a?(Participant) %>
-  <div class="item_list__item participant <%= "withdrawn" if participant.withdrawn? %> <%= "disqualified" if participant.disqualified? %>">
+  <div data-number="<%= participant.number %>"
+    class="item_list__item participant <%= "withdrawn" if participant.withdrawn? %> <%= "disqualified" if participant.disqualified? %>">
     <div>
       <%= hidden_field_tag 'starts[]', participant.participant_id %>
       <%= participant.number || "<<ID: #{participant.participant_id}>>" %>

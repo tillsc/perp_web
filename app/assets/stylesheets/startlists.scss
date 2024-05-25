@@ -24,6 +24,10 @@
     align-items: safe center;
     line-height: 1.1rem;
 
+    &.selected {
+      background: #afa;
+    }
+
     .btn {
       padding: 0 0.25rem;
       display: inline-flex;
