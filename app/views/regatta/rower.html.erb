@@ -38,6 +38,7 @@
     </tr>
     </thead>
     <% ps.each do |participant| %>
+      <% next unless participant.regatta %>
       <tr>
         <% if this_regatta != 1 %>
           <td><%= participant.regatta.name %></td>
