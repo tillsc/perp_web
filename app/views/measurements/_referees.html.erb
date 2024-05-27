@@ -1,16 +1,17 @@
 <% if @race.event.measuring_point_type(@measuring_point) == :finish %>
+  <% referees = @regatta.referees.strict_loading(false) %>
   <div class="row">
     <div class="col-md-6 col-xl-3">
-      <%= f.select :referee_starter_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
+      <%= f.select :referee_starter_id, referees.map { |r| [r.name, r.id] }, include_blank: true %>
     </div>
     <div class="col-md-6 col-xl-3">
-      <%= f.select :referee_aligner_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
+      <%= f.select :referee_aligner_id, referees.map { |r| [r.name, r.id] }, include_blank: true %>
     </div>
     <div class="col-md-6 col-xl-3">
-      <%= f.select :referee_umpire_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
+      <%= f.select :referee_umpire_id, referees.map { |r| [r.name, r.id] }, include_blank: true %>
     </div>
     <div class="col-md-6 col-xl-3">
-      <%= f.select :referee_finish_judge_id, @regatta.referees.map { |r| [r.name, r.id] }, include_blank: true %>
+      <%= f.select :referee_finish_judge_id, referees.map { |r| [r.name, r.id] }, include_blank: true %>
     </div>
   </div>
 <% end %>

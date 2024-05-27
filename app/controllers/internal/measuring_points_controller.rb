@@ -4,7 +4,7 @@ module Internal
     is_internal!
 
     def index
-      @measuring_points = @regatta.measuring_points
+      @measuring_points = MeasuringPoint.for_regatta(@regatta).preload(:measuring_session)
     end
 
     def new
