@@ -1,6 +1,5 @@
 class MeasuringSessionsController < ApplicationController
 
-  is_internal!
   def index
     authorize! :index, MeasuringSession
 
@@ -36,7 +35,7 @@ class MeasuringSessionsController < ApplicationController
 
   def new
     if cookies[:last_measuring_session_identifier].present?
-      ms = MeasuringSession.find_by(identifier: cookies[:last_measuring_session_identifier])
+      ms = MeasuringSession.preload(:regatta).find_by(identifier: cookies[:last_measuring_session_identifier])
       @last_measuring_session = ms if ms&.regatta&.id == @regatta.id
     end
 
@@ -71,7 +70,7 @@ class MeasuringSessionsController < ApplicationController
   end
 
   def update
-    @measuring_session = MeasuringSession.for_regatta(@regatta).find_by!(identifier: params[:id])
+    @measuring_session = MeasuringSession.preload(:measuring_point).for_regatta(@regatta).find_by!(identifier: params[:id])
 
     if params[:activate].present?
       authorize! :activate, @measuring_session

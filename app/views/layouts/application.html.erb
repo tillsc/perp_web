@@ -16,7 +16,7 @@
   <%= javascript_importmap_tags('app') %>
 </head>
 
-<body class="<%= (controller.class.is_internal? || controller.is_a?(MeasurementsController)) ? 'internal' : '' %>">
+<body class="<%= (controller.class.is_internal? || controller.is_a?(MeasurementsController) || controller.is_a?(MeasuringSessionsController)) ? 'internal' : '' %>">
 <% unless @no_main_nav %>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
