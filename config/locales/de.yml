@@ -256,4 +256,5 @@ de:
       long: "%A, %d. %B %Y, %H:%M Uhr"
       short: "%a, %H:%M Uhr"
       full: "%d.%m.%y %H:%M:%S"
+      time: "%H:%M Uhr"
     pm: nachmittags
