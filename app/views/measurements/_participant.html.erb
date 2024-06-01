@@ -1,5 +1,5 @@
 <% if participant.is_a?(Participant) %>
-  <div class="item_list__item">
+  <div class="item_list__item <%= "text-decoration-line-through" unless participant.active? %>">
     <div class="boat_number">
       <%= hidden_field_tag 'participants[]', participant.participant_id %>
       <%= participant.number || "<<ID: #{participant.participant_id}>>" %>
