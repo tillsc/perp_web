@@ -13,7 +13,9 @@
   <%= hidden_field_tag :measuring_point_number, params[:measuring_point_number] %>
 
   <div class="finish_cam_container">
-    <perp-fc-browser start-time="<%= @race.started_at&.iso8601(4) %>" href="<%= URI.join(@measuring_point.finish_cam_base_url, "data") %>">
+    <perp-fc-browser start-time="<%= @race.started_at&.iso8601(4) %>"
+                     expected-at="<%= @race.started_at && l(@race.started_at + 6.minutes, format: "%H:%M:%S") %>"
+                     href="<%= URI.join(@measuring_point.finish_cam_base_url, "data") %>">
       <% (1..8).to_a.reverse.each do |lane| %>
         <label>
           <% participant = @measuring.participant_for_lane(lane) %>
