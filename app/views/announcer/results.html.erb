@@ -22,7 +22,7 @@
 <% if @race.results.any? %>
   <%= render 'regatta/race_results', race: @race, results: @race.results, with_lane: true, full_race_name: true, measuring_points: @measuring_points %>
 <% else %>
-  <h4><%= @race.full_name %></h4>
+  <h3><%= @race.full_name(show_event_name_short: true) %></h3>
   <div><%= @race.planned_for && l(@race.planned_for) %></div>
   <div class="table-responsive-md">
     <table class="table">

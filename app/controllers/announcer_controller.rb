@@ -14,7 +14,7 @@ class AnnouncerController < ApplicationController
   def results
     @race = Race.
       for_regatta(@regatta).
-      preload(:referee_umpire, :referee_finish_judge, results: :times, event: { participants: [:team] + Participant::ALL_ROWERS }).
+      preload(:referee_umpire, :referee_finish_judge, :starts, results: :times, event: { participants: [:team] + Participant::ALL_ROWERS }).
       find_by(event_number: params[:event_number], number: params[:race_number])
 
     @previous_race = Race.for_regatta(@regatta).preload(:event).before_race(@race).first
