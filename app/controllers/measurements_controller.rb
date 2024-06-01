@@ -21,7 +21,7 @@ class MeasurementsController < ApplicationController
 
     @race = Race.
       for_regatta(@regatta).
-      preload(:regatta, :results, event: [participants: preload_participants]).
+      preload(:regatta, :results, :starts, event: [participants: preload_participants]).
       find_by!(event_number: params[:event_number], number: params[:race_number])
 
     @measuring = Services::Measuring.new(@race, @measuring_point, @measuring_session)

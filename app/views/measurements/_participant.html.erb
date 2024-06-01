@@ -1,6 +1,6 @@
 <% if participant.is_a?(Participant) %>
   <div class="item_list__item">
-    <div>
+    <div class="boat_number">
       <%= hidden_field_tag 'participants[]', participant.participant_id %>
       <%= participant.number || "<<ID: #{participant.participant_id}>>" %>
       <% if lane = measuring.lane_for(participant) %>
@@ -14,9 +14,9 @@
           <% end %>
         <% end %>
       <% end %>
-      <% unless @measuring_session&.hide_team_names? %>
-        <span class="team_name">- <%= participant.team_name(hide_team_boat_number: true) %></span>
-      <% end %>
     </div>
+    <% unless @measuring_session&.hide_team_names? %>
+      <div class="team_name"> <%= participant.team_name(hide_team_boat_number: true) %></div>
+    <% end %>
   </div>
 <% end %>

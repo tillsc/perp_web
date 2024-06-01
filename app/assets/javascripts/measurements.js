@@ -53,7 +53,13 @@ drake.on('dragend', function(el, source) {
     selected.append(item);
     e.preventDefault();
   });
-  item.append(quickButton);
+  const teamNameElement = item.querySelector('.team_name');
+  if (teamNameElement) {
+    item.insertBefore(quickButton, teamNameElement)
+  }
+  else {
+    item.append(quickButton);
+  }
 })
 
 var times = document.getElementById('times');
