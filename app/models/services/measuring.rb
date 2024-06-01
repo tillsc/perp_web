@@ -4,6 +4,7 @@ module Services
     attr_reader :measurement_set
     attr_reader :race
     attr_reader :all_participants
+    attr_reader :lanes
 
     def initialize(race, measuring_point, force_measuring_session_ownership = nil)
       @race = race
@@ -136,6 +137,10 @@ module Services
 
     def publish_result!
       if race.event.measuring_point_type(@measurement_set.measuring_point) == :start
+        race.results.each do |r|
+          r.lane_number = nil
+          r.save!
+        end
         @measurement_set.measurements.each_with_index do |(participant_id, _start_time, _), lane_number|
           result = race.results.find { |res| res.participant_id == participant_id } ||
             race.results.build(participant_id: participant_id)
