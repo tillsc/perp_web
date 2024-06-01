@@ -15,6 +15,7 @@
   <div class="table-responsive-md">
     <table class="table">
       <thead>
+      <th class="fw-light">Bahn</th>
       <th>Bugnr.</th>
       <th>Land</th>
       <th>Teamname</th>
@@ -24,6 +25,7 @@
       <tbody>
       <% starts.each do |s| %>
         <tr class="<%= participant_state_classes(s.participant) %>">
+          <td class="fw-lighter"><%= s.lane_number %></td>
           <td><%= s.participant&.number %></td>
           <td><%= s.participant&.team&.country %></td>
           <td><%= s.participant&.team_name %></td>
