@@ -118,7 +118,7 @@ class Race < ApplicationRecord
       arel_table['IstStartZeit'].gt(2.minutes.ago)
     )).
       where('DATE(SollStartZeit) = ?', Date.today).
-      order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
+      order('SollStartZeit, IstStartZeit DESC')
   end
 
   def name
