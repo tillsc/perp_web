@@ -9,7 +9,7 @@ module Services
     def initialize(race, measuring_point, force_measuring_session_ownership = nil)
       @race = race
       @all_participants = race.event.participants
-      @lanes = (@race.results.presence || @race.starts).
+      @lanes = (@race.results.any? { |r| r.lane_number.to_i > 0 } ? @race.results : @race.starts).
         map { |r| r.lane_number && [r.participant_id, r.lane_number] }.
         compact.
         sort_by(&:second).
