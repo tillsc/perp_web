@@ -37,9 +37,10 @@
 
   <%= render 'referees', f: f %>
 
-  <%= f.submit "Fertig" %>
+  <%= f.submit "Fertig", class: 'btn btn-success' %>
   <%= link_to "Zeit Stoppen", '#', id: 'stop_time', class: 'btn btn-primary' %>
 
+  <%= f.button "Zwischenspeichern", class: 'btn btn-secondary', type: :submit, name: :autosave, value: 1 %>
 <% end %>
 
 <h6 class="mt-1">Verfügbare Boote</h6>
