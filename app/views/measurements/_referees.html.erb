@@ -1,6 +1,6 @@
 <% if @race.event.measuring_point_type(@measuring_point) == :finish %>
   <% referees = @regatta.referees.strict_loading(false) %>
-  <div class="row">
+  <div class="row flex-grow-1 ">
     <div class="col-md-6 col-xl-3">
       <%= f.select :referee_starter_id, referees.map { |r| [r.name, r.id] }, include_blank: true %>
     </div>
