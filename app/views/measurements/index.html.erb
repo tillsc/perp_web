@@ -18,8 +18,8 @@
     <table class="table table-striped">
       <thead>
       <tr>
-        <th></th>
-        <th></th>
+        <th>Rennen</th>
+        <th>Startzeit</th>
         <% @measuring_points.each do |mp| %>
           <th><%= mp.name %></th>
         <% end %>
@@ -29,7 +29,15 @@
       <% @races.each do |race| %>
         <tr id="race_<%= race.event.number %>_<%= race.number %>">
           <td><%= race.event.number %> - <%= race.name %></td>
-          <td><%= race.started_at && l(race.started_at, format: '%a, %H:%M:%S') %></td>
+          <td>
+            <% if race.started_at  %>
+              <span class="text-success">
+                <%= race.started_at && l(race.started_at, format: '%a, %H:%M:%S') %>
+              </span>
+            <% else %>
+              <em><%= race.planned_for && l(race.planned_for, format: '%a, %H:%M:%S') %> (Soll)</em>
+            <% end %>
+          </td>
           <% @measuring_points.each do |mp| %>
             <td>
               <% if race.event.measuring_point_type(mp) %>
