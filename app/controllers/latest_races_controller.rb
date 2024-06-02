@@ -3,6 +3,8 @@ class LatestRacesController < ApplicationController
   TV_PARAMETER_KEYS = {
     header_space_left: 'HeaderSpaceLeft',
     footer_space_left: 'FooterSpaceLeft',
+    font_color: 'FontColor',
+    header_font_color: 'HeaderFontColor',
     background_color: 'BackgroundColor',
     font_size: 'FontSize'
   }
