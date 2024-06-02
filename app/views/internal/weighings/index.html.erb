@@ -16,22 +16,26 @@
       </thead>
       <tbody>
       <% @events.each do |r| %>
-        <% problems = if DateTime.now + 1.hours > r.min_started_at
-                        if r.rower_weights_count < r.rower_count
-                          :danger
-                        else
-                          :secondary
-                        end
-                      else
-                        ''
-                      end
+        <% cls = if DateTime.now > r.min_started_at - 1.hour
+                   if r.is_lightweight? && r.rower_weights_count < r.rower_count
+                     'text-warning'
+                   elsif r.has_cox? && r.cox_weights_count < r.expected_cox_weights_count
+                     'text-warning'
+                   else
+                     'text-success'
+                   end
+                 elsif DateTime.now + 2.hours < r.min_started_at
+                   'text-secondary'
+                 else
+                   ''
+                 end
         %>
-        <tr class="bg-<%= problems %>">
-          <td><%= link_to r.label, internal_event_weighings_url(@regatta, r, @filters) %></td>
-          <td><%= r.name_de %></td>
-          <td><%= r.min_started_at && l(r.min_started_at, format: :short) %></td>
-          <td><%= r.min_started_at && l(r.min_started_at - 2.hours, format: :time) %></td>
-          <td>
+        <tr>
+          <td class="<%= cls %>"><%= link_to r.label, internal_event_weighings_url(@regatta, r, @filters) %></td>
+          <td class="<%= cls %>"><%= r.name_de %></td>
+          <td class="<%= cls %>"><%= r.min_started_at && l(r.min_started_at, format: :short) %></td>
+          <td class="<%= cls %>"><%= r.min_started_at && l(r.min_started_at - 2.hours, format: :time) %></td>
+          <td class="<%= cls %>">
             <% if r.min_started_at %>
               <% if DateTime.now + 1.hours > r.min_started_at %>
                 Vorbei seit <%= distance_of_time_in_words(DateTime.now + 1.hours, r.min_started_at) %>
@@ -40,17 +44,17 @@
               <% end %>
             <% end %>
           </td>
-          <td>
+          <td class="<%= cls %>">
             <% if r.is_lightweight? %>
               <%= r.rower_weights_count %> / <%= r.expected_rower_weights_count %>
             <% end %>
           </td>
-          <td>
+          <td class="<%= cls %>">
             <% if r.has_cox? %>
               <%= r.cox_weights_count %> / <%= r.expected_cox_weights_count %>
             <% end %>
           </td>
-          <td><%= r.approved %></td>
+          <td class="<%= cls %>"><%= r.approved %></td>
         </tr>
       <% end %>
       </tbody>
