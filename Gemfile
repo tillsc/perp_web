@@ -10,7 +10,7 @@ gem 'rails', '~> 8.0'
 
 gem 'mysql2'
 # Use Puma as the app server
-gem 'puma', '~> 3.11'
+gem 'puma'
 
 gem 'importmap-rails'
 # Use SCSS for stylesheets

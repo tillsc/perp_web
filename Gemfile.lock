@@ -228,7 +228,8 @@ GEM
       date
       stringio
     public_suffix (6.0.2)
-    puma (3.12.6)
+    puma (6.6.0)
+      nio4r (~> 2.0)
     racc (1.8.1)
     rack (2.2.13)
     rack-mini-profiler (3.3.1)
@@ -408,7 +409,7 @@ DEPENDENCIES
   listen
   momentjs-rails
   mysql2
-  puma (~> 3.11)
+  puma
   rack-mini-profiler
   rails (~> 8.0)
   redirectr
