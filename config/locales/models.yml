@@ -97,6 +97,7 @@ de:
         position: Position
         name: Name
         finish_cam_base_url: Zielkamera URL
+        backup_finish_cam_base_url: Backup-Zielkamera URL
       participant:
         event: Rennen
         number: Bugnummer

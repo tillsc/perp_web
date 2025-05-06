@@ -70,8 +70,9 @@ module Internal
     end
 
     def measuring_point_params(default = {})
-      params.fetch(:measuring_point, default).permit(:number, :position,
-                                                     :measuring_session_id, :finish_cam_base_url)
+      params.fetch(:measuring_point, default).
+        permit(:number, :position, :measuring_session_id,
+               :finish_cam_base_url, :backup_finish_cam_base_url)
     end
 
   end

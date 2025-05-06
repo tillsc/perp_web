@@ -83,6 +83,7 @@ class MeasurementsController < ApplicationController
     @measurements = @measuring.measurements
     @measuring_session = @measuring.measurement_set.measuring_session
     @no_main_nav = current_user.is_a?(MeasuringSession)
+    @backup_mode = params[:backup].present?
 
     respond_to do |format|
       format.html do

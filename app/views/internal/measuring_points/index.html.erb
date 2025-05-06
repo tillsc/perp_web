@@ -9,6 +9,7 @@
         <th><%= MeasuringPoint.human_attribute_name(:name) %></th>
         <th><%= MeasuringSession.model_name.human %></th>
         <th><%= MeasuringPoint.human_attribute_name(:finish_cam_base_url) %></th>
+        <th><%= MeasuringPoint.human_attribute_name(:backup_finish_cam_base_url) %></th>
         <th></th>
       </tr>
       </thead>
@@ -23,6 +24,7 @@
             <% end %>
           </td>
           <td><%= link_to(measuring_point.finish_cam_base_url, measuring_point.finish_cam_base_url) if measuring_point.finish_cam_base_url.present? %></td>
+          <td><%= link_to(measuring_point.backup_finish_cam_base_url, measuring_point.backup_finish_cam_base_url) if measuring_point.backup_finish_cam_base_url.present? %></td>
           <td class="text-nowrap">
             <%= link_to(t('helpers.actions.edit_icon'), edit_internal_measuring_point_url(@regatta, measuring_point, referrer: local_assigns[:referrer]),
                         class: 'btn btn-outline-primary',

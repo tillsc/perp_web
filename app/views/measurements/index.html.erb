@@ -48,6 +48,9 @@
                   <% if  mp.finish_cam_base_url.present? %>
                     <%= link_to("🎥", finish_cam_measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number, referrer: current_url), class: 'btn btn-outline-primary') %>
                   <% end %>
+                  <% if  mp.backup_finish_cam_base_url.present? %>
+                    <%= link_to("🎥", finish_cam_measurement_path(@regatta, backup: true, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number, referrer: current_url), class: 'btn btn-outline-primary') %>
+                  <% end %>
                 </div>
               <% end %>
             </td>
