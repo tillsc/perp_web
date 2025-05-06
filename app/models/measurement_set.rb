@@ -1,10 +1,10 @@
 class MeasurementSet < ApplicationRecord
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
-  belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
-  belongs_to :race, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf']
+  belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
+  belongs_to :race, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
 
-  belongs_to :measuring_point, query_constraints: ['Regatta_ID', 'MesspunktNr']
+  belongs_to :measuring_point, foreign_key: ['Regatta_ID', 'MesspunktNr']
   alias_attribute :measuring_point_number, 'MesspunktNr'
 
   belongs_to :measuring_session, optional: true

@@ -30,16 +30,16 @@ class Event < ApplicationRecord
   TEXT_FORMATS = { 0 => 'Keine Formatierung', 1 => 'HTML', 2 => 'RTF' }
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
-  belongs_to :start_measuring_point, class_name: "MeasuringPoint", query_constraints: ['Regatta_ID', 'StartMesspunktNr']
-  belongs_to :finish_measuring_point, class_name: "MeasuringPoint", query_constraints: ['Regatta_ID', 'ZielMesspunktNr']
+  belongs_to :start_measuring_point, class_name: "MeasuringPoint", foreign_key: ['Regatta_ID', 'StartMesspunktNr']
+  belongs_to :finish_measuring_point, class_name: "MeasuringPoint", foreign_key: ['Regatta_ID', 'ZielMesspunktNr']
 
-  has_many :participants, query_constraints: ['Regatta_ID', 'Rennen'],
+  has_many :participants, foreign_key: ['Regatta_ID', 'Rennen'],
            inverse_of: :event, dependent: :restrict_with_error
-  has_many :races, query_constraints: ['Regatta_ID', 'Rennen'],
+  has_many :races, foreign_key: ['Regatta_ID', 'Rennen'],
            inverse_of: :event, dependent: :restrict_with_error
-  has_many :starts, query_constraints: ['Regatta_ID', 'Rennen'],
+  has_many :starts, foreign_key: ['Regatta_ID', 'Rennen'],
            inverse_of: :event, dependent: :restrict_with_error
-  has_many :results, query_constraints: ['Regatta_ID', 'Rennen'],
+  has_many :results, foreign_key: ['Regatta_ID', 'Rennen'],
            inverse_of: :event, dependent: :restrict_with_error
 
   scope :with_counts, -> {

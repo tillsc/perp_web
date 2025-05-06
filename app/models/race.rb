@@ -15,7 +15,7 @@ class Race < ApplicationRecord
   alias_attribute :weight_list_approved_by, 'WiegelisteFreigegebenVon'
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
-  belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
+  belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
 
   belongs_to :referee_starter, class_name: 'Address', foreign_key: "Schiedsrichter_ID_Starter", optional: true
   alias_attribute :referee_starter_id, 'Schiedsrichter_ID_Starter'
@@ -29,12 +29,12 @@ class Race < ApplicationRecord
   belongs_to :referee_finish_judge, class_name: 'Address', foreign_key: "Schiedsrichter_ID_Judge", optional: true
   alias_attribute :referee_finish_judge_id, 'Schiedsrichter_ID_Judge'
 
-  has_many :starts, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf'],
+  has_many :starts, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf'],
            inverse_of: :race, dependent: :restrict_with_error
-  has_many :results, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf'],
+  has_many :results, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf'],
            inverse_of: :race, dependent: :restrict_with_error
 
-  has_many :measurement_sets, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf'],
+  has_many :measurement_sets, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf'],
            inverse_of: :race, dependent: :restrict_with_error
 
   scope :latest, -> do

@@ -4,12 +4,12 @@ class Result < ApplicationRecord
   self.primary_key = 'Regatta_ID', 'Rennen', 'Lauf', 'TNr'
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
-  belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
-  belongs_to :race, query_constraints: ['Regatta_ID', 'Rennen', 'Lauf']
+  belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
+  belongs_to :race, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
 
-  belongs_to :participant, query_constraints: ['Regatta_ID', 'Rennen', 'TNr']
+  belongs_to :participant, foreign_key: ['Regatta_ID', 'Rennen', 'TNr']
 
-  has_many :times, class_name: 'ResultTime', query_constraints: ['Regatta_ID', 'Rennen', 'Lauf', 'TNr'],
+  has_many :times, class_name: 'ResultTime', foreign_key: ['Regatta_ID', 'Rennen', 'Lauf', 'TNr'],
            inverse_of: :result, dependent: :destroy
 
   alias_attribute :race_number, 'Lauf'

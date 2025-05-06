@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '>= 2.7'
+ruby '>= 3.2.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0'
+gem 'rails', '~> 8.0'
 
-gem 'stringio', '0.1.0' # Problems with passenger
+# gem 'stringio', '0.1.0' # Problems with passenger
 
 gem 'mysql2'
 # Use Puma as the app server

@@ -8,21 +8,21 @@ class Participant < ApplicationRecord
   self.table_name = 'meldungen'
   self.primary_key = 'Regatta_ID', 'Rennen', 'TNr'
 
-  belongs_to :team, query_constraints: ['Regatta_ID', 'Team_ID']
+  belongs_to :team, foreign_key: ['Regatta_ID', 'Team_ID']
 
   has_many :race_team_participants, class_name: 'Participant',
-           query_constraints: ['Regatta_ID', 'Team_ID', 'Rennen'],
+           foreign_key: ['Regatta_ID', 'Team_ID', 'Rennen'],
            primary_key: ['Regatta_ID', 'Team_ID', 'Rennen']
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
-  belongs_to :event, query_constraints: ['Regatta_ID', 'Rennen']
+  belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
   ALL_ROWER_IDX.each_with_index do |name, i|
     belongs_to ALL_ROWERS[i], class_name: 'Rower', foreign_key: "ruderer#{name}_ID", optional: i > 0
   end
 
-  has_many :starts, query_constraints: ['Regatta_ID', 'Rennen', 'TNr'],
+  has_many :starts, foreign_key: ['Regatta_ID', 'Rennen', 'TNr'],
            inverse_of: :participant, dependent: :destroy
-  has_many :results, query_constraints: ['Regatta_ID', 'Rennen', 'TNr'],
+  has_many :results, foreign_key: ['Regatta_ID', 'Rennen', 'TNr'],
            inverse_of: :participant, dependent: :restrict_with_error
 
   scope :enabled, -> {
