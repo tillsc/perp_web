@@ -25,7 +25,12 @@ Rails.application.routes.draw do
       resources :races do
         resources :results, only: [:edit, :update, :destroy]
       end
-      resources :participants
+      resources :participants do
+        collection do
+          get '/drv_import' => 'participants#drv_import', as: 'drv_import'
+          put '/drv_import' => 'participants#execute_drv_import'
+        end
+      end
       resources :teams
       resources :rowers
       resources :measuring_points

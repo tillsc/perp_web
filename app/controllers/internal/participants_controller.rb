@@ -76,6 +76,28 @@ module Internal
       redirect_to back_or_default
     end
 
+    def drv_import
+
+    end
+
+    def execute_drv_import
+      File.open(params[:xml]) do |f|
+        @doc = Nokogiri::XML(f)
+      end
+      @out = ""
+      if params[:update_representativs]
+        new_representatives = @doc.css("obleute > obmann")
+        old_representatives = Address.representative.all
+        new_representatives.each do |repr|
+          existing = old_representatives.find { |r|  r.external_id == repr.external_id }
+          @out << existing
+        end
+      else
+        @event = @doc.css("meldungen > rennen[nummer=\"#{params[:event_number]}\"]")
+        @clubs = @doc.css("vereine > verein")
+      end
+    end
+
     protected
 
     def default_url

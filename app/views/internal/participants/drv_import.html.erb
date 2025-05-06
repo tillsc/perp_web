@@ -1,0 +1,9 @@
+<%= bootstrap_form_for "", url: drv_import_internal_participants_path(@regatta),
+                       multipart: true, method: :put do |f| %>
+<%= hidden_field_tag :referrer, params[:referrer] %>
+  <%= f.file_field :xml, label: 'DRV XML' %>
+  <%= f.number_field :event_number %>
+  <%= f.number_field :boat_number %>
+  <%= f.radio %>
+  <%= f.submit 'Importieren'  %>
+<% end %>
