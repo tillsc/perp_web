@@ -38,11 +38,16 @@ Rails.application.routes.draw do
       get '/weighings/:date/rowers/:id' => 'weighings#rower', as: :rower_weighings
       put '/weighings/:date/rowers/:id' => 'weighings#save_weight'
     end
-    get '/tv' => 'latest_races#index'
-    put '/tv' => 'latest_races#update'
-    get '/current_start' => 'latest_races#current_start'
-    get '/latest_race' => 'latest_races#show'
-    get '/latest_winner' => 'latest_races#latest_winner'
+
+    get '/tv' => 'tv#index'
+    put '/tv' => 'tv#update'
+    get '/tv/switcher' => 'tv#switcher'
+    get '/tv/switcher/control' => 'tv#switcher_control'
+    put '/tv/switcher/control' => 'tv#update_switcher_control'
+    get '/tv/current_start' => 'tv#current_start'
+    get '/tv/latest_race' => 'tv#latest_race'
+    get '/tv/latest_winner' => 'tv#latest_winner'
+
     get '/results' => 'regatta#all_results'
     get '/upcoming' => 'regatta#upcoming'
     get '/status' => 'state#index'

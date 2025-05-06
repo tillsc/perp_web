@@ -1,4 +1,4 @@
-class LatestRacesController < ApplicationController
+class TvController < ApplicationController
 
   TV_PARAMETER_KEYS = {
     header_space_left: 'HeaderSpaceLeft',
@@ -15,7 +15,7 @@ class LatestRacesController < ApplicationController
     @measuring_points = MeasuringPoint.for_regatta(@regatta)
   end
 
-  def show
+  def latest_race
     scope = Race.joins(:results).for_regatta(@regatta).now
     scope = Race.with_finish_times if params[:testmode] == "1"
     scope = scope.by_type_short(params[:type_short].to_s.split(',')) if params[:type_short].present?
@@ -28,7 +28,7 @@ class LatestRacesController < ApplicationController
                          max_measuring_point_number && MeasuringPoint.find([@regatta.ID, max_measuring_point_number])
                        end
     @results = @race && @race.results.sort_by { |r| r.time_for(@measuring_point)&.sort_time_str || 'ZZZZZZZZZ' }
-    render :layout => 'minimal'
+    render layout: 'minimal'
   end
 
   def latest_winner
@@ -41,7 +41,7 @@ class LatestRacesController < ApplicationController
         select { |r| r.time_for(@event.finish_measuring_point)&.time }.
         sort_by { |r| r.time_for(@event.finish_measuring_point)&.sort_time_str }.
         first
-    render :layout => 'minimal'
+    render layout: 'minimal'
   end
 
   def current_start
@@ -51,7 +51,7 @@ class LatestRacesController < ApplicationController
     @race = scope.preload(:event, starts: { participant: :team }).first
     @event = @race && @race.event
 
-    render :layout => 'minimal'
+    render layout: 'minimal'
   end
 
   def update
@@ -64,7 +64,33 @@ class LatestRacesController < ApplicationController
     redirect_to tv_path(@regatta)
   end
 
+  def switcher
+    prepare_switcher_urls
+    render layout: 'minimal'
+  end
+
+  def switcher_control
+    prepare_switcher_urls
+
+  end
+
+  def update_switcher_control
+    ActionCable.server.broadcast('tv_switcher', params[:switch_to])
+
+    prepare_switcher_urls
+    render :switcher_control
+  end
+
   protected
+
+  def prepare_switcher_urls
+    @switcher_urls = {
+      blank: '#',
+      start: tv_current_start_url(type_short: 'F,V', testmode: params[:testmode]),
+      race: tv_latest_race_url(type_short: 'F,V', testmode: params[:testmode]),
+      winner: tv_latest_winner_url(type_short: 'F,V', testmode: params[:testmode])
+    }
+  end
 
   def load_settings
     parameters = Parameter.values_for('Tv').to_a

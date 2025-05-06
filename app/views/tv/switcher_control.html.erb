@@ -1,0 +1,5 @@
+<%= bootstrap_form_with url: tv_switcher_control_url, method: :put do |f| %>
+  <% @switcher_urls.keys.each do |key| %>
+    <%= f.button key.to_s, name: 'switch_to', value: key %>
+  <% end %>
+<% end %>
