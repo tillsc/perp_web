@@ -9,6 +9,7 @@ server "perp.de", user: "perp.de", roles: %w{app db web}
 
 set :rbenv_path, '/usr/lib/x86_64-linux-gnu/rbenv/libexec/rbenv'
 set :rbenv_prefix, "RBENV_ROOT=/var/www/vhosts/perp.de/.rbenv #{fetch(:rbenv_path)} exec"
+# set :rbenv_ruby, '3.2.2'
 
 set :passenger_restart_with_touch, true
 
