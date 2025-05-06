@@ -61,6 +61,7 @@ gem "sentry-rails"
 gem 'cancancan'
 
 gem 'nokogiri', '1.15.5' # Try to fix problems with GLIBC_2.28 on production
+gem 'base64', '0.1.1' # Passenger locks this
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 # gem "tzinfo-data", platforms: %i[ windows jruby ]
