@@ -23,6 +23,13 @@ body.internal {
   }
 }
 
+@media print {
+  @page {
+    margin: 0;
+  }
+}
+
+
 .grid-3-col {
   grid-template-columns: 1fr 1fr 1fr;
 }

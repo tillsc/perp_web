@@ -1,0 +1,54 @@
+<h1 class="fs-3">
+  <%= @race.full_name(show_event_name_short: true) %>
+</h1>
+<p>Gestartet: <%= l(@race.started_at) %></p>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th class="text-end"></th>
+    <th class="text-end">Nr</th>
+    <th>Team</th>
+    <th class="text-end">Zeit</th>
+    <th class="text-end">Relativ</th>
+  </tr>
+  </thead>
+  <% position = 1 %>
+  <% last_position = position %>
+  <% last_time = nil %>
+  <% measuring_point_number = @race.event.finish_measuring_point_number %>
+  <% @race.results.sort_by { |r| r.time_for(measuring_point_number)&.sort_time_str || "ZZZZZZZZZ#{r.lane_number}" }.each do |r| %>
+    <% result_time = r.time_for(measuring_point_number) %>
+    <tr>
+      <td class="text-end"><small class="text-secondary">
+        <% if result_time&.time && result_time&.time != last_time&.time %>
+          <%= last_position = position %>.
+        <% elsif result_time&.time %>
+          <%= last_position %>.
+        <% end %>
+      </small>
+      </td>
+      <td class="text-end"><%= r.participant&.number %></td>
+      <td><%= r.participant&.team&.name&.truncate(50) %></td>
+      <td class="text-end"><%= result_time&.time %></td>
+      <td class="text-end"><%= result_time.subtract_time(last_time) %></td>
+      <% last_time = result_time; position+= 1 %>
+    </tr>
+  <% end %>
+</table>
+
+<h2 class="fs-4">Schiedsrichter</h2>
+<div class="row mb-5">
+  <div class="col-sm-6 col-md-3"><%= Race.human_attribute_name(:referee_starter) %>: <%= @race.referee_starter&.name || "—" %></div>
+  <div class="col-sm-6 col-md-3"><%= Race.human_attribute_name(:referee_aligner) %>: <%= @race.referee_aligner&.name || "—" %></div>
+  <div class="col-sm-6 col-md-3"><%= Race.human_attribute_name(:referee_umpire) %>: <%= @race.referee_umpire&.name || "—" %></div>
+  <div class="col-sm-6 col-md-3"><%= Race.human_attribute_name(:referee_finish_judge) %>: <%= @race.referee_finish_judge&.name || "—" %></div>
+</div>
+<br>
+<div class="row mt-5">
+  <div class="col-sm-6 col-md-9"></div>
+  <div class="col-sm-6 col-md-3 border-top text-center"><small>
+    <%= @race.referee_finish_judge&.name(first_name_last_name: true) %>
+    <span class="text-nowrap">(<%= l(DateTime.now, format: :full) %>)</span>
+  </small></div>
+</div>

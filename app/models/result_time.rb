@@ -20,8 +20,23 @@ class ResultTime < ApplicationRecord
     order('Regatta_ID', 'Rennen', 'Lauf', 'MesspunktNr', 'Zeit')
   end
 
-  def self.sanitize_time(t)
-    t.to_s.gsub(/^00:/, "").gsub(".", ",").presence
+  def subtract_time(t)
+    if t.is_a? ResultTime
+      t = t.to_time
+    end
+    if t.is_a?(Time) && self.time.present?
+      "+#{ResultTime.sanitize_time(Time.zone.at(self.to_time - t).utc, remove_empty_minutes_too: true)}"
+    else
+      nil
+    end
+  end
+
+  def self.sanitize_time(t, remove_empty_minutes_too: false)
+    if t.is_a?(Time)
+      t = Services::Measuring.ftime(t)
+    end
+    reg = remove_empty_minutes_too ? /^00:00:/ : /^00:/
+    t.to_s.gsub(reg, "").gsub(".", ",").presence
   end
 
   def to_time

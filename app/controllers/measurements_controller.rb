@@ -1,6 +1,6 @@
 class MeasurementsController < ApplicationController
 
-  before_action except: :index do
+  before_action except: [:index, :print] do
     @measuring_session = MeasuringSession.for_regatta(@regatta).
       preload(:measuring_point, :active_measuring_point).
       find_by(identifier: params[:measuring_session_id])
@@ -41,6 +41,14 @@ class MeasurementsController < ApplicationController
     end
     @measuring_points = MeasuringPoint.for_regatta(@regatta)
     @measurement_sets = MeasurementSet.for_regatta(@regatta).preload(:measuring_point, race: :event)
+  end
+
+  def print
+    authorize! :print, MeasurementSet
+
+    @race = @regatta.races.
+      preload(:referee_starter, :referee_aligner, :referee_umpire, :referee_finish_judge, results: [:times, participant: :team]).
+      find_by!(event_number: params[:event_number], number: params[:race_number])
   end
 
   def show
