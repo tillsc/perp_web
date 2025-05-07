@@ -6,8 +6,6 @@ ruby '>= 3.2.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 8.0'
 
-# gem 'stringio', '0.1.0' # Problems with passenger
-
 gem 'mysql2'
 # Use Puma as the app server
 gem 'puma'
@@ -62,7 +60,7 @@ gem 'sentry-rails'
 
 gem 'cancancan'
 
-gem 'nokogiri', '1.15.5' # Try to fix problems with GLIBC_2.28 on production
+#gem 'nokogiri', '1.15.5' # Try to fix problems with GLIBC_2.28 on production
 gem 'base64', '0.1.1' # Passenger locks this
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
