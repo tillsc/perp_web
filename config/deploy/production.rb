@@ -13,6 +13,18 @@ set :rbenv_prefix, "RBENV_ROOT=/var/www/vhosts/perp.de/.rbenv #{fetch(:rbenv_pat
 
 set :passenger_restart_with_touch, true
 
+before 'bundler:install', 'bundler:force_ruby_platform'
+
+namespace :bundler do
+  task :force_ruby_platform do
+    on roles(:app) do
+      within release_path do
+        execute :bundle, 'config set force_ruby_platform true'
+      end
+    end
+  end
+end
+
 # role-based syntax
 # ==================
 
