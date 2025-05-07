@@ -25,7 +25,7 @@
         <% end %>
         <td><%= safe_join(result.times.map{ |t| "#{t.measuring_point&.name}: #{t.time}" }, raw("<br>"))  %></td>
         <td>
-          <%= link_to('Zeiten bearbeiten', edit_internal_race_result_path(@regatta, result.race, result, referrer: current_url),
+          <%= link_to(t('helpers.actions.edit'), edit_internal_race_result_path(@regatta, result.race, result, referrer: current_url),
                         class: 'btn btn-secondary d-block w-100',
                         form_class: 'd-block my-1') if can?(:edit, result) %>
           <%= button_to(t('helpers.actions.delete'), internal_race_result_path(@regatta, result.race, result, referrer: current_url),
