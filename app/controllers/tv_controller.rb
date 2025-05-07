@@ -6,7 +6,8 @@ class TvController < ApplicationController
     font_color: 'FontColor',
     header_font_color: 'HeaderFontColor',
     background_color: 'BackgroundColor',
-    font_size: 'FontSize'
+    font_size: 'FontSize',
+    current_switcher_view: 'CurrentSwitcherView',
   }
 
   before_action :load_settings
@@ -58,7 +59,7 @@ class TvController < ApplicationController
     authorize! :update, :tv_settings
 
     TV_PARAMETER_KEYS.each do |param_name, key|
-    Parameter.set_value_for!("Tv", key, params[param_name].presence)
+      Parameter.set_value_for!("Tv", key, params[param_name].presence)
     end
 
     redirect_to tv_path(@regatta)
@@ -66,7 +67,19 @@ class TvController < ApplicationController
 
   def switcher
     prepare_switcher_urls
-    render layout: 'minimal'
+
+    @additional_javascript = 'switcher'
+
+    @url = @switcher_urls[@current_switcher_view] || @switcher_urls[:blank]
+    respond_to do |format|
+      format.html do
+        render layout: 'minimal'
+      end
+      format.json do
+        render json: {url: @url}
+      end
+    end
+
   end
 
   def switcher_control
@@ -75,7 +88,8 @@ class TvController < ApplicationController
   end
 
   def update_switcher_control
-    ActionCable.server.broadcast('tv_switcher', params[:switch_to])
+    @current_switcher_view = params[:switch_to]
+    Parameter.set_value_for!("Tv", "CurrentSwitcherView", @current_switcher_view)
 
     prepare_switcher_urls
     render :switcher_control
@@ -89,7 +103,7 @@ class TvController < ApplicationController
       start: tv_current_start_url(type_short: 'F,V', testmode: params[:testmode]),
       race: tv_latest_race_url(type_short: 'F,V', testmode: params[:testmode]),
       winner: tv_latest_winner_url(type_short: 'F,V', testmode: params[:testmode])
-    }
+    }.with_indifferent_access
   end
 
   def load_settings

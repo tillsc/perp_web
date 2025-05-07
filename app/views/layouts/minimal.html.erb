@@ -11,6 +11,12 @@
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   <%= javascript_importmap_tags('app') %>
+  <% Array.wrap(@additional_stylesheets).each do |css| %>
+    <%= stylesheet_link_tag css, 'data-turbolinks-track': 'reload' %>
+  <% end %>
+  <% Array.wrap(@additional_javascript).each do |js| %>
+    <%= javascript_include_tag js, 'data-turbolinks-track': 'reload' %>
+  <% end %>
 </head>
 
 <body style="padding-top: 0px">

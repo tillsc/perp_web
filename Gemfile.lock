@@ -305,10 +305,6 @@ GEM
       psych (>= 4.0.0)
     redirectr (1.0.5)
       rails (>= 5.2)
-    redis (5.4.0)
-      redis-client (>= 0.22.0)
-    redis-client (0.24.0)
-      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.1)
       io-console (~> 0.5)
@@ -449,7 +445,6 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 8.0)
   redirectr
-  redis
   rubocop
   ruby-progressbar
   sass-rails (~> 5.0)

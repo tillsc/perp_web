@@ -258,3 +258,9 @@ de:
       full: "%d.%m.%y %H:%M:%S"
       time: "%H:%M Uhr"
     pm: nachmittags
+  tv:
+    switcher:
+      blank: Leere Seite
+      start: Start
+      race: Aktuelles Rennen
+      winner: Letzter Gewinner

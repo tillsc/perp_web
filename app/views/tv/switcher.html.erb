@@ -1,5 +1,28 @@
-<iframe-switcher>
-  <% @switcher_urls.each do |key, url| %>
-    <%= link_to key.to_s, url %>
-  <% end %>
-</iframe-switcher>
+<style>
+  body, html
+  {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    --bg: <%= @background_color || 'rgba(0, 0, 0, 0.3)' %>;
+    background-color: lime;
+    color: <%= @font_color || '#fff' %>;
+  }
+
+  #content
+  {
+    position:absolute;
+    left: 0; right: 0; bottom: 0; top: 0px;
+  }
+</style>
+<% if @url && @url != "#" %>
+  <div id="content">
+    <iframe src="<%= @url.html_safe %>" height="100%" width="100%" frameborder="0"></iframe>
+  </div>
+<% end %>
+
+
+<script>
+  checkForUpdate('<%= @url.html_safe %>');
+</script>

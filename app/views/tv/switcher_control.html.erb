@@ -1,5 +1,9 @@
+<h2>TV Switcher umschalten</h2>
 <%= bootstrap_form_with url: tv_switcher_control_url, method: :put do |f| %>
-  <% @switcher_urls.keys.each do |key| %>
-    <%= f.button key.to_s, name: 'switch_to', value: key %>
-  <% end %>
+  <div class="col col-sm-10 col-md-6 col-xl-4">
+    <% @switcher_urls.keys.each do |key| %>
+      <%= f.button t(key, scope: 'tv.switcher', default: key), name: 'switch_to', value: key,
+                   extra_class: "d-block w-100 m-1 #{@current_switcher_view == key ? 'btn-success' : ''}" %>
+    <% end %>
+  </div>
 <% end %>

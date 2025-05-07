@@ -10,8 +10,6 @@ gem 'mysql2'
 # Use Puma as the app server
 gem 'puma'
 
-gem 'redis'
-
 gem 'importmap-rails'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
