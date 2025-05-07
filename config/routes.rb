@@ -23,8 +23,7 @@ Rails.application.routes.draw do
         put '/starts/:race_type' => 'starts#save'
       end
       resources :races do
-        get '/results/:id' =>  'races#result', as: 'result'
-        delete '/results/:id' =>  'races#destroy_result'
+        resources :results, only: [:edit, :update, :destroy]
       end
       resources :participants
       resources :teams

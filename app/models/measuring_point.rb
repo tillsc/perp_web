@@ -33,7 +33,7 @@ class MeasuringPoint < ApplicationRecord
     if measuring_point_or_measuring_point_number.is_a?(MeasuringPoint)
       measuring_point_or_measuring_point_number.number
     else
-      measuring_point_or_measuring_point_number
+      measuring_point_or_measuring_point_number.to_i
     end
   end
 

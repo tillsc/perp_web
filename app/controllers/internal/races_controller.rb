@@ -66,19 +66,6 @@ module Internal
       redirect_to back_or_default
     end
 
-    def destroy_result
-      race = @regatta.races.find(params.extract_value(:race_id))
-      result = race.results.find(params.extract_value(:id))
-      authorize! :destroy, result
-
-      if result.destroy
-        flash[:info] = helpers.success_message_for(:destroy, result)
-      else
-        flash[:danger] = helpers.error_message_for(:destroy, result)
-      end
-      redirect_to back_or_default
-    end
-
     protected
 
     def default_url

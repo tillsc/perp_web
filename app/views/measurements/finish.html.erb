@@ -39,7 +39,7 @@
     <hr>
 
     <% if can?(:show, @race) %>
-      <%= link_to("Lauf anzeigen", internal_race_path(@regatta, @race, referrer: current_url), class: 'btn btn-secondary d-block my-1') %>
+      <%= link_to("Ergebnisse bearbeiten", internal_race_path(@regatta, @race, referrer: current_url), class: 'btn btn-secondary d-block my-1') %>
     <% end %>
     <% if can?(:edit, @race) %>
       <%= link_to("Lauf bearbeiten", edit_internal_race_path(@regatta, @race, referrer: current_url), class: 'btn btn-secondary d-block my-1') %>

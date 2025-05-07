@@ -1,0 +1,27 @@
+<h1><%= t('helpers.titles.edit', model: Result.model_name.human) %></h1>
+
+<%= bootstrap_form_for @result, url: internal_race_result_url(@regatta, @race, @result) do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
+
+  <div class="row">
+    <div class="col">
+      <%= f.number_field :lane_number %>
+    </div>
+
+    <div class="col">
+      <% times = @result.times_hash %>
+      <% measuring_points = MeasuringPoint.for_regatta(@regatta).where(number: times.keys) %>
+      <% @result.times_hash.each do |mp_number, time| %>
+        <% mp = measuring_points.find { |mp| mp.number == mp_number } %>
+        <%= f.text_field "times_hash_#{mp_number}", name: "result[times_hash][#{mp_number}]", value: time, label: "#{mp.name} Zeit" %>
+      <% end %>
+    </div>
+
+    <div class="col">
+      <%= f.check_box :disqualified %>
+      <%= f.text_field :comment %>
+    </div>
+  </div>
+
+  <%= f.primary %>
+<% end %>

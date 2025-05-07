@@ -31,6 +31,9 @@ de:
       measuring_point:
         one: Messpunkt
         other: Messpunkte
+      result:
+        one: Ergebnis
+        other: Ergebnisse
     attributes:
       regatta:
         name: Name
@@ -179,6 +182,8 @@ de:
       result:
         lane_number: Bahn
         times: Zeiten
+        disqualified: Disqualifiziert
+        comment: Bemerkung
     errors:
       models:
         address:

@@ -10,8 +10,10 @@ class Result < ApplicationRecord
   belongs_to :participant, foreign_key: ['Regatta_ID', 'Rennen', 'TNr']
 
   has_many :times, class_name: 'ResultTime', foreign_key: ['Regatta_ID', 'Rennen', 'Lauf', 'TNr'],
-           inverse_of: :result, dependent: :destroy
+           inverse_of: :result, dependent: :destroy,
+           autosave: true
 
+  alias_attribute :regatta_id, 'Regatta_ID'
   alias_attribute :race_number, 'Lauf'
   alias_attribute :disqualified, 'Ausgeschieden'
   alias_attribute :comment, 'Kommentar'
@@ -50,6 +52,19 @@ class Result < ApplicationRecord
 
     t.time = ResultTime.sanitize_time(time)
     t
+  end
+
+  def times_hash
+    measuring_points = MeasuringPoint.where(regatta_id: self.regatta_id).for_event(self.event)
+    measuring_points.inject({}) do |hash, point|
+      hash.merge(MeasuringPoint.number(point) => time_for(point)&.time)
+    end
+  end
+
+  def times_hash=(h)
+    h.each do |mp, time|
+      set_time_for(mp, time)
+    end
   end
 
   def destroy_time_for!(measuring_point_or_measuring_point_number)
