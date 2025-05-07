@@ -79,7 +79,7 @@ module Services
         all_participants.find { |p| p.participant_id == p_id }
       }
 
-      ftimes, rel_ftimes = if race.event.measuring_point_type(@measurement_set.measuring_point) == :start
+      ftimes, rel_ftimes = if self.is_start?
                              calc_start_time(raw_times, participants.length)
                            else
                              calc_times(raw_times, race.started_at)
@@ -114,6 +114,18 @@ module Services
       save_measurements_hash!(res, publish_result, measurement_set_attributes)
     end
 
+    def alternative_times_for(original_time)
+      original_time||= ftime(DateTime.now)
+      ExternalMeasurement.
+        for_measuring_point(measurement_set.measuring_point).
+        around(sanitize_times(original_time).first).
+        map { |et| ftime(et.time) } - [original_time]
+    end
+
+    def is_start?
+      race.event.measuring_point_type(@measurement_set.measuring_point) == :start
+    end
+
     protected
 
     def save_measurements_hash!(measurements_hash, publish_result, measurement_set_attributes)
@@ -123,8 +135,9 @@ module Services
       @measurement_set.measurements = measurements_hash
       @measurement_set.measurements_history||= {}
       last_history_date = @measurement_set.measurements_history.keys.last
-      if last_history_date.blank? || @measurement_set.measurements_history[last_history_date] != measurements_hash
-        @measurement_set.measurements_history[DateTime.now] = measurements_hash
+      history_entry = measurements_hash.map { |a| a.map(&:as_json) }
+      if last_history_date.blank? || @measurement_set.measurements_history[last_history_date] != history_entry
+        @measurement_set.measurements_history[DateTime.now] = history_entry
       end
       @measurement_set.save!
 
@@ -136,7 +149,7 @@ module Services
     end
 
     def publish_result!
-      if race.event.measuring_point_type(@measurement_set.measuring_point) == :start
+      if self.is_start?
         race.results.each do |r|
           r.lane_number = nil
           r.save!

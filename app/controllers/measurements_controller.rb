@@ -58,6 +58,18 @@ class MeasurementsController < ApplicationController
     authorize! :create, @measuring.measurement_set
     autosave = params[:autosave] == "1"
 
+    if !autosave && @measuring.is_start? && !params[:alternative_selected]
+      times = Array.wrap(params[:times]).uniq
+      if times.length < 2
+        @original_time = times.first
+        @alternative_times = @measuring.alternative_times_for(@original_time)
+        if @alternative_times.any?
+          render :select_alternative_time
+          return
+        end
+      end
+    end
+
     MeasuringSession.transaction do
       @res = if (params[:participant_times]) # finish cam
                @measuring.save_finish_cam!(params[:participant_times].permit!.to_h, true, measurement_set_params)

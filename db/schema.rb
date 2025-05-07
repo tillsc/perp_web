@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_06_073105) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_07_072134) do
   create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "Titel", limit: 10
     t.string "Vorname", limit: 100
@@ -58,6 +58,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_06_073105) do
     t.integer "Ausgeschieden", limit: 1, default: 0, null: false, unsigned: true
     t.string "Kommentar"
     t.index ["Regatta_ID", "Rennen", "Lauf"], name: "SECONDARY"
+  end
+
+  create_table "external_measurements", charset: "utf8", force: :cascade do |t|
+    t.integer "MesspunktNr"
+    t.datetime "time"
   end
 
   create_table "gewichte", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
