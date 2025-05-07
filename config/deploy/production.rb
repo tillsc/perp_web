@@ -19,7 +19,7 @@ namespace :bundler do
   task :force_ruby_platform do
     on roles(:app) do
       within release_path do
-        execute :bundle, 'config set force_ruby_platform true'
+        execute :bundle, 'config set force_ruby_platform true' # Fixes problems with GLIBC on old linux machine
       end
     end
   end
