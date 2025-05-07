@@ -8,6 +8,7 @@ class Race < ApplicationRecord
   alias_attribute :started_at_time, 'IstStartZeit'
   alias_attribute :planned_for, 'SollStartZeit'
 
+  alias_attribute :result_confirmed_since, 'ErgebnisBestaetigt'
   alias_attribute :result_official_since, 'ErgebnisEndgueltig'
   alias_attribute :result_corrected, 'ErgebnisKorrigiert'
 
@@ -131,6 +132,11 @@ class Race < ApplicationRecord
 
   def type_name
     Parameter.race_type_name(self.type_short)
+  end
+
+  def result_confirmed?
+    self.result_confirmed_since.present? ||
+      self.result_official?
   end
 
   def result_official?

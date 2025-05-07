@@ -1,6 +1,6 @@
 class MeasurementsController < ApplicationController
 
-  before_action except: [:index, :print] do
+  before_action except: [:index, :finish, :print] do
     @measuring_session = MeasuringSession.for_regatta(@regatta).
       preload(:measuring_point, :active_measuring_point).
       find_by(identifier: params[:measuring_session_id])
@@ -43,12 +43,22 @@ class MeasurementsController < ApplicationController
     @measurement_sets = MeasurementSet.for_regatta(@regatta).preload(:measuring_point, race: :event)
   end
 
+  def finish
+    authorize! :finish, MeasurementSet
+
+    @race = @regatta.races.
+      # preload(:referee_starter, :referee_aligner, :referee_umpire, :referee_finish_judge, results: [:times, participant: :team]).
+      find_by!(event_number: params[:event_number], number: params[:race_number])
+  end
+
   def print
     authorize! :print, MeasurementSet
 
     @race = @regatta.races.
       preload(:referee_starter, :referee_aligner, :referee_umpire, :referee_finish_judge, results: [:times, participant: :team]).
       find_by!(event_number: params[:event_number], number: params[:race_number])
+
+    render layout: 'minimal'
   end
 
   def show
@@ -93,7 +103,7 @@ class MeasurementsController < ApplicationController
     elsif current_user.is_a?(MeasuringSession)
       redirect_to measuring_session_url(@regatta, current_user, anchor: "race_#{@measuring.race.event.number}_#{@measuring.race.number}")
     else
-      redirect_to measurements_url(@regatta, anchor: "race_#{@measuring.race.event.number}_#{@measuring.race.number}")
+      redirect_to measurements_url(@regatta, anchor: @measuring.race.to_anchor)
     end
   end
 

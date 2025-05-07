@@ -63,6 +63,7 @@ Rails.application.routes.draw do
     get '/measurements' => 'measurements#index', as: :measurements
     get '/measurements/:event_number/:race_number' => 'measurements#show', as: :measurement
     post '/measurements/:event_number/:race_number' => 'measurements#save'
+    get '/measurements/:event_number/:race_number/finish' => 'measurements#finish', as: :finish_measurement
     get '/measurements/:event_number/:race_number/print' => 'measurements#print', as: :print_measurement
 
     get '/finish_cam/:event_number/:race_number' => 'measurements#finish_cam', as: :finish_cam_measurement

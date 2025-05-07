@@ -93,7 +93,7 @@ module Internal
     def race_params(default = {})
       params.fetch(:race, default).permit(:event_number, :type_short, :number_short,
                                           :planned_for, :started_at_time,
-                                          :result_official_since, :result_corrected,
+                                          :result_confirmed_since, :result_official_since, :result_corrected,
                                           :weight_list_approved_at, :weight_list_approved_by)
     end
 
