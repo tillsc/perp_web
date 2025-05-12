@@ -128,7 +128,7 @@ class MeasurementsController < ApplicationController
   def measurement_set_params
     params[:measurement_set]&.permit(:referee_starter_id, :referee_aligner_id,
                                      :referee_umpire_id, :referee_finish_judge_id,
-                                     :finish_cam_metadata)
+                                     :finish_cam_metadata, :backup_finish_cam_metadata)
   end
 
 end
