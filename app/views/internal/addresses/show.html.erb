@@ -32,6 +32,10 @@
     <%= link_to t('helpers.titles.edit', model: Address.model_name.human), edit_internal_address_path(@regatta, @address), class: 'btn btn-secondary d-block my-1' if can?(:edit, @address) %>
     <%= button_to("Löschen", internal_address_url(@regatta, @address), method: :delete, data: { confirm: "Sicher?"},
                   class: 'btn btn-danger d-block w-100', form_class: 'd-block my-1') if can?(:delete, @address) %>
+    <% if @address.public_private_id.present? %>
+      <hr>
+      <%= link_to 'Zur öffentlichen Seite', my_path(@regatta, public_private_id: @address.public_private_id, no_cookie: 1), class: 'btn btn-secondary d-block my-1' %>
+    <% end %>
   </div>
 </div>
 
