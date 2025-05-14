@@ -143,6 +143,16 @@ class Race < ApplicationRecord
     self.result_official_since.present?
   end
 
+  def state_text
+    if result_official?
+      "Ergebnis endgültig#{ '(Ergebnis korrigiert)' if result_corrected?}"
+    elsif result_confirmed?
+      'Ergebnis vom Zielrichter freigegeben'
+    else
+      'Ergebnis vorläufig'
+    end
+  end
+
   def type_short
     self.number.to_s[0]
   end

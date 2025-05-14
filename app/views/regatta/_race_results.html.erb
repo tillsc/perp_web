@@ -59,8 +59,7 @@
       Startzeit: <%= race.started_at && l(race.started_at) %>
     </div>
     <div class="result_official">
-      <%= race.result_official? ? 'Ergebnis endgültig' : 'Ergebnis vorläufig' %>
-      <%= '(Ergebnis korrigiert)' if race.result_corrected? %>
+      <%= race.state_text %>
     </div>
     <div class="referees">
       <%= Race.human_attribute_name(:referee_umpire) %>: <%= race.referee_umpire&.name(first_name_last_name: true) || '-' %>;

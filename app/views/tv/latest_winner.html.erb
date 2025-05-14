@@ -1,11 +1,11 @@
 <% if @race && @result && @event  %>
   <div class="sticky-top px-3" style="background: var(--bg, rgba(0, 0, 0, 0.3)); margin-left: <%= @header_space_left || 0 %>px;">
     <strong><%= @race.event&.name %>: <%= @race.name %></strong>
-    <span class="text-right"><%= '(Ergebnis vorläufig)' unless @race.result_official? %></span>
+    <span class="text-right"><%= '(Ergebnis vorläufig)' unless @race.result_confirmed? %></span>
 
     <div class="row">
       <p class="col-md-6">Gestartet um <%= l(@race.started_at, format: '%H:%M:%S') %></p>
-      <p class="col-md-6 text-right"><%= @race.event.Zusatztext1 %></p>
+      <p class="col-md-6 text-right"><%= @race.event.additional_text %></p>
     </div>
   </div>
 
