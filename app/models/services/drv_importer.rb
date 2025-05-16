@@ -48,6 +48,8 @@ module Services
       events = @regatta.events.
         preload(participants: [:team, **Participant::ALL_ROWERS_WITH_CLUBS])
       teams = @regatta.teams.all.to_a
+      rowers = Rower.where.not(external_id: nil).to_a
+      rower_nn = Rower.nomen_nominandum
 
       result = {representatives: {}, clubs: {}, participants: []}
 
@@ -68,15 +70,15 @@ module Services
 
           representative_external_id = meldung_xml["obmann"].presence
           representative = representative_external_id && representatives[representative_external_id]
-          if representative.blank?
+          if representative_external_id && representative.blank?
             raise("Meldung #{meldung_xml["id"]}: Konnte Obmann #{representative_external_id.inspect} nicht finden!")
           end
 
           team_name = Team.sanitize_name(meldung_xml.at_xpath("./titel").text, slashes_had_no_whitespace: true)
           team = if participant.team.blank?
                    changed = true
-                   teams.find { |t| t.name == team_name && t.representative_id == representative.id }
-                 elsif participant.team.name == team_name && participant.team.representative_id == representative.id
+                   teams.find { |t| t.name == team_name && t.representative_id == representative&.id }
+                 elsif participant.team.name == team_name && participant.team.representative_id == representative&.id
                    participant.team
                  else
                    changed = true
@@ -100,34 +102,50 @@ module Services
           end
           self.errors.merge!(team.errors) if team.errors.any?
 
-          rowers = meldung_xml.xpath("./mannschaft/position").inject({}) do |h, position|
+          rowers_data = meldung_xml.xpath("./mannschaft/position").inject({}) do |h, position|
             pos = position["st"] ? "s" : position["nr"]
-            external_id = nil
-            club_external_id = nil
-            first_name = ""
-            last_name = "N.N."
-            year_of_birth = nil
+
+            rower = participant.rower_at(pos)
             if position.children.any?
               external_id = position.at_xpath("./athlet")["id"]
               club_external_id = position.at_xpath("./athlet")["id"]
               first_name = position.at_xpath("./athlet/vorname").text
               last_name = position.at_xpath("./athlet/name").text
               year_of_birth = position.at_xpath("./athlet/jahrgang").text
-            end
-            existing = participant.rower_at(pos)
-            if !existing || existing.external_id != external_id
+              if external_id.present?
+                if !rower || rower.external_id != external_id
+                  rower = rowers.find { |r| r.external_id == external_id }
+                end
+              else
+                if !rower || rower.first_name != first_name || rower.last_name != last_name
+                  rower = rowers.find { |r| r.first_name == first_name && r.last_name == last_name && r.year_of_birth.to_s == year_of_birth }
+                end
+              end
+              rower||= Rower.new
+              rower.first_name = first_name
+              rower.last_name = last_name
+              rower.year_of_birth = year_of_birth
+              rower.club = clubs[club_external_id] if club_external_id.present?
+              changed = true if rower.changed?
+            elsif rower&.id != rower_nn.id
               changed = true
+              rower = rower_nn
+            else
+              rower = rower_nn
             end
-            h.merge(pos => { first_name: , last_name: , year_of_birth: , external_id: , club_external_id: })
+            participant.set_rower_at(pos, rower)
+
+            h.merge(pos => rower.attributes)
           end
 
+          changed = true if participant.changed?
           if changed
             data = {
               event_number: event.number,
               participant_number: participant&.number,
               team_id: team.team_id&.nonzero? ? team.team_id : nil,
               team_name: team.name,
-              rowers: rowers,
+              rowers: rowers_data,
               representative_external_id: representative_external_id,
               participant_attributes: participant.attributes.slice(*participant.changed).except("Regatta_ID", "Rennen"),
             }

@@ -54,10 +54,19 @@ class Rower < ApplicationRecord
     where(club: club_address)
   end
 
+  # N.N.
+  def self.nomen_nominandum
+    Rower.find_by!(first_name: '', last_name: 'N.N.', year_of_birth: '', external_id: '')
+  end
+
   def name(options = {})
     "#{options[:is_cox] ? "St.\u00A0" : ""}#{self.first_name}\u00A0#{self.last_name}".tap do |s|
       s << "\u00A0(#{self.year_of_birth})" if self.year_of_birth.present?
     end
+  end
+
+  def name_with_nobr(options = {})
+    name(options).gsub(" ", "\u00A0")
   end
 
   def weight_for(date)

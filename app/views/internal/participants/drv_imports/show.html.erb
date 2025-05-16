@@ -18,7 +18,10 @@
           <td><%= participant["event_number"] %></td>
           <td><%= participant["team_id"] ? link_to(participant["team_name"], internal_team_url(@regatta, "#{@regatta.id}_#{participant["team_id"]}")) : participant["team_name"] %></td>
           <td><%= render "address", data: @import.results["representatives"][participant["representative_external_id"]] %></td>
-          <td><%= participant["rowers"].values.map { |r| "#{r["first_name"]} #{r["last_name"]} (#{r["year_of_birth"]})"}.join(", ") %></td>
+          <td><%= safe_join(participant["rowers"].values.map do |r|
+            rower = Rower.new(r)
+            rower.id ? link_to(rower.name_with_nobr, internal_rower_path(@regatta, rower)) : rower.name_with_nobr
+          end, ", ")%></td>
         </tr>
       <% end %>
       </tbody>
