@@ -48,7 +48,7 @@ module Services
       events = @regatta.events.
         preload(participants: [:team, **Participant::ALL_ROWERS_WITH_CLUBS])
       teams = @regatta.teams.all.to_a
-      rowers = Rower.where.not(external_id: nil).to_a
+      rowers_with_external_ids = Rower.where.not(external_id: [nil, ""]).to_a
       rower_nn = Rower.nomen_nominandum
 
       result = {representatives: {}, clubs: {}, participants: []}
@@ -114,17 +114,22 @@ module Services
               year_of_birth = position.at_xpath("./athlet/jahrgang").text
               if external_id.present?
                 if !rower || rower.external_id != external_id
-                  rower = rowers.find { |r| r.external_id == external_id }
+                  rower = rowers_with_external_ids.find { |r| r.external_id == external_id }
+                  rower||= Rower.find_by(first_name: first_name, last_name: last_name, year_of_birth: year_of_birth, external_id: [nil, ""])
                 end
               else
-                if !rower || rower.first_name != first_name || rower.last_name != last_name
-                  rower = rowers.find { |r| r.first_name == first_name && r.last_name == last_name && r.year_of_birth.to_s == year_of_birth }
+                if !rower || rower.first_name != first_name || rower.last_name != last_name || rower.year_of_birth.to_s != year_of_birth
+                  rower = Rower.find_by(first_name: first_name, last_name: last_name, year_of_birth: year_of_birth, external_id: [nil, ""])
                 end
               end
-              rower||= Rower.new
+              if !rower
+                rower = Rower.new
+                rowers_with_external_ids << rower
+              end
               rower.first_name = first_name
               rower.last_name = last_name
               rower.year_of_birth = year_of_birth
+              rower.external_id = external_id
               rower.club = clubs[club_external_id] if club_external_id.present?
               changed = true if rower.changed?
             elsif rower&.id != rower_nn.id
