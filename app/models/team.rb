@@ -16,11 +16,11 @@ class Team < ApplicationRecord
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
 
-  belongs_to :representative, class_name: 'Address', foreign_key: 'Obmann_ID'
+  belongs_to :representative, class_name: 'Address', foreign_key: 'Obmann_ID', optional: true
 
   has_many :participants, foreign_key: ['Regatta_ID', 'Team_ID'], dependent: :restrict_with_error
 
-  validates :name, uniqueness: { scope: 'Regatta_ID' }
+  validates :name, uniqueness: { scope: ['Regatta_ID', 'Obmann_ID'] }
 
   scope :for_regatta, -> (regatta) {
     where(regatta_id: regatta)
