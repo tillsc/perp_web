@@ -30,6 +30,16 @@ class Team < ApplicationRecord
     where(arel_table[:name].matches("%#{query}%"))
   }
 
+  def self.sanitize_name(name, slashes_had_no_whitespace: false)
+    slash_expr = if slashes_had_no_whitespace
+                   /([^\u00A0])\u00A0?\/\u00A0?([^\u00A0])/
+                 else
+                   /([^\u00A0])\u00A0\/\u00A0([^\u00A0])/
+                 end
+
+    name.to_s.gsub(" ", "\u00A0").gsub(slash_expr, "\\1\u00A0\/ \\2")
+  end
+
   def set_team_id
     unless self['ID']&.nonzero?
       self['ID'] = self.regatta.teams.maximum('ID').to_i + 1
