@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_07_124824) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
   create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "Titel", limit: 10
     t.string "Vorname", limit: 100
     t.string "Name", limit: 200
     t.string "Namenszusatz", limit: 100
     t.integer "Weiblich", limit: 1, default: 0, unsigned: true
-    t.string "ExterneID1", limit: 20
+    t.string "ExterneID1", limit: 200
     t.string "Strasse", limit: 35
     t.string "PLZ", limit: 10
     t.string "Ort", limit: 35
@@ -26,7 +26,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_07_124824) do
     t.string "Telefon_Geschaeftlich", limit: 20
     t.string "Telefon_Mobil", limit: 20
     t.string "Fax", limit: 20
-    t.string "eMail", limit: 40
+    t.string "eMail", limit: 200
     t.integer "IstVerein", limit: 1, default: 0, null: false, unsigned: true
     t.integer "IstSchiedsrichter", limit: 1, default: 0, null: false, unsigned: true
     t.integer "IstObmann", limit: 1, default: 0, null: false, unsigned: true
@@ -72,6 +72,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_07_124824) do
     t.index ["Datum"], name: "Datum"
     t.index ["Ruderer_ID", "Datum"], name: "Eindeutig", unique: true
     t.index ["Ruderer_ID"], name: "Ruderer_IDs"
+  end
+
+  create_table "imports", charset: "utf8", force: :cascade do |t|
+    t.integer "Regatta_ID"
+    t.string "source"
+    t.text "metadata"
+    t.text "xml", size: :long
+    t.text "results", size: :long
+    t.datetime "imported_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "laeufe", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
@@ -143,6 +154,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_07_124824) do
     t.integer "ruderer8_ID", unsigned: true
     t.integer "ruderers_ID", unsigned: true
     t.text "Historie"
+    t.string "imported_from"
+    t.string "imported_id"
     t.index ["BugNr"], name: "index_meldungen_on_bugnr"
     t.index ["Team_ID"], name: "SECONDARY"
     t.index ["ruderer1_ID"], name: "index_meldungen_on_ruderer1_ID"

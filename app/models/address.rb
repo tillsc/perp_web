@@ -46,7 +46,8 @@ class Address < ApplicationRecord
 
   ROLES.each do |role_name|
     scope role_name, -> do
-      where("is_#{role_name}": true)
+      where("is_#{role_name}": true).
+        create_with("is_#{role_name}": true)
     end
   end
 

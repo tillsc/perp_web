@@ -1,0 +1,11 @@
+<h1><%= t('helpers.titles.new', model: Import.model_name.human) %></h1>
+
+<%= bootstrap_form_for "",
+                       url: internal_participants_drv_imports_path(@regatta),
+                       multipart: true, method: :post do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
+
+  <%= f.file_field :xml, label: 'DRV XML' %>
+
+  <%= f.submit 'Importieren'  %>
+<% end %>

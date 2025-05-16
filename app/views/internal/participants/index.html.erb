@@ -12,6 +12,12 @@
 
     <hr>
 
-    <%= link_to t('helpers.titles.new', model: Participant.model_name.human), new_internal_participant_path(@regatta, participant: {event_number: params[:event_number]}), class: 'btn btn-secondary d-block my-1' %>
+    <%= link_to t('helpers.titles.new', model: Participant.model_name.human),
+                new_internal_participant_path(@regatta, participant: {event_number: params[:event_number]}),
+                class: 'btn btn-secondary d-block my-1' %>
+
+    <%= link_to "DRV Imports",
+                internal_participants_drv_imports_url(@regatta, referrer: current_url),
+                class: 'btn btn-secondary d-block my-1' %>
   </div>
 </div>

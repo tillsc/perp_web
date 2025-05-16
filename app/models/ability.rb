@@ -19,6 +19,7 @@ class Ability
 
       if user.role_registration || user.role_admin
         can :manage, Participant
+        can :manage, Import
         can :manage, Team
         can :manage, Rower
       end

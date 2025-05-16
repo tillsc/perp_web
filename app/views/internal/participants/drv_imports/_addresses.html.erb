@@ -1,0 +1,27 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Änderungen</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% addresses.each do |_external_id, address| %>
+    <tr>
+      <td><%= render "address", data: address %></td>
+      <td>
+        <% if address.except("id").any? %>
+        <dl class="row">
+          <% address.except("id").each do |k, v| %>
+            <dt class="col-sm-5"><%= Address.human_attribute_name(Address.aliases_by_attribute_name[k]&.first || k) %></dt>
+            <dd class="col-sm-7"><%= v %></dd>
+          <% end %>
+        </dl>
+        <% else %>
+          Keine Änderungen
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

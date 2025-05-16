@@ -136,6 +136,11 @@ class Participant < ApplicationRecord
     ALL_ROWERS - not_used
   end
 
+  def rower_at(position)
+    raise "invalid position" unless position.downcase.to_s =~ /^[1-8s]$/
+    self.send("rower#{position}")
+  end
+
   def active?
     !withdrawn? && !disqualified.present?
   end

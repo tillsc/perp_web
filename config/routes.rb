@@ -27,8 +27,11 @@ Rails.application.routes.draw do
       end
       resources :participants do
         collection do
-          get '/drv_import' => 'participants#drv_import', as: 'drv_import'
-          put '/drv_import' => 'participants#execute_drv_import'
+          namespace :participants do
+            resources :drv_imports, except: [:edit, :update] do
+              post '/' => :execute
+            end
+          end
         end
       end
       resources :teams

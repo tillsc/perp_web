@@ -1,0 +1,50 @@
+<h1><%= t('helpers.titles.show', model: Import.model_name.human, label: "Datenbestand vom #{l(@import.metadata&.dig("exported_at")&.to_datetime || @import.created_at)}").html_safe %></h1>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <h4>Meldungen</h4>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Rennen</th>
+        <th>Team</th>
+        <th>Obmann</th>
+        <th>Ruderer</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @import.results["participants"].each do |participant| %>
+        <tr>
+          <td><%= participant["event_number"] %></td>
+          <td><%= participant["team_id"] ? link_to(participant["team_name"], internal_team_url(@regatta, "#{@regatta.id}_#{participant["team_id"]}")) : participant["team_name"] %></td>
+          <td><%= render "address", data: @import.results["representatives"][participant["representative_external_id"]] %></td>
+          <td><%= participant["rowers"].values.map { |r| "#{r["first_name"]} #{r["last_name"]} (#{r["year_of_birth"]})"}.join(", ") %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <h4>Obleute</h4>
+    <%= render "addresses", addresses: @import.results["representatives"] %>
+
+    <h4>Vereine</h4>
+    <%= render "addresses", addresses:  @import.results["clubs"] %>
+
+    <h4>Metadaten</h4>
+    <pre><%= JSON.pretty_generate @import.metadata %></pre>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= button_to(t('helpers.actions.import'), internal_participants_drv_import_path(@regatta, @import),
+                  method: :post,
+                  class: 'btn btn-primary d-block w-100',
+                  form_class: 'd-block my-1') if can?(:execute, @import) %>
+
+    <%= button_to(t('helpers.actions.delete'), internal_participants_drv_import_path(@regatta, @import),
+                  method: :delete, data: { confirm: "Sicher?"},
+                  class: 'btn btn-danger d-block w-100',
+                  form_class: 'd-block my-1') if can?(:delete, @import) %>
+
+    <%= link_to "Zurück zur Übersicht", internal_participants_drv_imports_path(@regatta),
+                class: 'btn btn-secondary d-block my-1' %>
+  </div>
+</div>
