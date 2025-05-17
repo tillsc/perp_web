@@ -101,6 +101,7 @@ module Services
             team.valid?
           end
           self.errors.merge!(team.errors) if team.errors.any?
+          participant.team = team
 
           rowers_data = meldung_xml.xpath("./mannschaft/position").inject({}) do |h, position|
             pos = position["st"] ? "s" : position["nr"]
@@ -138,13 +139,26 @@ module Services
             else
               rower = rower_nn
             end
+            rower_changes = rower.persisted? ? rower.changes : nil
+            unless (preview ? rower.valid? : rower.save)
+              self.errors.merge!(rower.errors)
+            end
+
             participant.set_rower_at(pos, rower)
 
-            h.merge(pos => rower.attributes)
+            h.merge(pos => rower.attributes.merge("what_changed" => rower_changes))
           end
 
           changed = true if participant.changed?
           if changed
+            if !preview
+              participant.set_participant_id
+              participant.save
+            else
+              participant.valid?
+            end
+            self.errors.merge!(participant.errors) if participant.errors.any?
+
             data = {
               event_number: event.number,
               participant_number: participant&.number,

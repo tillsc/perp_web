@@ -18,6 +18,8 @@ class CreateImports < ActiveRecord::Migration[8.0]
     up_only do
       change_column :addressen, :ExterneID1, :string, limit: 200
       change_column :addressen, :eMail, :string, limit: 200
+
+      change_column :ruderer, :VName, :string, limit: 50
     end
   end
 end

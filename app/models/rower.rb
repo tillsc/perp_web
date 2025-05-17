@@ -4,6 +4,10 @@ class Rower < ApplicationRecord
 
   self.table_name = 'ruderer'
 
+  # Transient attribute to visualize changes made to a rower. This data could be gathered by using "rower.changes"
+  # before "rower.save" is made.
+  attr_accessor :what_changed
+
   alias_attribute :id, 'ID'
   alias_attribute :first_name, 'VName'
   alias_attribute :last_name, 'NName'
@@ -67,6 +71,14 @@ class Rower < ApplicationRecord
 
   def name_with_nobr(options = {})
     name(options).gsub(" ", "\u00A0")
+  end
+
+  def what_changed_text
+    if self.what_changed&.slice("VName", "NName", "JahrG").present?
+      if (visible_changes = self.what_changed&.slice("VName", "NName", "JahrG")).present?
+        visible_changes.map { |k, (old, _new)| "#{k}: #{old}" }.join(", ")
+      end
+    end
   end
 
   def weight_for(date)

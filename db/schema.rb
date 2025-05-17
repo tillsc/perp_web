@@ -220,7 +220,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
   end
 
   create_table "ruderer", primary_key: "ID", id: { type: :integer, unsigned: true }, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
-    t.string "VName", limit: 20, default: "", null: false
+    t.string "VName", limit: 50, default: "", null: false
     t.string "NName", limit: 50, default: "", null: false
     t.string "JahrG", limit: 4, default: "", null: false
     t.integer "Verein_ID", unsigned: true

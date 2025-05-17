@@ -20,8 +20,15 @@
           <td><%= render "address", data: @import.results["representatives"][participant["representative_external_id"]] %></td>
           <td><%= safe_join(participant["rowers"].values.map do |r|
             rower = Rower.new(r)
-            rower.id ? link_to(rower.name_with_nobr, internal_rower_path(@regatta, rower)) : rower.name_with_nobr
-          end, ", ")%></td>
+            safe_join([if rower.id
+                         [link_to(rower.name_with_nobr(show_what_changed: true), internal_rower_path(@regatta, rower))]
+                       else
+                         [rower.name_with_nobr(show_what_changed: true)]
+                       end,
+                       if (what_changed_text = rower.what_changed_text).present?
+                         content_tag(:em, "(Vorher #{what_changed_text})")
+                       end].compact, " ")
+          end, ", ") %></td>
         </tr>
       <% end %>
       </tbody>
