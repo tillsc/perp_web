@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_19_134017) do
   create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "Titel", limit: 10
     t.string "Vorname", limit: 100
@@ -194,8 +194,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
     t.string "Waehrung", limit: 10, default: "€"
     t.integer "ZwischenStrecke", default: 250, null: false, unsigned: true
     t.string "Hash", limit: 100, default: "", null: false
-    t.date "StartDatum", null: false
-    t.date "EndDatum", null: false
+    t.date "StartDatum"
+    t.date "EndDatum"
+    t.boolean "entry_closed"
     t.index ["Jahr", "Kurzbezeichnung"], name: "SECONDARY", unique: true
   end
 

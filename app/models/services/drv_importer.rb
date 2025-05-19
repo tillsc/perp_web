@@ -153,14 +153,11 @@ module Services
           end
 
           participant.withdrawn = false
-          # TODO:
-          # participant.late_entry = !participant.persisted? &&
-          # # Has to be the last change!
-          # changed = true if participant.changed?
-          # participant.entry_changed = participant.persisted? && participant.changed?
-          changed = true if participant.changed?
+          participant.late_entry = !participant.persisted? && @regatta.entry_closed?
 
+          changed = true if participant.changed?
           if changed
+            participant.entry_changed = participant.persisted? && @regatta.entry_closed?
             if !preview
               participant.set_participant_id
               participant.save

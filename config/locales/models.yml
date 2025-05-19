@@ -42,6 +42,7 @@ de:
         year: Jahr
         from_date: Von
         to_date: Bis
+        entry_closed: Meldeschluss abgeschlossen
         currency: Währung
       event:
         number: Nummer

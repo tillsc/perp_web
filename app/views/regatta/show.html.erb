@@ -36,7 +36,7 @@
                     <br>
                   <% end %>
                 <% end %>
-              <% elsif @regatta.from_date.nil? or @regatta.from_date >= 10.days.since %>
+              <% elsif @regatta.entry_closed? %>
                 <em>Noch keine Meldungen</em>
               <% else %>
                 <em>Rennen findet nicht statt</em>
