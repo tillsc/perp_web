@@ -40,6 +40,9 @@ class Regatta < ApplicationRecord
            inverse_of: :regatta, dependent: :destroy
   has_many :referees, through: :regatta_referees, source: :address
 
+  has_many :imports, foreign_key: 'Regatta_ID',
+           inverse_of: :regatta, dependent: :destroy
+
   scope :valid, -> { where(Regatta.arel_table[:ID].gteq(1032)) }
 
   validates :name, presence: true, length: { minimum: 4 }, uniqueness: true

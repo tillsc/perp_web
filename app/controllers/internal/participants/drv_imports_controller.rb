@@ -4,11 +4,11 @@ module Internal
 
       def index
         authorize! :index, Import
-        @imports = Import.drv.all
+        @imports = @regatta.imports.drv.all
       end
 
       def show
-        @import = Import.drv.find(params[:id])
+        @import = @regatta.imports.drv.find(params[:id])
         authorize! :show, @import
 
         address_ids = (@import.results["representatives"].values + @import.results["clubs"].values).map { |d| d["id"] }
@@ -35,7 +35,7 @@ module Internal
       end
 
       def execute
-        @import = Import.drv.find(params[:drv_import_id])
+        @import = @regatta.imports.drv.find(params[:drv_import_id])
         authorize! :execute, @import
 
         ActiveRecord::Base.transaction do
