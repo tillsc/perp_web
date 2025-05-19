@@ -47,6 +47,10 @@
                   method: :delete, data: { confirm: "Sicher?"},
                   class: 'btn btn-danger d-block w-100',
                   form_class: 'd-block my-1') if can?(:delete, @participant) %>
+    <hr>
+
+    <%= link_to "Zurück zur Meldeansicht", internal_participants_path(@regatta, anchor: @participant.to_anchor),
+                class: 'btn btn-secondary d-block my-1' %>
   </div>
 </div>
 

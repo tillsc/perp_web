@@ -38,6 +38,8 @@ module ApplicationHelper
       val = I18n.t("helpers.yes")
     elsif val === false
       val = I18n.t("helpers.no")
+    elsif val.is_a?(String)
+      val = highlight_nobr(val)
     end
     val = block.call(val, record) if block.present?
     content_tag(:dt, record.class.human_attribute_name(attribute)) +

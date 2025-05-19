@@ -15,7 +15,7 @@
       <td><%=  participant.event && link_to(participant.event.label, internal_event_url(@regatta, participant)) || '!' %></td>
       <td><%= link_to(participant.number || '-', internal_participant_path(@regatta, participant)) %></td>
       <td class="<%= 'bg-warning' if participant.problem_with_team_boat_number?(participants) %>">
-        <%= link_to participant.team_name, internal_team_path(@regatta, participant.team) %>
+        <%= link_to highlight_nobr(participant.team_name), internal_team_path(@regatta, participant.team) %>
       </td>
       <td>
         <%= "Abg." if participant.withdrawn? %>

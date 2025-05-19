@@ -39,8 +39,8 @@
   <% @team.participants.preload(:event, *Participant::ALL_ROWERS).each do |participant| %>
     <tr>
       <td><%= link_to participant.event.label, internal_participants_url(@regatta, event_number: participant.event.number) %></td>
-      <td><%= link_to participant.number, internal_participant_url(@regatta, participant) %></td>
-      <td><%= participant.rower_names(rower_link: -> (r, n) { link_to n, internal_rower_path(@regatta, r) }) %></td>
+      <td><%= link_to participant.number || '-', internal_participant_url(@regatta, participant) %></td>
+      <td><%= participant.rower_names(rower_link: -> (r, n) { link_to highlight_nobr(n), internal_rower_path(@regatta, r) }) %></td>
     </tr>
   <% end %>
   </tbody>

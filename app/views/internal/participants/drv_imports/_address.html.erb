@@ -1,7 +1,7 @@
 <% if data %>
   <% address = @addresses.find { |a| a.id == data["id"] } || Address.new %>
   <% address.attributes = data.except("id") %>
-  <%= address.persisted? ? link_to(address.name, internal_address_path(@regatta, address)) : address.name %>
+  <%= address.persisted? ? link_to(highlight_nobr(address.name), internal_address_path(@regatta, address)) : highlight_nobr(address.name) %>
   <% if address.telefone_mobile.present? %>
     (<%= address.telefone_mobile %>)
   <% end %>

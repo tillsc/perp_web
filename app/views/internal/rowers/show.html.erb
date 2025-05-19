@@ -51,8 +51,8 @@
       <tr>
         <% if this_regatta == 1 %>
           <td><%= link_to participant.event.label, internal_participants_url(@regatta, event_number: participant.event.number, anchor: participant.to_anchor) %></td>
-          <td><%= link_to participant.number.presence || '-', internal_participants_url(@regatta, event_number: participant.event.number, anchor: participant.to_anchor) %></td>
-          <td><%= link_to participant.team_name, internal_team_path(@regatta, participant.team) %></td>
+          <td><%= link_to participant.number.presence || '-', internal_participant_url(@regatta, participant) %></td>
+          <td><%= link_to highlight_nobr(participant.team_name), internal_team_path(@regatta, participant.team) %></td>
         <% else %>
           <td><%= participant.regatta.name %></td>
           <td><%= link_to participant.event.label, event_participants_url(participant.regatta, participant.event.number) %></td>

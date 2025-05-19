@@ -64,15 +64,11 @@ class Rower < ApplicationRecord
   end
 
   def name(options = {})
-    "#{options[:is_cox] ? "St.\u00A0" : ""}#{self.first_name}\u00A0#{self.last_name}".tap do |s|
-      s << "\u00A0(#{self.year_of_birth})" if self.year_of_birth.present?
+    "#{options[:is_cox] ? "St. " : ""}#{self.first_name} #{self.last_name}".tap do |s|
+      s << " (#{self.year_of_birth})" if self.year_of_birth.present?
+      s.gsub!(" ", "\u00A0") unless options[:no_nobr]
     end
   end
-
-  def name_with_nobr(options = {})
-    name(options).gsub(" ", "\u00A0")
-  end
-
   def what_changed_text
     if self.what_changed&.slice("VName", "NName", "JahrG").present?
       if (visible_changes = self.what_changed&.slice("VName", "NName", "JahrG")).present?

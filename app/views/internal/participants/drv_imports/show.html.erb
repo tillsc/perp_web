@@ -19,14 +19,14 @@
           <tr>
             <td><%= participant["event_number"] %></td>
             <td><%= participant["participant_number"] || "-" %></td>
-            <td><%= participant["team_id"] ? link_to(participant["team_name"], internal_team_url(@regatta, "#{@regatta.id}_#{participant["team_id"]}")) : participant["team_name"] %></td>
+            <td><%= participant["team_id"] ? link_to(highlight_nobr(participant["team_name"]), internal_team_url(@regatta, "#{@regatta.id}_#{participant["team_id"]}")) : highlight_nobr(participant["team_name"]) %></td>
             <td><%= render "address", data: @import.results["representatives"][participant["representative_external_id"]] %></td>
             <td><%= safe_join(participant["rowers"].values.map do |r|
               rower = Rower.new(r)
               safe_join([if rower.id
-                           [link_to(rower.name_with_nobr(show_what_changed: true), internal_rower_path(@regatta, rower))]
+                           [link_to(highlight_nobr(rower.name), internal_rower_path(@regatta, rower))]
                          else
-                           [rower.name_with_nobr(show_what_changed: true)]
+                           [highlight_nobr(rower.name)]
                          end,
                          if (what_changed_text = rower.what_changed_text).present?
                            content_tag(:em, "(Vorher #{what_changed_text})")
@@ -74,7 +74,7 @@
           where(external_id: Array.wrap(@import.results["withdrawn_participant_external_ids"])).each do |participant| %>
           <tr>
             <td><%= participant.event_number %></td>
-            <td><%= link_to(participant.team_name, internal_team_url(@regatta, participant.team)) %></td>
+            <td><%= link_to(highlight_nobr(participant.team_name), internal_team_url(@regatta, participant.team)) %></td>
             <td><%= participant.team.representative && link_to(participant.team.representative.name, internal_address_path(@regatta, participant.team.representative)) %></td>
             <td><%= link_to t('helpers.actions.show'), internal_participant_path(@regatta, participant), class: 'btn btn-sm btn-outline-primary' %></td>
           </tr>
