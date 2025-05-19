@@ -4,27 +4,26 @@
     <th>Rennen</th>
     <th>Bugnr</th>
     <th>Team</th>
-    <th>Abg.</th>
-    <th>Nachg.</th>
-    <th>Umg.</th>
-    <th>Disq.</th>
+    <th>Status</th>
     <th></th>
   </tr>
   </thead>
   <tbody>
   <% participants.each do |participant| %>
-    <tr id="<%= participant.to_anchor %>">
+    <tr id="<%= participant.to_anchor %>" class="<%= participant_state_classes(participant) %>">
       <td><%=  participant.event && link_to(participant.event.label, internal_event_url(@regatta, participant)) || '!' %></td>
       <td><%= link_to(participant.number || '-', internal_participant_path(@regatta, participant)) %></td>
       <td class="<%= 'bg-warning' if participant.problem_with_team_boat_number?(participants) %>">
         <%= link_to participant.team_name, internal_team_path(@regatta, participant.team) %>
       </td>
-      <td><%= participant.withdrawn ? '✓' : '' %></td>
-      <td><%= participant.late_entry ? '✓' : '' %></td>
-      <td><%= participant.entry_changed ? '✓' : '' %></td>
-      <td><%= participant.disqualified %></td>
+      <td>
+        <%= "Abg." if participant.withdrawn? %>
+        <%= "Nachg." if participant.late_entry? %>
+        <%= "Umg." if participant.entry_changed? %>
+        <%= "Disq." if participant.disqualified? %>
+      </td>
       <td class="text-nowrap">
-        <%= link_to(t('helpers.actions.details'), internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]),
+        <%= link_to(t('helpers.actions.show'), internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]),
                     class: 'btn btn-outline-primary btn-sm') if can?(:show, participant) %>
         <%= link_to(t('helpers.actions.edit_icon'), edit_internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]),
                     class: 'btn btn-outline-primary btn-sm',

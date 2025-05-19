@@ -7,6 +7,7 @@ module ApplicationHelper
       res << 'changed' if p.entry_changed?
       res << 'withdrawn' if p.withdrawn?
       res << 'late_entry' if p.late_entry?
+      res << 'disqualified' if p.disqualified?
     end.compact.join(' ')
   end
   def success_message_for(action, record)

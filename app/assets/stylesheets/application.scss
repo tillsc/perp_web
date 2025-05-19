@@ -41,8 +41,12 @@ a.anchor {
   visibility: hidden;
 }
 
-.withdrawn {
+.withdrawn, .disqualified {
   text-decoration: line-through;
+}
+
+tr.withdrawn td, tr.disqualified td {
+  background-color: #ffe0e0;
 }
 
 .late_entry {
