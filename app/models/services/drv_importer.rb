@@ -171,9 +171,9 @@ module Services
 
             data = {
               event_number: event.number,
-              participant_id: participant.participant_id,
+              participant_id: participant.participant_id&.nonzero?,
               participant_number: participant.number,
-              team_id: team.team_id&.nonzero? ? team.team_id : nil,
+              team_id: team.team_id&.nonzero?,
               team_name: team.name,
               rowers: rowers_data,
               representative_external_id: representative_external_id,
