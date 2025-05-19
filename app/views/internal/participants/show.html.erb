@@ -12,14 +12,22 @@
 
       <dl class="col">
         <% @participant.rower_fields.each do |field| %>
-           <%= dl_entry(@participant, field)  { |rower| rower && link_to(rower.name, internal_rower_path(@regatta, rower)) || "-" } %>
+          <%= dl_entry(@participant, field)  { |rower| rower && link_to(rower.name, internal_rower_path(@regatta, rower)) || "-" } %>
         <% end %>
       </dl>
 
       <dl class="col">
-        <%= dl_entry(@participant, :withdrawn) %>
-        <%= dl_entry(@participant, :late_entry) %>
-        <%= dl_entry(@participant, :entry_changed) %>
+        <% [:withdrawn, :late_entry, :entry_changed].each do |field| %>
+          <%= dl_entry(@participant, field) do |val|
+            safe_join([val,
+                       button_to("🔄",
+                                 internal_participant_path(@regatta, @participant, referrer: current_url),
+                                 method: :patch, class: "btn btn-outline-primary btn-sm",
+                                 title: "Umschalten",
+                                 params: { participant: { field => !@participant.send(field) }})
+                      ], " ")
+          end %>
+        <% end %>
         <%= dl_entry(@participant, :disqualified) %>
         <%= dl_entry(@participant, :imported_from) %>
         <%= dl_entry(@participant, :external_id) %>
