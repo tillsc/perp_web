@@ -60,7 +60,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
     t.index ["Regatta_ID", "Rennen", "Lauf"], name: "SECONDARY"
   end
 
-  create_table "external_measurements", charset: "utf8", force: :cascade do |t|
+  create_table "external_measurements", charset: "utf8mb3", force: :cascade do |t|
     t.integer "MesspunktNr"
     t.datetime "time"
   end
@@ -74,7 +74,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
     t.index ["Ruderer_ID"], name: "Ruderer_IDs"
   end
 
-  create_table "imports", charset: "utf8", force: :cascade do |t|
+  create_table "imports", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "Regatta_ID"
     t.string "source"
     t.text "metadata"
@@ -103,7 +103,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
     t.index ["Regatta_ID", "Rennen", "Lauf"], name: "UNIQUE", unique: true
   end
 
-  create_table "measurement_sets", charset: "utf8", force: :cascade do |t|
+  create_table "measurement_sets", charset: "utf8mb3", force: :cascade do |t|
     t.integer "measuring_session_id"
     t.integer "Regatta_ID", null: false
     t.integer "Rennen", null: false
@@ -121,7 +121,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
     t.text "backup_finish_cam_metadata"
   end
 
-  create_table "measuring_sessions", charset: "utf8", force: :cascade do |t|
+  create_table "measuring_sessions", charset: "utf8mb3", force: :cascade do |t|
     t.string "device_description"
     t.integer "Regatta_ID"
     t.integer "MesspunktNr"
@@ -155,7 +155,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
     t.integer "ruderers_ID", unsigned: true
     t.text "Historie"
     t.string "imported_from"
-    t.string "imported_id"
+    t.string "external_id"
     t.index ["BugNr"], name: "index_meldungen_on_bugnr"
     t.index ["Team_ID"], name: "SECONDARY"
     t.index ["ruderer1_ID"], name: "index_meldungen_on_ruderer1_ID"
@@ -228,7 +228,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
     t.integer "HoehereZulassung", limit: 1, default: 0, null: false, unsigned: true
     t.string "Startberechtigt", limit: 50
     t.string "Zusatz", limit: 100
-    t.datetime "AenderungsDatum", precision: nil, null: false
+    t.datetime "AenderungsDatum", precision: nil, default: -> { "CURRENT_TIMESTAMP" }
     t.index ["ExterneID1"], name: "index_ruderer_on_ExterneID1"
     t.index ["JahrG"], name: "index_ruderer_on_JahrG"
     t.index ["NName", "VName", "JahrG"], name: "SECONDARY"
@@ -260,7 +260,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_15_171126) do
     t.integer "Meldegeldrabatt", limit: 1, default: 0, null: false, unsigned: true
   end
 
-  create_table "users", charset: "utf8", force: :cascade do |t|
+  create_table "users", charset: "utf8mb3", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

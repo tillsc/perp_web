@@ -111,6 +111,8 @@ de:
         late_entry: Nachgemeldet
         entry_changed: Umgemeldet
         disqualified: Disqualifiziert (mit Grund)
+        imported_from: Importiert von
+        external_id: Externe ID
         history: Historie
         rower1: Ruderer 1
         rower2: Ruderer 2

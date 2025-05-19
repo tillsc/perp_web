@@ -5,8 +5,9 @@
     <table class="table table-striped table-hover">
       <thead>
       <tr>
-        <th>Erzeugt</th>
-        <th>Format Version</th>
+        <th>Export erzeugt am</th>
+        <th>Neue/Geänderte Meldungen</th>
+        <th>Abmeldungen</th>
         <th>Importiert am</th>
         <th></th>
       </tr>
@@ -20,6 +21,8 @@
               <%= l(ts && DateTime.parse(ts) || import.created_at) %>
             <% end %>
           </td>
+          <td><%= import.results&.dig("participants")&.size %></td>
+          <td><%= import.results&.dig("withdrawn_participant_external_ids")&.size %></td>
           <td><%= import.imported_at && l(import.imported_at) || 'Noch nicht importiert' %></td>
           <td></td>
         </tr>

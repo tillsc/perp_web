@@ -166,6 +166,8 @@ de:
     select:
       prompt: Bitte wählen
     actions:
+      show: Anzeigen
+      details: Details
       edit: Bearbeiten
       edit_icon: ✎
       delete: Löschen

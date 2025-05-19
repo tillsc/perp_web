@@ -48,7 +48,7 @@ module Internal
             raise(ActiveRecord::Rollback)
           end
         end
-        redirect_to internal_participants_drv_import_path(@regatta, @import)
+        redirect_to internal_participants_drv_imports_path(@regatta)
       end
 
       def destroy

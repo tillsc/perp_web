@@ -13,7 +13,7 @@ class CreateImports < ActiveRecord::Migration[8.0]
     end
 
     add_column :meldungen, :imported_from, :string
-    add_column :meldungen, :imported_id, :string
+    add_column :meldungen, :external_id, :string
 
     up_only do
       change_column :addressen, :ExterneID1, :string, limit: 200

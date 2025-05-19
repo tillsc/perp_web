@@ -3,36 +3,87 @@
 <div class="row">
   <div class="col-md-8 col-lg-9">
     <h4>Meldungen</h4>
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>Rennen</th>
-        <th>Team</th>
-        <th>Obmann</th>
-        <th>Ruderer</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @import.results["participants"].each do |participant| %>
+    <% if @import.results["participants"].present? %>
+      <table class="table table-striped">
+        <thead>
         <tr>
-          <td><%= participant["event_number"] %></td>
-          <td><%= participant["team_id"] ? link_to(participant["team_name"], internal_team_url(@regatta, "#{@regatta.id}_#{participant["team_id"]}")) : participant["team_name"] %></td>
-          <td><%= render "address", data: @import.results["representatives"][participant["representative_external_id"]] %></td>
-          <td><%= safe_join(participant["rowers"].values.map do |r|
-            rower = Rower.new(r)
-            safe_join([if rower.id
-                         [link_to(rower.name_with_nobr(show_what_changed: true), internal_rower_path(@regatta, rower))]
-                       else
-                         [rower.name_with_nobr(show_what_changed: true)]
-                       end,
-                       if (what_changed_text = rower.what_changed_text).present?
-                         content_tag(:em, "(Vorher #{what_changed_text})")
-                       end].compact, " ")
-          end, ", ") %></td>
+          <th>Rennen</th>
+          <th>Bugnr</th>
+          <th>Team</th>
+          <th>Obmann</th>
+          <th>Ruderer</th>
         </tr>
-      <% end %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+        <% @import.results["participants"].each do |participant| %>
+          <tr>
+            <td><%= participant["event_number"] %></td>
+            <td><%= participant["participant_number"] || "-" %></td>
+            <td><%= participant["team_id"] ? link_to(participant["team_name"], internal_team_url(@regatta, "#{@regatta.id}_#{participant["team_id"]}")) : participant["team_name"] %></td>
+            <td><%= render "address", data: @import.results["representatives"][participant["representative_external_id"]] %></td>
+            <td><%= safe_join(participant["rowers"].values.map do |r|
+              rower = Rower.new(r)
+              safe_join([if rower.id
+                           [link_to(rower.name_with_nobr(show_what_changed: true), internal_rower_path(@regatta, rower))]
+                         else
+                           [rower.name_with_nobr(show_what_changed: true)]
+                         end,
+                         if (what_changed_text = rower.what_changed_text).present?
+                           content_tag(:em, "(Vorher #{what_changed_text})")
+                         end].compact, " ")
+            end, ", ") %></td>
+            <td>
+              <% new_state_flags = []
+                 if participant["participant_attributes"]&.has_key?("Abgemeldet")
+                   new_state_flags << (participant["participant_attributes"]["Abgemeldet"] ? "abgemeldet" : "wieder angemeldet")
+                 end
+                 new_state_flags << "umgemeldet" if participant["participant_attributes"]&.dig("Umgemeldet")
+                 new_state_flags << "nachgemeldet" if participant["participant_attributes"]&.dig("Nachgemeldet") %>
+              <% if new_state_flags.any? %>
+                <em>Wird <%= new_state_flags.join(", ") %></em>
+              <% end %>
+            </td>
+            <td>
+              <% if participant["participant_id"]  %>
+                  <%= link_to(t('helpers.actions.show'),
+                              internal_participant_url(@regatta, "#{@regatta.id}_#{participant["event_number"]}_#{participant["participant_id"]}"),
+                              class: "btn btn-sm btn-outline-primary") %>
+              <% end %>
+              </td>
+              </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>Keine neuen oder geänderten Meldungen</p>
+    <% end %>
+
+
+    <h4>Abmeldungen</h4>
+    <% if @import.results["withdrawn_participant_external_ids"].present? %>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Rennen</th>
+          <th>Team</th>
+          <th>Obmann</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @regatta.participants.preload(team: :representative).
+          where(external_id: Array.wrap(@import.results["withdrawn_participant_external_ids"])).each do |participant| %>
+          <tr>
+            <td><%= participant.event_number %></td>
+            <td><%= link_to(participant.team_name, internal_team_url(@regatta, participant.team)) %></td>
+            <td><%= participant.team.representative && link_to(participant.team.representative.name, internal_address_path(@regatta, participant.team.representative)) %></td>
+            <td><%= link_to t('helpers.actions.show'), internal_participant_path(@regatta, participant), class: 'btn btn-sm btn-outline-primary' %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>Keine Abmeldungen</p>
+    <% end %>
 
     <h4>Obleute</h4>
     <%= render "addresses", addresses: @import.results["representatives"] %>

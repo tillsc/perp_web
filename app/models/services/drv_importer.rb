@@ -20,6 +20,7 @@ module Services
 
     def execute!(import)
       execute(import, false)
+      import.imported_at = DateTime.now
     end
 
     protected
@@ -50,8 +51,9 @@ module Services
       teams = @regatta.teams.all.to_a
       rowers_with_external_ids = Rower.where.not(external_id: [nil, ""]).to_a
       rower_nn = Rower.nomen_nominandum
+      seen_external_ids = []
 
-      result = {representatives: {}, clubs: {}, participants: []}
+      result = {representatives: {}, clubs: {}, participants: [], withdrawn_participant_external_ids: []}
 
       representatives = process_representatives(result, meldungen_xml, preview)
       clubs = process_clubs(result, meldungen_xml, preview)
@@ -62,11 +64,12 @@ module Services
 
         rennen_xml.xpath("./meldung").each do |meldung_xml|
           changed = false
-          participant = event.participants.find { |p| p.imported_from == @import_namespace && p.imported_id == meldung_xml["id"] }
+          participant = event.participants.find { |p| p.imported_from == @import_namespace && p.external_id == meldung_xml["id"] }
           if !participant
-            participant = event.participants.build(imported_from: @import_namespace, imported_id: meldung_xml["id"])
+            participant = event.participants.build(imported_from: @import_namespace, external_id: meldung_xml["id"])
             changed = true
           end
+          seen_external_ids << meldung_xml["id"]
 
           representative_external_id = meldung_xml["obmann"].presence
           representative = representative_external_id && representatives[representative_external_id]
@@ -149,7 +152,14 @@ module Services
             h.merge(pos => rower.attributes.merge("what_changed" => rower_changes))
           end
 
+          participant.withdrawn = false
+          # TODO:
+          # participant.late_entry = !participant.persisted? &&
+          # # Has to be the last change!
+          # changed = true if participant.changed?
+          # participant.entry_changed = participant.persisted? && participant.changed?
           changed = true if participant.changed?
+
           if changed
             if !preview
               participant.set_participant_id
@@ -161,7 +171,8 @@ module Services
 
             data = {
               event_number: event.number,
-              participant_number: participant&.number,
+              participant_id: participant.participant_id,
+              participant_number: participant.number,
               team_id: team.team_id&.nonzero? ? team.team_id : nil,
               team_name: team.name,
               rowers: rowers_data,
@@ -172,6 +183,17 @@ module Services
             result[:participants] << data
           end
         end
+      end
+
+      to_be_withdrawn = @regatta.participants.
+        where(imported_from: @import_namespace).
+        where.not(external_id: seen_external_ids)
+      to_be_withdrawn.each do |participant|
+        result[:withdrawn_participant_external_ids] << participant.external_id
+        if !preview
+          participant.update(withdrawn: true)
+        end
+        self.errors.merge!(participant.errors) if participant.errors.any?
       end
 
       result
