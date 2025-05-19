@@ -19,6 +19,9 @@ class Ability
 
       if user.role_registration || user.role_admin
         can :manage, Participant
+        cannot :fast_edit, Participant do |participant|
+          participant.imported_from.present?
+        end
         can :manage, Import
         cannot :execute, Import do |i|
           i.imported_at.present?

@@ -1,3 +1,14 @@
 <h1><%= t('helpers.titles.edit', model: Participant.model_name.human) %></h1>
 
+<% if cannot? :fast_edit, @participant %>
+  <p class="alert alert-warning">
+    <strong>Achtung:</strong> Diese Meldung wurde vom <strong><%= @participant.imported_from %></strong> importiert.
+    Sie sollte – wenn möglich – auch dort verwaltet und anschließend erneut hier importiert werden.<br>
+    Änderungen an dieser Stelle gehen beim nächsten Import vom <%= @participant.imported_from %> verloren.<br>
+    Falls Sie die Meldung beim <%= @participant.imported_from %> gelöscht oder anderweitig entfernt haben,
+    können Sie hier die Import-Quelle leeren (Feld <em><%= Participant.human_attribute_name(:imported_from) %></em>).<br>
+    Bitte tun Sie das jedoch nur in diesem Fall – andernfalls wird die Meldung beim nächsten Import doppelt erscheinen.
+  </p>
+<% end %>
+
 <%= render 'form' %>

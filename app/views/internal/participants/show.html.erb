@@ -20,11 +20,11 @@
         <% [:withdrawn, :late_entry, :entry_changed].each do |field| %>
           <%= dl_entry(@participant, field) do |val|
             safe_join([val,
-                       button_to("⇄",
+                       can?(:fast_edit, @participant) && button_to("⇄",
                                  internal_participant_path(@regatta, @participant, referrer: current_url),
                                  method: :patch, class: "btn btn-outline-primary btn-sm",
                                  title: "Umschalten",
-                                 params: { participant: { field => !@participant.send(field) }})
+                                 params: { participant: { field => !@participant.send(field) }}) || nil
                       ], " ")
           end %>
         <% end %>

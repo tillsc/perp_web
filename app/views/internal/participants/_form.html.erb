@@ -25,6 +25,10 @@
       <%= f.check_box :late_entry %>
       <%= f.check_box :entry_changed %>
       <%= f.text_field :disqualified %>
+
+      <% if @participant.imported_from.present? %>
+        <%= f.text_field :imported_from, help: "Leeren Sie dieses Feld, wenn Sie die Meldung nicht vom DRV beziehen wollen. Ändern Sie hier nichts, wenn Sie nicht genau wissen was Sie tun." %>
+      <% end %>
     </div>
   </div>
 
