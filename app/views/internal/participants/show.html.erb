@@ -20,7 +20,7 @@
         <% [:withdrawn, :late_entry, :entry_changed].each do |field| %>
           <%= dl_entry(@participant, field) do |val|
             safe_join([val,
-                       button_to("🔄",
+                       button_to("⇄",
                                  internal_participant_path(@regatta, @participant, referrer: current_url),
                                  method: :patch, class: "btn btn-outline-primary btn-sm",
                                  title: "Umschalten",
