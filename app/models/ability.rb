@@ -20,6 +20,9 @@ class Ability
       if user.role_registration || user.role_admin
         can :manage, Participant
         can :manage, Import
+        cannot :execute, Import do |i|
+          i.imported_at.present?
+        end
         can :manage, Team
         can :manage, Rower
       end
