@@ -6,6 +6,7 @@
     <th>Team</th>
     <th>Status</th>
     <th></th>
+    <th></th>
   </tr>
   </thead>
   <tbody>
@@ -21,6 +22,11 @@
         <%= "Nachg." if participant.late_entry? %>
         <%= "Umg." if participant.entry_changed? %>
         <%= "Disq." if participant.disqualified? %>
+      </td>
+      <td>
+        <% if participant.imported_from.present? %>
+          <span class="badge bg-info" title="ID: <%= participant.external_id %>"><%= participant.imported_from %></span>
+        <% end %>
       </td>
       <td class="text-nowrap">
         <%= link_to(t('helpers.actions.show'), internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]),
