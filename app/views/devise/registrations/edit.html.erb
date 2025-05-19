@@ -19,6 +19,11 @@
 
   <%= f.password_field :current_password, autocomplete: "current-password", help: t('.we_need_your_current_password_to_confirm_your_changes') %>
 
+  <fieldset>
+    <legend>Einstellungen</legend>
+    <%= f.check_box :highlight_nobr %>
+  </fieldset>
+
   <%= f.primary t('.update') %>
   <%= link_to t('devise.shared.links.back'), :back, class: 'btn btn-secondary' %>
 <% end %>

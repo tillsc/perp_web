@@ -17,6 +17,8 @@ class ApplicationController < ActionController::Base
     self.class.layout params[:_layout] == "false" ? "minimal" : nil
   end
 
+  before_action :configure_devise_permitted_parameters, if: :devise_controller?
+
   rescue_from ActiveRecord::RecordNotFound do |exception|
     if params[:new_regatta_id]
       if self.class.is_internal?
@@ -70,6 +72,10 @@ class ApplicationController < ActionController::Base
 
   def current_user
     super || @measuring_session
+  end
+
+  def configure_devise_permitted_parameters
+    devise_parameter_sanitizer.permit(:account_update, keys: [:highlight_nobr])
   end
 
 end

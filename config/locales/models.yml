@@ -187,6 +187,8 @@ de:
         times: Zeiten
         disqualified: Disqualifiziert
         comment: Bemerkung
+      user:
+        highlight_nobr: Spezielle Leerzeichen hervorheben
     errors:
       models:
         address:

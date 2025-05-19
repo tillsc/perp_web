@@ -16,10 +16,10 @@ module ApplicationHelper
 
   def error_message_for(action, record)
     s = if action == :destroy
-      t(action, scope: 'helpers.failed', model: record.class.model_name.human)
-    else
-      t('errors.template.header', model: record.class.model_name.human, count: record.errors.count)
-    end
+          t(action, scope: 'helpers.failed', model: record.class.model_name.human)
+        else
+          t('errors.template.header', model: record.class.model_name.human, count: record.errors.count)
+        end
     s << '<br><br>'
     s << t('errors.template.body')
     s << '<ul>'
@@ -42,5 +42,13 @@ module ApplicationHelper
     val = block.call(val, record) if block.present?
     content_tag(:dt, record.class.human_attribute_name(attribute)) +
       content_tag(:dd, val&.to_s&.presence || '-')
+  end
+
+  def highlight_nobr(s)
+    if current_user&.highlight_nobr
+      s.to_s.gsub("\u00A0", '␣').html_safe
+    else
+      s
+    end
   end
 end

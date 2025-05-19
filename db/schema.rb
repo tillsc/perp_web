@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_19_134017) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_19_175950) do
   create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "Titel", limit: 10
     t.string "Vorname", limit: 100
@@ -282,6 +282,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_19_134017) do
     t.text "roles"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.boolean "highlight_nobr"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
