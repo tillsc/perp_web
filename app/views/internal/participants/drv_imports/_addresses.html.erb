@@ -14,7 +14,7 @@
         <dl class="row">
           <% address.except("id").each do |k, v| %>
             <dt class="col-sm-5"><%= Address.human_attribute_name(Address.aliases_by_attribute_name[k]&.first || k) %></dt>
-            <dd class="col-sm-7"><%= v %></dd>
+            <dd class="col-sm-7"><%= highlight_nobr(v) %></dd>
           <% end %>
         </dl>
         <% else %>
