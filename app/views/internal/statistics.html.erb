@@ -1,0 +1,14 @@
+<h1>Statistiken für <%= @regatta&.name %></h1>
+
+<dl>
+  <dt>Gesamt-Anzahl Meldungen:</dt>
+  <%= @stats.total_participants_count %> (<%= @stats.total_participants_count - @stats.withdrawn_participants_count %> angemeldet)
+  <dt>Davon abgemeldet:</dt>
+  <%= @stats.withdrawn_participants_count %>
+  <dt>Nachgemeldungen:</dt>
+  <%= @stats.late_participants_count %>
+  <dt>Summe Meldegeld:</dt>
+  <%= @stats.entry_fee_sum %><%= @regatta.currency %>
+  <dt>Startende Ruderer und Ruderinnen:</dt>
+  <%= @stats.starting_rowers_count %>
+</dl>

@@ -81,6 +81,10 @@
           <% if can?(:index, Race) %>
             <li><%= link_to(Race.model_name.human(count: 2), internal_races_url(@regatta)) %></li>
           <% end %>
+
+          <% if can?(:show, :statistics) %>
+            <li><%= link_to("Statistiken", internal_statistics_url(@regatta)) %></li>
+          <% end %>
         </ul>
       </div>
     </div>
