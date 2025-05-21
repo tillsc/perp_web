@@ -1,12 +1,24 @@
 <h1>Statistiken für <%= @regatta&.name %></h1>
 
-<dl>
-  <dt>Gesamt-Anzahl Meldungen:</dt>
-  <%= @stats.total_participants_count %> (davon <%= @stats.total_participants_count - @stats.withdrawn_participants_count %> angemeldet)
-  <dt>Davon Nachgemeldungen:</dt>
-  <%= @stats.late_participants_count %>
-  <dt>Summe Meldegeld:</dt>
-  <%= @stats.entry_fee_sum %><%= @regatta.currency %>
-  <dt>Startende Ruderer und Ruderinnen:</dt>
-  <%= @stats.starting_rowers_count %>
-</dl>
+<div class="row">
+  <div class="col-md-6">
+    <h2>Meldungen</h2>
+    <dl>
+      <dt>Gesamt-Anzahl Meldungen:</dt>
+      <dd><%= @participants_stats.total_participants_count %> (davon <%= @participants_stats.total_participants_count - @participants_stats.withdrawn_participants_count %> angemeldet)</dd>
+      <dt>Davon Nachgemeldungen:</dt>
+      <dd><%= @participants_stats.late_participants_count %></dd>
+      <dt>Summe Meldegeld:</dt>
+      <dd><%= @participants_stats.entry_fee_sum %><%= @regatta.currency %></dd>
+      <dt>Startende Ruderer und Ruderinnen:</dt>
+      <dd><%= @participants_stats.starting_rowers_count %></dd>
+    </dl>
+  </div>
+  <div class="col-md-6">
+    <h2>Teams</h2>
+    <dl>
+      <dt>Anzahl startende Teams:</dt>
+      <dd><%= @teams_stats.total_teams_count %></dd>
+    </dl>
+  </div>
+</div>
