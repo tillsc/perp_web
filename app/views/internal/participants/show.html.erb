@@ -8,6 +8,7 @@
         <%= dl_entry(@participant, :number) %>
         <%= dl_entry(@participant, :team) { |team| team && link_to(team.name, internal_team_path(@regatta, team)) || "-" } %>
         <%= dl_entry(@participant, :team_boat_number) %>
+        <%= dl_entry(@participant, :entry_fee, unit: @regatta.currency) %>
       </dl>
 
       <dl class="col">

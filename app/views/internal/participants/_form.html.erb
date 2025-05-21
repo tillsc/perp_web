@@ -18,6 +18,7 @@
         <% end %>
       </dialog-opener>
       <%= f.number_field :team_boat_number %>
+      <%= f.number_field :entry_fee, append: @regatta.currency || "€" %>
     </div>
 
     <div class="col">
