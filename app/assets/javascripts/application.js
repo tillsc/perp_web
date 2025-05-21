@@ -13,3 +13,18 @@
 //= require bootstrap
 //= require turbolinks.custom
 //= require_tree ../components
+
+document.addEventListener("turbolinks:load", () => {
+    const hash = window.location.hash;
+
+    if (!hash) return;
+
+    const target = document.querySelector(hash);
+    if (!target) return;
+
+    target.classList.add("highlight-flash");
+
+    setTimeout(() => {
+        target.classList.remove("highlight-flash");
+    }, 2000);
+});

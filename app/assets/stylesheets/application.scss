@@ -53,6 +53,16 @@ tr.withdrawn td, tr.disqualified td {
   font-style: italic;
 }
 
+.highlight-flash {
+  animation: flash-bright 1s ease-out;
+}
+
+@keyframes flash-bright {
+  0%   { filter: brightness(1) contrast(1); }
+  50%  { filter: brightness(0.8) contrast(0.8); }
+  100% { filter: brightness(1) contrast(1); }
+}
+
 .multi-column {
   column-gap: 3em;
   column-count: 2;
