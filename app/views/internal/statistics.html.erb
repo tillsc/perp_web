@@ -2,10 +2,8 @@
 
 <dl>
   <dt>Gesamt-Anzahl Meldungen:</dt>
-  <%= @stats.total_participants_count %> (<%= @stats.total_participants_count - @stats.withdrawn_participants_count %> angemeldet)
-  <dt>Davon abgemeldet:</dt>
-  <%= @stats.withdrawn_participants_count %>
-  <dt>Nachgemeldungen:</dt>
+  <%= @stats.total_participants_count %> (davon <%= @stats.total_participants_count - @stats.withdrawn_participants_count %> angemeldet)
+  <dt>Davon Nachgemeldungen:</dt>
   <%= @stats.late_participants_count %>
   <dt>Summe Meldegeld:</dt>
   <%= @stats.entry_fee_sum %><%= @regatta.currency %>
