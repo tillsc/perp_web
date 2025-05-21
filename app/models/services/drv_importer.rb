@@ -162,6 +162,7 @@ module Services
 
             h.merge(pos => rower.attributes.merge("what_changed" => rower_changes))
           end
+          participant.entry_fee = participant.team.no_entry_fee? ? 0 : (event.entry_fee.to_f - participant.team.entry_fee_discount.to_f)
 
           participant.withdrawn = false
           participant.late_entry = !participant.persisted? && @regatta.entry_closed?
@@ -193,7 +194,7 @@ module Services
         end
       end
 
-      to_be_withdrawn = @regatta.participants.
+      to_be_withdrawn = @regatta.participants.enabled.
         where(imported_from: @import_namespace).
         where.not(external_id: seen_external_ids)
       to_be_withdrawn.each do |participant|

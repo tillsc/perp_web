@@ -69,6 +69,7 @@ class Participant < ApplicationRecord
   alias_attribute :event_number, 'Rennen'
   alias_attribute :team_id, 'Team_ID'
   alias_attribute :team_boat_number, 'TeamBoot'
+  alias_attribute :entry_fee, 'Meldegeld'
   alias_attribute :withdrawn, 'Abgemeldet'
   alias_attribute :late_entry, 'Nachgemeldet'
   alias_attribute :entry_changed, 'Umgemeldet'
