@@ -2,7 +2,9 @@
 
 <div class="row">
   <div class="col-md-8 col-lg-9">
-    <%= render 'list', participants: @participants, referrer: current_url %>
+    <%= pagi = paginate(@participants, theme: 'bootstrap-5') %>
+    <%= render 'list', participants: @participants %>
+    <%= pagi %>
   </div>
   <div class="col-md-4 col-lg-3">
     <%= bootstrap_form_with url: internal_participants_url(@regatta), method: :get do |f| %>
@@ -13,11 +15,16 @@
     <hr>
 
     <%= link_to t('helpers.titles.new', model: Participant.model_name.human),
-                new_internal_participant_path(@regatta, participant: {event_number: params[:event_number]}),
+                new_internal_participant_path(@regatta, participant: {event_number: params[:event_number]}, referrer: current_url),
                 class: 'btn btn-secondary d-block my-1' %>
 
     <%= link_to "DRV Imports",
                 internal_participants_drv_imports_url(@regatta, referrer: current_url),
                 class: 'btn btn-secondary d-block my-1' %>
+
+    <% if params[:referrer] %>
+      <hr>
+      <%= link_to "Zurück", back_or_default, class: 'btn btn-secondary d-block my-1' %>
+    <% end %>
   </div>
 </div>

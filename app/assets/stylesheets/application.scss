@@ -8,6 +8,10 @@ html, :root {
   scroll-behavior: auto;
 }
 
+[id] {
+  scroll-margin-top: 30px;
+}
+
 body.internal {
   background: #fff9f9;
 

@@ -47,7 +47,7 @@ module Internal
     end
 
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation, *User::ALL_ROLES.map { |r| "role_#{r}".to_sym })
+      params.require(:user).permit(:email, :highlight_nobr, :password, :password_confirmation, *User::ALL_ROLES.map { |r| "role_#{r}".to_sym })
     end
 
   end

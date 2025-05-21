@@ -12,10 +12,10 @@
   <tbody>
   <% participants.each do |participant| %>
     <tr id="<%= participant.to_anchor %>" class="<%= participant_state_classes(participant) %>">
-      <td><%=  participant.event && link_to(participant.event.label, internal_event_url(@regatta, participant)) || '!' %></td>
-      <td><%= link_to(participant.number || '-', internal_participant_path(@regatta, participant)) %></td>
+      <td><%=  participant.event && link_to(participant.event.label, internal_event_url(@regatta, participant, referrer: current_url_with_anchor(participant))) || '!' %></td>
+      <td><%= link_to(participant.number || '-', internal_participant_path(@regatta, participant, referrer: current_url_with_anchor(participant))) %></td>
       <td class="<%= 'bg-warning' if participant.problem_with_team_boat_number?(participants) %>">
-        <%= link_to highlight_nobr(participant.team_name), internal_team_path(@regatta, participant.team) %>
+        <%= link_to highlight_nobr(participant.team_name), internal_team_path(@regatta, participant.team, referrer: current_url_with_anchor(participant)) %>
       </td>
       <td>
         <%= "Abg." if participant.withdrawn? %>
@@ -29,12 +29,12 @@
         <% end %>
       </td>
       <td class="text-nowrap">
-        <%= link_to(t('helpers.actions.show'), internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]),
+        <%= link_to(t('helpers.actions.show'), internal_participant_url(@regatta, participant, referrer: current_url_with_anchor(participant)),
                     class: 'btn btn-outline-primary btn-sm') if can?(:show, participant) %>
-        <%= link_to(t('helpers.actions.edit_icon'), edit_internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]),
+        <%= link_to(t('helpers.actions.edit_icon'), edit_internal_participant_url(@regatta, participant, referrer: current_url_with_anchor(participant)),
                     class: 'btn btn-outline-primary btn-sm',
                     title: t('helpers.actions.edit')) if can?(:edit, participant) %>
-        <%= button_to(t('helpers.actions.delete_icon'), internal_participant_url(@regatta, participant, referrer: local_assigns[:referrer]),
+        <%= button_to(t('helpers.actions.delete_icon'), internal_participant_url(@regatta, participant, referrer: current_url),
                       method: :delete, data: { confirm: "Sicher?"},
                       class: 'btn btn-outline-danger btn-sm',
                       title: t('helpers.actions.delete')) if can?(:delete, participant) %>

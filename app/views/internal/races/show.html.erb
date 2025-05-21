@@ -16,6 +16,10 @@
                   method: :delete, data: { confirm: "Sicher?"},
                   class: 'btn btn-danger d-block w-100',
                   form_class: 'd-block my-1') if can?(:delete, @race) %>
+    <% if params[:referrer] %>
+      <hr>
+      <%= link_to "Zurück", back_or_default, class: 'btn btn-secondary d-block my-1' %>
+    <% end %>
   </div>
 </div>
 

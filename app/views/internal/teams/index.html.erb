@@ -2,6 +2,7 @@
 
 <div class="row">
   <div class="col-md-8 col-lg-9">
+    <%= pagi = paginate(@teams, theme: 'bootstrap-5') %>
     <table class="table table-striped">
       <thead>
       <tr>
@@ -12,14 +13,14 @@
       </thead>
       <tbody>
       <% @teams.each do |team| %>
-        <tr>
-          <td id="<%= team.to_anchor %>"><%= link_to team.name, internal_team_path(@regatta, team) %></td>
-          <td><%= link_to team.representative.name, internal_address_url(@regatta, team.representative) if team.representative %></td>
+        <tr id="<%= team.to_anchor %>">
+          <td><%= link_to team.name, internal_team_path(@regatta, team, referrer: current_url_with_anchor(team)) %></td>
+          <td><%= link_to team.representative.name, internal_address_url(@regatta, team.representative, referrer: current_url_with_anchor(team)) if team.representative %></td>
           <td class="text-nowrap">
-            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_team_url(@regatta, team),
+            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_team_url(@regatta, team, referrer: current_url_with_anchor(team)),
                         class: 'btn btn-outline-primary btn-sm',
                         title: t('helpers.actions.edit')) if can?(:edit, team) %>
-            <%= button_to(t('helpers.actions.delete_icon'), internal_team_url(@regatta, team),
+            <%= button_to(t('helpers.actions.delete_icon'), internal_team_url(@regatta, team, referrer: current_url),
                           method: :delete, data: { confirm: "Sicher?"},
                           class: 'btn btn-outline-danger btn-sm',
                           title: t('helpers.actions.delete')) if can?(:delete, team) %>
@@ -30,6 +31,7 @@
       <% end %>
       </tbody>
     </table>
+    <%= pagi %>
   </div>
   <div class="col-md-4 col-lg-3">
     <%= link_to t('helpers.titles.new', model: Team.model_name.human), new_internal_team_path(@regatta), class: 'btn btn-secondary d-block my-1' %>

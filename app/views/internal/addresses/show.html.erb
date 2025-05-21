@@ -29,12 +29,16 @@
     </div>
   </div>
   <div class="col-md-4 col-lg-3">
-    <%= link_to t('helpers.titles.edit', model: Address.model_name.human), edit_internal_address_path(@regatta, @address), class: 'btn btn-secondary d-block my-1' if can?(:edit, @address) %>
-    <%= button_to("Löschen", internal_address_url(@regatta, @address), method: :delete, data: { confirm: "Sicher?"},
+    <%= link_to t('helpers.titles.edit', model: Address.model_name.human), edit_internal_address_path(@regatta, @address, referrer: current_url), class: 'btn btn-secondary d-block my-1' if can?(:edit, @address) %>
+    <%= button_to("Löschen", internal_address_url(@regatta, @address, referrer: params[:referrer]), method: :delete, data: { confirm: "Sicher?"},
                   class: 'btn btn-danger d-block w-100', form_class: 'd-block my-1') if can?(:delete, @address) %>
     <% if @address.public_private_id.present? %>
       <hr>
-      <%= link_to 'Zur öffentlichen Seite', my_path(@regatta, public_private_id: @address.public_private_id, no_cookie: 1), class: 'btn btn-secondary d-block my-1' %>
+      <%= link_to 'Zur öffentlichen Seite', my_path(@regatta, public_private_id: @address.public_private_id, no_cookie: 1, referrer: current_url), class: 'btn btn-secondary d-block my-1' %>
+    <% end %>
+    <% if params[:referrer] %>
+      <hr>
+      <%= link_to "Zurück", back_or_default, class: 'btn btn-secondary d-block my-1' %>
     <% end %>
   </div>
 </div>
@@ -54,7 +58,7 @@
               <%= team.regatta&.name %>
             <% end %>
           </td>
-          <td><%= link_to team.name, internal_team_path(team.regatta, team) %></td>
+          <td><%= link_to team.name, internal_team_path(team.regatta, team, referrer: current_url) %></td>
         </tr>
       <% end %>
       </tbody>
@@ -75,7 +79,7 @@
   <h3>Ruderer dieses Vereins</h3>
   <ul class="multi-column">
     <% @address.rowers.order(:last_name, :first_name).each do |rower| %>
-      <li><%= link_to rower.name, internal_rower_path(@regatta, rower) %></li>
+      <li><%= link_to rower.name, internal_rower_path(@regatta, rower, referrer: current_url) %></li>
     <% end %>
   </ul>
 <% end %>

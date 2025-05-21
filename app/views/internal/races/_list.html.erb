@@ -13,17 +13,17 @@
   <tbody>
   <% races.each do |race| %>
     <tr id="<%= race.to_anchor %>">
-      <td><%=  race.event && link_to(race.event.label, internal_event_url(@regatta, race.event)) || '!' %></td>
-      <td><%= link_to race.name, internal_race_path(@regatta, race) %></td>
+      <td><%=  race.event && link_to(race.event.label, internal_event_url(@regatta, race.event, referrer: current_url_with_anchor(race))) || '!' %></td>
+      <td><%= link_to race.name, internal_race_path(@regatta, race, referrer: current_url_with_anchor(race)) %></td>
       <td><%= race.planned_for && l(race.planned_for, format: :short) || '-' %></td>
       <td><%= race.started_at && l(race.started_at, format: :short) || '-' %></td>
       <td><%= race.starts.size.instance_eval { |s| s != 0 ? s : '-' } %></td>
       <td><%= race.results.size.instance_eval { |s| s != 0 ? s : '-' }  %></td>
       <td class="text-nowrap">
-        <%= link_to(t('helpers.actions.edit_icon'), edit_internal_race_url(@regatta, race, referrer: local_assigns[:referrer]),
+        <%= link_to(t('helpers.actions.edit_icon'), edit_internal_race_url(@regatta, race, referrer: current_url_with_anchor(race)),
                     class: 'btn btn-outline-primary',
                     title: t('helpers.actions.edit')) if can?(:edit, race) %>
-        <%= button_to(t('helpers.actions.delete_icon'), internal_race_url(@regatta, race, referrer: local_assigns[:referrer]),
+        <%= button_to(t('helpers.actions.delete_icon'), internal_race_url(@regatta, race, referrer: current_url),
                       method: :delete, data: { confirm: "Sicher?"},
                       class: 'btn btn-outline-danger',
                       title: t('helpers.actions.delete')) if can?(:delete, race) %>

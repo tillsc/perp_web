@@ -6,11 +6,11 @@
     <table class="table table-striped">
       <tbody>
       <% @addresses.each do |address| %>
-        <tr>
+        <tr id="<%= address.to_anchor %>">
           <td>
-            <%= link_to address.name, internal_address_path(@regatta, address) %>
+            <%= link_to address.name, internal_address_path(@regatta, address, referrer: current_url_with_anchor(address)) %>
             <% if address.public_private_id.present? %>
-              <%= link_to '🌍', my_path(@regatta, public_private_id: address.public_private_id, no_cookie: 1), class: 'btn btn-outline-secondary btn-sm' %>
+              <%= link_to '🌍', my_path(@regatta, public_private_id: address.public_private_id, no_cookie: 1, referrer: current_url_with_anchor(address)), class: 'btn btn-outline-secondary btn-sm' %>
             <% end %>
           </td>
           <td><%= address.email %></td>
@@ -19,13 +19,13 @@
             <% if address.is_referee? %>
               <% if address.referee_for?(@regatta) %>
                 ✓
-                <%= button_to '-', internal_address_regatta_referee_path(@regatta, address, referrer: current_url),
+                <%= button_to '-', internal_address_regatta_referee_path(@regatta, address, referrer: current_url_with_anchor(address)),
                               method: :delete,
                               class: 'btn btn-info btn-sm',
                               title: 'Für diese Regatta entfernen' %>
               <% else %>
                 ︎✗
-                <%= button_to '+', internal_address_regatta_referee_path(@regatta, address, referrer: current_url),
+                <%= button_to '+', internal_address_regatta_referee_path(@regatta, address, referrer: current_url_with_anchor(address)),
                               method: :put,
                               class: 'btn btn-info btn-sm',
                               title: 'Für diese Regatta entfernen' %>
@@ -33,7 +33,7 @@
             <% end %>
           </td>
           <td class="text-nowrap">
-            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_address_path(@regatta, address, referrer: current_url),
+            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_address_path(@regatta, address, referrer: current_url_with_anchor(address)),
                         class: 'btn btn-outline-primary btn-sm',
                         title: t('helpers.actions.edit')) if can?(:edit, address) %>
             <% if address.deletable? && can?(:delete, address) %>

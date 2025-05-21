@@ -22,9 +22,14 @@
     </div>
   </div>
   <div class="col-md-4 col-lg-3">
-    <%= link_to t('helpers.titles.edit', model: Rower.model_name.human), edit_internal_rower_path(@regatta, @rower), class: 'btn btn-secondary d-block my-1' if can?(:edit, @rower) %>
-    <%= button_to("Löschen", internal_rower_url(@regatta, @rower), method: :delete, data: { confirm: "Sicher?"},
+    <%= link_to t('helpers.titles.edit', model: Rower.model_name.human), edit_internal_rower_path(@regatta, @rower, referrer: current_url), class: 'btn btn-secondary d-block my-1' if can?(:edit, @rower) %>
+    <%= button_to("Löschen", internal_rower_url(@regatta, @rower, referrer: params[:referrer]), method: :delete, data: { confirm: "Sicher?"},
                   class: 'btn btn-danger d-block w-100', form_class: 'd-block my-1') if can?(:delete, @rower) %>
+
+    <% if params[:referrer] %>
+      <hr>
+      <%= link_to "Zurück", back_or_default, class: 'btn btn-secondary d-block my-1' %>
+    <% end %>
   </div>
 </div>
 

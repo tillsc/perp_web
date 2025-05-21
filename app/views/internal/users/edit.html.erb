@@ -4,6 +4,7 @@
   <%= hidden_field_tag :referrer, params[:referrer] %>
 
   <%= f.email_field :email %>
+  <%= f.check_box :highlight_nobr %>
 
   <h2>Rollen</h2>
 
@@ -14,4 +15,5 @@
   <br>
 
   <%= f.primary %>
+  <%= link_to "Abbrechen", back_or_default, class: 'btn btn-secondary' %>
 <% end %>

@@ -15,9 +15,9 @@
       </thead>
       <tbody>
       <% @events.each do |event| %>
-        <tr>
-          <td id="<%= event.to_anchor %>"><%= link_to event.number, internal_event_url(@regatta, event) %></td>
-          <td><%= link_to event.name_short, internal_event_url(@regatta, event)  %></td>
+        <tr id="<%= event.to_anchor %>">
+          <td><%= link_to event.number, internal_event_url(@regatta, event, referrer: current_url_with_anchor(event)) %></td>
+          <td><%= link_to event.name_short, internal_event_url(@regatta, event, referrer: current_url_with_anchor(event))  %></td>
           <td><%= event.name %></td>
           <td><%= event.distance %>m</td>
           <td>
@@ -25,13 +25,13 @@
             <%= event.has_cox? ? '✔︎︎' : '✘' %>
           </td>
           <td class="text-nowrap">
-            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_event_url(@regatta, event),
+            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_event_url(@regatta, event, referrer: current_url_with_anchor(event)),
                         class: 'btn btn-outline-primary btn-sm',
                         title: t('helpers.actions.edit')) if can?(:edit, event) %>
             <%= link_to(t('helpers.actions.copy_icon'), new_internal_event_url(@regatta, copy_event_number: event.number),
                         class: 'btn btn-outline-secondary btn-sm',
                         title: t('helpers.actions.copy')) if can?(:create, Event) %>
-            <%= button_to(t('helpers.actions.delete_icon'), internal_event_url(@regatta, event),
+            <%= button_to(t('helpers.actions.delete_icon'), internal_event_url(@regatta, event, referrer: current_url),
                           method: :delete, data: { confirm: "Sicher?"},
                           class: 'btn btn-outline-danger btn-sm',
                           title: t('helpers.actions.delete')) if can?(:delete, event) %>

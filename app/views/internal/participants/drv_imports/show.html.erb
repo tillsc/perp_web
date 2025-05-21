@@ -15,16 +15,16 @@
         </tr>
         </thead>
         <tbody>
-        <% @import.results["participants"].each do |participant| %>
-          <tr>
+        <% @import.results["participants"].each_with_index do |participant, i| %>
+          <tr id="part_<%= i %>">
             <td><%= participant["event_number"] %></td>
             <td><%= participant["participant_number"] || "-" %></td>
-            <td><%= participant["team_id"] ? link_to(highlight_nobr(participant["team_name"]), internal_team_url(@regatta, "#{@regatta.id}_#{participant["team_id"]}")) : highlight_nobr(participant["team_name"]) %></td>
+            <td><%= participant["team_id"] ? link_to(highlight_nobr(participant["team_name"]), internal_team_url(@regatta, "#{@regatta.id}_#{participant["team_id"]}", referrer: current_url_with_anchor("part_#{i}"))) : highlight_nobr(participant["team_name"]) %></td>
             <td><%= render "address", data: @import.results["representatives"][participant["representative_external_id"]] %></td>
             <td><%= safe_join(participant["rowers"].values.map do |r|
               rower = Rower.new(r)
               safe_join([if rower.id
-                           [link_to(highlight_nobr(rower.name), internal_rower_path(@regatta, rower))]
+                           [link_to(highlight_nobr(rower.name), internal_rower_path(@regatta, rower, referrer: current_url_with_anchor("part_#{i}")))]
                          else
                            [highlight_nobr(rower.name)]
                          end,
@@ -46,7 +46,7 @@
             <td>
               <% if participant["participant_id"]  %>
                   <%= link_to(t('helpers.actions.show'),
-                              internal_participant_url(@regatta, "#{@regatta.id}_#{participant["event_number"]}_#{participant["participant_id"]}"),
+                              internal_participant_url(@regatta, "#{@regatta.id}_#{participant["event_number"]}_#{participant["participant_id"]}", referrer: current_url_with_anchor("part_#{i}")),
                               class: "btn btn-sm btn-outline-primary") %>
               <% end %>
               </td>

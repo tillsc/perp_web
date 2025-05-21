@@ -53,4 +53,13 @@ module ApplicationHelper
       s
     end
   end
+
+  def current_url_with_anchor(o)
+    if o.respond_to?(:to_anchor)
+      o = o.to_anchor
+    end
+    u = URI.parse(current_url.to_s)
+    u.fragment = o
+    u.to_s
+  end
 end

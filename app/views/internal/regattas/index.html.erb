@@ -21,17 +21,17 @@
           <td><%= regatta.organizer&.name %></td>
           <td><%= link_to regatta.events.size.to_s, internal_events_url(regatta) %></td>
           <td class="text-nowrap">
-            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_regatta_url(regatta),
+            <%= link_to(t('helpers.actions.edit_icon'), edit_internal_regatta_url(regatta, referrer: current_url_with_anchor(regatta)),
                         class: 'btn btn-outline-primary btn-sm',
                         title: t('helpers.actions.edit')) if can?(:edit, regatta) %>
-            <%= button_to(t('helpers.actions.delete_icon'), internal_regatta_url(regatta),
+            <%= button_to(t('helpers.actions.delete_icon'), internal_regatta_url(regatta, referrer: current_url),
                           method: :delete, data: { confirm: "Sicher?"},
                           class: 'btn btn-outline-danger btn-sm',
                           title: t('helpers.actions.delete')) if can?(:delete, regatta) %>
             <% if regatta.active? %>
               <button class="btn btn-success btn-sm" disabled>Ist Aktiv</button>
             <% else %>
-              <%= button_to("Aktivieren", internal_regatta_activate_url(regatta),
+              <%= button_to("Aktivieren", internal_regatta_activate_url(regatta, referrer: current_url_with_anchor(regatta)),
                             method: :put,
                             class: 'btn btn-outline-success btn-sm') if can?(:activate, regatta) %>
             <% end %>

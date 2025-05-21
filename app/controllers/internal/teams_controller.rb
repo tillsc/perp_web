@@ -5,7 +5,7 @@ module Internal
     respond_to :json, :html
 
     def index
-      @teams = @regatta.teams.preload(:representative).order(:name)
+      @teams = @regatta.teams.preload(:representative).order(:name).page(params[:page])
       @teams = @teams.by_filter(params[:query]) if params[:query].present?
       respond_with @teams
     end

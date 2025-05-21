@@ -4,7 +4,7 @@ module Internal
     is_internal!
 
     def index
-      @participants = @regatta.participants.preload(:event, :team)
+      @participants = @regatta.participants.preload(:event, :team).page(params[:page])
       if params[:event_number].present?
         @participants = @participants.where(event_number: params[:event_number])
       end

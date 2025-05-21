@@ -9,7 +9,7 @@
         <%= dl_entry(@team, :city) %>
       </dl>
       <dl class="col">
-        <%= dl_entry(@team, :representative) { |r| link_to(r.name, internal_address_path(@regatta, r)) } %>
+        <%= dl_entry(@team, :representative) { |r| link_to(r.name, internal_address_path(@regatta, r, referrer: current_url)) } %>
       </dl>
       <dl class="col">
         <%= dl_entry(@team, :no_entry_fee?) %>
@@ -18,10 +18,15 @@
     </div>
   </div>
   <div class="col-md-4 col-lg-3">
-    <%= link_to t('helpers.titles.edit', model: Team.model_name.human), edit_internal_team_path(@regatta, @team), class: 'btn btn-secondary d-block my-1' if can?(:edit, @team) %>
-    <%= link_to t('helpers.titles.copy', model: Team.model_name.human), new_internal_team_url(@regatta, copy_team: @team.team_id), class: 'btn btn-secondary d-block my-1' if can?(:create, Team) %>
-    <%= button_to("Löschen", internal_team_url(@regatta, @team), method: :delete, data: { confirm: "Sicher?"},
+    <%= link_to t('helpers.titles.edit', model: Team.model_name.human), edit_internal_team_path(@regatta, @team, referrer: current_url), class: 'btn btn-secondary d-block my-1' if can?(:edit, @team) %>
+    <%= link_to t('helpers.titles.copy', model: Team.model_name.human), new_internal_team_url(@regatta, copy_team: @team.team_id, referrer: current_url), class: 'btn btn-secondary d-block my-1' if can?(:create, Team) %>
+    <%= button_to("Löschen", internal_team_url(@regatta, @team, referrer: params[:referrer]), method: :delete, data: { confirm: "Sicher?"},
                   class: 'btn btn-danger d-block w-100', form_class: 'd-block my-1') if can?(:delete, @team) %>
+
+    <% if params[:referrer] %>
+      <hr>
+      <%= link_to "Zurück", back_or_default, class: 'btn btn-secondary d-block my-1' %>
+    <% end %>
   </div>
 </div>
 
