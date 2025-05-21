@@ -3,6 +3,10 @@ module Services
 
     attr_reader :errors
 
+    MANUAL_CLUB_SHORT_NAME_CORRECTIONS = {
+      "Rudervereinigung Kappeln im Turn- und Sportverein Kappeln von 1876 e.V." => "RVg Kappeln"
+    }
+
     def initialize(regatta)
       @regatta = regatta
       @errors = ActiveModel::Errors.new(self)
@@ -77,34 +81,41 @@ module Services
             raise("Meldung #{meldung_xml["id"]}: Konnte Obmann #{representative_external_id.inspect} nicht finden!")
           end
 
-          team_name = Team.sanitize_name(meldung_xml.at_xpath("./titel").text, slashes_had_no_whitespace: true)
-          team = if participant.team.blank?
-                   changed = true
-                   teams.find { |t| t.name == team_name && t.representative_id == representative&.id }
-                 elsif participant.team.name == team_name && participant.team.representative_id == representative&.id
-                   participant.team
-                 else
-                   changed = true
-                   if participant.team.participants.count == 1
-                     # Change the team only used once
-                     participant.team
-                   end
-                 end
-          if !team
-            team = @regatta.teams.new(country: "GER")
-            teams << team
+          team_name = Team.sanitize_name(
+            process_club_names(meldung_xml.at_xpath("./titel").text),
+            slashes_had_no_whitespace: true)
+          existing_other_team = teams.find { |t|
+            t.team_id != participant.team_id &&
+              t.name == team_name &&
+              t.representative_id == representative&.id
+          }
+          if participant.team.present?
+            unless participant.team.name == team_name && participant.team.representative_id == representative&.id
+              # Team has changed: See if we should change the existing team or create/assign a new one.
+              unless participant.team.participants.count == 1 && existing_other_team.blank?
+                # Team can't be changed since there is another participant using it or
+                # there is no already existing one which should be used instead
+                participant.team = nil # Remove assignment to trigger re-assignment
+              end
+            end
           end
-          team.name = team_name
-          team.representative = representative
+          participant.team||= existing_other_team
+          if !participant.team
+            # Create new team
+            participant.team = @regatta.teams.new(country: "GER")
+            teams << participant.team
+          end
+          participant.team.name = team_name
+          participant.team.representative = representative
 
+          changed = true if participant.team.changed?
           if !preview
-            team.set_team_id
-            team.save
+            participant.team.set_team_id
+            participant.team.save
           else
-            team.valid?
+            participant.team.valid?
           end
-          self.errors.merge!(team.errors) if team.errors.any?
-          participant.team = team
+          self.errors.merge!(participant.team.errors) if participant.team.errors.any?
 
           rowers_data = meldung_xml.xpath("./mannschaft/position").inject({}) do |h, position|
             pos = position["st"] ? "s" : position["nr"]
@@ -170,8 +181,8 @@ module Services
               event_number: event.number,
               participant_id: participant.participant_id&.nonzero?,
               participant_number: participant.number,
-              team_id: team.team_id&.nonzero?,
-              team_name: team.name,
+              team_id: participant.team.team_id&.nonzero?,
+              team_name: participant.team.name,
               rowers: rowers_data,
               representative_external_id: representative_external_id,
               participant_attributes: participant.attributes.slice(*participant.changed).except("Regatta_ID", "Rennen"),
@@ -233,13 +244,16 @@ module Services
       clubs = Address.club.all
 
       meldungen_xml.xpath("./vereine/verein").inject({}) do |h, verein|
-        verein_name = verein.at_xpath("./kurzform").text
+        verein_name = process_club_names(verein.at_xpath("./kurzform").text)
         verein_name_lang = verein.at_xpath("./name").text
         club = clubs.find { |c| c.external_id == verein["id"] }
         if !club
-          club = Address.club.build(first_name: verein_name_lang, last_name: verein_name)
+          club = Address.club.where(external_id: nil).
+            find_or_initialize_by(first_name: verein_name_lang, last_name: verein_name)
         end
         club.external_id = verein["id"]
+        club.first_name = verein_name_lang
+        club.last_name = verein_name
 
         changed_attributes = club.attributes.slice(*club.changed)
         unless (preview ? club.valid? : club.save)
@@ -248,6 +262,12 @@ module Services
         result[:clubs][verein["id"]] = changed_attributes.merge("id" => club.id)
 
         h.merge(verein["id"] => club)
+      end
+    end
+
+    def process_club_names(s)
+      MANUAL_CLUB_SHORT_NAME_CORRECTIONS.inject(s) do |s, (old, new)|
+        s&.gsub(old, new)
       end
     end
 
