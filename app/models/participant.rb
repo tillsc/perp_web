@@ -81,7 +81,8 @@ class Participant < ApplicationRecord
 
   def team_name(options = {})
     "#{self.team.try(:name)}".tap do |n|
-      n << "&thinsp;<em>(Boot #{self.team_boat_number})</em>" if !options[:hide_team_boat_number] && self.team_boat_number
+      # "\u2005" – like &thinsp;, but breakable
+      n << "\u2005<em>(Boot&nbsp;#{self.team_boat_number})</em>" if !options[:hide_team_boat_number] && self.team_boat_number
     end.html_safe
   end
 
