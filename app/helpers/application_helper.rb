@@ -47,11 +47,17 @@ module ApplicationHelper
   end
 
   def highlight_nobr(s)
-    if current_user&.highlight_nobr
-      s.to_s.gsub("\u00A0", '␣').html_safe
-    else
-      s
-    end
+    return s unless current_user&.highlight_nobr
+
+    str = s.to_s
+    was_html_safe = str.html_safe?
+
+    breakables = '[ \t\n\u200B\u2028\u2029]'
+    nobr_tokens = /(?<!#{breakables})(\u00A0|\u2009|&thinsp;|&nbsp;)(?!#{breakables})/
+
+    result = str.gsub(nobr_tokens, '␣')
+
+    was_html_safe ? result.html_safe : result
   end
 
   def current_url_with_anchor(o)
