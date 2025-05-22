@@ -26,9 +26,11 @@ class Team < ApplicationRecord
     where(regatta_id: regatta)
   }
 
-  scope :by_filter, -> (query) {
-    where(arel_table[:name].matches("%#{query}%"))
-  }
+  scope :by_filter, -> (query) do
+    query.squish.split(' ').inject(self) do |scope, word|
+      scope.where(arel_table[:name].matches("%#{word}%"))
+    end
+  end
 
   def self.sanitize_name(name, slashes_had_no_whitespace: false)
     slash_expr = if slashes_had_no_whitespace
