@@ -8,6 +8,9 @@ module Internal
       if params[:event_number].present?
         @participants = @participants.where(event_number: params[:event_number])
       end
+      if params[:query].present?
+        @participants = @participants.joins(:team).merge(Team.by_filter(params[:query]))
+      end
     end
 
     def show

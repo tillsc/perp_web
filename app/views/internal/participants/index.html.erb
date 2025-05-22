@@ -9,6 +9,7 @@
   <div class="col-md-4 col-lg-3">
     <%= bootstrap_form_with url: internal_participants_url(@regatta), method: :get do |f| %>
       <%= f.number_field :event_number, label: "Rennen", value: params[:event_number] %>
+      <%= f.text_field :query, label: "Teamname suchen nach", value: params[:query] %>
       <%= f.submit 'Filtern', class: 'btn btn-secondary d-block w-100' %>
     <% end %>
 
