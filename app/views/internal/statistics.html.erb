@@ -12,6 +12,8 @@
       <dd><%= @participants_stats.entry_fee_sum %><%= @regatta.currency %></dd>
       <dt>Startende Ruderer und Ruderinnen:</dt>
       <dd><%= @participants_stats.starting_rowers_count %></dd>
+      <dt>Gemeldete Nationen:</dt>
+      <dd><%= @nations.join(", ") %></dd>
     </dl>
   </div>
   <div class="col-md-6">

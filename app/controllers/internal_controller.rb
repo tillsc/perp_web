@@ -12,6 +12,7 @@ class InternalController < ApplicationController
       select("SUM(Meldegeld) AS entry_fee_sum").
       select("SUM((NOT Abgemeldet) * (rennen.RudererAnzahl + IF(rennen.MitSteuermann, 1, 0))) AS starting_rowers_count").
       unscope(:order).first
+    @nations = @regatta.teams.distinct.pluck(:country).map(&:presence).compact.sort
     @teams_stats = @regatta.teams.where(
       team_id: @regatta.participants.enabled.unscope(:order).select(:team_id)).
       select("COUNT(*) AS total_teams_count").
