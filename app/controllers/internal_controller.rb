@@ -16,8 +16,8 @@ class InternalController < ApplicationController
       team_id: @regatta.participants.enabled.unscope(:order).select(:team_id)).
       select("COUNT(*) AS total_teams_count").
       unscope(:order).first
-    @rower_stats = @regatta.participants.enabled.
-      left_joins(Participant::ALL_ROWERS_WITH_CLUBS).
+    @rower_stats = Rower.left_joins(:club).
+      for_regatta(@regatta).unscope(:select).
       select('COUNT(DISTINCT ruderer.ID) AS rower_count, COUNT(DISTINCT addressen.ID) AS club_count').
       unscope(:order).first
   end
