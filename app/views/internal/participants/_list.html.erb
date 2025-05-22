@@ -3,9 +3,9 @@
   <tr>
     <th>Rennen</th>
     <th>Bugnr</th>
+    <th>Land</th>
     <th>Team</th>
-    <th>Status</th>
-    <th></th>
+    <th colspan=2>Status</th>
     <th></th>
   </tr>
   </thead>
@@ -14,6 +14,7 @@
     <tr id="<%= participant.to_anchor %>" class="<%= participant_state_classes(participant) %>">
       <td><%=  participant.event && link_to(participant.event.label, internal_event_url(@regatta, participant, referrer: current_url_with_anchor(participant))) || '!' %></td>
       <td><%= link_to(participant.number || '-', internal_participant_path(@regatta, participant, referrer: current_url_with_anchor(participant))) %></td>
+      <td><%= participant.team&.country %></td>
       <td class="<%= 'bg-warning' if participant.problem_with_team_boat_number?(participants) %>">
         <%= link_to highlight_nobr(participant.team_name), internal_team_path(@regatta, participant.team, referrer: current_url_with_anchor(participant)) %>
       </td>
