@@ -127,7 +127,7 @@ module Services
             rower = participant.rower_at(pos)
             if position.children.any?
               external_id = position.at_xpath("./athlet")["id"]
-              club_external_id = position.at_xpath("./athlet")["id"]
+              club_external_id = position.at_xpath("./athlet")["verein"]
               first_name = position.at_xpath("./athlet/vorname").text
               last_name = position.at_xpath("./athlet/name").text
               year_of_birth = position.at_xpath("./athlet/jahrgang").text
