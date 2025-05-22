@@ -10,7 +10,7 @@
       <dd><%= @participants_stats.late_participants_count %></dd>
       <dt>Summe Meldegeld:</dt>
       <dd><%= @participants_stats.entry_fee_sum %><%= @regatta.currency %></dd>
-      <dt>Startende Ruderer und Ruderinnen:</dt>
+      <dt>Startende Ruderer (startende Rollsitze):</dt>
       <dd><%= @participants_stats.starting_rowers_count %></dd>
       <dt>Gemeldete Nationen:</dt>
       <dd><%= @nations.join(", ") %></dd>
@@ -21,7 +21,7 @@
     <dl>
       <dt>Anzahl startende Teams:</dt>
       <dd><%= @teams_stats.total_teams_count %></dd>
-      <dt>Anzahl startende Ruderer:</dt>
+      <dt>Anzahl unterschiedlicher Ruderer:</dt>
       <dd><%= @rower_stats.rower_count %></dd>
       <dt>Anzahl verschiedener Vereine (nur wenn den Ruderern zugeordnet):</dt>
       <dd><%= @rower_stats.club_count %></dd>
