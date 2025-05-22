@@ -19,6 +19,10 @@
     <dl>
       <dt>Anzahl startende Teams:</dt>
       <dd><%= @teams_stats.total_teams_count %></dd>
+      <dt>Anzahl startende Ruderer:</dt>
+      <dd><%= @rower_stats.rower_count %></dd>
+      <dt>Anzahl verschiedener Vereine (nur wenn den Ruderern zugeordnet):</dt>
+      <dd><%= @rower_stats.club_count %></dd>
     </dl>
   </div>
 </div>
