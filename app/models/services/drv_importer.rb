@@ -81,8 +81,12 @@ module Services
             raise("Meldung #{meldung_xml["id"]}: Konnte Obmann #{representative_external_id.inspect} nicht finden!")
           end
 
+          # Extract the trailing single number, if present, and treat it as the team boat number
+          # (e.g. "RG Foobar 1" → "RG Foobar", "1")
+          team_name, team_boat = *meldung_xml.at_xpath("./titel").text.
+            match(/^(.*?)(?:\p{Space}([1-9]))?$/).captures # \p{Space} is a superset of \s and also matches Unicode whitespaces like \u00A0
           team_name = Team.sanitize_name(
-            process_club_names(meldung_xml.at_xpath("./titel").text),
+            process_club_names(team_name),
             slashes_had_no_whitespace: true)
           existing_other_team = teams.find { |t|
             t.team_id != participant.team_id &&
@@ -162,6 +166,7 @@ module Services
 
             h.merge(pos => rower.attributes.merge("what_changed" => rower_changes))
           end
+          participant.team_boat_number = team_boat.presence&.to_i
           participant.entry_fee = participant.team.no_entry_fee? ? 0 : (event.entry_fee.to_f - participant.team.entry_fee_discount.to_f)
 
           participant.withdrawn = false
