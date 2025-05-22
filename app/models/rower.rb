@@ -31,10 +31,19 @@ class Rower < ApplicationRecord
     unscope(:where).where(query)
   }
 
-  scope :for_regatta, -> (regatta) {
-    select("ruderer.*").distinct.
-      joins("JOIN meldungen m on m.Regatta_ID=#{regatta.id} AND (#{Participant::ALL_ROWER_IDX.map { |n| "m.ruderer#{n}_id=ruderer.id"}.join(" OR ") })")
-  }
+  def self.for_regatta(regatta)
+    union_sql = %w[
+      ruderer1_id ruderer2_id ruderer3_id ruderer4_id
+      ruderer5_id ruderer6_id ruderer7_id ruderer8_id
+      ruderers_id
+    ].map do |col|
+      "SELECT #{col} AS ruderer_id FROM meldungen WHERE regatta_id = #{regatta.id.to_i}"
+    end.join(" UNION ")
+
+    Rower.from("(#{union_sql}) AS ruderer_in_regatta")
+           .joins("JOIN ruderer ON ruderer.id = ruderer_in_regatta.ruderer_id")
+           .distinct
+  end
 
   TYPICAL_ENCODING_PROBLEMS = {'ÃŸ' => 'ß', 'Ã¼' => 'ü', 'Ãœ' => 'Ü', 'Ã©' => 'é', 'Ã¤' => 'ä', 'Ã¶' => 'ö'}
   scope :with_encoding_problems, -> {

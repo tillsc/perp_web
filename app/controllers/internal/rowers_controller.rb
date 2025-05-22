@@ -5,9 +5,8 @@ module Internal
     respond_to :json, :html
 
     def index
-      @rowers = Rower.all
+      @rowers = params[:only_this_regatta] == '1' ? Rower.for_regatta(@regatta) : Rower.all
       @rowers = @rowers.by_filter(params[:query]) if params[:query].present?
-      @rowers = @rowers.for_regatta(@regatta) if params[:only_this_regatta] == '1'
       @rowers = @rowers.with_encoding_problems if params[:only_with_encoding_problems] == '1'
 
       @rowers = @rowers.
