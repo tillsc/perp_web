@@ -28,7 +28,7 @@ class Team < ApplicationRecord
 
   scope :by_filter, -> (query) do
     query.squish.split(' ').inject(self) do |scope, word|
-      scope.where(arel_table[:name].matches("%#{word}%"))
+      scope.where(arel_table[:name].matches("%#{word}%").or(arel_table[:country].matches("%#{word}%")))
     end
   end
 
