@@ -91,6 +91,7 @@ class Rower < ApplicationRecord
   end
 
   def as_json(options = nil)
+    options = options.dup
     options[:methods]||= []
     options[:methods] << :name
     super(options)

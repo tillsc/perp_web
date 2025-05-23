@@ -167,6 +167,7 @@ class Participant < ApplicationRecord
 
   def set_participant_id
     unless self['TNr']&.nonzero?
+      self.strict_loading!(false)
       self['TNr'] = self.event.participants.maximum('TNr').to_i + 1
     end
   end

@@ -26,6 +26,9 @@ module Internal
 
       authorize! :new, @participant
       prepare_form
+
+      @participant.entry_fee = @participant.event.entry_fee if @participant.event
+      @participant.late_entry = true if @regatta.entry_closed
     end
 
     def create
@@ -50,6 +53,8 @@ module Internal
     def edit
       @participant = @regatta.participants.find(params.extract_value(:id))
       authorize! :edit, @participant
+
+      @participant.entry_changed = true if @regatta.entry_closed?
       prepare_form
     end
 
@@ -87,6 +92,7 @@ module Internal
 
     def prepare_form
       @participant.strict_loading!(false)
+      @regatta.strict_loading!(false)
       if params['local_reload'].present? && params['dialog_finished_with'].present?
         if params['local_reload'] == 'dialog-opener-team'
           new_team = @regatta.teams.find_by(team_id:  params['dialog_finished_with'])
@@ -101,6 +107,7 @@ module Internal
 
     def participant_params(default = {})
       params.fetch(:participant, default).permit(:event_number, :team_id,  :number, :team_boat_number,
+                                                 :entry_fee,
                                                  :withdrawn, :late_entry, :entry_changed, :disqualified,
                                                  :history, *Participant::ALL_ROWERS.map{ |field| "#{field}_id" })
     end
