@@ -14,7 +14,7 @@
           </span>
         <% end %>
         <br>
-        <%= start.participant.number %>: <%= start.participant.team_name %><br>
+        <%= start.participant.number %>: <%= start.participant.team_name(regatta: @regatta) %><br>
         <em><%= start.participant.rower_names(rower_link: local_assigns[:rower_link]) %></em>
       </li>
     <% end %>

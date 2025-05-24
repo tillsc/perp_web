@@ -45,7 +45,7 @@
         <% end %>
         <td><%= link_to participant.event.label, event_participants_url(participant.regatta, participant.event.number) %></td>
         <td><%= participant.number || '-' %></td>
-        <td><%= participant.team_name %></td>
+        <td><%= participant.team_name(regatta: @regatta) %></td>
       </tr>
     <% end %>
   </table>

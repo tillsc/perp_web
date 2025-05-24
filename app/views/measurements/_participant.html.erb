@@ -16,7 +16,7 @@
       <% end %>
     </div>
     <% unless @measuring_session&.hide_team_names? %>
-      <div class="team_name"> <%= participant.team_name(hide_team_boat_number: true) %></div>
+      <div class="team_name"> <%= participant.team_name(hide_age_category: true, hide_team_boat_number: true) %></div>
     <% end %>
   </div>
 <% end %>

@@ -39,7 +39,7 @@
         <% end %>
       </div>
       <div class="country"><%= participant&.team&.country %></div>
-      <div class="team"><%= participant&.team_name %></div>
+      <div class="team"><%= participant&.team_name(regatta: @regatta) %></div>
       <div class="rower-names">
         <%= participant&.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r)) }) %>
       </div>

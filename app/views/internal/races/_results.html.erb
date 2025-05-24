@@ -21,7 +21,7 @@
         <td><%= result.lane_number %></td>
         <% unless object.class == Participant %>
           <td><%= link_to result.participant.number || '-', internal_participant_path(@regatta, result.participant) if result.participant %></td>
-          <td><%= link_to result.participant.team_name, internal_participant_path(@regatta, result.participant) if result.participant %></td>
+          <td><%= link_to result.participant.team_name(regatta: @regatta), internal_participant_path(@regatta, result.participant) if result.participant %></td>
         <% end %>
         <td><%= safe_join(result.times.map{ |t| "#{t.measuring_point&.name}: #{t.time}" }, raw("<br>"))  %></td>
         <td>

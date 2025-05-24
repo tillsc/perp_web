@@ -35,7 +35,7 @@
           <% participants.sort_by{ |p| p.number.to_i }.each do |participant| %>
             <li>
               <%= participant.number %>:
-              <%= participant.team_name %><br>
+              <%= participant.team_name(regatta: @regatta) %><br>
               <em><%= participant.rower_names(rower_link: rower_link) %></em>
             </li>
           <% end %>

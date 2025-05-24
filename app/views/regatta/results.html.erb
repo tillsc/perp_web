@@ -21,7 +21,7 @@
               <div class="position"></div>
               <div class="number"><%= participant.number %></div>
               <div class="country"><%= participant.team.try(:country) %></div>
-              <div class="team"><%= participant.team_name %></div>
+              <div class="team"><%= participant.team_name(regatta: @regatta) %></div>
               <div class="rower-names"><%= participant.rower_names %></div>
               <div class="times"><%= participant.disqualified %></div>
             </div>

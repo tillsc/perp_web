@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_19_175950) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_24_145408) do
   create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "Titel", limit: 10
     t.string "Vorname", limit: 100
@@ -74,7 +74,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_19_175950) do
     t.index ["Ruderer_ID"], name: "Ruderer_IDs"
   end
 
-  create_table "imports", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "imports", charset: "utf8mb3", force: :cascade do |t|
     t.integer "Regatta_ID"
     t.string "source"
     t.text "metadata"
@@ -197,6 +197,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_19_175950) do
     t.date "StartDatum"
     t.date "EndDatum"
     t.boolean "entry_closed"
+    t.string "show_age_categories"
+    t.boolean "show_countries", default: true
     t.index ["Jahr", "Kurzbezeichnung"], name: "SECONDARY", unique: true
   end
 
@@ -229,7 +231,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_19_175950) do
     t.integer "HoehereZulassung", limit: 1, default: 0, null: false, unsigned: true
     t.string "Startberechtigt", limit: 50
     t.string "Zusatz", limit: 100
-    t.datetime "AenderungsDatum", precision: nil, default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "AenderungsDatum", precision: nil, null: false
     t.index ["ExterneID1"], name: "index_ruderer_on_ExterneID1"
     t.index ["JahrG"], name: "index_ruderer_on_JahrG"
     t.index ["NName", "VName", "JahrG"], name: "SECONDARY"

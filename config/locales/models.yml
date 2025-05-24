@@ -44,6 +44,8 @@ de:
         to_date: Bis
         entry_closed: Meldeschluss abgeschlossen
         currency: Währung
+        show_age_categories: Altersklassen anzeigen
+        show_countries: Länderkürzel anzeigen
       event:
         number: Nummer
         name_short: Kurzbezeichnung

@@ -74,7 +74,7 @@
           where(external_id: Array.wrap(@import.results["withdrawn_participant_external_ids"])).each do |participant| %>
           <tr>
             <td><%= participant.event_number %></td>
-            <td><%= link_to(highlight_nobr(participant.team_name), internal_team_url(@regatta, participant.team)) %></td>
+            <td><%= link_to(highlight_nobr(participant.team_name(regatta: @regatta)), internal_team_url(@regatta, participant.team)) %></td>
             <td><%= participant.team.representative && link_to(participant.team.representative.name, internal_address_path(@regatta, participant.team.representative)) %></td>
             <td><%= link_to t('helpers.actions.show'), internal_participant_path(@regatta, participant), class: 'btn btn-sm btn-outline-primary' %></td>
           </tr>

@@ -43,7 +43,7 @@
           <td><%= s.lane_number %></td>
           <td><%= participant.number %></td>
           <td><%= participant.team&.country %></td>
-          <td><%= participant.team_name %></td>
+          <td><%= participant.team_name(regatta: @regatta) %></td>
           <td><%= participant.rower_names %></td>
           <td><%= participant.state %></td>
         </tr>

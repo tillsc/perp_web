@@ -11,6 +11,9 @@
 
   <%= f.check_box :entry_closed %>
 
+  <%= f.select :show_age_categories, Regatta::AGE_CATEGORIES, include_blank: "Keine anzeigen" %>
+  <%= f.check_box :show_countries %>
+
   <%= f.text_field :currency %>
 
   <%= f.primary %>

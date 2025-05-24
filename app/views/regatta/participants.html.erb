@@ -21,7 +21,7 @@
     <tr class="<%= participant_state_classes(p) %>">
       <td><%= p.number %></td>
       <td><%= p.team.try(:country) %></td>
-      <td><%= p.team_name %></td>
+      <td><%= p.team_name(regatta: @regatta) %></td>
       <td><%= p.rower_names(rower_link: rower_link) %></td>
       <td><%= p.state %></td>
     </tr>

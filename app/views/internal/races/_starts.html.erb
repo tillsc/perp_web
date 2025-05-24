@@ -21,7 +21,7 @@
         <td><%= start.lane_number %></td>
         <% unless object.class == Participant %>
           <td><%= start.participant&.number %></td>
-          <td><%= start.participant&.team_name %></td>
+          <td><%= start.participant&.team_name(regatta: @regatta) %></td>
         <% end %>
       </tr>
     <% end %>

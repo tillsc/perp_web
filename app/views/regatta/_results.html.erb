@@ -9,7 +9,7 @@
           - <strong><%= l result.race.started_at_time, format: '%H:%M' %> Uhr</strong>
         <% end %>
         <br>
-        <%= result.participant.number %>: <%= result.participant.team_name %><br>
+        <%= result.participant.number %>: <%= result.participant.team_name(regatta: @regatta) %><br>
         <em><%= result.participant.rower_names(rower_link: local_assigns[:rower_link]) %></em>
         <br>
         <%= result.race.event.finish_measuring_point&.name %>: <%= result.time_for(result.race.event.finish_measuring_point_number)&.time %>

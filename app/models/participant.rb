@@ -79,10 +79,12 @@ class Participant < ApplicationRecord
     alias_attribute "rower#{idx}_id", "ruderer#{idx}_ID"
   end
 
-  def team_name(options = {})
-    "#{self.team.try(:name)}".tap do |n|
+  def team_name(hide_team_boat_number: false, hide_age_category: false, regatta: nil)
+    "<strong>#{self.team&.name}</strong>".tap do |n|
       # "\u2005" – like &thinsp;, but breakable
-      n << "\u2005<em>(Boot&nbsp;#{self.team_boat_number})</em>" if !options[:hide_team_boat_number] && self.team_boat_number
+      n << "\u2005<em>(Boot&nbsp;#{self.team_boat_number})</em>" if !hide_team_boat_number && self.team_boat_number
+      ac = self.age_category(regatta: regatta)
+      n << "&thinsp;(#{ac})" if ac && !hide_age_category
     end.html_safe
   end
 
@@ -105,8 +107,8 @@ class Participant < ApplicationRecord
     end
   end
 
-  def label
-    "#{self.number} - #{self.team_name}".html_safe
+  def label(regatta: nil)
+    "#{self.number} - #{self.team_name(regatta: regatta)}".html_safe
   end
 
   def rower_names(options = {})
@@ -130,6 +132,12 @@ class Participant < ApplicationRecord
       end
       i+=1
     }
+  end
+
+  def rower_years_of_birth(including_cox: false)
+    (ALL_ROWERS - (including_cox ? [] : [:rowers])).
+      map { |assoc| self.send(assoc)&.year_of_birth.presence&.to_i }.
+      compact
   end
 
   def rower_fields
@@ -208,6 +216,10 @@ class Participant < ApplicationRecord
     new_entry = "#{DateTime.now.strftime("%d.%m.%Y %T")}: <b>#{what_happened}</b>"
     new_entry += " - #{details}" if details.present?
     self.history = "#{new_entry}<br>\n#{self.history}"
+  end
+
+  def age_category(regatta: nil, including_cox: false)
+    (regatta || self.regatta).age_category(self.rower_years_of_birth(including_cox: including_cox))
   end
 
 end

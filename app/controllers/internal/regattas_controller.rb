@@ -91,7 +91,8 @@ module Internal
 
     def regatta_params
       params.fetch(:regatta, {year: Date.today.year}).
-        permit(:name, :entry_closed, :organizer_id, :year, :from_date, :to_date, :currency)
+        permit(:name, :entry_closed, :organizer_id, :year, :from_date, :to_date,
+               :currency, :show_age_categories, :show_countries)
     end
 
   end
