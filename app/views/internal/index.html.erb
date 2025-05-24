@@ -85,6 +85,10 @@
           <% if can?(:show, :statistics) %>
             <li><%= link_to("Statistiken", internal_statistics_url(@regatta)) %></li>
           <% end %>
+
+          <% if can?(:show, :server_status) %>
+            <li><%= link_to("Server Status", internal_status_url(@regatta)) %></li>
+          <% end %>
         </ul>
       </div>
     </div>

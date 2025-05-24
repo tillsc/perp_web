@@ -44,6 +44,8 @@ Rails.application.routes.draw do
       get '/weighings/:date/rowers' => 'weighings#rowers', as: :rowers_weighings
       get '/weighings/:date/rowers/:id' => 'weighings#rower', as: :rower_weighings
       put '/weighings/:date/rowers/:id' => 'weighings#save_weight'
+
+      get '/status' => 'state#index'
     end
 
     get '/tv' => 'tv#index'
@@ -57,7 +59,6 @@ Rails.application.routes.draw do
 
     get '/results' => 'regatta#all_results'
     get '/upcoming' => 'regatta#upcoming'
-    get '/status' => 'state#index'
     get '/rower/:rower_id' => 'regatta#rower', as: :rower
 
     # Legacy

@@ -1,10 +1,11 @@
+<h1>Server Status</h1>
 
 <% @status.each do |k, v| %>
   <div class="card mb-4 <%= v.delete(:failure)  ? 'text-white bg-danger' : '' %>">
     <div class="card-header">
   <h3><%= k %></h3>
     </div>
-  <dl class="card-body multi-column">
+  <dl class="card-body multi-column" style="--column-count: 1; --column-count-lg: 2;">
     <% v.each do |k2, v2| %>
       <dt><%= k2 %></dt>
       <dd><%= v2.presence || '-' %></dd>

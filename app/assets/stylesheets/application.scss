@@ -69,9 +69,9 @@ tr.withdrawn td, tr.disqualified td {
 
 .multi-column {
   column-gap: 3em;
-  column-count: 2;
+  column-count: var(--column-count, 2);
   @media (min-width: map-get($grid-breakpoints, "lg")) {
-    column-count: 4;
+    column-count: var(--column-count-lg, var(--column-count, 4));
   }
 }
 

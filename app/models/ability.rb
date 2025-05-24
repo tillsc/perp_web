@@ -42,6 +42,7 @@ class Ability
         can :manage, MeasuringPoint
         can :manage, :tv_settings
         can :show, :statistics
+        can :show, :server_status
         can :manage, Regatta
         cannot :delete, Regatta do |r|
           r.events.any?
