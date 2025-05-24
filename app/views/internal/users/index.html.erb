@@ -34,5 +34,6 @@
     </table>
   </div>
   <div class="col-md-4 col-lg-3">
+    <%= link_to t('helpers.titles.new', model: User.model_name.human), new_internal_user_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
   </div>
 </div>

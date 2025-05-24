@@ -1,0 +1,29 @@
+<%= bootstrap_form_for [:internal, @user] do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
+
+  <div class="row">
+    <div class="col-md-4">
+      <%= f.email_field :email %>
+      <%= f.password_field :password %>
+      <%= f.password_field :password_confirmation %>
+      <%= f.datetime_field :confirmed_at %>
+    </div>
+    <div class="col-md-4">
+      <h2>Rollen</h2>
+
+      <% User::ALL_ROLES.each do |role| %>
+        <%= f.check_box "role_#{role}" %>
+      <% end %>
+
+    </div>
+    <div class="col-md-4">
+      <h2>Einstellungen</h2>
+
+      <%= f.check_box :highlight_nobr %>
+    </div>
+
+  </div>
+
+  <%= f.primary %>
+  <%= link_to "Abbrechen", back_or_default, class: 'btn btn-secondary' %>
+<% end %>
