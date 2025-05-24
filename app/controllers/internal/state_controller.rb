@@ -12,7 +12,7 @@ module Internal
       begin
         @status['MySQL Slave Status'] = ActiveRecord::Base.connection.exec_query('SHOW SLAVE STATUS').to_a[0] || {}
         io_state = @status['MySQL Slave Status']['Slave_IO_Running']
-        @status['MySQL Slave Status'][:failure] = io_state.present? && (io_state != 'Yes')
+        @status['MySQL Slave Status'][:failure] = io_state.present? && (io_state != 'Yes') && @status['MySQL Slave Status']['Slave_IO_State'] != '-'
         @status['MySQL Master Status'] = ActiveRecord::Base.connection.exec_query('SHOW MASTER STATUS').to_a[0] || {}
       rescue ActiveRecord::StatementInvalid
       end
