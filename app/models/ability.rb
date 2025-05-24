@@ -27,12 +27,15 @@ class Ability
           i.imported_at.present?
         end
         can :manage, Team
-        can :manage, Rower
+        can [:read, :create], Rower
+        can [:read, :cteate, :edit], Address
+        can :read, [Event, Race]
       end
 
       if user.role_admin
         can :manage, User
         can :manage, Address
+        can :manage, Rower
         can :manage, Event
         can :manage, Race
         can :manage, Result
