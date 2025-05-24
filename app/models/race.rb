@@ -53,7 +53,7 @@ class Race < ApplicationRecord
   end
 
   scope :with_results, -> do
-    joins(:results).group('laeufe.Rennen, laeufe.Lauf')
+    with_existing(:results)
   end
 
   scope :with_finish_times, -> do
@@ -67,7 +67,7 @@ class Race < ApplicationRecord
   end
 
   scope :with_starts, -> do
-    joins(:starts).group('laeufe.Rennen, laeufe.Lauf')
+    with_existing(:starts)
   end
 
   scope :by_type_short, -> (type_short) do
