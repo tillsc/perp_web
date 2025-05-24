@@ -31,6 +31,8 @@
     <% end %>
   </div>
 <% end %>
-<script>
-  autoreloadAfter(10000)
-</script>
+<% if @results.any? { |r| !r.race.result_confirmed? } %>
+  <script>
+      autoreloadAfter(30000)
+  </script>
+<% end %>
