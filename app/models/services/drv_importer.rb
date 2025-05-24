@@ -33,6 +33,11 @@ module Services
       xml_doc = Nokogiri::XML(import.xml)
 
       meldungen_xml = xml_doc.root
+      unless meldungen_xml
+        self.errors.add(:base, "XML war leer")
+        return import
+      end
+
       import.metadata = load_metadata(meldungen_xml)
       import.results = process(meldungen_xml, preview)
 
@@ -40,7 +45,7 @@ module Services
     rescue Nokogiri::XML::SyntaxError
       import.metadata = nil
       import.results = nil
-      self.errors.add(:base, "XML konnte nicht gelesen werden.")
+      self.errors.add(:base, "XML konnte nicht gelesen werden")
 
       import
     end
