@@ -48,7 +48,7 @@
   <table class="table table-striped">
     <% @address.teams.group_by { |t| t.regatta == @regatta ? 1 : 2 }.sort.each do |this_regatta, teams|  %>
       <thead>
-      <tr><th><%= this_regatta == 1 ? 'Diese Regatta' : 'Andere Regatten' %></th></tr>
+      <tr><th colspan="2"><%= this_regatta == 1 ? 'Diese Regatta' : 'Andere Regatten' %></th></tr>
       </thead>
       <tbody>
       <% teams.each do |team| %>
