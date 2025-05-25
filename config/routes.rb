@@ -13,7 +13,6 @@ Rails.application.routes.draw do
 
     get '/internal', to: 'internal#index'
     get '/internal/statistics', to: 'internal#statistics'
-    get '/internal/reports' => 'internal#reports'
     scope '/internal', module: :internal, as: :internal do
       resources :addresses do
         delete '/regatta/referee' => :remove_regatta_referee

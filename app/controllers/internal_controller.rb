@@ -27,8 +27,4 @@ class InternalController < ApplicationController
       unscope(:order).first
   end
 
-  def reports
-    authorize! :show, :reports
-  end
-
 end

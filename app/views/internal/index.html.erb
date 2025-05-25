@@ -94,6 +94,19 @@
     </div>
   <% end %>
 
+
+  <% if can?(:show, :reports) %>
+    <div class="card">
+      <h5 class="card-header">Reports</h5>
+      <div class="card-body">
+        <ul>
+          <li><%= link_to("Ruderer", internal_reports_rowers_url(@regatta)) %></li>
+        </ul>
+      </div>
+    </div>
+
+  <% end %>
+
   <% if can?(:index, Regatta) || can?(:show, User) %>
     <div class="card">
       <h5 class="card-header">Administration</h5>
