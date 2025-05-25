@@ -6,6 +6,7 @@ class Ability
   def initialize(user)
     if user.is_a?(::User)
       can :access, :internal
+      can :read, Rower
 
       if user.role_timekeeping || user.role_admin
         can :manage, MeasurementSet
