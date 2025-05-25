@@ -95,12 +95,14 @@
   <% end %>
 
 
-  <% if can?(:show, :reports) %>
+  <% if can?(:index, Rower) %>
     <div class="card">
       <h5 class="card-header">Reports</h5>
       <div class="card-body">
         <ul>
-          <li><%= link_to("Ruderer", internal_reports_rowers_url(@regatta)) %></li>
+          <% if can?(:index, Rower) %>
+            <li><%= link_to("Ruderer", internal_reports_rowers_url(@regatta)) %></li>
+          <% end %>
         </ul>
       </div>
     </div>

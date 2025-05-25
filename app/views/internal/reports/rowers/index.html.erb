@@ -9,6 +9,7 @@
     <formset class="col-sm-6">
       <legend>Optionen</legend>
       <%= f.check_box :hide_age_category, checked: params[:hide_age_category] == "1", label: "Leistungsklasse nicht anzeigen" %>
+      <%= f.check_box :hide_club, checked: params[:hide_club] == "1", label: "Verein nicht anzeigen" %>
       <%= f.check_box :hide_event_shortname, checked: params[:hide_event_shortname] == "1", label: "Kurzbezeichnung Rennen nicht anzeigen" %>
     </formset>
   </div>
@@ -22,6 +23,9 @@
     <% if params[:hide_age_category] != "1" %>
       <th><abbr title="Leistungsklasse">L.Kl.</abbr></th>
     <% end %>
+    <% if params[:hide_club] != "1" %>
+      <th>Verein</th>
+    <% end %>
     <th>Rennen</th>
   </tr>
   </thead>
@@ -34,6 +38,11 @@
       <% if params[:hide_age_category] != "1" %>
         <td>
           <%= @regatta.age_category(rower.year_of_birth.presence&.to_i) %>
+        </td>
+      <% end %>
+      <% if params[:hide_club] != "1" %>
+        <td>
+          <%= rower.club&.name %>
         </td>
       <% end %>
       <td><%= safe_join(participations.map do |p|
