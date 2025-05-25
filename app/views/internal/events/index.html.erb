@@ -37,10 +37,10 @@
                           title: t('helpers.actions.delete')) if can?(:delete, event) %>
           </td>
           <td class="text-nowrap">
-            <%= link_to "Meldungen", internal_participants_url(@regatta, event_number: event.number),
-                        class: 'btn btn-outline-secondary btn-sm' %>
-            <%= link_to "Starts", internal_event_starts_path(@regatta, event),
-                        class: 'btn btn-outline-secondary btn-sm' %>
+            <%= link_to("Meldungen", internal_participants_url(@regatta, event_number: event.number),
+                        class: 'btn btn-outline-secondary btn-sm') if can?(:index, Participant) %>
+            <%= link_to("Starts", internal_event_starts_path(@regatta, event),
+                        class: 'btn btn-outline-secondary btn-sm') if can?(:index, Start) %>
           </td>
         </tr>
       <% end %>

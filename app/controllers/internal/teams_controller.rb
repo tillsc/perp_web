@@ -5,6 +5,8 @@ module Internal
     respond_to :json, :html
 
     def index
+      authorize! :index, Team
+
       @teams = @regatta.teams.preload(:representative).order(:name).page(params[:page])
       @teams = @teams.by_filter(params[:query]) if params[:query].present?
       respond_with @teams
@@ -12,22 +14,27 @@ module Internal
 
     def show
       @team = @regatta.teams.preload(:representative).find(params.extract_value(:id))
+      authorize! :show, @team
+
       respond_with @team
     end
 
     def new
+      authorize! :new, Team
+
       copy_team =  @regatta.teams.find_by(team_id: params[:copy_team]) if params[:copy_team].present?
       @team = @regatta.teams.new(team_params(Team::COPY_FIELDS.inject({}) { |h, f| h.merge(f => copy_team&.send(f)) }))
       @team.name = @team.name.presence || params[:default]&.camelcase
-      authorize! :new, Team
+
       prepare_form
     end
 
     def create
+      authorize! :create, Team
+
       @team = @regatta.teams.new(team_params)
       @team.set_team_id
       @team.entry_fee_discount||= 0
-      authorize! :create, Team
 
       if @team.save
         flash[:info] = helpers.success_message_for(:create, @team)
@@ -42,6 +49,7 @@ module Internal
     def edit
       @team = @regatta.teams.find(params.extract_value(:id))
       authorize! :edit, @team
+
       prepare_form
     end
 

@@ -15,13 +15,13 @@
 
     <hr>
 
-    <%= link_to t('helpers.titles.new', model: Participant.model_name.human),
+    <%= link_to(t('helpers.titles.new', model: Participant.model_name.human),
                 new_internal_participant_path(@regatta, participant: {event_number: params[:event_number]}, referrer: current_url),
-                class: 'btn btn-secondary d-block my-1' %>
+                class: 'btn btn-secondary d-block my-1') if can?(:create, Participant) %>
 
-    <%= link_to "DRV Imports",
+    <%= link_to("DRV Imports",
                 internal_participants_drv_imports_url(@regatta, referrer: current_url),
-                class: 'btn btn-secondary d-block my-1' %>
+                class: 'btn btn-secondary d-block my-1') if can?(:index, Import) %>
 
     <% if params[:referrer] %>
       <hr>

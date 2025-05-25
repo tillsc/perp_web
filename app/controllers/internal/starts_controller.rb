@@ -6,19 +6,24 @@ module Internal
     before_action :load_event
 
     def index
+      authorize! :index, Start
       @race_types = @event.races.map(&:type_short).uniq
-      @starts = @event.starts.preload(:race, participant: :team).
+      @starts = @event.starts.preload(:race, participant: [:team, *Participant::ALL_ROWERS]).
         group_by { |s| s.race&.type_short }
     end
 
     def edit
+      authorize! :edit, Start
+
       @race_type = params[:race_type]
-      @races = @event.races.by_type_short(@race_type).preload(starts: { participant: :team })
+      @races = @event.races.by_type_short(@race_type).preload(starts: { participant: [:team, *Participant::ALL_ROWERS] })
       participant_ids = @races.flat_map { |r| r.starts.map(&:participant_id) }
       @remaining_participants = @event.participants.preload(:team).reject { |p| participant_ids.include?(p.participant_id) }
     end
 
     def save
+      authorize! :update, Start
+
       race_type = params[:race_type]
       races = @event.races.by_type_short(race_type)
       starts = params[:starts].

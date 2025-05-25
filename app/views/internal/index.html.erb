@@ -33,12 +33,13 @@
   <% end %>
 
   <div class="card">
-    <h5 class="card-header">Öffentliche Links</h5>
+    <h5 class="card-header">Sprecher & TV</h5>
     <div class="card-body">
       <ul>
-        <li><%= link_to "Sprecher-Dashboard", announcer_url(@regatta) %></li>
+        <% if can?(:access, :announcer_views) %>
+          <li><%= link_to "Sprecher-Dashboard", announcer_url(@regatta) %></li>
+        <% end %>
         <li><%= link_to "TV-Overlays", tv_url(@regatta) %></li>
-        <li><%= link_to "DRV Ergebnis-XML", results_url(@regatta, format: :xml) %></li>
       </ul>
     </div>
   </div>
@@ -95,13 +96,16 @@
   <% end %>
 
 
-  <% if can?(:index, Rower) %>
+  <% if can?(:index, Rower) || can?(:index, Result) %>
     <div class="card">
       <h5 class="card-header">Reports</h5>
       <div class="card-body">
         <ul>
           <% if can?(:index, Rower) %>
             <li><%= link_to("Ruderer", internal_reports_rowers_url(@regatta)) %></li>
+          <% end %>
+          <% if can?(:index, Result) %>
+            <li><%= link_to "DRV Ergebnis-XML", results_url(@regatta, format: :xml) %></li>
           <% end %>
         </ul>
       </div>

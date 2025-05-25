@@ -6,7 +6,11 @@ class Ability
   def initialize(user)
     if user.is_a?(::User)
       can :access, :internal
-      can :read, Rower
+
+      if user.roles.any?
+        can :access, :announcer_views
+        can :read, [Rower, Result, Start, Participant, Team, Event, Race, Address]
+      end
 
       if user.role_timekeeping || user.role_admin
         can :manage, MeasurementSet

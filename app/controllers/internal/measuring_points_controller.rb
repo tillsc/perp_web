@@ -4,13 +4,15 @@ module Internal
     is_internal!
 
     def index
+      authorize! :index, MeasuringPoint
+
       @measuring_points = MeasuringPoint.for_regatta(@regatta).preload(:measuring_session)
     end
 
     def new
       @measuring_point = @regatta.measuring_points.new
-
       authorize! :new, @measuring_point
+
       prepare_form
     end
 
@@ -31,6 +33,7 @@ module Internal
     def edit
       @measuring_point = @regatta.measuring_points.find(params.extract_value(:id))
       authorize! :edit, @measuring_point
+
       prepare_form
     end
 

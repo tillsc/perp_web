@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   serialize :roles, coder: JSON
 
-  ALL_ROLES = [:admin, :weighing, :registration, :timekeeping]
+  ALL_ROLES = [:admin, :weighing, :registration, :timekeeping, :announcer]
 
   ALL_ROLES.each do |role|
     define_method "role_#{role}" do

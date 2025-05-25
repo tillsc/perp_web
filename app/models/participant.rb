@@ -84,8 +84,10 @@ class Participant < ApplicationRecord
     "<strong>#{self.team&.name}</strong>".tap do |n|
       # "\u2005" – like &thinsp;, but breakable
       n << "\u2005<em>(Boot&nbsp;#{self.team_boat_number})</em>" if !hide_team_boat_number && self.team_boat_number
-      ac = self.age_category(regatta: regatta)
-      n << "&thinsp;(#{ac})" if ac && !hide_age_category
+      if !hide_age_category
+        ac = self.age_category(regatta: regatta)
+        n << "&thinsp;(#{ac})" if ac
+      end
     end.html_safe
   end
 
@@ -115,7 +117,10 @@ class Participant < ApplicationRecord
   def rower_names(options = {})
     ALL_ROWERS.map { |assoc| self.send(assoc) }.each_with_index.map { |rower, i|
       if rower
-        n = ERB::Util.html_escape(rower.name(**options.except(:rower_link).merge(is_cox: i == 8)))
+        rower_options = options.
+          slice(:no_year_of_birth, :no_nobr, :first_name_last_name).
+          merge(is_cox: i == 8)
+        n = ERB::Util.html_escape(rower.name(**rower_options))
         n = options[:rower_link].call(rower, n) if options[:rower_link]
         n
       end

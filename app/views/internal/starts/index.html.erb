@@ -28,7 +28,7 @@
           <tr>
             <td><%= s.lane_number %></td>
             <td><%= s.participant&.number %></td>
-            <td><%= s.participant&.team_name %></td>
+            <td><%= s.participant&.team_name(regatta: @regatta) %></td>
           </tr>
         <% end %>
       <% end %>

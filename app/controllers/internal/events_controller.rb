@@ -4,6 +4,8 @@ module Internal
     is_internal!
 
     def index
+      authorize! :index, Event
+
       @events = @regatta.events.preload(:start_measuring_point, :finish_measuring_point)
     end
 

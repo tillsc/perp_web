@@ -1,6 +1,10 @@
 class AnnouncerController < ApplicationController
 
+  is_internal!
+
   def index
+    authorize! :access, :announcer_views
+
     @latest_races = Race.for_regatta(@regatta).
       with_results.latest.
       preload(:event).
@@ -12,6 +16,8 @@ class AnnouncerController < ApplicationController
   end
 
   def results
+    authorize! :access, :announcer_views
+
     @race = Race.
       for_regatta(@regatta).
       preload(:referee_umpire, :referee_finish_judge, :starts, results: :times, event: { participants: [:team] + Participant::ALL_ROWERS }).

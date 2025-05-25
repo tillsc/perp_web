@@ -5,6 +5,8 @@ module Internal
     respond_to :json, :html
 
     def index
+      authorize! :index, Rower
+
       @rowers = params[:only_this_regatta] == '1' ? Rower.for_regatta(@regatta) : Rower.all
       @rowers = @rowers.by_filter(params[:query]) if params[:query].present?
       @rowers = @rowers.with_encoding_problems if params[:only_with_encoding_problems] == '1'
@@ -18,11 +20,14 @@ module Internal
 
     def show
       @rower = Rower.preload(:club, :weights).find(params[:id])
+      authorize! :show, @rower
 
       respond_with @rower
     end
 
     def new
+      authorize! :new, Rower
+
       @rower = Rower.new(rower_params)
       defaults = params[:default]&.split(" ")
       if defaults
@@ -38,10 +43,7 @@ module Internal
           @rower.last_name = @rower.last_name.presence || defaults.pop.camelcase
         end
         @rower.first_name = @rower.first_name.presence || defaults.join(" ").camelcase
-
-
       end
-      authorize! :new, Rower
       prepare_form
     end
 
@@ -62,6 +64,7 @@ module Internal
     def edit
       @rower = Rower.find(params[:id])
       authorize! :edit, @rower
+
       prepare_form
     end
 

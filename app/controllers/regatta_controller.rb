@@ -61,6 +61,8 @@ class RegattaController < ApplicationController
   end
 
   def all_results
+    authorize! :index, Result
+
     @results = {}
     @regatta.results.preload(:times,
                              race: { event: [:start_measuring_point, :finish_measuring_point] },

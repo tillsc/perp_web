@@ -5,6 +5,7 @@ module Internal
 
     def index
       authorize! :index, Race
+
       @races = @regatta.races.preload(:event, :starts, :results)
     end
 
@@ -15,8 +16,8 @@ module Internal
 
     def new
       @race = @regatta.races.new(race_params(number_short: 1, planned_for: DateTime.now))
-
       authorize! :new, @race
+
       prepare_form
     end
 
@@ -37,6 +38,7 @@ module Internal
     def edit
       @race = @regatta.races.find(params.extract_value(:id))
       authorize! :edit, @race
+
       prepare_form
     end
 

@@ -7,6 +7,7 @@ de:
         role_weighing: Waage
         role_registration: Meldewesen
         role_timekeeping: Zeitmessung
+        role_announcer: Regattasprecher
         confirmation_sent_at: Bestätigung gesendet am
         confirmation_token: Bestätigungs-Token
         confirmed_at: Bestätigt am

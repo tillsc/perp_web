@@ -4,6 +4,8 @@ module Internal
     is_internal!
 
     def index
+      authorize! :index, Participant
+
       @participants = @regatta.participants.preload(:event, :team).page(params[:page])
       if params[:event_number].present?
         @participants = @participants.where(event_number: params[:event_number])

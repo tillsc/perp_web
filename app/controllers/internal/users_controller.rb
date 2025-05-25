@@ -4,7 +4,7 @@ module Internal
     is_internal!
 
     def index
-      authorize! :show, User
+      authorize! :index, User
 
       @users = User.all
     end

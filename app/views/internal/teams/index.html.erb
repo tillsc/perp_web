@@ -25,7 +25,7 @@
                           class: 'btn btn-outline-danger btn-sm',
                           title: t('helpers.actions.delete')) if can?(:delete, team) %>
             <%= link_to("Neue Meldung", new_internal_participant_path(participant: {team_id: team.team_id}),
-                        class: 'btn btn-outline-secondary btn-sm') %>
+                        class: 'btn btn-outline-secondary btn-sm') if can?(:create, Participant) %>
           </td>
         </tr>
       <% end %>

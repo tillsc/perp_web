@@ -4,12 +4,15 @@ module Internal
     is_internal!
 
     def index
+      authorize! :index, Regatta
+
       @regattas = Regatta.preload(:organizer, :events).order(from_date: :desc)
     end
 
     def new
       @regatta = Regatta.new(regatta_params)
       authorize! :new, @regatta
+
       prepare_form
     end
 
@@ -40,6 +43,7 @@ module Internal
     def edit
       @regatta = Regatta.find(params[:id])
       authorize! :edit, @regatta
+
       prepare_form
     end
 
