@@ -1,6 +1,7 @@
 class Participant < ApplicationRecord
 
   ALL_ROWER_IDX = (1..8).to_a + ["s"]
+  ALL_ROWER_FIELD_NAMES = ALL_ROWER_IDX.map { |i| "ruderer#{i}_ID" }
   ALL_ROWERS = ALL_ROWER_IDX.map { |i| "rower#{i}".to_sym }
   ALL_ROWERS_WITH_WEIGHTS = ALL_ROWERS.inject({}) { |h, rel_name| h.merge(rel_name => :weights) }
   ALL_ROWERS_WITH_CLUBS = ALL_ROWERS.inject({}) { |h, rel_name| h.merge(rel_name => :club) }
@@ -17,7 +18,7 @@ class Participant < ApplicationRecord
   belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
   ALL_ROWER_IDX.each_with_index do |name, i|
-    belongs_to ALL_ROWERS[i], class_name: 'Rower', foreign_key: "ruderer#{name}_ID", optional: i > 0
+    belongs_to ALL_ROWERS[i], class_name: 'Rower', foreign_key: ALL_ROWER_FIELD_NAMES[i], optional: i > 0
   end
 
   has_many :starts, foreign_key: ['Regatta_ID', 'Rennen', 'TNr'],

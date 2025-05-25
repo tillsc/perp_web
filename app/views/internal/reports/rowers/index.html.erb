@@ -1,0 +1,50 @@
+<h1>Ruderer bei <%= @regatta&.name %></h1>
+
+<%= bootstrap_form_with method: :get, class: "d-print-none" do |f| %>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= f.number_field :event_number_from, value: params[:event_number_from], label: "Von Rennen" %>
+      <%= f.number_field :event_number_to, value: params[:event_number_to], label: "Bis Rennen" %>
+    </div>
+    <formset class="col-sm-6">
+      <legend>Optionen</legend>
+      <%= f.check_box :hide_age_category, checked: params[:hide_age_category] == "1", label: "Leistungsklasse nicht anzeigen" %>
+      <%= f.check_box :hide_event_shortname, checked: params[:hide_event_shortname] == "1", label: "Kurzbezeichnung Rennen nicht anzeigen" %>
+    </formset>
+  </div>
+  <%= f.submit "Filtern" %>
+<% end %>
+
+<table class="table mt-5">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <% if params[:hide_age_category] != "1" %>
+      <th><abbr title="Leistungsklasse">L.Kl.</abbr></th>
+    <% end %>
+    <th>Rennen</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @rowers.each do |rower, participations| %>
+    <tr>
+      <td>
+        <%= rower.name(first_name_last_name: false, no_nobr: true) %>
+      </td>
+      <% if params[:hide_age_category] != "1" %>
+        <td>
+          <%= @regatta.age_category(rower.year_of_birth.presence&.to_i) %>
+        </td>
+      <% end %>
+      <td><%= safe_join(participations.map do |p|
+        content_tag :span, class: 'text-nowrap' do
+          safe_join([
+                      content_tag(:span, p.event.number),
+                      params[:hide_event_shortname] != "1" ? content_tag(:em, "(#{p.event.name_short})") : ""
+                    ], " ")
+        end
+      end.sort, ", ") %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

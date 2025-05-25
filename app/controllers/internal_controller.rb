@@ -7,6 +7,8 @@ class InternalController < ApplicationController
   end
 
   def statistics
+    authorize! :show, :statistics
+
     @participants_stats = @regatta.participants.left_joins(:event).
       select("COUNT(*) AS total_participants_count, SUM(Abgemeldet) AS withdrawn_participants_count, SUM(Nachgemeldet) AS late_participants_count").
       select("SUM(Meldegeld) AS entry_fee_sum").
@@ -23,6 +25,10 @@ class InternalController < ApplicationController
       joins("LEFT JOIN addressen ON addressen.id = ruderer.Verein_ID").
       select('COUNT(DISTINCT ruderer.ID) AS rower_count, COUNT(DISTINCT addressen.ID) AS club_count').
       unscope(:order).first
+  end
+
+  def reports
+    authorize! :show, :reports
   end
 
 end

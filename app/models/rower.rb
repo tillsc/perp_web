@@ -22,7 +22,8 @@ class Rower < ApplicationRecord
   has_many :weights, foreign_key: 'Ruderer_ID', dependent: :destroy
 
   Participant::ALL_ROWERS.each do |field|
-    has_many "#{field}_in".to_sym, class_name: "Participant", foreign_key: field, dependent: :restrict_with_error
+    has_many "#{field}_in".to_sym, class_name: "Participant",
+             foreign_key: field, dependent: :restrict_with_error
   end
   has_many :participants, ->(rower) {
     query = Participant::ALL_ROWERS.map { |field|
@@ -72,10 +73,11 @@ class Rower < ApplicationRecord
     Rower.find_by!(first_name: '', last_name: 'N.N.', year_of_birth: '', external_id: '')
   end
 
-  def name(options = {})
-    "#{options[:is_cox] ? "St. " : ""}#{self.first_name} #{self.last_name}".tap do |s|
-      s << " (#{self.year_of_birth})" if self.year_of_birth.present?
-      s.gsub!(" ", "\u00A0") unless options[:no_nobr]
+  def name(no_year_of_birth: false, no_nobr: false, is_cox: false, first_name_last_name: true)
+    name = first_name_last_name ? "#{self.first_name} #{self.last_name}" : "#{self.last_name}, #{self.first_name}"
+    "#{is_cox ? "St. " : ""}#{name}".tap do |s|
+      s << " (#{self.year_of_birth})" if self.year_of_birth.present? && !no_year_of_birth
+      s.gsub!(" ", "\u00A0") unless no_nobr
     end
   end
   def what_changed_text
