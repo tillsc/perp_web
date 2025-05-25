@@ -115,7 +115,7 @@ class Participant < ApplicationRecord
   def rower_names(options = {})
     ALL_ROWERS.map { |assoc| self.send(assoc) }.each_with_index.map { |rower, i|
       if rower
-        n = ERB::Util.html_escape(rower.name(options.merge(is_cox: i == 8)))
+        n = ERB::Util.html_escape(rower.name(**options.except(:rower_link).merge(is_cox: i == 8)))
         n = options[:rower_link].call(rower, n) if options[:rower_link]
         n
       end
