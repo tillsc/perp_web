@@ -18,8 +18,9 @@ module Internal
     def new
       authorize! :new, Start
 
+      @race_type = params[:race_type]
       generator = Services::StartlistGenerator.new(@regatta, @event, {})
-      @races = generator.generate_for(params[:race_type])
+      @races = generator.generate_for(@race_type)
       @remaining_participants = @event.participants - @races.flat_map { |r| r.starts.map(&:participant) }
       if generator.errors.any?
         flash.now[:danger] = "Automatische Startlistengenerierung fehlgeschlagen:<br>#{generator.errors.full_messages.join("<br>")}"
