@@ -50,6 +50,19 @@ class Regatta < ApplicationRecord
   validates :name, presence: true, length: { minimum: 4 }, uniqueness: true
   validates :from_date, presence: true
 
+  def number_of_lanes
+    8
+  end
+
+  def lane_1_on_finish_camera_side?
+    true
+  end
+
+  # Show extra lane especially for finish cam to be able to deal with one more boat
+  def show_extra_lane?
+    true
+  end
+
   def self.current
     find(Parameter.current_regatta_id)
   end

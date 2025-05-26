@@ -114,6 +114,11 @@ class MeasurementsController < ApplicationController
     @measuring_session = @measuring.measurement_set.measuring_session
     @no_main_nav = current_user.is_a?(MeasuringSession)
     @backup_mode = params[:backup].present?
+    lanes = (1..(@regatta.number_of_lanes + (@regatta.show_extra_lane? ? 1 : 0))).to_a
+    lanes = lanes.reverse if @regatta.lane_1_on_finish_camera_side?
+    @lanes = lanes.inject({}) do |h, lane|
+      h.merge(lane => @measuring.participant_for_lane(lane))
+    end
 
     respond_to do |format|
       format.html do

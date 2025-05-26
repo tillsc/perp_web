@@ -19,9 +19,8 @@
                      expected-at="<%= @race.started_at && l(@race.started_at + 6.minutes, format: "%H:%M:%S") %>"
                      id="<%= !@backup_mode ? 'primary' : 'backup' %>"
                      href="<%= URI.join(fc_base_url, "data") %>">
-      <% (1..8).to_a.reverse.each do |lane| %>
+      <% @lanes.each do |lane, participant| %>
         <label>
-          <% participant = @measuring.participant_for_lane(lane) %>
           <%= participant&.number || "<B.#{lane}>" %>
           <%= text_field_tag "participant_times[#{participant&.participant_id || -lane}]",
                              @measurements[participant || -lane],
