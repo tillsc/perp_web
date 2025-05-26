@@ -20,7 +20,7 @@
   <% last_position = position %>
   <% last_time = nil %>
   <% max_measuring_point_number = results.map { |r| r.times.map(&:measuring_point_number).max }.compact.max %>
-  <% results.sort_by { |r| r.time_for(max_measuring_point_number)&.sort_time_str || "ZZZZZZZZZ#{r.lane_number}" }.each do |r| %>
+  <% results.sort_by { |r| r.sort_time_for(max_measuring_point_number) }.each do |r| %>
     <% participant = (@event || race.event).participants.find { |p| p.participant_id == r.participant_id } %>
     <% last_mp_time = r.time_for(max_measuring_point_number)&.time %>
     <div class="result-row">

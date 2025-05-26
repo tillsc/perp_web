@@ -8,10 +8,10 @@ module Internal
 
         @participants = @regatta.participants.joins(:event).preload(Participant::ALL_ROWERS_WITH_CLUBS)
         if params[:event_number_from].present?
-          @participants = @participants.where(Event.arel_table[:number].gteq(params[:event_number_from]))
+          @participants = @participants.merge(Event.from_number(params[:event_number_from]))
         end
         if params[:event_number_to].present?
-          @participants = @participants.where(Event.arel_table[:number].lteq(params[:event_number_to]))
+          @participants = @participants.merge(Event.to_number(params[:event_number_to]))
         end
         @rowers = @participants.inject({}) do |hash, participant|
           Participant::ALL_ROWERS.each do |rel|

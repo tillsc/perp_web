@@ -39,11 +39,7 @@ class Ability
 
       if user.role_admin
         can :manage, User
-        can :manage, Address
-        can :manage, Rower
-        can :manage, Event
-        can :manage, Race
-        can :manage, Result
+        can :manage, [Address, Rower, Event, Race, Start, Result]
         can :manage, MeasuringPoint
         can :manage, :tv_settings
         can :show, [:statistics, :server_status, :reports]

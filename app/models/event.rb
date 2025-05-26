@@ -52,6 +52,14 @@ class Event < ApplicationRecord
     order('Regatta_ID', 'Rennen')
   end
 
+  scope :from_number, -> (number) {
+    where(arel_table[:number].gteq(number))
+  }
+
+  scope :to_number, -> (number) {
+    where(arel_table[:number].lteq(number))
+  }
+
   scope :to_be_weighed, -> {
     where(is_lightweight: true).or(where(has_cox: true))
   }

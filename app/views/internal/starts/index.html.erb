@@ -1,42 +1,66 @@
-<h1>Starts für Rennen <%= link_to(@event.label, internal_event_path(@regatta, @event)) %></h1>
+<h1>
+  <% if @prev_event %>
+    <%= link_to "←", internal_event_starts_url(@regatta, @prev_event, race_type: params[:race_type]) %>
+  <% end %>
+  Starts für Rennen <%= link_to(@event.label, internal_event_path(@regatta, @event)) %>
+  <% if @next_event %>
+    <%= link_to "→", internal_event_starts_url(@regatta, @next_event, race_type: params[:race_type]), class: "float-end" %>
+  <% end %>
+</h1>
 
-<table class="table table-striped">
-  <% @race_types.each do |race_type| %>
-    <thead>
-    <tr>
-      <th colspan="2" class="fs-4">
-        <%= Parameter.race_type_name(race_type) %>
-      </th>
-      <td>
-        <%= link_to t('helpers.actions.edit'), internal_event_race_type_starts_path(@regatta, @event, race_type),
-                    class: 'btn btn-primary' %>
-      </td>
-    </tr>
-    <tr>
-      <th><%= Start.human_attribute_name(:lane_number) %></th>
-      <th><%= Participant.human_attribute_name(:number) %></th>
-      <th><%= Participant.human_attribute_name(:team) %></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% if @starts[race_type] %>
-      <% @starts[race_type].group_by { |s| s.race.name }.each do |race_name, starts| %>
+<dl>
+  <dt>Aktive Teilnehmer:</dt>
+  <dd><%= @event.participants.count %></dd>
+</dl>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <table class="table table-striped">
+      <% @race_types.each do |race_type| %>
+        <thead>
         <tr>
-          <th colspan="3" class="fs-6"><%= race_name %></th>
+          <th colspan="2" class="fs-4">
+            <%= Parameter.race_type_name(race_type) %>
+          </th>
+          <td>
+            <%= link_to t('helpers.actions.edit'), edit_internal_event_start_path(@regatta, @event, race_type),
+                        class: 'btn btn-primary' %>
+          </td>
         </tr>
-        <% starts.sort_by(&:lane_number).each do |s| %>
+        <tr>
+          <th><%= Start.human_attribute_name(:lane_number) %></th>
+          <th><%= Participant.human_attribute_name(:number) %></th>
+          <th><%= Participant.human_attribute_name(:team) %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% if @starts[race_type] %>
+          <% @starts[race_type].group_by { |s| s.race.name }.each do |race_name, starts| %>
+            <tr>
+              <th colspan="3" class="fs-6"><%= race_name %></th>
+            </tr>
+            <% starts.sort_by(&:lane_number).each do |s| %>
+              <tr>
+                <td><%= s.lane_number %></td>
+                <td><%= s.participant&.number %></td>
+                <td><%= s.participant&.team_name(regatta: @regatta) %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        <% else %>
           <tr>
-            <td><%= s.lane_number %></td>
-            <td><%= s.participant&.number %></td>
-            <td><%= s.participant&.team_name(regatta: @regatta) %></td>
+            <td colspan="3">Keine Startlisten vorhanden</td>
           </tr>
         <% end %>
+        </tbody>
       <% end %>
-    <% else %>
-      <tr>
-        <td colspan="3">Keine Startlisten vorhanden</td>
-      </tr>
+    </table>
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%= bootstrap_form_with url: new_internal_event_start_url(@regatta, @event), method: :get do |f| %>
+      <%= f.select :race_type, @race_types.map { |rt| [Parameter.race_type_name(rt), rt] },
+                   label: "Für Lauftyp", selected: params[:race_type] %>
+      <%= f.submit 'Startlisten generieren', class: 'btn btn-secondary d-block w-100' %>
     <% end %>
-    </tbody>
-  <% end %>
-</table>
+  </div>
+</div>

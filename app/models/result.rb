@@ -34,6 +34,15 @@ class Result < ApplicationRecord
       merge(Participant.for_teams(teams))
   }
 
+  scope :by_type_short, -> (type_short) do
+    ts = Array(type_short).dup
+    scope = arel_table['Lauf'].matches("#{ts.pop}%")
+    while ts.any?
+      scope = scope.or(arel_table['Lauf'].matches("#{ts.pop}%"))
+    end
+    where(scope)
+  end
+
   default_scope do
     order('Regatta_ID', 'Rennen', 'Lauf', 'TNr')
   end
@@ -42,6 +51,11 @@ class Result < ApplicationRecord
     mpn = MeasuringPoint.number(measuring_point_or_measuring_point_number)
 
     times.find { |t| t.measuring_point_number == mpn }
+  end
+
+  def sort_time_for(measuring_point_or_measuring_point_number)
+    self.time_for(measuring_point_or_measuring_point_number)&.sort_time_str ||
+      "ZZZZZZZZZ#{self.lane_number || self.participant_id}"
   end
 
   def set_time_for(measuring_point_or_measuring_point_number, time)

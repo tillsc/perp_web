@@ -1,0 +1,3 @@
+<h1>Startliste generieren für Rennen <%= link_to(@event.label, internal_event_path(@regatta, @event)) %> - <%= Parameter.race_type_name(@race_type) %></h1>
+
+<%= render "form" %>
