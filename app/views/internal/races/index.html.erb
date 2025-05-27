@@ -2,6 +2,7 @@
 
 <div class="row">
   <div class="col-md-8 col-lg-9">
+    <race-planner-element from="<%= @regatta.from_date %>" to="<%= @regatta.to_date + 1.day %>"></race-planner-element>
     <%= render 'list', races: @races %>
   </div>
   <div class="col-md-4 col-lg-3">

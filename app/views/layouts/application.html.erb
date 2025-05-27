@@ -13,6 +13,10 @@
 
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <% if controller.class.is_internal? %>
+    <%= stylesheet_link_tag 'internal', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'internal', 'data-turbolinks-track': 'reload' %>
+  <% end %>
   <%= javascript_importmap_tags('app') %>
   <% Array.wrap(@additional_stylesheets).each do |css| %>
     <%= stylesheet_link_tag css, 'data-turbolinks-track': 'reload' %>

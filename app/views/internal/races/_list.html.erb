@@ -12,7 +12,7 @@
   </thead>
   <tbody>
   <% races.each do |race| %>
-    <tr id="<%= race.to_anchor %>">
+    <tr id="<%= race.to_anchor %>" data-label="<%= race.event.number %> - <%= race.number %>" data-start-time="<%= race.planned_for&.iso8601 %>" data-end-time="<%= race.planned_for && (race.planned_for + 8.minutes).iso8601 %>">
       <td><%=  race.event && link_to(race.event.label, internal_event_url(@regatta, race.event, referrer: current_url_with_anchor(race))) || '!' %></td>
       <td><%= link_to race.name, internal_race_path(@regatta, race, referrer: current_url_with_anchor(race)) %></td>
       <td><%= race.planned_for && l(race.planned_for, format: :short) || '-' %></td>
