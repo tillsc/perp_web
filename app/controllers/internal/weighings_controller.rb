@@ -70,7 +70,7 @@ module Internal
     end
 
     def save_weight
-      rower = Rower.find(params[:id])
+      rower = Rower.preload(:weights).find(params[:id])
       weight = rower.weight_for(@date) || rower.weights.build(date: @date)
       if params[:weight].present?
         authorize! :update, weight
