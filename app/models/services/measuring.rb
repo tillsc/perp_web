@@ -115,7 +115,9 @@ module Services
         participant = all_participants.find { |p| p.participant_id == raw_participant_id }
         ftimes, rel_ftimes = calc_times([raw_time.presence].compact, race.started_at)
         [participant&.participant_id || raw_participant_id, ftimes.first, rel_ftimes.first]
-      end
+      end.
+        sort_by { |p_id, time, _rel_time| time.presence || "ZZZZZZZZZZZZ#{p_id}" }.
+        reject { |p_id, time, _rel_time| p_id.to_i < 0 && time.nil? }
 
       save_measurements_hash!(res, publish_result, measurement_set_attributes)
     end
