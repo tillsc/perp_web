@@ -30,7 +30,10 @@ module Internal
       prepare_form
 
       @participant.entry_fee = @participant.event.entry_fee if @participant.event
-      @participant.late_entry = true if @regatta.entry_closed
+      if @regatta.entry_closed
+        @participant.late_entry = true
+        @participant.entry_fee*= 2 if @participant.entry_fee.present?
+      end
     end
 
     def create

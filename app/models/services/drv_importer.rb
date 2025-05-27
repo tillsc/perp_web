@@ -175,7 +175,10 @@ module Services
           participant.entry_fee = participant.team.no_entry_fee? ? 0 : (event.entry_fee.to_f - participant.team.entry_fee_discount.to_f)
 
           participant.withdrawn = false
-          participant.late_entry = !participant.persisted? && @regatta.entry_closed?
+          if !participant.persisted? && @regatta.entry_closed?
+            participant.late_entry = true
+            participant.entry_fee*= 2
+          end
 
           changed = true if participant.changed?
           if changed
