@@ -15,7 +15,13 @@ module Services
         sort_by(&:second).
         to_h
       @measurement_set = MeasurementSet.
-        create_with(measuring_session: force_measuring_session_ownership).
+        create_with(
+          measuring_session: force_measuring_session_ownership,
+          referee_starter_id: race.referee_starter_id,
+          referee_aligner_id: race.referee_aligner_id,
+          referee_umpire_id: race.referee_umpire_id,
+          referee_finish_judge_id: race.referee_finish_judge_id
+          ).
         preload(:measuring_point, measuring_session: [:active_measuring_point, :measuring_point]).
         find_or_initialize_by(
           race: race,
