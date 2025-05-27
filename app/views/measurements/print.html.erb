@@ -41,12 +41,24 @@
     <% end %>
   </table>
 
-  <h2 class="fs-4">Schiedsrichter</h2>
+  <h2 class="fs-4 mt-5">Schiedsrichter</h2>
   <div class="row mb-5">
-    <div class="col-sm-6 col-md-3"><%= Race.human_attribute_name(:referee_starter) %>: <%= @race.referee_starter&.name || "—" %></div>
-    <div class="col-sm-6 col-md-3"><%= Race.human_attribute_name(:referee_aligner) %>: <%= @race.referee_aligner&.name || "—" %></div>
-    <div class="col-sm-6 col-md-3"><%= Race.human_attribute_name(:referee_umpire) %>: <%= @race.referee_umpire&.name || "—" %></div>
-    <div class="col-sm-6 col-md-3"><%= Race.human_attribute_name(:referee_finish_judge) %>: <%= @race.referee_finish_judge&.name || "—" %></div>
+    <div class="col-sm-6 col-md-3">
+      <%= Race.human_attribute_name(:referee_starter) %>:<br>
+      <%= @race.referee_starter&.name || "—" %>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <%= Race.human_attribute_name(:referee_aligner) %>:<br>
+      <%= @race.referee_aligner&.name || "—" %>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <%= Race.human_attribute_name(:referee_umpire) %>:<br>
+      <%= @race.referee_umpire&.name || "—" %>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <%= Race.human_attribute_name(:referee_finish_judge) %>:<br>
+      <%= @race.referee_finish_judge&.name || "—" %>
+    </div>
   </div>
   <br>
   <div class="row mt-5">
