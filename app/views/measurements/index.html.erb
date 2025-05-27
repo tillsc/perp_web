@@ -57,9 +57,11 @@
             </td>
           <% end %>
           <td>
-            <%= link_to(race.result_confirmed? ? '✎' : 'Finalisieren',
-                        finish_measurement_path(@regatta, race_number: race.number, event_number: race.event.number, referrer: current_url.to_s + '#' + race.to_anchor),
-                        class: "btn #{race.result_official? ? 'btn-outline-secondary' : 'btn-primary'}") %>
+            <% if race.started_at.present? %>
+              <%= link_to(race.result_confirmed? ? '✎' : 'Finalisieren',
+                          finish_measurement_path(@regatta, race_number: race.number, event_number: race.event.number, referrer: current_url.to_s + '#' + race.to_anchor),
+                          class: "btn #{race.result_official? ? 'btn-outline-secondary' : 'btn-primary'}") %>
+            <% end %>
           </td>
         </tr>
       <% end %>
