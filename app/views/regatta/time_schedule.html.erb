@@ -56,6 +56,7 @@
       slotMaxTime: '<%= @races.map { |r| r.planned_for && (r.planned_for + 15.minutes).strftime( "%H:%M" )  }.compact.max %>',
       allDaySlot: false,
       nowIndicator: true,
+      height: 'auto',
      // slotEventOverlap: false,
       events: loadEvents(),
       eventShortHeight: 100,
