@@ -83,6 +83,13 @@ class RegattaController < ApplicationController
       preload(:starts, :event)
   end
 
+  def time_schedule
+    @races = Race.
+      for_regatta(@regatta).
+      preload(:event).
+      order(:planned_for)
+  end
+
   def rower
     @rower = Rower.find(params[:rower_id])
 

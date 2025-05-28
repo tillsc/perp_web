@@ -42,6 +42,9 @@
             <li class="nav-item">
               <%= link_to "Geplante Starts", upcoming_path(@regatta), class: "nav-link#{" active" if params[:action] == "upcoming"}" %>
             </li>
+            <li class="nav-item">
+              <%= link_to "Zeitplan", time_schedule_path(@regatta), class: "nav-link#{" active" if params[:action] == "time_schedule"}" %>
+            </li>
             <% if @my_address.present? %>
               <li class="nav-item">
                 <%= link_to "Meine Seite", my_path(@regatta, @my_address.public_private_id), class: "nav-link#{" active" if params[:controller] == "my"}" %>

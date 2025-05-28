@@ -61,6 +61,7 @@ Rails.application.routes.draw do
 
     get '/results' => 'regatta#all_results'
     get '/upcoming' => 'regatta#upcoming'
+    get '/time_schedule' => 'regatta#time_schedule'
     get '/rower/:rower_id' => 'regatta#rower', as: :rower
 
     # Legacy
