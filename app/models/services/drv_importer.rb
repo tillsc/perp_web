@@ -172,12 +172,14 @@ module Services
             h.merge(pos => rower.attributes.merge("what_changed" => rower_changes))
           end
           participant.team_boat_number = team_boat.presence&.to_i
-          participant.entry_fee = participant.team.no_entry_fee? ? 0 : (event.entry_fee.to_f - participant.team.entry_fee_discount.to_f)
 
           participant.withdrawn = false
-          if !participant.persisted? && @regatta.entry_closed?
-            participant.late_entry = true
-            participant.entry_fee*= 2
+          if !participant.persisted?
+            participant.entry_fee = participant.team.no_entry_fee? ? 0 : (event.entry_fee.to_f - participant.team.entry_fee_discount.to_f)
+            if @regatta.entry_closed?
+              participant.late_entry = true
+              participant.entry_fee*= 2
+            end
           end
 
           changed = true if participant.changed?
