@@ -13,7 +13,6 @@ Rails.application.routes.draw do
 
     get '/internal', to: 'internal#index'
     get '/internal/statistics', to: 'internal#statistics'
-    get '/internal/external_measurements', to: 'internal#external_measurements'
     scope '/internal', module: :internal, as: :internal do
       resources :addresses do
         delete '/regatta/referee' => :remove_regatta_referee
@@ -37,6 +36,7 @@ Rails.application.routes.draw do
       resources :teams
       resources :rowers
       resources :measuring_points
+      resources :external_measurements
 
       get '/weighings/:date' => 'weighings#index', as: :weighings
       get '/weighings/:date/event/:id' => 'weighings#event', as: :event_weighings

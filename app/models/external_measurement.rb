@@ -1,6 +1,5 @@
 class ExternalMeasurement < ApplicationRecord
 
-  belongs_to :measuring_point, foreign_key: ['Regatta_ID', 'MesspunktNr']
   alias_attribute :measuring_point_number, 'MesspunktNr'
 
   scope :for_measuring_point, -> (measuring_point) {
