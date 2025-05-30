@@ -122,6 +122,10 @@
             <li><%= link_to(Regatta.model_name.human(count: 2), internal_regattas_url(@regatta)) %></li>
           <% end %>
 
+          <% if can?(:index, ExternalMeasurement) %>
+            <li><%= link_to(ExternalMeasurement.model_name.human(count: 2), internal_external_measurements_url(@regatta)) %></li>
+          <% end %>
+
           <% if can?(:show, User) %>
             <li><%= link_to(User.model_name.human(count: 2), internal_users_url) %></li>
           <% end %>

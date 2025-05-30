@@ -27,4 +27,10 @@ class InternalController < ApplicationController
       unscope(:order).first
   end
 
+  def external_measurements
+    authorize! :index, ExternalMeasurement
+
+    @external_measurements = ExternalMeasurement.all.order('time DESC')
+  end
+
 end
