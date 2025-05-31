@@ -49,7 +49,9 @@
           <% end %>
         <% else %>
           <tr>
-            <td colspan="3">Keine Startlisten vorhanden</td>
+            <td colspan="3" class="<%= 'bg-warning' if @event.races.any? { |r| r.type_short == race_type && r.planned_for&.today? } %>">
+              Keine Startlisten vorhanden
+            </td>
           </tr>
         <% end %>
         </tbody>
