@@ -163,10 +163,12 @@ module Services
           r.save!
         end
         @measurement_set.measurements.each_with_index do |(participant_id, _start_time, _), lane_number|
-          result = race.results.find { |res| res.participant_id == participant_id } ||
-            race.results.build(participant_id: participant_id)
-          result.lane_number = lane_number + 1
-          result.save!
+          if participant_id >= 0
+            result = race.results.find { |res| res.participant_id == participant_id } ||
+              race.results.build(participant_id: participant_id)
+            result.lane_number = lane_number + 1
+            result.save!
+          end
         end
         time = @measurement_set.measurements.first&.second
         race.started_at_time = time && DateTime.parse(time)

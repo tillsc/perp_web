@@ -20,7 +20,7 @@
       </h6>
       <div id="participants" class="item_list">
         <% @measurements.keys.each do |p| %>
-          <%= render 'participant', participant: p, measuring: @measuring, show_cox_weight: is_start %>
+          <%= render 'participant', participant: p, measuring: @measuring, show_cox_weight: is_start, is_start: is_start  %>
         <% end %>
       </div>
     </div>
@@ -47,6 +47,12 @@
 <div id="available_participants" class="item_list">
   <% @measuring.other_active_participants.each do |p| %>
     <%= render 'participant', participant: p, measuring: @measuring, show_cox_weight: is_start %>
+  <% end %>
+  <% if is_start %>
+    <div class="item_list__item">
+      <%= hidden_field_tag 'participants[]', "" %>
+      <em>Leere Bahn</em>
+    </div>
   <% end %>
   <% if @measuring.other_participants.any? %>
     <% if @measuring.other_active_participants.any? %>

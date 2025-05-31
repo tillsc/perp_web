@@ -19,4 +19,9 @@
       <div class="team_name"> <%= participant.team_name(hide_age_category: true, hide_team_boat_number: true) %></div>
     <% end %>
   </div>
+<% elsif local_assigns[:is_start] %>
+  <div class="item_list__item">
+    <%= hidden_field_tag 'participants[]', "" %>
+    <em>Leere Bahn</em>
+  </div>
 <% end %>
