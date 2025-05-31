@@ -10,7 +10,7 @@
 
 <dl>
   <dt>Aktive Teilnehmer:</dt>
-  <dd><%= @event.participants.count %></dd>
+  <dd><%= @event.participants.enabled.count %></dd>
 </dl>
 
 <div class="row">
@@ -60,7 +60,12 @@
     <%= bootstrap_form_with url: new_internal_event_start_url(@regatta, @event), method: :get do |f| %>
       <%= f.select :race_type, @race_types.map { |rt| [Parameter.race_type_name(rt), rt] },
                    label: "Für Lauftyp", selected: params[:race_type] %>
-      <%= f.submit 'Startlisten generieren', class: 'btn btn-secondary d-block w-100' %>
+      <%= f.submit 'Startlisten generieren', class: 'btn btn-primary d-block w-100' %>
     <% end %>
+
+    <hr>
+
+    <%= link_to "Läufe anzeigen", internal_event_path(@regatta, @event, referrer: current_url),
+                class: 'btn btn-secondary d-block w-100' if can?(:show, @event) %>
   </div>
 </div>
