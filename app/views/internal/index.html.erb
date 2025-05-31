@@ -8,7 +8,10 @@
       <div class="card-body">
         <ul>
           <% if can?(:index, MeasurementSet) %>
-            <li><%= link_to MeasurementSet.model_name.human(count: 2), measurements_url(@regatta) %></li>
+            <li>
+              <%= link_to MeasurementSet.model_name.human(count: 2), measurements_url(@regatta) %>
+              (<%= link_to "Nur aktuelle", measurements_url(@regatta, filter: 'nearby') %>)
+            </li>
           <% end %>
           <% if can?(:index, MeasuringSession) %>
             <li><%= link_to MeasuringSession.model_name.human(count: 2), measuring_sessions_url(@regatta) %></li>
