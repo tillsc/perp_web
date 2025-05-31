@@ -45,7 +45,7 @@ class Parameter < ApplicationRecord
     race_type_list = get_value_for('Global', 'LauftypSortierung').to_s
     @sorter||= -> (race) {
       race = race.first if race.is_a?(Array) # For Hashes where the race is the key
-        [race_type_list.index(race&.type_short || '-').to_s.presence || "Z#{race&.type_short}", race&.number_short]
+      [race_type_list.index(race&.type_short || '-').to_s.rjust(2, "0").presence || "Z#{race&.type_short}", race&.number_short]
     }
   end
 
