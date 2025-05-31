@@ -5,7 +5,7 @@
   <h1 class="fs-3">
     <%= @race.full_name(show_event_name_short: true) %>
   </h1>
-  <p>Gestartet: <%= l(@race.started_at) %></p>
+  <p>Gestartet: <%= @race.started_at && l(@race.started_at) %></p>
 
   <table class="table table-striped">
     <thead>
