@@ -23,6 +23,16 @@ module Services
                          all_participants, @regatta.number_of_lanes,
                          @event.results.preload(:times).by_type_short("V"),
                          @event.finish_measuring_point)
+                     when 'K'
+                       final_participant_ids = @event.starts.by_type_short("F").map(&:participant_id)
+                       results = @event.results.preload(:times).
+                         by_type_short("V").
+                         to_a.
+                         reject { |r| final_participant_ids.include?(r.participant_id) }
+                       participants_from_results(
+                         all_participants, @regatta.number_of_lanes,
+                         results,
+                         @event.finish_measuring_point)
                      else
                        @errors.add(:base, "Unsupported race type: #{race_type}")
                        nil
@@ -81,6 +91,7 @@ module Services
         rank = 1
         loop do
           next_participants = data.flat_map { |_race_num, results| Array.wrap(results[rank]).map(&:participant)  }
+          break if next_participants.empty?
           break if ordered_participants.size + next_participants.size > number_of_lanes
           ordered_participants += next_participants
           rank += 1
