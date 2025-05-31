@@ -27,6 +27,17 @@ class MeasurementsController < ApplicationController
     @measuring = Services::Measuring.new(@race, @measuring_point, @measuring_session)
   end
 
+  before_action only: [:finish_cam, :show] do
+    if @race.event.measuring_point_type(@measuring_point) == :finish
+      last_race = @regatta.races.latest.where.not(referee_starter_id: nil).first
+      if last_race&.started_at && last_race.started_at > 20.minutes.ago
+        @measuring.measurement_set.referee_starter_id||= last_race.referee_starter_id
+        @measuring.measurement_set.referee_aligner_id||= last_race.referee_aligner_id
+        @measuring.measurement_set.referee_finish_judge_id||= last_race.referee_finish_judge_id
+      end
+    end
+  end
+
   def index
     authorize! :index, MeasurementSet
 
