@@ -35,7 +35,7 @@
         <td class="text-end"><%= r.participant&.number %></td>
         <td><%= r.participant&.team&.name&.truncate(50) %></td>
         <td class="text-end"><%= result_time&.time %></td>
-        <td class="text-end"><%= result_time.subtract_time(last_time) %></td>
+        <td class="text-end"><%= result_time&.subtract_time(last_time) %></td>
         <% last_time = result_time; position+= 1 %>
       </tr>
     <% end %>
