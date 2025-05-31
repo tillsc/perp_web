@@ -39,8 +39,13 @@
   import timeGrid from 'https://cdn.skypack.dev/@fullcalendar/timegrid@6.1.17';
   import deLocale from 'https://cdn.skypack.dev/@fullcalendar/core/locales/de';
 
-  document.addEventListener('turbolinks:load', function() {
-    const calendar = new Calendar(document.getElementById('calendar'), {
+  let calendar;
+
+  const initCalendar = () => {
+    if (calendar) {
+      calendar.destroy();
+    }
+    calendar = new Calendar(document.getElementById('calendar'), {
       plugins: [timeGrid],
       locale: deLocale,
       themeSystem: 'bootstrap5',
@@ -58,13 +63,13 @@
       allDaySlot: false,
       nowIndicator: true,
       height: 'auto',
-     // slotEventOverlap: false,
+      // slotEventOverlap: false,
       events: loadEvents(),
       eventShortHeight: 100,
       displayEventEnd: false
     });
     calendar.render();
-  });
+  }
 
   const loadEvents = () => {
     return [...document.querySelectorAll('table.table tbody tr')].map(row => {
@@ -75,4 +80,7 @@
       }
     })
   };
+
+  document.addEventListener('turbolinks:load', initCalendar());
+  document.addEventListener('DOMContentLoaded', initCalendar());
 </script>
