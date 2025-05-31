@@ -100,9 +100,10 @@ class TvController < ApplicationController
   def prepare_switcher_urls
     @switcher_urls = {
       blank: '#',
-      start: tv_current_start_url(type_short: 'F,V', testmode: params[:testmode]),
-      race: tv_latest_race_url(type_short: 'F,V', testmode: params[:testmode]),
-      winner: tv_latest_winner_url(type_short: 'F,V', testmode: params[:testmode])
+      start: tv_current_start_url(type_short: 'F,V,A', testmode: params[:testmode]),
+      race: tv_latest_race_url(type_short: 'F,V,A', testmode: params[:testmode]),
+      final_times: tv_latest_race_url(type_short: 'F,V,A', measuring_point_number: 4, testmode: params[:testmode]),
+      winner: tv_latest_winner_url(type_short: 'F,V,A', testmode: params[:testmode])
     }.with_indifferent_access
   end
 
