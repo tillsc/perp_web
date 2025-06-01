@@ -24,13 +24,13 @@ class RegattaController < ApplicationController
   end
 
   def participants
-    @event = @regatta.events.where(regatta_id: params[:regatta_id], rennen: params[:event_id]).
+    @event = @regatta.events.where(rennen: params[:event_id]).
       preload(participants: [:team] + Participant::ALL_ROWERS).
       first
   end
 
   def starts
-    @event = @regatta.events.find([params[:regatta_id], params[:event_id]])
+    @event = Event.find([@regatta, params[:event_id]])
     @starts = @event.starts.
       joins(:race).
       preload(:race, participant: [:team] + Participant::ALL_ROWERS).
@@ -38,9 +38,9 @@ class RegattaController < ApplicationController
   end
 
   def results
-    @event = @regatta.events.
+    @event = Event.
       preload(:starts, :races, participants: [:team] + Participant::ALL_ROWERS).
-      find([params[:regatta_id], params[:event_id]])
+      find([@regatta, params[:event_id]])
 
     @results = @event.results.preload(:times, race: [:referee_umpire, :referee_finish_judge])
 
@@ -57,7 +57,7 @@ class RegattaController < ApplicationController
       end
     end
 
-    @measuring_points = MeasuringPoint.where(regatta_id: params[:regatta_id]).for_event(@event)
+    @measuring_points = MeasuringPoint.where(regatta: @regatta).for_event(@event)
   end
 
   def all_results
