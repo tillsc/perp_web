@@ -29,14 +29,16 @@
       <tbody>
       <% @races.each do |race| %>
         <tr id="<%= race.to_anchor %>">
-          <td><%= race.event.number %> - <%= race.name %></td>
+          <td><%= link_to race.full_name, internal_event_url(@regatta, race.event, referrer: current_url) %></td>
           <td>
             <% if race.started_at %>
               <span class="text-success">
                 <%= race.started_at && l(race.started_at, format: '%a, %H:%M:%S') %>
               </span>
             <% else %>
-              <em><%= race.planned_for && l(race.planned_for, format: '%a, %H:%M:%S') %> (Soll)</em>
+              <%= link_to internal_event_starts_url(@regatta, race.event, referrer: current_url) do %>
+                <em><%= race.planned_for && l(race.planned_for, format: '%a, %H:%M:%S') %> (Soll)</em>
+              <% end %>
             <% end %>
           </td>
           <% @measuring_points.each do |mp| %>

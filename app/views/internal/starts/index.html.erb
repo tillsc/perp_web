@@ -69,5 +69,12 @@
 
     <%= link_to "Läufe anzeigen", internal_event_path(@regatta, @event, referrer: current_url),
                 class: 'btn btn-secondary d-block w-100' if can?(:show, @event) %>
+
+    <% if params[:referrer] %>
+      <hr>
+
+      <%= link_to "Zurück", back_or_default,
+                  class: 'btn btn-secondary d-block my-1' %>
+    <% end %>
   </div>
 </div>
