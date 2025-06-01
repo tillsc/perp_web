@@ -8,6 +8,7 @@
     <%= hidden_field_tag :measuring_session_id, @measuring_session&.to_param %>
   <% end %>
   <%= hidden_field_tag :measuring_point_number, params[:measuring_point_number] %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
 
   <div class="participants_and_times <%= "hide_team_name" unless is_start  %>">
     <div>

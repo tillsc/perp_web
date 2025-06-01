@@ -45,14 +45,14 @@
             <td>
               <% if race.event.measuring_point_type(mp) %>
                 <% ms = @measurement_sets.find { |ms| ms.race == race && ms.measuring_point == mp } %>
-                <% url = measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number) %>
+                <% url = measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number, referrer: current_url_with_anchor(race)) %>
                 <div class="btn-group">
                   <%= link_to ms ? "Edit" : "Neu", url, class: "btn #{ms ? (!ms.correct? ? 'btn-warning' : 'btn-success') : 'btn-secondary'}" %>
                   <% if  mp.finish_cam_base_url.present? %>
-                    <%= link_to("🎥", finish_cam_measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number, referrer: current_url.to_s + '#' + race.to_anchor), class: 'btn btn-outline-primary') %>
+                    <%= link_to("🎥", finish_cam_measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number, referrer: current_url_with_anchor(race)), class: 'btn btn-outline-primary') %>
                   <% end %>
                   <% if  mp.backup_finish_cam_base_url.present? %>
-                    <%= link_to("🎥", finish_cam_measurement_path(@regatta, backup: true, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number, referrer: current_url.to_s + '#' + race.to_anchor), class: 'btn btn-outline-primary') %>
+                    <%= link_to("🎥", finish_cam_measurement_path(@regatta, backup: true, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number, referrer: current_url_with_anchor(race)), class: 'btn btn-outline-primary') %>
                   <% end %>
                 </div>
               <% end %>
@@ -61,7 +61,7 @@
           <td>
             <% if race.started_at.present? %>
               <%= link_to(race.result_confirmed? ? '✎' : 'Finalisieren',
-                          finish_measurement_path(@regatta, race_number: race.number, event_number: race.event.number, referrer: current_url.to_s + '#' + race.to_anchor),
+                          finish_measurement_path(@regatta, race_number: race.number, event_number: race.event.number, referrer: current_url_with_anchor(race)),
                           class: "btn #{race.result_official? ? 'btn-outline-secondary' : 'btn-primary'}") %>
             <% end %>
           </td>
