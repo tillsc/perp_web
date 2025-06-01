@@ -30,6 +30,14 @@ class Participant < ApplicationRecord
     where(withdrawn: [nil, false])
   }
 
+  scope :withdrawn, -> {
+    where.not(withdrawn: [nil, false])
+  }
+
+  scope :active, -> {
+    where(disqualified: [nil, '']).where(withdrawn: [nil, false])
+  }
+
   scope :for_regatta, -> (regatta) do
     where(regatta_id: regatta.id)
   end

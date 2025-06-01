@@ -134,6 +134,7 @@ class MeasurementsController < ApplicationController
     respond_to do |format|
       format.html do
         @page_container_suffix = "-fluid"
+        @withdrawn_participants = @race.event.participants.withdrawn.preload(:team)
         render :finish_cam
       end
     end

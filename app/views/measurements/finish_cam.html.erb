@@ -44,24 +44,36 @@
 
 <% end %>
 
+<% if @withdrawn_participants.present? %>
+  <div class="m-3">
+    <h2>Abmeldungen</h2>
+    <div class="d-grid gap-2" style="grid-template-columns: auto auto 1fr;">
+      <% @withdrawn_participants.each do |participant| %>
+        <div><%= participant.number %></div>
+        <div><%= participant.team&.country %></div>
+        <div><%= participant.team_name(hide_age_category: true) %></div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
 
 <style>
-  html, body {
-    height: 100%;
-  }
-  .main,  .finish_cam_form {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  .finish_cam_form {
-    margin-bottom: 5rem;
-  }
-  .finish_cam_container {
-    flex: 1 1 auto;
-    min-height: 300px;
-    position: relative;
-  }
+    html, body {
+        height: 100%;
+    }
+    .main,  .finish_cam_form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .finish_cam_form {
+        margin-bottom: 5rem;
+    }
+    .finish_cam_container {
+        flex: 1 1 auto;
+        min-height: 300px;
+        position: relative;
+    }
 </style>
 
 <script>
