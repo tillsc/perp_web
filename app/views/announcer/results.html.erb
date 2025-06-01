@@ -6,7 +6,7 @@
   </div>
   <div class="col-3">
     <% if @current_race && @current_race.full_name != @race.full_name %>
-      <%= link_to "Aktuell #{@current_race.full_name}", announcer_results_path(@regatta, @current_race.event.number, @current_race.number, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-primary d-block' %>
+      <%= link_to "Aktuell #{@current_race.full_name}", announcer_results_path(@regatta, @current_race.event.number, @current_race.number, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-primary d-block current-race-button' %>
     <% end %>
   </div>
   <div class="col-3">
@@ -67,7 +67,10 @@
         b = document.querySelector('.prev-button')
       } else if (event.key == "ArrowRight") {
         b = document.querySelector('.next-button')
-      }
+      } else if (event.key == "Home" || event.key == "F1") {
+      b = document.querySelector('.current-race-button')
+    }
+
       if (b) {
         b.click();
         event.preventDefault();
