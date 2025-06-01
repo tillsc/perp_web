@@ -114,7 +114,10 @@ if (times) {
   }
 
   function deltaMs(event) {
-    if (event.altKey) {
+    if (event.metaKey) {
+      return 10000;
+    }
+    else if (event.altKey) {
       return 1000;
     }
     else if (event.shiftKey) {
@@ -132,6 +135,16 @@ if (times) {
 
   function clickMinus(event) {
     increaseTime(event.target.closest('.item_list__item'), -deltaMs(event));
+    event.cancelDefault;
+  }
+
+  function clickRawEdit(event) {
+    const timeItem = event.target.closest('.item_list__item');
+    const rawTime = timeItem?.querySelector('.time')?.innerText;
+    const newTime = window.prompt("Zeit ändern", rawTime || '');
+    if (newTime) {
+      setTime(timeItem, moment(newTime, 'HH:mm:ss.SS'));
+    }
     event.cancelDefault;
   }
 
@@ -190,6 +203,12 @@ if (times) {
         stopTime(getTime(t), t);
       });
       relativeElement.insertAdjacentElement("beforebegin", duplicateBtn);
+
+      var rawEditBtn = document.createElement('a');
+      rawEditBtn.classList.add('btn', 'btn-secondary', 'btn-sm');
+      rawEditBtn.innerHTML = '✎';
+      rawEditBtn.addEventListener("click", clickRawEdit);
+      relativeElement.insertAdjacentElement("beforebegin", rawEditBtn);
     }
 
     var delBtn = document.createElement('a');
