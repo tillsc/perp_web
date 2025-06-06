@@ -42,7 +42,15 @@ namespace :export do
 
         key = [session["session_name"], idx]
 
-        h2.merge(key => (h2[key] || []) + [[x, y_center, height]])
+        data = {
+          key => (h2[key] || []) + [[x, y_center, height]]
+        }
+        if idx > 0
+          key2 = [session["session_name"], idx - 1]
+          data[key2] = h2[key2] || [] # Add image before this image as potentially empty image
+        end
+
+        h2.merge(data)
       end
     end.each do |(session_name, idx), xy_coords|
       img_url = "#{mp.finish_cam_base_url}/data/#{session_name}/img#{idx}.webp"
@@ -59,7 +67,7 @@ namespace :export do
       end
 
       # YOLOv8 DETECT format: class_id x_center y_center width height (all normalized)
-      box_size = 0.01 # 1% box around the point
+      box_size = 0.05 # 5% box around the point
       label_lines = xy_coords.map do |x, y_center, height|
         "0 #{x.round(6)} #{y_center.round(6)} #{box_size} #{height.round(6)}"
       end
