@@ -1,7 +1,7 @@
 Rails.application.configure do
   default_delivery_method = Rails.env.production? ? :sendmail : :test
 
-  config.action_mailer.delivery_method = (ENV.fetch("MAIL_DELIVERY_METHOD").presence || default_delivery_method).to_sym
+  config.action_mailer.delivery_method = (ENV["MAIL_DELIVERY_METHOD"].presence || default_delivery_method).to_sym
 
   if config.action_mailer.delivery_method == :smtp
     config.action_mailer.smtp_settings = {
