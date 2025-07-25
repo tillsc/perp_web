@@ -116,12 +116,6 @@ Voraussetzung ist eine bestehende MySQL-Datenbank.
 4. **Datenbank vorbereiten:**
 
     ```bash
-    bin/rails db:prepare
-    ```
-
-    Alternativ manuell:
-
-    ```bash
     bin/rails db:create
     bin/rails db:migrate
     bin/rails db:seed
