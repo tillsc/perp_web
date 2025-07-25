@@ -37,7 +37,9 @@ Rails.application.configure do
 
   # Log to STDOUT with the current request id as a default log tag.
   config.log_tags = [ :request_id ]
-  # config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
+  if ENV["LOG_TO_STDOUT"] == "true"
+    config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
+  end
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
@@ -54,28 +56,9 @@ Rails.application.configure do
   # Replace the default in-process and non-durable queuing backend for Active Job.
   # config.active_job.queue_adapter = :resque
 
-  config.action_mailer.perform_caching = false
-
-  config.action_mailer.delivery_method = ENV.fetch("MAIL_DELIVERY_METHOD", "sendmail").to_sym
-
-  if config.action_mailer.delivery_method == :smtp
-    config.action_mailer.smtp_settings = {
-      address: ENV.fetch("MAIL_HOST", "localhost"),
-      port: ENV.fetch("MAIL_PORT", 25),
-      user_name: ENV["MAIL_USER"],
-      password: ENV["MAIL_PASSWORD"],
-      authentication: :plain,
-      enable_starttls_auto: true,
-      domain: ENV["MAIL_DOMAIN"]
-    }
-  end
-
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-
-  # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: 'www.perp.de' }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {
