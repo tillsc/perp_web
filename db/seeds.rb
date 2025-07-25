@@ -28,7 +28,13 @@ if User.all.none?
     puts "[WARN] No INITIAL_ADMIN_PASSWORD found. Generated random password: #{pw.inspect}. Please change the password as soon as possible."
     pw
   end
-  u = User.create!(email: admin_email, password: admin_password, password_confirmation: admin_password, roles: ['admin'])
-  u.confirm
+  u = User.new(
+    email: admin_email,
+    password: admin_password,
+    password_confirmation: admin_password,
+    roles: ['admin']
+  )
+  u.skip_confirmation!
+  u.save!
   puts "User #{u.email.inspect} created."
 end
