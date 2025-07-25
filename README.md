@@ -7,17 +7,19 @@ Das System basiert auf **Ruby on Rails 8** und funktioniert komplett webbasiert 
 **Projekt-Repository:**  
 https://github.com/tillsc/perp_web
 
+---
+
 ## Hauptfunktionen
 
 - Veranstaltungs- und Rennverwaltung
 - Meldesystem und Teilnehmerlisten
 - Wiederholbarer Import von Meldungen aus dem DRV Meldeportal
-- Integration mit einer softwarebasierten Ziel-Splitkamera:  
-  [https://github.com/tillsc/perp_finish_cam](https://github.com/tillsc/perp_finish_cam)
+- Integration mit einer softwarebasierten Ziel-Splitkamera: [https://github.com/tillsc/perp_finish_cam](https://github.com/tillsc/perp_finish_cam)
 - Zwischenzeitmessung mit handelsüblichen Bluetooth-Fernauslösern
 - Regattainformationsdienst im Browser
 - Keine native App notwendig
 
+---
 
 ## Zeitmessung ohne Spezialhardware
 
@@ -27,9 +29,9 @@ Ein zentrales Ziel von perp.de ist es, auch komplexe Regatten mit günstiger Sta
 
 Diese Auslöser koppeln sich via Bluetooth mit einem Smartphone und senden einfache Tastendrücke an die Web-App.
 
-Die Zielbildkamera wird als separates Softwaremodul betrieben und ist frei verfügbar:
-https://github.com/tillsc/perp_finish_cam
+Die Zielbildkamera wird als separates Softwaremodul betrieben und ist frei verfügbar: https://github.com/tillsc/perp_finish_cam
 
+---
 
 ## Lizenz
 
@@ -38,67 +40,101 @@ Dieses Projekt ist unter der **[PolyForm Noncommercial License 1.0.0](https://po
 **Was bedeutet das?**
 
 - Die Nutzung ist **kostenfrei**, solange sie **nicht kommerziell** erfolgt.
-- Jegliche kommerzielle Nutzung (z.B. im Rahmen einer kostenpflichtigen Dienstleistung oder Integration in ein kommerzielles Produkt) ist **nicht gestattet**, es sei denn, es wird eine gesonderte Lizenz mit dem Urheber vereinbart.
+- Jegliche kommerzielle Nutzung (z. B. im Rahmen einer kostenpflichtigen Dienstleistung oder Integration in ein kommerzielles Produkt) ist **nicht gestattet**, es sei denn, es wird eine gesonderte Lizenz mit dem Urheber vereinbart.
 
 **Copyright © Till Schulte-Coerne**
 
+---
 
-## Systemanforderungen
+## Nutzung per Docker
+
+Für den produktiven Einsatz steht ein fertiges Docker-Image bereit. Es wird bei jeder neuen Version automatisch über GitHub veröffentlicht.
+
+Voraussetzung ist eine bestehende MySQL-Datenbank.
+
+1. **.env-Datei anpassen:**  
+   Erstelle irgendwo eine `.env`-Datei mit deinen individuellen Einstellungen (z.B. Datenbank-Zugangsdaten).
+
+   Die benötigten Umgebungsvariablen können online eingesehen und kopiert werden unter: https://github.com/tillsc/perp_web/blob/main/.env.example
+
+2. **Anwendung mit Docker starten:**  
+   Starte die App mit folgendem Befehl:
+
+   ```bash
+   docker run --rm -p 3000:3000 \
+     --env-file .env \
+     ghcr.io/tillsc/perp_web:latest
+   ```
+
+   Alternativ kannst du die Umgebungsvariablen auch direkt in der Kommandozeile übergeben, ohne eine `.env`-Datei zu verwenden. Zum Beispiel:
+
+   ```bash
+   docker run --rm -p 3000:3000 \
+     -e SECRET_KEY_BASE=... \
+     -e PERP_DATABASE_HOST=... \
+     ghcr.io/tillsc/perp_web:latest
+   ```
+
+3. **Zugriff auf die Anwendung:**  
+   Nach dem Start erreichst du die Anwendung unter http://localhost:3000 in deinem Browser.
+
+---
+
+## Lokale Entwicklung
+
+### Systemanforderungen
 
 - Ruby 3.2+
 - MySQL (Standard) oder PostgreSQL (möglich, aber nicht getestet)
 - bundler
 
+### Installation
 
-## Installation (lokale Entwicklung)
+1. **Repository klonen:**
 
-### 1. Repository klonen
+    ```bash
+    git clone https://github.com/tillsc/perp_web.git
+    cd perp_web
+    ```
 
-```bash
-git clone https://github.com/tillsc/perp_web.git
-cd perp_web
-```
+2. **Abhängigkeiten installieren:**
 
-### 2. Abhängigkeiten installieren
+    ```bash
+    bundle install
+    ```
+   
+3. **Umgebungsvariablen setzen:**
 
-```bash
-bundle install
-```
+    ```bash
+    cp .env.example .env
+    ```
 
-### 3. Konfiguration einrichten
+    Passe die `.env`-Datei an deine lokale Konfiguration an.
 
-```bash
-cp config/database.yml.template config/database.yml
-```
+4. **Datenbank vorbereiten:**
 
-### 4. Datenbank vorbereiten
+    ```bash
+    bin/rails db:prepare
+    ```
 
-```bash
-bin/rails db:setup
-```
+    Alternativ manuell:
 
-Alternativ manuell:
+    ```bash
+    bin/rails db:create
+    bin/rails db:migrate
+    bin/rails db:seed
+    ```
 
-```bash
-bin/rails db:create
-bin/rails db:migrate
-bin/rails db:seed
-```
+5. **Anwendung starten:**
 
-### 5. Anwendung starten
+    ```bash
+    bin/dev
+    ```
 
-```bash
-bin/dev
-```
+    Die App ist dann erreichbar unter:  
+    http://localhost:3000
 
-Die App ist dann erreichbar unter:
-http://localhost:3000
-
-
-## Docker (optional, empfohlen für Deployment)
-
-Ein Docker-Setup befindet sich in Vorbereitung und wird bald ergänzt. Ziel ist ein standardisiertes Setup für Hosting und Betrieb auf günstigen Cloud-VMs oder bare-metal-Rechnern vor Ort.
-
+---
 
 ## Support & Beiträge
 

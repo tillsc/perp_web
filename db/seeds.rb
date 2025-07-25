@@ -21,8 +21,14 @@
 end
 
 if User.all.none?
-  pw = SecureRandom.hex(16)
-  u = User.create!(email: "admin@localhost", password: pw, password_confirmation: pw, roles: ['admin'])
+  puts "No users present in the database. Creating initial admin user."
+  admin_email = ENV.fetch('INITIAL_ADMIN_EMAIL', "admin@localhost")
+  admin_password = ENV.fetch('INITIAL_ADMIN_PASSWORD') do
+    pw = SecureRandom.hex(16)
+    puts "[WARN] No INITIAL_ADMIN_PASSWORD found. Generated random password: #{pw.inspect}. Please change the password as soon as possible."
+    pw
+  end
+  u = User.create!(email: admin_email, password: admin_password, password_confirmation: admin_password, roles: ['admin'])
   u.confirm
-  puts "User #{u.email.inspect} created with password #{pw.inspect}. Please change the password as soon as possible."
+  puts "User #{u.email.inspect} created."
 end
