@@ -78,6 +78,8 @@ Voraussetzung ist eine bestehende MySQL-Datenbank.
 3. **Zugriff auf die Anwendung:**  
    Nach dem Start erreichst du die Anwendung unter http://localhost:3000 in deinem Browser.
 
+   Der Admin-Bereich ist unter http://localhost:3000/internal erreichbar.
+
 ---
 
 ## Lokale Entwicklung
@@ -133,6 +135,8 @@ Voraussetzung ist eine bestehende MySQL-Datenbank.
 
     Die App ist dann erreichbar unter:  
     http://localhost:3000
+
+    Der Admin-Bereich ist unter http://localhost:3000/internal erreichbar.
 
 ---
 
