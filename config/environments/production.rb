@@ -56,7 +56,19 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.delivery_method = ENV.fetch("MAIL_DELIVERY_METHOD", "sendmail").to_sym
+
+  if config.action_mailer.delivery_method == :smtp
+    config.action_mailer.smtp_settings = {
+      address: ENV.fetch("MAIL_HOST", "localhost"),
+      port: ENV.fetch("MAIL_PORT", 25),
+      user_name: ENV["MAIL_USER"],
+      password: ENV["MAIL_PASSWORD"],
+      authentication: :plain,
+      enable_starttls_auto: true,
+      domain: ENV["MAIL_DOMAIN"]
+    }
+  end
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
