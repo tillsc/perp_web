@@ -50,7 +50,7 @@
     <%= render 'participant', participant: p, measuring: @measuring, show_cox_weight: is_start %>
   <% end %>
   <% if is_start %>
-    <div class="item_list__item">
+    <div class="item_list__item empty-lane">
       <%= hidden_field_tag 'participants[]', "" %>
       <em>Leere Bahn</em>
     </div>

@@ -31,13 +31,16 @@ var drake = dragula([selected, selectable], {
   }
 });
 
-drake.on('drag', function(el, source) {
+drake.on('drag', function(_el, _source) {
   scrollable = false;
 });
-drake.on('drop', function(el, source) {
+drake.on('drop', function(el, target, _source, _sibling) {
   scrollable = true;
+  if (el.classList.contains('empty-lane') && target?.id == 'available_participants') {
+    el.remove();
+  }
 });
-drake.on('dragend', function(el, source) {
+drake.on('dragend', function(_el, _source) {
   scrollable = true;
 });
 
@@ -50,6 +53,9 @@ drake.on('dragend', function(el, source) {
   quickButton.classList.add('btn', 'btn-primary', 'quick-button', 'px-5');
   quickButton.innerText = '⤒';
   quickButton.addEventListener('click', (e) => {
+    if (item.classList.contains('empty-lane')) {
+      item = item.cloneNode(true);
+    }
     selected.append(item);
     e.preventDefault();
   });
