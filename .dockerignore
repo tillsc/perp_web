@@ -52,3 +52,6 @@
 
 /public/data
 /public/js
+
+# Postgres Setups have problems with missmatching schema.rb files
+db/schema.rb
