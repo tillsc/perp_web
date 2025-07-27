@@ -26,6 +26,10 @@ module Internal
             new_mp.number = mp.number # dup resets this
           end
         end
+      else
+        (0..4).each do |mp_num|
+          @regatta.measuring_points.build(number: mp_num, position: mp_num * 500)
+        end
       end
 
       Regatta.transaction do
@@ -74,6 +78,7 @@ module Internal
     def destroy
       regatta = Regatta.find(params[:id])
       authorize! :destroy, regatta
+      regatta.strict_loading!(false)
 
       if regatta.destroy
         flash[:info] = helpers.success_message_for(:destroy, regatta)
