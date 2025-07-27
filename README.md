@@ -82,6 +82,21 @@ Voraussetzung ist eine bestehende MySQL- oder Postgres-Datenbank. Diese kann z.�
 
 ---
 
+## Deployment auf Render.com
+
+[![Auf Render.com deployen](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/tillsc/perp_web)
+
+Mit einem Klick auf den Button wird ein neuer Web Service auf [Render.com](https://render.com/) eingerichtet. Render.com erlaubt es, perp ohne eigene Server-Infrastruktur zu betreiben. Für Tests eignet sich der kostenlose Plan:
+
+- Eine kleine PostgreSQL-Datenbank (256 MB Speicher) ist enthalten.
+- Dienste im Free-Tarif schlafen bei Inaktivität ein und starten beim nächsten Aufruf neu.
+- Datenbanken können nach ca. 90 Tagen Inaktivität gelöscht werden.
+- Die Umgebung ist nicht für dauerhaften Betrieb gedacht, aber ausreichend zum Ausprobieren.
+
+Eine Migration in eine kostenpflichtige Umgebung ist später möglich, ohne dass Daten verloren gehen – bestehende Daten bleiben dabei erhalten.
+
+---
+
 ## Lokale Entwicklung
 
 ### Systemanforderungen
