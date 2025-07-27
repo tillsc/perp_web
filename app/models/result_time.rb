@@ -12,12 +12,17 @@ class ResultTime < ApplicationRecord
 
   belongs_to :participant, foreign_key: ['Regatta_ID', 'Rennen', 'TNr']
 
+  alias_attribute :regatta_id, 'Regatta_ID'
+  alias_attribute :event_number, 'Rennen'
   alias_attribute :race_number, 'Lauf'
   alias_attribute :measuring_point_number, 'MesspunktNr'
   alias_attribute :time, 'Zeit'
 
   default_scope do
-    order('Regatta_ID', 'Rennen', 'Lauf', 'MesspunktNr', 'Zeit')
+    order(arel_table[:regatta_id].asc, arel_table[:event_number].asc,
+          arel_table[:race_number].asc, arel_table[:measuring_point_number].asc,
+          arel_table[:time].asc)
+
   end
 
   def subtract_time(t)

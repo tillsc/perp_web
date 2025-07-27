@@ -3,6 +3,10 @@ class Race < ApplicationRecord
   self.table_name = 'laeufe'
   self.primary_key = 'Regatta_ID', 'Rennen', 'Lauf'
 
+  include HasRaceNumber
+  self.race_number_field = :number
+
+  alias_attribute :regatta_id, 'Regatta_ID'
   alias_attribute :number, 'Lauf'
   alias_attribute :event_number, 'Rennen'
   alias_attribute :started_at_time, 'IstStartZeit'
@@ -38,14 +42,35 @@ class Race < ApplicationRecord
   has_many :measurement_sets, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf'],
            inverse_of: :race, dependent: :restrict_with_error
 
+  scope :order_by_started_at, -> (asc: true) do
+    order(Arel.sql(%Q(DATE("SollStartZeit") #{asc ? "ASC" : "DESC"})),
+          arel_table[:started_at_time].send(asc ? :asc : :desc))
+  end
+
+  scope :order_by_planned_for, -> (asc: true) do
+    order(arel_table[:planned_for].send(asc ? :asc : :desc))
+  end
+
   scope :latest, -> do
-    where.not('IstStartZeit' => nil).order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
+    where.not(arel_table[:started_at_time].eq(nil)).
+      order_by_started_at(asc: false)
   end
 
   scope :upcoming, -> do
-    where(arel_table['SollStartZeit'].gteq(1.hour.ago)).where('IstStartZeit' => nil).
-      where("(SELECT COUNT(*) FROM #{Participant.table_name} m WHERE m.Regatta_ID = #{Race.table_name}.Regatta_ID AND m.Rennen = #{Race.table_name}.Rennen) > 1 OR (SELECT COUNT(*) FROM #{Start.table_name} s WHERE s.Regatta_ID = #{Race.table_name}.Regatta_ID AND s.Rennen = #{Race.table_name}.Rennen) > 0").
-      order('SollStartZeit')
+    participants = Participant.arel_table.
+      project(Arel.star.count).
+      where(Participant.arel_table[:Regatta_ID].eq(arel_table[:Regatta_ID]).
+        and(Participant.arel_table[:Rennen].eq(arel_table[:Rennen])))
+
+    starts = Start.arel_table.
+      project(Arel.star.count).
+      where(Start.arel_table[:Regatta_ID].eq(arel_table[:Regatta_ID]).
+        and(Start.arel_table[:Rennen].eq(arel_table[:Rennen])))
+
+    where(arel_table[:planned_for].gteq(1.hour.ago)).
+      where(arel_table[:started_at_time].eq(nil)).
+      where(Arel::Nodes::SqlLiteral.new("(#{participants.to_sql})").gt(1).or(Arel::Nodes::SqlLiteral.new("(#{starts.to_sql})").gt(0))).
+      order_by_planned_for
   end
 
   scope :for_regatta, -> (regatta) do
@@ -57,69 +82,57 @@ class Race < ApplicationRecord
   end
 
   scope :with_finish_times, -> do
-    joins(:event, results: :times).
-      where('zeiten.MesspunktNr = rennen.ZielMesspunktNr AND zeiten.Zeit IS NOT NULL')
+    with_times_at(Event.arel_table[:finish_measuring_point_number])
   end
 
   scope :with_times_at, -> (measuring_point_number) do
     joins(:event, results: :times).
-      where('zeiten.MesspunktNr = ? AND zeiten.Zeit IS NOT NULL', measuring_point_number)
+      where(ResultTime.arel_table[:measuring_point_number].eq(measuring_point_number)).
+      where(ResultTime.arel_table[:time].not_eq(:nil))
   end
 
   scope :with_starts, -> do
     with_existing(:starts)
   end
 
-  scope :by_type_short, -> (type_short) do
-    ts = Array(type_short).dup
-    scope = arel_table['Lauf'].matches("#{ts.pop}%")
-    while ts.any?
-      scope = scope.or(arel_table['Lauf'].matches("#{ts.pop}%"))
-    end
-    where(scope)
-  end
-
   scope :now, -> do
-    where(arel_table['IstStartZeit'].between((12.minutes.ago)..(Time.current.getlocal))).
-        where('DATE(SollStartZeit) = ?', Date.today).
-        order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
+    stated_minutes_ago(12)
   end
 
   scope :nearby, -> do
-    where(arel_table['SollStartZeit'].between((20.minutes.ago)..(20.minutes.since)))
+    where(arel_table[:planned_for].between((20.minutes.ago)..(20.minutes.since)))
   end
 
   scope :stated_minutes_ago, -> (minutes) do
-    where(arel_table['IstStartZeit'].between((minutes.minutes.ago)..(Time.current.getlocal))).
-        where('DATE(SollStartZeit) = ?', Date.today).
-        order('DATE(SollStartZeit) DESC, IstStartZeit DESC')
+    where(arel_table[:started_at_time].between((minutes.minutes.ago)..(Time.current.getlocal))).
+      where(planned_for: Date.today.all_day).
+      order_by_started_at
   end
 
   scope :planned_for_today, -> do
     planned_for(Date.today)
   end
 
-  scope :planned_for, -> (date) do
-    where('DATE(SollStartZeit) = ?', date.to_date)
+  scope :planned_for, ->(date) do
+    where(planned_for: date.all_day)
   end
 
   scope :before_race, -> (race) do
-    where('SollStartZeit < ?', race.planned_for).
-      order('SollStartZeit DESC')
+    where(arel_table[:planned_for].lt(race.planned_for)).
+      order_by_planned_for(asc: false)
   end
 
   scope :following_race, -> (race) do
-    where('SollStartZeit > ?', race.planned_for).
-      order('SollStartZeit')
+    where(arel_table[:planned_for].gt(race.planned_for)).
+      order_by_planned_for
   end
 
-  #
   scope :current_start, -> do
-    where(arel_table['IstStartZeit'].eq(nil).or(
-      arel_table['IstStartZeit'].gt(2.minutes.ago)
+    where(arel_table[:started_at_time].eq(nil).or(
+      arel_table[:started_at_time].gt(2.minutes.ago)
     )).
-      where('DATE(SollStartZeit) = ?', Date.today).
-      order('SollStartZeit, IstStartZeit DESC')
+      where(planned_for: Date.today.all_day).
+      order(arel_table[:planned_for].asc, arel_table[:started_at_time].desc)
   end
 
   def name

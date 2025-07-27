@@ -4,8 +4,13 @@ class CreateImports < ActiveRecord::Migration[8.0]
       t.integer :Regatta_ID
       t.string :source
       t.text :metadata
-      t.longtext :xml
-      t.longtext :results
+      if ActiveRecord::Base.connection.adapter_name.downcase.include?("mysql")
+        t.longtext :xml
+        t.longtext :results
+      else
+        t.text :xml
+        t.text :results
+      end
 
       t.datetime :imported_at
 

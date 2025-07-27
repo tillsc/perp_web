@@ -50,7 +50,7 @@ Dieses Projekt ist unter der **[PolyForm Noncommercial License 1.0.0](https://po
 
 Für den produktiven Einsatz steht ein fertiges Docker-Image bereit. Es wird bei jeder neuen Version automatisch über GitHub veröffentlicht.
 
-Voraussetzung ist eine bestehende MySQL-Datenbank.
+Voraussetzung ist eine bestehende MySQL- oder Postgres-Datenbank. Diese kann z. B. über Railway, Render.com oder eine eigene Instanz bereitgestellt werden.
 
 1. **.env-Datei anpassen:**  
    Erstelle irgendwo eine `.env`-Datei mit deinen individuellen Einstellungen (z.B. Datenbank-Zugangsdaten).
@@ -87,7 +87,7 @@ Voraussetzung ist eine bestehende MySQL-Datenbank.
 ### Systemanforderungen
 
 - Ruby 3.2+
-- MySQL (Standard) oder PostgreSQL (möglich, aber nicht getestet)
+- MySQL (Standard, empfohlen) oder Postgres (kompatibel)
 - bundler
 
 ### Installation
@@ -99,13 +99,27 @@ Voraussetzung ist eine bestehende MySQL-Datenbank.
     cd perp_web
     ```
 
-2. **Abhängigkeiten installieren:**
+2. **Nur benötigte Datenbank-Treiber aktivieren (optional):**
+
+    Du kannst optional den jeweils nicht benötigten Treiber abwählen, um den Installationsumfang zu reduzieren:
+
+    ```bash
+    # Für MySQL (Standard)
+    bundle config set --local without 'postgres'
+   
+    # Für PostgreSQL
+    bundle config set --local without 'mysql'
+    ```
+
+3. **Abhängigkeiten installieren:**
 
     ```bash
     bundle install
     ```
+
+    (Falls bundler noch nicht installiert ist: `gem install bundler`)
    
-3. **Umgebungsvariablen setzen:**
+4. **Umgebungsvariablen setzen:**
 
     ```bash
     cp .env.example .env
@@ -113,7 +127,7 @@ Voraussetzung ist eine bestehende MySQL-Datenbank.
 
     Passe die `.env`-Datei an deine lokale Konfiguration an.
 
-4. **Datenbank vorbereiten:**
+5. **Datenbank vorbereiten:**
 
     ```bash
     bin/rails db:create
@@ -121,7 +135,9 @@ Voraussetzung ist eine bestehende MySQL-Datenbank.
     bin/rails db:seed
     ```
 
-5. **Anwendung starten:**
+    Der erste Admin-Benutzer wird automatisch angelegt. Falls kein Passwort über INITIAL_ADMIN_PASSWORD gesetzt ist, wird ein zufälliges Passwort in der Konsole ausgegeben.
+
+6. **Anwendung starten:**
 
     ```bash
     bin/dev

@@ -71,8 +71,11 @@ class Address < ApplicationRecord
   end
 
   scope :order_existing_first, -> (regatta) do
-    order(Arel.sql('EXISTS (SELECT 1 FROM teams t WHERE t.obmann_id = addressen.id AND t.regatta_id = :regatta_id) DESC', regatta_id: regatta.id)).
-      order_by_name
+    team_exists_assoc = exists_association(:teams) do |join_condition, table|
+      join_condition.and(table[:regatta_id].eq(regatta.id))
+    end
+
+    order(Arel.sql(team_exists_assoc.to_sql).desc).order_by_name
   end
 
   def name(first_name_last_name: false)

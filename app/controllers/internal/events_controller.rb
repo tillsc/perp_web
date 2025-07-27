@@ -17,8 +17,8 @@ module Internal
     end
 
     def new
-      copy_event =  @regatta.events.find_by(number: params[:copy_event_number])  if params[:copy_event_number].present?
-      copy_or_last_event = copy_event || @regatta.events.last
+      copy_event = @regatta.events.find_by(number: params[:copy_event_number]) if params[:copy_event_number].present?
+      copy_or_last_event = copy_event || Event.for_regatta(@regatta).last
       @event = @regatta.events.new(event_params(
                                      number: @regatta.events.maximum(:number).to_i + 1,
 

@@ -4,6 +4,7 @@ class Regatta < ApplicationRecord
 
   AGE_CATEGORIES = [:drv, :fisa_masters]
 
+  alias_attribute :id, 'ID'
   alias_attribute :name, 'DefName'
   alias_attribute :year, 'Jahr'
   alias_attribute :from_date, 'StartDatum'

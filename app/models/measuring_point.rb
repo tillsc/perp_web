@@ -6,6 +6,7 @@ class MeasuringPoint < ApplicationRecord
   belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :measuring_session, optional: true
 
+  alias_attribute :regatta_id, 'Regatta_ID'
   alias_attribute :number, 'MesspunktNr'
   alias_attribute :position, 'Position'
 
@@ -13,7 +14,7 @@ class MeasuringPoint < ApplicationRecord
   validates :position, uniqueness: {scope: :Regatta_ID}
 
   default_scope do
-    order('Regatta_ID', 'MesspunktNr')
+    order(arel_table['Regatta_ID'].asc, arel_table['MesspunktNr'].asc)
   end
 
   scope :for_regatta, -> (regatta) {

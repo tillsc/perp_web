@@ -4,6 +4,7 @@ class Team < ApplicationRecord
 
   self.primary_key = 'Regatta_ID', 'ID'
 
+  alias_attribute :regatta_id, 'Regatta_ID'
   alias_attribute :team_id, 'ID'
   alias_attribute :representative_id, 'Obmann_ID'
   alias_attribute :name, 'Teamname'

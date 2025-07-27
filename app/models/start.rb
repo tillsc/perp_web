@@ -3,12 +3,16 @@ class Start < ApplicationRecord
   self.table_name = 'startlisten'
   self.primary_key = 'Regatta_ID', 'Rennen', 'Lauf', 'TNr'
 
+  include HasRaceNumber
+
   belongs_to :regatta, foreign_key: 'Regatta_ID'
   belongs_to :event, foreign_key: ['Regatta_ID', 'Rennen']
   belongs_to :race, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf']
 
   belongs_to :participant, foreign_key: ['Regatta_ID', 'Rennen', 'TNr']
 
+  alias_attribute :regatta_id, 'Regatta_ID'
+  alias_attribute :event_number, 'Rennen'
   alias_attribute :race_number, 'Lauf'
   alias_attribute :participant_id, 'TNr'
   alias_attribute :lane_number, 'Bahn'
@@ -35,21 +39,8 @@ class Start < ApplicationRecord
       merge(Race.upcoming)
   }
 
-  scope :by_type_short, -> (type_short) do
-    ts = Array(type_short).dup
-    scope = arel_table['Lauf'].matches("#{ts.pop}%")
-    while ts.any?
-      scope = scope.or(arel_table['Lauf'].matches("#{ts.pop}%"))
-    end
-    where(scope)
-  end
-
   default_scope do
-    order('Regatta_ID', 'Rennen', 'Lauf')
-  end
-
-  def race_type_short
-    self.race_number.to_s[0]
+    order(arel_table[:regatta_id].asc, arel_table[:event_number].asc, arel_table[:race_number].asc)
   end
 
 end

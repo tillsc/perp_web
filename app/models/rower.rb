@@ -32,18 +32,35 @@ class Rower < ApplicationRecord
     unscope(:where).where(query)
   }
 
-  def self.for_regatta(regatta)
-    union_sql = %w[
-      ruderer1_id ruderer2_id ruderer3_id ruderer4_id
-      ruderer5_id ruderer6_id ruderer7_id ruderer8_id
-      ruderers_id
-    ].map do |col|
-      "SELECT #{col} AS ruderer_id FROM meldungen WHERE regatta_id = #{regatta.id.to_i}"
-    end.join(" UNION ")
+  def self.for_regatta(regatta, join_clubs: false)
+    union_rowers_in_regatta_sql = Participant::ALL_ROWER_FIELD_NAMES.map do |col|
+      Participant.for_regatta(regatta).
+        select(Participant.arel_table[col].as('rower_id')).
+        unscope(:order).
+        to_sql
+      end.join(' UNION ')
 
-    Rower.from("(#{union_sql}) AS ruderer_in_regatta")
-           .joins("JOIN ruderer ON ruderer.id = ruderer_in_regatta.ruderer_id")
-           .distinct
+    self_join = arel_table.create_join(
+      arel_table,
+      arel_table.create_on(
+        arel_table[:id].eq(Arel.sql("union_rower_ids_in_regatta.rower_id"))
+      ),
+      Arel::Nodes::OuterJoin
+    )
+    clubs_join = arel_table.create_join(
+      Address.arel_table,
+      arel_table.create_on(
+        arel_table[:club_id].eq(Address.arel_table[:id])
+      )
+    )
+
+    res = Rower.
+      from(Arel.sql("(#{union_rowers_in_regatta_sql}) AS union_rower_ids_in_regatta")).
+      joins(self_join)
+
+    res = res.joins(clubs_join) if join_clubs
+
+    res.distinct
   end
 
   TYPICAL_ENCODING_PROBLEMS = {'ÃŸ' => 'ß', 'Ã¼' => 'ü', 'Ãœ' => 'Ü', 'Ã©' => 'é', 'Ã¤' => 'ä', 'Ã¶' => 'ö'}

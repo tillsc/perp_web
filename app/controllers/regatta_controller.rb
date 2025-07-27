@@ -7,9 +7,8 @@ class RegattaController < ApplicationController
     end
 
     @events = @regatta.events.
-      with_counts.
-      includes(:participants).
-      preload(:races)
+      with_counts(:starts, :results).
+      preload(:races, :participants)
     @latest_races = Race.
       with_results.
       for_regatta(@regatta).
@@ -24,7 +23,7 @@ class RegattaController < ApplicationController
   end
 
   def participants
-    @event = @regatta.events.where(rennen: params[:event_id]).
+    @event = @regatta.events.where(number: params[:event_id]).
       preload(participants: [:team] + Participant::ALL_ROWERS).
       first
   end
@@ -97,13 +96,15 @@ class RegattaController < ApplicationController
       for_rower(@rower).
       preload(race: :event, participant: [:team] + Participant::ALL_ROWERS).
       joins(:race).
-      reorder('SollStartZeit')
+      reorder([]).
+      merge(Race.order_by_planned_for)
 
     @results = Result.for_regatta(@regatta).
       for_rower(@rower).
       preload(:times, race: [event: :finish_measuring_point], participant: [:team] + Participant::ALL_ROWERS).
       joins(:race).
-      reorder('IstStartZeit')
+      reorder([]).
+      merge(Race.order_by_started_at)
   end
 
 end

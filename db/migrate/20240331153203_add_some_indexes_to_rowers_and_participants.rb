@@ -14,6 +14,6 @@ class AddSomeIndexesToRowersAndParticipants < ActiveRecord::Migration[7.1]
     add_index :meldungen, :ruderer7_ID
     add_index :meldungen, :ruderer8_ID
     add_index :meldungen, :ruderers_ID
-    add_index :meldungen, :bugnr
+    add_index :meldungen, :BugNr
   end
 end

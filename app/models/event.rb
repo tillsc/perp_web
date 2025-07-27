@@ -3,6 +3,7 @@ class Event < ApplicationRecord
   self.table_name = 'rennen'
   self.primary_key = 'Regatta_ID', 'Rennen'
 
+  alias_attribute :regatta_id, 'Regatta_ID'
   alias_attribute :number, 'Rennen'
   alias_attribute :name_short, 'NameK'
   alias_attribute :name_de, 'NameD'
@@ -42,15 +43,13 @@ class Event < ApplicationRecord
   has_many :results, foreign_key: ['Regatta_ID', 'Rennen'],
            inverse_of: :event, dependent: :restrict_with_error
 
-  scope :with_counts, -> {
-    select('rennen.*, COUNT(DISTINCT startlisten.tnr, startlisten.lauf) starts_count, COUNT(DISTINCT ergebnisse.tnr, ergebnisse.lauf) results_count').
-        left_outer_joins(:starts, :results).
-        group('rennen.regatta_id, rennen.rennen')
-  }
-
   default_scope do
-    order('Regatta_ID', 'Rennen')
+    order(arel_table['Regatta_ID'].asc, arel_table['Rennen'].asc)
   end
+
+  scope :for_regatta, -> (regatta) {
+    where(regatta_id: regatta.id)
+  }
 
   scope :from_number, -> (number) {
     where(arel_table[:number].gteq(number))
@@ -69,7 +68,7 @@ class Event < ApplicationRecord
       .merge(Race.planned_for(date))
     Weight.apply_info_scope(scope, date).
       select("#{self.table_name}.*").
-      group("#{Race.table_name}.Rennen")
+      group(Weight.info_scope_group_by_columns)
   }
 
   def label

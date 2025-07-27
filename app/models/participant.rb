@@ -46,10 +46,16 @@ class Participant < ApplicationRecord
     where('Team_ID': Array.wrap(teams).map(&:team_id).uniq)
   }
 
+  def self.any_rower_eq_condition(equals_rower, no_cox: false)
+    fields = ALL_ROWER_FIELD_NAMES
+    fields -= ["ruderers_ID"] if no_cox
+    fields.map { |field_name|
+      arel_table[field_name].eq(equals_rower)
+    }.inject(&:or)
+  end
+
   scope :for_rower, -> (rower) {
-    where(ALL_ROWER_IDX.map { |name|
-      arel_table["ruderer#{name}_ID"].eq(rower.id)
-    }.inject(&:or))
+    where(any_rower_eq_condition(rower.id))
   }
 
   scope :for_club, -> (club_address) {
@@ -65,11 +71,11 @@ class Participant < ApplicationRecord
       merge(Race.planned_for(date))
     Weight.apply_info_scope(scope, date).
       select("#{self.table_name}.*").
-      group("#{Participant.table_name}.Rennen, #{Participant.table_name}.TNr")
+      group(Weight.info_scope_group_by_columns(base_table: Participant) + [Participant.arel_table[:participant_id]])
   }
 
   default_scope do
-    order('Regatta_ID', 'Rennen', 'BugNr', 'TNr')
+    order(arel_table[:regatta_id].asc,  arel_table[:event_number].asc, arel_table[:number].asc, arel_table[:participant_id].asc)
   end
 
   alias_attribute :regatta_id, 'Regatta_ID'
