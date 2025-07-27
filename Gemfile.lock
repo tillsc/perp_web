@@ -248,6 +248,7 @@ GEM
     parser (3.3.9.0)
       ast (~> 2.4.1)
       racc
+    pg (1.5.9)
     popper_js (2.11.8)
     pp (0.6.2)
       prettyprint
@@ -452,6 +453,7 @@ DEPENDENCIES
   listen
   momentjs-rails
   mysql2
+  pg
   puma
   rack-mini-profiler
   rails (~> 8.0)

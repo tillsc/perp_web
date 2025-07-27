@@ -13,9 +13,20 @@ set :rbenv_prefix, "RBENV_ROOT=/var/www/vhosts/perp.de/.rbenv #{fetch(:rbenv_pat
 
 set :passenger_restart_with_touch, true
 
+before 'bundler:install', 'bundler:set_groups'
 before 'bundler:install', 'bundler:force_ruby_platform'
 
 namespace :bundler do
+  task :set_groups do
+    on roles(:app) do
+      within release_path do
+        # Install only the mysql group, skip others like postgres
+        execute :bundle, 'config set --local with mysql'
+        execute :bundle, 'config set --local without development test postgres'
+      end
+    end
+  end
+
   task :force_ruby_platform do
     on roles(:app) do
       within release_path do

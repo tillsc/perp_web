@@ -6,7 +6,13 @@ ruby '>= 3.2.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 8.0'
 
-gem 'mysql2'
+group :mysql do
+  gem 'mysql2'
+end
+
+group :postgres do
+  gem 'pg'
+end
 # Use Puma as the app server
 gem 'puma'
 
