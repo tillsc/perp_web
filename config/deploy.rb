@@ -4,8 +4,8 @@ lock "~> 3.11"
 set :application, "perp_web"
 set :repo_url, "git@github.com:tillsc/perp_web.git"
 
-# Default branch is :master
-# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+# Default branch is :main, can be overridden via `cap production deploy BRANCH=xyz`
+set :branch, ENV["BRANCH"] || "main"
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/var/www/vhosts/perp.de/app"
