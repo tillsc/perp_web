@@ -78,24 +78,27 @@
 
   <%= yield %>
 </div>
-<footer class="bg-light text-center text-muted py-3 mt-5 border-top small">
+<footer class="bg-light text-center text-muted py-2 mt-5 border-top small">
   <div class="container">
     <p class="mb-1">
-      <a href="https://github.com/tillsc/perp_web" target="_blank" rel="noopener"><strong>perp.de</strong></a> – Regattaverwaltung für Ruderregatten
+      <span class="d-block d-md-inline-block">
+        <strong><a href="https://github.com/tillsc/perp_web" target="_blank" rel="noopener">perp.de</a></strong> –
+        Regattaverwaltung für Ruderregatten <span class="d-none d-md-inline-block">·</span>
+      </span>
+      <span class="d-block d-md-inline-block">
+        <a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener">PolyForm Noncommercial License 1.0.0</a>
+      </span>
     </p>
     <p class="mb-1">
-      <a href="https://polyformproject.org/licenses/noncommercial/1.0.0/" target="_blank" rel="noopener">
-        PolyForm Noncommercial License 1.0.0
-      </a> ·
-      Frei nutzbar für alle nicht-kommerziellen Regatten
-    </p>
-    <p class="mb-1">
-      © <%= Time.current.year %> Till Schulte-Coerne ·
-      Unterstützt vom
-      <a href="https://www.rrc-online.de" target="_blank" rel="noopener">Ratzeburger Ruderclub</a>
+      <span class="d-block d-md-inline-block">
+        Frei nutzbar für alle nicht-kommerziellen Regatten <span class="d-none d-md-inline-block">·</span>
+      </span>
+      <span class="d-block d-md-inline-block">
+        Unterstützt vom <a href="https://www.rrc-online.de" target="_blank" rel="noopener">Ratzeburger Ruderclub</a>
+      </span>
     </p>
     <p class="mb-0 text-muted">
-      Version <%= PerpWeb::Version %>
+      <span class="d-inline-block">© <%= Time.current.year %> Till Schulte-Coerne · Version <%= PerpWeb::Version %></span>
     </p>
   </div>
 </footer>
