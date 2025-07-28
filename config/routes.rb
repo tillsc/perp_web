@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     resources :users
   end
 
+  get "/up", to: "health#show"
+
   scope '/:regatta_id' do
 
     get '/internal', to: 'internal#index'

@@ -13,6 +13,7 @@ services:
       url: ghcr.io/tillsc/perp_web:latest
     plan: free
     region: frankfurt
+    healthCheckPath: /up
     envVars:
       - key: RAILS_ENV
         value: production
