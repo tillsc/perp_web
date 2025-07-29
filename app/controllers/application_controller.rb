@@ -50,6 +50,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def dom_id(*args)
+    ActionView::RecordIdentifier.dom_id(*args)
+  end
+
   def back_or_default_with_uri_params(default: nil, **additional_uri_params)
     uri = URI.parse(back_or_default(default).to_s)
     all_params = Hash[URI.decode_www_form(String(uri.query))].merge(additional_uri_params)

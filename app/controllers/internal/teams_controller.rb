@@ -82,7 +82,7 @@ module Internal
     protected
 
     def default_url
-      internal_teams_url(@regatta, anchor: @team&.to_anchor)
+      internal_teams_url(@regatta, anchor: @team && dom_id(@team))
     end
 
     def prepare_form

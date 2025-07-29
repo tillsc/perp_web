@@ -92,7 +92,7 @@ module Internal
     protected
 
     def default_url
-      internal_participants_url(@regatta, anchor: @participant&.to_anchor)
+      internal_participants_url(@regatta, anchor: @participant && dom_id(@participant))
     end
 
     def prepare_form

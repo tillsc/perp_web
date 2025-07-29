@@ -12,7 +12,7 @@
       </thead>
       <tbody>
       <% @external_measurements.each do |external_measurement| %>
-        <tr id="<%= external_measurement.to_anchor %>">
+        <tr id="<%= dom_id(external_measurement) %>">
           <% mp = @measuring_points.find { |mp| mp.number = external_measurement.measuring_point_number } %>
           <td><%= mp&.name || "Nr: #{external_measurement.measuring_point_number.inspect}" %></td>
           <td><%= external_measurement.time || "-" %></td>

@@ -66,7 +66,7 @@ module Internal
     protected
 
     def default_url
-      internal_measuring_points_url(@regatta, anchor: @measuring_point&.to_anchor)
+      internal_measuring_points_url(@regatta, anchor: @measuring_point && dom_id(@measuring_point))
     end
 
     def prepare_form

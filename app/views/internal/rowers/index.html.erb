@@ -22,7 +22,7 @@
       </thead>
       <tbody>
       <% @rowers.each do |rower| %>
-        <tr id="<%= rower.to_anchor %>">
+        <tr id="<%= dom_id(rower) %>">
           <td><%= link_to rower.first_name, internal_rower_path(@regatta, rower, referrer: current_url_with_anchor(rower)) %></td>
           <td><%= link_to rower.last_name, internal_rower_path(@regatta, rower, referrer: current_url_with_anchor(rower)) %></td>
           <td><%= rower.year_of_birth %></td>

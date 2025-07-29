@@ -21,7 +21,7 @@
   </div>
 
   <div class="col-md-4 col-lg-3">
-    <%= link_to "Zurück zur Übersicht", internal_weighings_url(@regatta, @filters, anchor: @event.to_anchor), class: 'btn btn-primary d-block' %>
+    <%= link_to "Zurück zur Übersicht", internal_weighings_url(@regatta, @filters, anchor: dom_id(@event)), class: 'btn btn-primary d-block' %>
     <% if can?(:show, @event) %>
       <hr>
       <%= link_to "Details zu Rennen #{@event.number}", internal_event_url(@regatta, @event, referrer: current_url), class: 'btn btn-secondary d-block' %>

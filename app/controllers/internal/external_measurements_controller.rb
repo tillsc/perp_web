@@ -35,7 +35,7 @@ module Internal
     protected
 
     def default_url
-      internal_external_measurements_url(@regatta, anchor: @external_measurement&.to_anchor)
+      internal_external_measurements_url(@regatta, anchor: @external_measurement && dom_id(@external_measurement))
     end
 
     def measuring_point_params

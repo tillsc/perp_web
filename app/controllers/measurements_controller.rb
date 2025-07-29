@@ -114,7 +114,7 @@ class MeasurementsController < ApplicationController
     elsif current_user.is_a?(MeasuringSession)
       redirect_to measuring_session_url(@regatta, current_user, anchor: "race_#{@measuring.race.event.number}_#{@measuring.race.number}")
     else
-      redirect_to back_or_default(measurements_url(@regatta, anchor: @measuring.race.to_anchor))
+      redirect_to back_or_default(measurements_url(@regatta, anchor: dom_id(@measuring.race)))
     end
   end
 

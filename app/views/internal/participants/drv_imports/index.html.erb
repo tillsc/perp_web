@@ -14,7 +14,7 @@
       </thead>
       <tbody>
       <% @imports.each do |import| %>
-        <tr id="<%= import.to_anchor %>">
+        <tr id="<%= dom_id(import) %>">
           <td>
             <%= link_to internal_participants_drv_import_path(@regatta, import) do %>
               <% ts = import.metadata&.dig('exported_at') %>

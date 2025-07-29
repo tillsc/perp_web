@@ -11,7 +11,7 @@
   </thead>
   <tbody>
   <% participants.each do |participant| %>
-    <tr id="<%= participant.to_anchor %>" class="<%= participant_state_classes(participant) %>">
+    <tr id="<%= dom_id(participant) %>" class="<%= participant_state_classes(participant) %>">
       <td><%=  participant.event && link_to(participant.event.label, internal_event_url(@regatta, participant, referrer: current_url_with_anchor(participant))) || '!' %></td>
       <td><%= link_to(participant.number || '-', internal_participant_path(@regatta, participant, referrer: current_url_with_anchor(participant))) %></td>
       <td><%= participant.team&.country %></td>

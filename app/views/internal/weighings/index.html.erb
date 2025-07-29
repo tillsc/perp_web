@@ -30,7 +30,7 @@
                    ''
                  end
         %>
-        <tr id="<%= r.to_anchor %>">
+        <tr id="<%= dom_id(r) %>">
           <td class="<%= cls %>"><%= link_to r.label, internal_event_weighings_url(@regatta, r, @filters) %></td>
           <td class="<%= cls %>"><%= r.name_de %></td>
           <td class="<%= cls %>"><%= r.min_started_at && l(r.min_started_at, format: :short) %></td>

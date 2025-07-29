@@ -13,7 +13,7 @@
       </thead>
       <tbody>
       <% @teams.each do |team| %>
-        <tr id="<%= team.to_anchor %>">
+        <tr id="<%= dom_id(team) %>">
           <td><%= link_to(highlight_nobr(team.name), internal_team_path(@regatta, team, referrer: current_url_with_anchor(team))) %></td>
           <td><%= link_to team.representative.name, internal_address_url(@regatta, team.representative, referrer: current_url_with_anchor(team)) if team.representative %></td>
           <td class="text-nowrap">

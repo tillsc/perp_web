@@ -73,10 +73,6 @@ class ApplicationRecord < ActiveRecord::Base
     select(*selections)
   }
 
-  def to_anchor
-    "#{self.class.name.underscore}_#{self.to_param}"
-  end
-
   def self.bool_to_int_sql(attribute)
     unless attribute.is_a?(Arel::Attributes::Attribute)
       attribute = self.arel_table[attribute]

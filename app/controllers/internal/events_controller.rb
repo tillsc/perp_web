@@ -91,7 +91,7 @@ module Internal
     protected
 
     def default_url
-      internal_events_url(@regatta, anchor: @event&.to_anchor)
+      internal_events_url(@regatta, anchor: @event && dom_id(@event))
     end
 
     def prepare_form

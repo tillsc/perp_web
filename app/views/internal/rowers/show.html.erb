@@ -55,7 +55,7 @@
     <% ps.each do |participant| %>
       <tr>
         <% if this_regatta == 1 %>
-          <td><%= link_to participant.event.label, internal_participants_url(@regatta, event_number: participant.event.number, anchor: participant.to_anchor) %></td>
+          <td><%= link_to participant.event.label, internal_participants_url(@regatta, event_number: participant.event.number, anchor: dom_id(participant)) %></td>
           <td><%= link_to participant.number.presence || '-', internal_participant_url(@regatta, participant) %></td>
           <td><%= link_to highlight_nobr(participant.team_name(regatta: @regatta)), internal_team_path(@regatta, participant.team) %></td>
         <% else %>

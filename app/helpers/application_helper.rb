@@ -61,8 +61,8 @@ module ApplicationHelper
   end
 
   def current_url_with_anchor(o)
-    if o.respond_to?(:to_anchor)
-      o = o.to_anchor
+    if o.is_a?(ActiveRecord::Base)
+      o = ActionView::RecordIdentifier.dom_id(o)
     end
     u = URI.parse(current_url.to_s)
     u.fragment = o

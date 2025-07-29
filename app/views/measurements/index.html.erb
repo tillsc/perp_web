@@ -28,7 +28,7 @@
       </thead>
       <tbody>
       <% @races.each do |race| %>
-        <tr id="<%= race.to_anchor %>">
+        <tr id="<%= dom_id(race) %>">
           <td><%= link_to race.full_name, internal_event_url(@regatta, race.event, referrer: current_url) %></td>
           <td>
             <% if race.started_at %>

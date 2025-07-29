@@ -97,7 +97,7 @@ module Internal
     protected
 
     def default_url
-      internal_rowers_url(@regatta, anchor: @rower&.to_anchor)
+      internal_rowers_url(@regatta, anchor: @rower && dom_id(@rower))
     end
 
     def prepare_form

@@ -6,7 +6,7 @@
     <table class="table table-striped">
       <tbody>
       <% @addresses.each do |address| %>
-        <tr id="<%= address.to_anchor %>">
+        <tr id="<%= dom_id(address) %>">
           <td>
             <%= link_to address.name, internal_address_path(@regatta, address, referrer: current_url_with_anchor(address)) %>
             <% if address.public_private_id.present? %>

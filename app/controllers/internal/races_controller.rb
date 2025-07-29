@@ -71,7 +71,7 @@ module Internal
     protected
 
     def default_url
-      internal_races_url(@regatta, anchor: @race&.to_anchor)
+      internal_races_url(@regatta, anchor: @race && dom_id(@race))
     end
 
     def prepare_form

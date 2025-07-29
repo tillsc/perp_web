@@ -15,7 +15,7 @@
       </thead>
       <tbody>
       <% @events.each do |event| %>
-        <tr id="<%= event.to_anchor %>">
+        <tr id="<%= dom_id(event) %>">
           <td><%= link_to event.number, internal_event_url(@regatta, event, referrer: current_url_with_anchor(event)) %></td>
           <td><%= link_to event.name_short, internal_event_url(@regatta, event, referrer: current_url_with_anchor(event))  %></td>
           <td><%= event.name %></td>
