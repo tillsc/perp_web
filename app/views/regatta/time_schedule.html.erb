@@ -2,7 +2,18 @@
 
 <h1>Zeitplan</h1>
 
-<div id="calendar"></div>
+  <div id="calendar">
+    <simple-spinner>
+      <span>Lade Kalender...</span>
+    </simple-spinner>
+  </div>
+
+<style>
+  #calendar {
+      min-height: 400px;
+      position: relative;
+  }
+</style>
 
 <div class="row">
   <% @races.group_by { |r| r.planned_for&.to_date }.each do |date, races| %>
@@ -45,7 +56,9 @@
     if (calendar) {
       calendar.destroy();
     }
-    calendar = new Calendar(document.getElementById('calendar'), {
+    const container = document.getElementById('calendar');
+    container.innerHTML = '';
+    calendar = new Calendar(container, {
       plugins: [timeGrid],
       locale: deLocale,
       themeSystem: 'bootstrap5',
