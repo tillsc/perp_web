@@ -30,3 +30,7 @@
     </div>
   </div>
 </div>
+
+<h2>Details</h2>
+
+<%= render 'regatta/time_schedule', races: @block.all_races, start_at: @block.first_race_start.to_date, end_at: @block.first_race_start.to_date %>
