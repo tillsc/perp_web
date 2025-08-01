@@ -1,7 +1,7 @@
 de:
   activerecord:
     models:
-      organiszer: Veranstalter
+      organizer: Veranstalter
       regatta:
         one: Regatta
         other: Regatten
@@ -199,3 +199,9 @@ de:
       models:
         address:
           select_at_least_one: Es muss mindestens eine Rolle für diese Adresse ausgewählt sein
+
+  activemodel:
+    models:
+      services/time_schedule/block:
+        one: Zeitblock
+        other: Zeitblöcke

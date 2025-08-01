@@ -1,10 +1,10 @@
-<h1>Zeitblock <em><%= @block.title %></em></h1>
+<h1><%= t('helpers.titles.show', model: Services::TimeSchedule::Block.model_name.human, label: @block.title) %></h1>
 
-<div class="row">
+<div class="row mt-4">
   <div class="col-md-6">
     <div class="card mb-4">
       <div class="card-header">
-        <h2 class="h5 mb-0">Block verschieben</h2>
+        <h2 class="h5 mb-0"><%= Services::TimeSchedule::Block.model_name.human %> verschieben</h2>
       </div>
       <div class="card-body">
         <%= bootstrap_form_with url: internal_time_schedule_first_start_path, method: :put do |f| %>

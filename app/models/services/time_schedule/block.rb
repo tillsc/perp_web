@@ -1,7 +1,7 @@
 module Services
   class TimeSchedule
     class Block
-      include ActiveModel::Model
+      include ActiveModel::API
 
       attr_reader :normal_races, :extra_races
 
