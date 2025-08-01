@@ -41,7 +41,7 @@ class Ability
         can :manage, User
         can :manage, [Address, Rower, Event, Race, Start, Result, ExternalMeasurement]
         can :update, Services::TimeSchedule::Block do |block|
-          block.races.all? { |race| can?(:update, race) }
+          block.all_races.all? { |race| can?(:update, race) }
         end
         can :manage, MeasuringPoint
         can :manage, :tv_settings

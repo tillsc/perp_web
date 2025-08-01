@@ -4,15 +4,14 @@ module Services
     include Enumerable
     delegate :each, to: :@blocks
 
-    attr_reader :normal_races, :extra_races,
-                :special_race_type_treatment_for, :default_race_duration
+    attr_reader :special_race_type_treatment_for, :default_race_duration
 
     def initialize(races, special_race_type_treatment_for: ['K'], default_race_duration: 8.minutes)
       @special_race_type_treatment_for = special_race_type_treatment_for
       @default_race_duration = default_race_duration
 
       @races = races
-      @blocks, @normal_races, @extra_races = self.build_blocks(races)
+      @blocks = self.build_blocks(races)
     end
 
     def find(id = nil, &block)
@@ -40,30 +39,18 @@ module Services
 
       blocks = []
       normal_races.each do |race|
-        if !blocks.last
-          blocks << TimeSchedule::Block.new(race, self)
-          next
-        end
-
-        if blocks.last.fits?(race)
-          blocks.last.races << race
-        else
-          blocks << TimeSchedule::Block.new([race], self)
+        if !blocks.last&.try_push_normal_race(race)
+          blocks << TimeSchedule::Block.new(self, normal_race: race)
         end
       end
 
       extra_races.each do |race|
-        existing_block = blocks.find do |block|
-          block.fits?(race)
-        end
-        if existing_block
-          existing_block.races << race
-        else
-          blocks << TimeSchedule::Block.new(race, self)
+        if blocks.none? { |block| block.try_push_extra_race(race)}
+          blocks << TimeSchedule::Block.new(self, extra_race: race)
         end
       end
 
-      [blocks, normal_races, extra_races]
+      blocks
     end
 
   end

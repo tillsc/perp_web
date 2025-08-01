@@ -17,14 +17,26 @@ module Internal
     end
 
     def set_first_start
-      @block = @time_schedule_service.find(params[:id].to_i)
-      authorize! :update, @block
+      block = @time_schedule_service.find(params[:id].to_i)
+      authorize! :update, block
+      block.set_first_start(params[:first_start])
+      if @time_schedule_service.all? { |other_block| other_block == block || !block.intersects?(other_block) }
+        save_and_respond!(block)
+      else
+        render plain: "Es existieren bereits andere Rennen im Zeitraum von #{I18n.l(block.first_race_start)} bis #{I18n.l(block.last_race_end)} Uhr", status: :unprocessable_entity
+      end
+    rescue RuntimeError => e
+      render plain: "Error: #{e}", status: 500
+    end
+
+    protected
+
+    def save_and_respond!(block)
       Race.transaction do
-        if @block.set_first_start(params[:first_start])
-          render plain: "Ok"
-        else
-          render plain: "Error", status: 500
-        end
+        block.save!
+        render plain: "Ok"
+      rescue ActiveRecord::RecordInvalid => e
+        render plain: "Fehler beim Speichern: #{e.record.errors.full_messages.to_sentence}", status: 500
       end
     end
   end

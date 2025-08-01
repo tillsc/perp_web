@@ -9,8 +9,8 @@
     </div>
 
     <script type="application/json" id="events">
-      <%= raw(@time_schedule_service.map { |block|
-        block.to_event_data.merge(
+      <%= raw(JSON.generate(@time_schedule_service.map { |block|
+        block.to_event_data.deep_merge(
           can?(:update, block) ? {
             startEditable: true,
             extendedProps: {
@@ -18,7 +18,7 @@
               setFirstStartUrl: internal_time_schedule_first_start_url(@regatta, block.id)
             }
           } : {}
-        )}.to_json) %>
+        )})) %>
     </script>
 
   </div>
@@ -56,18 +56,13 @@
       eventBackgroundColor: 'var(--bs-light, silver)',
       eventBorderColor: 'var(--bs-primary, blue)',
       eventTextColor: 'var(--bs-light-text-emphasis, black)',
-      headerToolbar: {
-        right: ''
-      },
       slotMinTime: '<%= (['07:00'] + @time_schedule_service.map { |b| b.first_race_start&.strftime( "%H:00" ) }).compact.min %>',
       slotMaxTime: '<%= (['18:00'] + @time_schedule_service.map { |b| b.last_race_end.strftime( "%H:%M" ) }).compact.max %>',
       allDaySlot: false,
       nowIndicator: true,
       height: 'auto',
-      // slotEventOverlap: false,
       events: loadEvents(),
       eventShortHeight: 100,
-      displayEventEnd: false,
       eventDrop: async function(info) {
         if (info.event.extendedProps.setFirstStartUrl) {
           const response = await fetch(info.event.extendedProps.setFirstStartUrl, {
@@ -85,27 +80,33 @@
             reloadWithTurbolinks();
             return;
           }
+          else if (response.headers.get('Content-Type')?.includes('text/plain')) {
+            alert(`Speichern fehlgeschlagen:\n${await response.text()}`);
+          }
           else {
-            alert("Speichern fehlgeschlagen!");
+            alert(`Speichern fehlgeschlagen!`);
           }
         }
         info.revert();
       },
       eventDidMount: function(info) {
-        if (info.event.extendedProps.editUrl) {
-          const button = document.createElement('a');
-          button.href = info.event.extendedProps.editUrl;
-          button.innerHTML = '<%= t('helpers.actions.edit_icon') %>';
-          button.title = 'Bearbeiten';
-          button.className = 'btn btn-primary btn-sm';
-          button.style.position = 'absolute';
-          button.style.top = '2px';
-          button.style.right = '2px';
-          button.style.zIndex = '10';
-          const frame = info.el.querySelector('.fc-event-main-frame');
-          if (frame) {
-            frame.style.position = 'relative';
+        const frame = info.el.querySelector('.fc-event-main-frame');
+        if (frame) {
+          frame.style.position = 'relative';
+          if (info.event.extendedProps.editUrl) {
+            const button = document.createElement('a');
+            button.href = info.event.extendedProps.editUrl;
+            button.innerHTML = '<%= t('helpers.actions.edit_icon') %>';
+            button.title = 'Bearbeiten';
+            button.className = 'btn btn-primary btn-sm';
+            Object.assign(button.style, { position: 'absolute', top: '2px', right: '2px', zIndex: '10' });
             frame.appendChild(button);
+          }
+          if (info.event.extendedProps.additional) {
+            const span = document.createElement('span');
+            span.innerHTML = info.event.extendedProps.additional;
+            Object.assign(span.style, { position: 'absolute', bottom: '2px', left: '2px', zIndex: '10' });
+            frame.appendChild(span);
           }
         }
       },
