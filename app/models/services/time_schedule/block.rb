@@ -41,7 +41,7 @@ module Services
           #{race_types.map { |rt| Parameter.race_type_name(rt, pluralize: true)}.join(", ")}"
       end
 
-      def additional
+      def additional_info
         "#{(last_time_span / 60.0).to_i} Minuten Rennabstand" if last_time_span.present?
       end
 
@@ -80,7 +80,7 @@ module Services
           start: first_race_start.iso8601,
           end: last_race_end.iso8601,
           extendedProps: {
-            additional: additional
+            additionalInfo: additional_info
           }
         }
       end
@@ -96,6 +96,21 @@ module Services
         delta = new_first_start - self.first_race_start
         self.all_races.each do |race|
           race.planned_for += delta
+        end
+      end
+
+      def insert_break(break_start, break_length)
+        if break_start.is_a?(String)
+          date = self.first_race_start.to_date
+          break_start = Time.zone.parse("#{date} #{break_start}")
+        end
+
+        if break_start < self.first_race_start || break_start > self.last_race_start
+          raise "Pause #{I18n.l(break_start)} liegt ausserhalb des Blocks von #{I18n.l(self.first_race_start)} bis #{I18n.l(self.last_race_start)}"
+        end
+
+        self.all_races.select { |r| r.planned_for >= break_start }.each do |race|
+          race.planned_for += break_length.minutes
         end
       end
 

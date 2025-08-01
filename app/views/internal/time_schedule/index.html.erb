@@ -69,6 +69,7 @@
             method: 'PUT',
             credentials: 'same-origin',
             headers: {
+              'Accept': 'application/json',
               'Content-Type': 'application/json',
               'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
             },
@@ -80,8 +81,10 @@
             reloadWithTurbolinks();
             return;
           }
-          else if (response.headers.get('Content-Type')?.includes('text/plain')) {
-            alert(`Speichern fehlgeschlagen:\n${await response.text()}`);
+          else if (response.headers.get('Content-Type')?.includes('application/json')) {
+            const answer = await response.json();
+            console.log("Error with answer:", answer);
+            alert(`Speichern fehlgeschlagen:\n${answer?.error}`);
           }
           else {
             alert(`Speichern fehlgeschlagen!`);
@@ -102,9 +105,9 @@
             Object.assign(button.style, { position: 'absolute', top: '2px', right: '2px', zIndex: '10' });
             frame.appendChild(button);
           }
-          if (info.event.extendedProps.additional) {
+          if (info.event.extendedProps.additionalInfo) {
             const span = document.createElement('span');
-            span.innerHTML = info.event.extendedProps.additional;
+            span.innerHTML = info.event.extendedProps.additionalInfo;
             Object.assign(span.style, { position: 'absolute', bottom: '2px', left: '2px', zIndex: '10' });
             frame.appendChild(span);
           }

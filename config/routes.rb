@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       get '/time_schedule', to: 'time_schedule#index'
       get '/time_schedule/:id', to: 'time_schedule#show', as: :time_schedule_detail
       put '/time_schedule/:id/first_start', to: 'time_schedule#set_first_start', as: :time_schedule_first_start
+      put '/time_schedule/:id/break', to: 'time_schedule#insert_break', as: :time_schedule_break
 
 
       resources :participants do
