@@ -42,7 +42,7 @@ class Parameter < ApplicationRecord
 
     if pluralize
       @types_short_to_long_pluralized[type_short]
-    elsif
+    else
       @types_short_to_long[type_short]
     end
   end

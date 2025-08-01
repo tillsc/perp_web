@@ -25,6 +25,16 @@ module Internal
       end
     end
 
+    def set_race_interval
+      block = @time_schedule_service.find(params[:id].to_i)
+      authorize! :update, block
+
+      validate_save_and_respond!(block) do
+        block.set_race_interval(params[:race_interval])
+      end
+    end
+
+
     def insert_break
       block = @time_schedule_service.find(params[:id].to_i)
       authorize! :update, block
@@ -32,6 +42,14 @@ module Internal
       validate_save_and_respond!(block) do
         block.insert_break(params[:break_start], params[:break_length].to_i)
       end
+    end
+
+    def new
+
+    end
+
+    def create
+
     end
 
     protected
