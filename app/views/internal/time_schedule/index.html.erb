@@ -95,20 +95,18 @@
       eventDidMount: function(info) {
         const frame = info.el.querySelector('.fc-event-main-frame');
         if (frame) {
-          frame.style.position = 'relative';
           if (info.event.extendedProps.editUrl) {
             const button = document.createElement('a');
             button.href = info.event.extendedProps.editUrl;
             button.innerHTML = '<%= t('helpers.actions.edit_icon') %>';
             button.title = 'Bearbeiten';
-            button.className = 'btn btn-primary btn-sm';
-            Object.assign(button.style, { position: 'absolute', top: '2px', right: '2px', zIndex: '10' });
+            button.className = 'btn btn-primary btn-sm actions';
             frame.appendChild(button);
           }
           if (info.event.extendedProps.additionalInfo) {
             const span = document.createElement('span');
+            span.className = 'additional-info';
             span.innerHTML = info.event.extendedProps.additionalInfo;
-            Object.assign(span.style, { position: 'absolute', bottom: '2px', left: '2px', zIndex: '10' });
             frame.appendChild(span);
           }
         }
@@ -125,3 +123,27 @@
   document.addEventListener('turbolinks:load', initCalendar());
   document.addEventListener('DOMContentLoaded', initCalendar());
 </script>
+
+<style>
+    .fc .fc-event {
+        border-radius: var(--bs-border-radius);
+    }
+
+    .fc .fc-event-main-frame {
+        position: relative;
+        padding-right: 2rem;
+    }
+
+    .fc .fc-event .actions {
+        position: absolute;
+        top: 2px; right: 2px;
+        z-index: 10;
+    }
+
+    .fc .fc-event .additional-info {
+        position: absolute;
+        left: 2px; bottom: 2px;
+        z-index: 10;
+        font-size: var(--fc-small-font-size);
+    }
+</style>
