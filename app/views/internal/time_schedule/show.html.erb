@@ -15,6 +15,22 @@
     </div>
   </div>
 
+  <% if @block.race_interval %>
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h2 class="h5 mb-0">Rennabstand verändern</h2>
+        </div>
+        <div class="card-body">
+          <%= bootstrap_form_with url: internal_time_schedule_race_interval_url, method: :put do |f| %>
+            <%= f.number_field :race_interval, value: (@block.race_interval / 60).to_i, min: 1, label: "Neuer Rennabstand", append: "Minuten"%>
+            <%= f.primary "Verändern" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <div class="col-md-6">
     <div class="card mb-4">
       <div class="card-header">
@@ -23,7 +39,7 @@
       <div class="card-body">
         <%= bootstrap_form_with url: internal_time_schedule_break_path, method: :put do |f| %>
           <%= f.time_field :break_start, value: @block.first_race_start, label: "Beginn der Pause" %>
-          <%= f.number_field :break_length, value: 30, label: "Länge der Pause", append: "Minuten" %>
+          <%= f.number_field :break_length, value: 30, min: 1, label: "Länge der Pause", append: "Minuten" %>
           <%= f.primary "Einfügen" %>
         <% end %>
       </div>

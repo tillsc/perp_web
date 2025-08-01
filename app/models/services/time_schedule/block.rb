@@ -42,15 +42,15 @@ module Services
       end
 
       def additional_info
-        "#{(last_time_span / 60.0).to_i} Minuten Rennabstand" if last_time_span.present?
+        "#{(race_interval / 60.0).to_i} Minuten Rennabstand" if race_interval.present?
       end
 
-      def time_span_matches?(next_race_planned_for)
-        last = last_time_span
-        last.nil? || (next_race_planned_for - self.normal_races[-1].planned_for) == last
+      def race_interval_matches?(next_race_planned_for)
+        interval = race_interval
+        interval.nil? || (next_race_planned_for - self.normal_races[-1].planned_for) == interval
       end
 
-      def last_time_span
+      def race_interval
         self.normal_races[-2] && (self.normal_races[-1].planned_for - self.normal_races[-2].planned_for)
       end
 
@@ -99,6 +99,19 @@ module Services
         end
       end
 
+      def set_race_interval(new_race_interval)
+        new_race_interval = new_race_interval.to_i.minutes if new_race_interval.is_a?(String)
+
+        delta = new_race_interval - race_interval
+        self.extra_races.each do |race|
+          normal_races_before = self.normal_races.select { |normal_race| normal_race.planned_for <= race.planned_for }
+          race.planned_for += (normal_races_before.count - 1) * delta
+        end
+        self.normal_races.each_with_index do |race, i|
+          race.planned_for += i * delta
+        end
+      end
+
       def insert_break(break_start, break_length)
         if break_start.is_a?(String)
           date = self.first_race_start.to_date
@@ -130,7 +143,7 @@ module Services
         event_numbers_between = ((last_race.event_number + 1)..(race.event_number - 1)).to_a
         return false if event_numbers_between.intersect?(@service.event_numbers_with_race_type(race.type_short))
 
-        return false if !time_span_matches?(race.planned_for)
+        return false if !race_interval_matches?(race.planned_for)
 
         true
       end
