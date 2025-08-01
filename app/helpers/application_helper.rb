@@ -68,4 +68,12 @@ module ApplicationHelper
     u.fragment = o
     u.to_s
   end
+
+  def summarize_ranges(numbers)
+    numbers.sort
+           .slice_when { |a, b| b != a + 1 }
+           .map { |range| range.size > 1 ? "#{range.first}–#{range.last}" : range.first.to_s }
+           .join(', ')
+  end
+  module_function :summarize_ranges
 end

@@ -86,12 +86,8 @@
             <li><%= link_to(Race.model_name.human(count: 2), internal_races_url(@regatta)) %></li>
           <% end %>
 
-          <% if can?(:show, :statistics) %>
-            <li><%= link_to("Statistiken", internal_statistics_url(@regatta)) %></li>
-          <% end %>
-
-          <% if can?(:show, :server_status) %>
-            <li><%= link_to("Server Status", internal_status_url(@regatta)) %></li>
+          <% if can?(:index, Race) %>
+            <li><%= link_to("Zeitplan verwalten", internal_time_schedule_url(@regatta)) %></li>
           <% end %>
         </ul>
       </div>
@@ -109,6 +105,10 @@
           <% end %>
           <% if can?(:index, Result) %>
             <li><%= link_to "DRV Ergebnis-XML", results_url(@regatta, format: :xml) %></li>
+          <% end %>
+
+          <% if can?(:show, :statistics) %>
+            <li><%= link_to("Statistiken", internal_statistics_url(@regatta)) %></li>
           <% end %>
         </ul>
       </div>
@@ -131,6 +131,10 @@
 
           <% if can?(:show, User) %>
             <li><%= link_to(User.model_name.human(count: 2), internal_users_url) %></li>
+          <% end %>
+
+          <% if can?(:show, :server_status) %>
+            <li><%= link_to("Server Status", internal_status_url(@regatta)) %></li>
           <% end %>
         </ul>
       </div>

@@ -26,6 +26,12 @@ Rails.application.routes.draw do
       resources :races do
         resources :results, only: [:edit, :update, :destroy]
       end
+
+      get '/time_schedule', to: 'time_schedule#index'
+      get '/time_schedule/:id', to: 'time_schedule#show', as: :time_schedule_detail
+      put '/time_schedule/:id/first_start', to: 'time_schedule#set_first_start', as: :time_schedule_first_start
+
+
       resources :participants do
         collection do
           namespace :participants do

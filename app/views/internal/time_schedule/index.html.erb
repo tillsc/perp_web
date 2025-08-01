@@ -1,0 +1,123 @@
+<h1>Zeitplan für <%= @regatta.name %></h1>
+
+<div class="row">
+  <div class="col-md-8 col-lg-9">
+    <div id="calendar" class="position-relative" style="min-font-size: 400px">
+      <simple-spinner>
+        <span>Lade Kalender...</span>
+      </simple-spinner>
+    </div>
+
+    <script type="application/json" id="events">
+      <%= raw(@time_schedule_service.map { |block|
+        block.to_event_data.merge(
+          can?(:update, block) ? {
+            startEditable: true,
+            extendedProps: {
+              editUrl: internal_time_schedule_detail_url(@regatta, block.id),
+              setFirstStartUrl: internal_time_schedule_first_start_url(@regatta, block.id)
+            }
+          } : {}
+        )}.to_json) %>
+    </script>
+
+  </div>
+  <div class="col-md-4 col-lg-3">
+    <%#= link_to t('helpers.titles.new', model: Services::TimeSchedule::Block.model_name.human), new_internal_time_schedule_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+  </div>
+</div>
+
+<script type="module">
+  import { Calendar } from 'https://cdn.skypack.dev/@fullcalendar/core@6.1.17';
+  import timeGrid from 'https://cdn.skypack.dev/@fullcalendar/timegrid@6.1.17';
+  import interaction from 'https://cdn.skypack.dev/@fullcalendar/interaction@6.1.17';
+  import deLocale from 'https://cdn.skypack.dev/@fullcalendar/core/locales/de';
+
+  let calendar;
+
+
+  const initCalendar = () => {
+    if (calendar) {
+      calendar.destroy();
+    }
+    const container = document.getElementById('calendar');
+    container.innerHTML = '';
+    calendar = new Calendar(container, {
+      plugins: [timeGrid, interaction],
+      locale: deLocale,
+      themeSystem: 'bootstrap5',
+      initialView: 'timeGrid',
+      visibleRange: {
+        start: '<%= @regatta.from_date %>',
+        end: '<%= (@regatta.to_date + 1.day) %>'
+      },
+      slotDuration: '00:10:00',
+      snapDuration: '00:01:00',
+      eventBackgroundColor: 'var(--bs-light, silver)',
+      eventBorderColor: 'var(--bs-primary, blue)',
+      eventTextColor: 'var(--bs-light-text-emphasis, black)',
+      headerToolbar: {
+        right: ''
+      },
+      slotMinTime: '<%= (['07:00'] + @time_schedule_service.map { |b| b.first_race_start&.strftime( "%H:00" ) }).compact.min %>',
+      slotMaxTime: '<%= (['18:00'] + @time_schedule_service.map { |b| b.last_race_end.strftime( "%H:%M" ) }).compact.max %>',
+      allDaySlot: false,
+      nowIndicator: true,
+      height: 'auto',
+      // slotEventOverlap: false,
+      events: loadEvents(),
+      eventShortHeight: 100,
+      displayEventEnd: false,
+      eventDrop: async function(info) {
+        if (info.event.extendedProps.setFirstStartUrl) {
+          const response = await fetch(info.event.extendedProps.setFirstStartUrl, {
+            method: 'PUT',
+            credentials: 'same-origin',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+            },
+            body: JSON.stringify({
+              first_start: info.event.start.toISOString()
+            })
+          });
+          if (response.ok) {
+            reloadWithTurbolinks();
+            return;
+          }
+          else {
+            alert("Speichern fehlgeschlagen!");
+          }
+        }
+        info.revert();
+      },
+      eventDidMount: function(info) {
+        if (info.event.extendedProps.editUrl) {
+          const button = document.createElement('a');
+          button.href = info.event.extendedProps.editUrl;
+          button.innerHTML = '<%= t('helpers.actions.edit_icon') %>';
+          button.title = 'Bearbeiten';
+          button.className = 'btn btn-primary btn-sm';
+          button.style.position = 'absolute';
+          button.style.top = '2px';
+          button.style.right = '2px';
+          button.style.zIndex = '10';
+          const frame = info.el.querySelector('.fc-event-main-frame');
+          if (frame) {
+            frame.style.position = 'relative';
+            frame.appendChild(button);
+          }
+        }
+      },
+    });
+    calendar.render();
+  }
+
+  const loadEvents = () => {
+    const jsonScript = document.querySelector('script[type="application/json"]#events');
+    return JSON.parse(jsonScript?.textContent || '[]');
+  };
+
+  document.addEventListener('turbolinks:load', initCalendar());
+  document.addEventListener('DOMContentLoaded', initCalendar());
+</script>

@@ -29,16 +29,30 @@ class Parameter < ApplicationRecord
     get_value_for('Global', 'AktRegatta')
   end
 
-  def self.race_type_name(type_short)
-    @types_short_to_long ||= {}
-    @types_short_to_long[type_short] ||= get_value_for('Uebersetzer_Lauftypen', type_short) || type_short
+  def self.race_type_name(type_short, pluralize: false)
+    @types_short_to_long||= {}
+    @types_short_to_long_pluralized||= {}
+
+    if (pluralize && !@types_short_to_long_pluralized[type_short]) ||
+       (!pluralize && !@types_short_to_long[type_short])
+      v = self.value_for('Uebersetzer_Lauftypen', type_short).first
+      @types_short_to_long[type_short] = v.value || type_short
+      @types_short_to_long_pluralized[type_short] = v.additional || @types_short_to_long[type_short]
+    end
+
+    if pluralize
+      @types_short_to_long_pluralized[type_short]
+    elsif
+      @types_short_to_long[type_short]
+    end
   end
 
   def self.all_race_type_names
+    @types_short_to_long_pluralized = {}
     @types_short_to_long = values_for('Uebersetzer_Lauftypen').inject({}) do |h, param|
+      @types_short_to_long_pluralized[param.key] = param.additional || param.value
       h.merge(param.key => param.value)
     end
-
   end
 
   def self.race_sorter

@@ -9,7 +9,7 @@ class Ability
 
       if user.roles.any?
         can :access, :announcer_views
-        can :read, [Rower, Result, Start, Participant, Team, Event, Race, Address]
+        can :read, [Rower, Result, Start, Participant, Team, Event, Race, Address, Services::TimeSchedule::Block]
       end
 
       if user.role_timekeeping || user.role_admin
@@ -40,6 +40,9 @@ class Ability
       if user.role_admin
         can :manage, User
         can :manage, [Address, Rower, Event, Race, Start, Result, ExternalMeasurement]
+        can :update, Services::TimeSchedule::Block do |block|
+          block.races.all? { |race| can?(:update, race) }
+        end
         can :manage, MeasuringPoint
         can :manage, :tv_settings
         can :read, [:statistics, :server_status, :reports]
