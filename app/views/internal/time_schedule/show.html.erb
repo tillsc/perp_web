@@ -17,17 +17,19 @@
         <%= f.radio_button :operation, key, id: "operation_#{key}", label: label, checked: key == :adjust_interval %>
       </div>
       <div class="card-body">
-        <% case key
-           when :shift_block %>
-          <%= f.datetime_field :first_start, value: @block.first_race_start, label: "Neuer erster Start" %>
-        <% when :adjust_interval %>
-          <% if @block.race_interval %>
-            <%= f.number_field :race_interval, value: (@block.race_interval / 60).to_i, min: 1, label: "Neuer Rennabstand", append: "Minuten" %>
+        <enabled-if selector="#operation_<%= key %>" value="<%= key %>">
+          <% case key
+             when :shift_block %>
+            <%= f.datetime_field :first_start, value: @block.first_race_start, label: "Neuer erster Start" %>
+          <% when :adjust_interval %>
+            <% if @block.race_interval %>
+              <%= f.number_field :race_interval, value: (@block.race_interval / 60).to_i, min: 1, label: "Neuer Rennabstand", append: "Minuten" %>
+            <% end %>
+          <% when :insert_break %>
+            <%= f.time_field :break_start, value: @block.first_race_start.strftime("%H:%M"), label: "Beginn der Pause" %>
+            <%= f.number_field :break_length, value: 30, min: 1, label: "Länge der Pause", append: "Minuten" %>
           <% end %>
-        <% when :insert_break %>
-          <%= f.time_field :break_start, value: @block.first_race_start.strftime("%H:%M"), label: "Beginn der Pause" %>
-          <%= f.number_field :break_length, value: 30, min: 1, label: "Länge der Pause", append: "Minuten" %>
-        <% end %>
+        </enabled-if>
       </div>
     </div>
   <% end %>
