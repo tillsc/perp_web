@@ -16,34 +16,6 @@ module Internal
       authorize! :show, @block
     end
 
-    def set_first_start
-      block = @time_schedule_service.find(params[:id].to_i)
-      authorize! :update, block
-
-      validate_save_and_respond!(block) do
-        block.set_first_start(params[:first_start])
-      end
-    end
-
-    def set_race_interval
-      block = @time_schedule_service.find(params[:id].to_i)
-      authorize! :update, block
-
-      validate_save_and_respond!(block) do
-        block.set_race_interval(params[:race_interval])
-      end
-    end
-
-
-    def insert_break
-      block = @time_schedule_service.find(params[:id].to_i)
-      authorize! :update, block
-
-      validate_save_and_respond!(block) do
-        block.insert_break(params[:break_start], params[:break_length].to_i)
-      end
-    end
-
     def new
 
     end
@@ -52,13 +24,25 @@ module Internal
 
     end
 
-    protected
+    def update
+      block = @time_schedule_service.find(params[:id].to_i)
+      authorize! :update, block
 
-    def validate_save_and_respond!(block, &operation_block)
+      # Apply data
+      case params[:operation].to_s
+      when "shift_block"
+        block.shift_block(Time.parse(params[:first_start]))
+      when "adjust_interval"
+        block.adjust_interval(params[:race_interval].to_i.minutes)
+      when "insert_break"
+        break_start = Time.zone.parse("#{block.first_race_start.to_date} #{break_start}")
+        block.insert_break(break_start, params[:break_length].to_i)
+      else
+        raise "Unknown operation: #{params[:operation]}"
+      end
+
       success = false
-
-      operation_block.call
-
+      # Validate and save
       if @time_schedule_service.none? { |other_block| other_block != block && block.intersects?(other_block) }
         Race.transaction do
           success = block.save!
@@ -67,12 +51,14 @@ module Internal
         flash.now[:danger] = "Es existieren bereits andere Rennen im Zeitraum von #{I18n.l(block.first_race_start)} bis #{I18n.l(block.last_race_start)} Uhr"
       end
       if success
-        flash.now[:success] = I18n.t("helpers.success.update", model: "Block")
+        flash.now[:success] = I18n.t("helpers.success.update", model: Services::TimeSchedule::Block.model_name.human)
       end
+
     rescue ActiveRecord::RecordInvalid => e
       flash.now[:danger] = "Fehler beim Speichern: #{e.record.errors.full_messages.to_sentence}"
     rescue RuntimeError => e
-      flash.now[:danger] = "Error: #{e}"
+      flash.now[:danger] = "Allgemeiner Fehler: #{e}"
+
     ensure
       # Render
       if request.format.json? || request.xhr?
@@ -90,8 +76,10 @@ module Internal
       end
     end
 
+    protected
+
     def default_url
-      internal_time_schedule_url(@regatta)
+      internal_time_schedule_index_url(@regatta)
     end
 
   end

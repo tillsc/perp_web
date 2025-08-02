@@ -14,8 +14,8 @@
           can?(:update, block) ? {
             startEditable: true,
             extendedProps: {
-              editUrl: internal_time_schedule_detail_url(@regatta, block.id),
-              setFirstStartUrl: internal_time_schedule_first_start_url(@regatta, block.id)
+              editUrl: internal_time_schedule_url(@regatta, block.id),
+              updateUrl: internal_time_schedule_url(@regatta, block.id)
             }
           } : {}
         )})) %>
@@ -64,8 +64,8 @@
       events: loadEvents(),
       eventShortHeight: 100,
       eventDrop: async function(info) {
-        if (info.event.extendedProps.setFirstStartUrl) {
-          const response = await fetch(info.event.extendedProps.setFirstStartUrl, {
+        if (info.event.extendedProps.updateUrl) {
+          const response = await fetch(info.event.extendedProps.updateUrl, {
             method: 'PUT',
             credentials: 'same-origin',
             headers: {
@@ -74,6 +74,7 @@
               'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
             },
             body: JSON.stringify({
+              operation: 'shift_block',
               first_start: info.event.start.toISOString()
             })
           });

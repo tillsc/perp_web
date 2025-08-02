@@ -1,52 +1,41 @@
 <h1><%= t('helpers.titles.show', model: Services::TimeSchedule::Block.model_name.human, label: @block.title) %></h1>
 
-<div class="row mt-4">
-  <div class="col-md-6">
-    <div class="card mb-4">
-      <div class="card-header">
-        <h2 class="h5 mb-0"><%= Services::TimeSchedule::Block.model_name.human %> verschieben</h2>
+<%= bootstrap_form_with url: internal_time_schedule_path(@regatta, @block.id), method: :put do |f| %>
+  <%
+    operations = {
+      insert_break: 'Pause einfügen',
+      shift_block: 'Block verschieben',
+    }
+    if @block.race_interval
+      operations = { adjust_interval: 'Rennabstand verändern' }.merge(operations)
+    end
+  %>
+
+  <% operations.each do |key, label| %>
+    <div class="card mb-4 operation-panel" data-operation-key="<%= key %>">
+      <div class="card-header d-flex align-items-center">
+        <%= f.radio_button :operation, key, id: "operation_#{key}", label: label, checked: key == :adjust_interval %>
       </div>
       <div class="card-body">
-        <%= bootstrap_form_with url: internal_time_schedule_first_start_path, method: :put do |f| %>
+        <% case key
+           when :shift_block %>
           <%= f.datetime_field :first_start, value: @block.first_race_start, label: "Neuer erster Start" %>
-          <%= f.primary "Verschieben" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-  <% if @block.race_interval %>
-    <div class="col-md-6">
-      <div class="card mb-4">
-        <div class="card-header">
-          <h2 class="h5 mb-0">Rennabstand verändern</h2>
-        </div>
-        <div class="card-body">
-          <%= bootstrap_form_with url: internal_time_schedule_race_interval_url, method: :put do |f| %>
-            <%= f.number_field :race_interval, value: (@block.race_interval / 60).to_i, min: 1, label: "Neuer Rennabstand", append: "Minuten"%>
-            <%= f.primary "Verändern" %>
+        <% when :adjust_interval %>
+          <% if @block.race_interval %>
+            <%= f.number_field :race_interval, value: (@block.race_interval / 60).to_i, min: 1, label: "Neuer Rennabstand", append: "Minuten" %>
           <% end %>
-        </div>
+        <% when :insert_break %>
+          <%= f.time_field :break_start, value: @block.first_race_start.strftime("%H:%M"), label: "Beginn der Pause" %>
+          <%= f.number_field :break_length, value: 30, min: 1, label: "Länge der Pause", append: "Minuten" %>
+        <% end %>
       </div>
     </div>
   <% end %>
 
-  <div class="col-md-6">
-    <div class="card mb-4">
-      <div class="card-header">
-        <h2 class="h5 mb-0">Pause einfügen</h2>
-      </div>
-      <div class="card-body">
-        <%= bootstrap_form_with url: internal_time_schedule_break_path, method: :put do |f| %>
-          <%= f.time_field :break_start, value: @block.first_race_start, label: "Beginn der Pause" %>
-          <%= f.number_field :break_length, value: 30, min: 1, label: "Länge der Pause", append: "Minuten" %>
-          <%= f.primary "Einfügen" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
+  <%= f.primary "Ausführen" %>
+  <%= link_to "Abbrechen", back_or_default, class: 'btn btn-secondary' %>
+<% end %>
 
-<h2>Details</h2>
+<h2 class="mt-5">Details</h2>
 
 <%= render 'regatta/time_schedule', races: @block.all_races, start_at: @block.first_race_start.to_date, end_at: @block.first_race_start.to_date %>

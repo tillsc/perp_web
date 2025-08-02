@@ -1,0 +1,6 @@
+<h1><%= t("helpers.titles.new", model: Services::TimeSchedule::Block.model_name.human) %></h1>
+
+<%= bootstrap_form_with url: internal_time_schedules_path, method: :post do |f| %>
+  <%= f.datetime_field :first_start, value: @time_schedule_serivce.map(&:last_race_start).max, label: "Erster Start" %>
+  <%= f.primary "Erzeugen" %>
+<% end %>

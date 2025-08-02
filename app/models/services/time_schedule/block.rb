@@ -87,21 +87,17 @@ module Services
 
       def intersects?(other_block)
         first_race_start < other_block.last_race_start &&
-          other_block.last_race_start < last_race_end
+          other_block.first_race_start < last_race_start
       end
 
-      def set_first_start(new_first_start)
-        new_first_start = Time.parse(new_first_start) if new_first_start.is_a?(String)
-
+      def shift_block(new_first_start)
         delta = new_first_start - self.first_race_start
         self.all_races.each do |race|
           race.planned_for += delta
         end
       end
 
-      def set_race_interval(new_race_interval)
-        new_race_interval = new_race_interval.to_i.minutes if new_race_interval.is_a?(String)
-
+      def adjust_interval(new_race_interval)
         delta = new_race_interval - race_interval
         self.extra_races.each do |race|
           normal_races_before = self.normal_races.select { |normal_race| normal_race.planned_for <= race.planned_for }
@@ -113,11 +109,6 @@ module Services
       end
 
       def insert_break(break_start, break_length)
-        if break_start.is_a?(String)
-          date = self.first_race_start.to_date
-          break_start = Time.zone.parse("#{date} #{break_start}")
-        end
-
         if break_start < self.first_race_start || break_start > self.last_race_start
           raise "Pause #{I18n.l(break_start)} liegt ausserhalb des Blocks von #{I18n.l(self.first_race_start)} bis #{I18n.l(self.last_race_start)}"
         end

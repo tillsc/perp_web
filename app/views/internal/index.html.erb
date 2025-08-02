@@ -87,7 +87,7 @@
           <% end %>
 
           <% if can?(:index, Race) %>
-            <li><%= link_to("Zeitplan verwalten", internal_time_schedule_url(@regatta)) %></li>
+            <li><%= link_to("Zeitplan verwalten", internal_time_schedule_index_url(@regatta)) %></li>
           <% end %>
         </ul>
       </div>
