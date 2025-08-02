@@ -16,7 +16,11 @@ module Services
 
     def find(id = nil, &block)
       if id
-        @blocks.find { |b| b.id == id }
+        res = @blocks.find { |b| b.id == id }
+        if !res
+          raise ActiveRecord::RecordNotFound.new("Couldn't find block with id #{id.inspect}")
+        end
+        res
       else
         @blocks.find(&block)
       end
