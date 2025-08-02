@@ -47,6 +47,14 @@
       locale: deLocale,
       themeSystem: 'bootstrap5',
       initialView: 'timeGrid',
+      views: {
+        timeGrid: {
+          buttonText: 'Zeitplan'
+        },
+        timeGridDay: {
+          buttonText: 'Tag'
+        }
+      },
       visibleRange: {
         start: '<%= @regatta.from_date %>',
         end: '<%= (@regatta.to_date + 1.day) %>'
@@ -63,6 +71,9 @@
       height: 'auto',
       events: loadEvents(),
       eventShortHeight: 100,
+      headerToolbar: {
+        right: 'timeGrid,timeGridDay prev,next'
+      },
       eventDrop: async function(info) {
         if (info.event.extendedProps.updateUrl) {
           const response = await fetch(info.event.extendedProps.updateUrl, {
