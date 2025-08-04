@@ -122,6 +122,10 @@ module Services
         self.all_races.each(&:save!)
       end
 
+      def destroy
+        self.all_races.all?(&:destroy)
+      end
+
       protected
 
       def fits_as_normal_race?(race)

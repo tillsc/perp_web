@@ -38,6 +38,19 @@
   <%= link_to "Abbrechen", back_or_default, class: 'btn btn-secondary' %>
 <% end %>
 
+<% if can?(:destroy, @block) %>
+  <div class="mt-5 p-3 border rounded bg-light text-muted">
+    <div class="d-flex justify-content-between align-items-center">
+      <strong>Verwaltung</strong>
+      <%= button_to "Block/Läufe löschen", internal_time_schedule_path(@regatta, @block.id),
+                    method: :delete,
+                    class: "btn btn-danger",
+                    class: "btn btn-danger",
+                    data: { confirm: "Sicher, dass der gesamte Block gelöscht werden soll?" } %>
+    </div>
+  </div>
+<% end %>
+
 <h2 class="mt-5">Details</h2>
 
 <%= render 'regatta/time_schedule', races: @block.all_races, start_at: @block.first_race_start.to_date, end_at: @block.first_race_start.to_date %>

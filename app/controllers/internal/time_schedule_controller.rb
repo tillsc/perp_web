@@ -4,7 +4,7 @@ module Internal
     is_internal!
 
     before_action do
-      @time_schedule_service = Services::TimeSchedule.new(@regatta.races.preload(:event, :starts, :results))
+      @time_schedule_service = Services::TimeSchedule.new(@regatta)
     end
 
     def index
@@ -17,29 +17,65 @@ module Internal
     end
 
     def new
-
+      authorize! :new, Services::TimeSchedule::Block
     end
 
     def create
+      authorize! :create, Services::TimeSchedule::Block
 
+      validate_save_and_render(:new) do
+        @time_schedule_service.generate_block(
+          params[:event_number_from].to_i, params[:event_number_to].to_i,
+          params[:race_type], params[:first_race_letter],
+          Time.zone.parse(params[:first_start]), params[:race_interval].to_i.minutes,
+          params[:fixed_race_count].presence&.to_i
+        )
+      end
     end
 
     def update
       block = @time_schedule_service.find(params[:id].to_i)
       authorize! :update, block
 
-      # Apply data
-      case params[:operation].to_s
-      when "shift_block"
-        block.shift_block(Time.parse(params[:first_start]))
-      when "adjust_interval"
-        block.adjust_interval(params[:race_interval].to_i.minutes)
-      when "insert_break"
-        break_start = Time.zone.parse("#{block.first_race_start.to_date} #{break_start}")
-        block.insert_break(break_start, params[:break_length].to_i)
-      else
-        raise "Unknown operation: #{params[:operation]}"
+      validate_save_and_render(:show) do
+        # Apply data
+        case params[:operation].to_s
+        when "shift_block"
+          block.shift_block(Time.zone.parse(params[:first_start]))
+        when "adjust_interval"
+          block.adjust_interval(params[:race_interval].to_i.minutes)
+        when "insert_break"
+          break_start = Time.zone.parse("#{block.first_race_start.to_date} #{break_start}")
+          block.insert_break(break_start, params[:break_length].to_i)
+        else
+          raise "Unknown operation: #{params[:operation]}"
+        end
+
+        block
       end
+    end
+
+    def destroy
+      @block = @time_schedule_service.find(params[:id].to_i)
+      authorize! :destroy, @block
+
+      Race.transaction do
+        if @block.destroy
+          flash[:success] = "Läufe erfolgreich gelöscht"
+          redirect_to back_or_default
+        else
+          flash[:danger] = "Läufe könnten nicht gelöscht werden. Vermutlich existieren bereits Startlisten oder Ergebnisse."
+          render :show
+        end
+      end
+    end
+
+    protected
+
+    def validate_save_and_render(on_error_view)
+      raise "Block expected" unless block_given?
+
+      block = yield
 
       success = false
       # Validate and save
@@ -72,11 +108,9 @@ module Internal
         redirect_to back_or_default
       else
         @block = block
-        render :show
+        render on_error_view
       end
     end
-
-    protected
 
     def default_url
       internal_time_schedule_index_url(@regatta)

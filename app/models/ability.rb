@@ -40,8 +40,12 @@ class Ability
       if user.role_admin
         can :manage, User
         can :manage, [Address, Rower, Event, Race, Start, Result, ExternalMeasurement]
+        can :create, Services::TimeSchedule::Block
         can :update, Services::TimeSchedule::Block do |block|
           block.all_races.all? { |race| can?(:update, race) }
+        end
+        can :destroy, Services::TimeSchedule::Block do |block|
+          block.all_races.all? { |race| can?(:destroy, race) }
         end
         can :manage, MeasuringPoint
         can :manage, :tv_settings

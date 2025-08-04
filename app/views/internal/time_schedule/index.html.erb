@@ -15,7 +15,7 @@
             startEditable: true,
             extendedProps: {
               editUrl: internal_time_schedule_url(@regatta, block.id),
-              updateUrl: internal_time_schedule_url(@regatta, block.id)
+              resourceUrl: internal_time_schedule_url(@regatta, block.id)
             }
           } : {}
         )})) %>
@@ -23,7 +23,7 @@
 
   </div>
   <div class="col-md-4 col-lg-3">
-    <%#= link_to t('helpers.titles.new', model: Services::TimeSchedule::Block.model_name.human), new_internal_time_schedule_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+    <%= link_to t('helpers.titles.new', model: Services::TimeSchedule::Block.model_name.human), new_internal_time_schedule_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
   </div>
 </div>
 
@@ -75,8 +75,8 @@
         right: 'timeGrid,timeGridDay prev,next'
       },
       eventDrop: async function(info) {
-        if (info.event.extendedProps.updateUrl) {
-          const response = await fetch(info.event.extendedProps.updateUrl, {
+        if (info.event.extendedProps.resourceUrl) {
+          const response = await fetch(info.event.extendedProps.resourceUrl, {
             method: 'PUT',
             credentials: 'same-origin',
             headers: {

@@ -1,6 +1,26 @@
 <h1><%= t("helpers.titles.new", model: Services::TimeSchedule::Block.model_name.human) %></h1>
 
-<%= bootstrap_form_with url: internal_time_schedules_path, method: :post do |f| %>
-  <%= f.datetime_field :first_start, value: @time_schedule_serivce.map(&:last_race_start).max, label: "Erster Start" %>
+<%= bootstrap_form_with url: internal_time_schedule_index_path(@regatta), method: :post do |f| %>
+  <%= f.number_field :event_number_from, value: params[:event_number_from] || @regatta.events.minimum(:number),
+                     min: 1, label: "Von Rennen Nummer"%>
+
+  <%= f.number_field :event_number_to, value: params[:event_number_to] || @regatta.events.minimum(:number),
+                     min: 1, label: "Bis Rennen Nummer" %>
+
+  <%= f.select :race_type, Parameter.all_race_type_names.invert,
+               selected: params[:race_type], label: Race.human_attribute_name(:type_short) %>
+
+  <%= f.select :first_race_letter, ["1", "A"],
+               selected: params[:first_race_letter], label: "Erster Lauf beginnt mit" %>
+
+  <%= f.datetime_field :first_start, value: params[:first_start] || @time_schedule_service.map(&:last_race_start).max&.+(10.minutes),
+                       label: "Erster Start" %>
+
+  <%= f.number_field :race_interval, value: params[:race_interval] || @time_schedule_service.map(&:race_interval).compact.last&./(60)&.to_i,
+                     min: 1, label: "Rennabstand", append: "Minuten" %>
+
+  <%= f.select :fixed_race_count, (1..8).inject({ "Automatisch nach Teilnehmeranzahl": nil }) { |h, i| h.merge(i => i) },
+               selected: params[:fixed_race_count], label: "Anzahl Läufe" %>
+
   <%= f.primary "Erzeugen" %>
 <% end %>
