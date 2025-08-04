@@ -36,8 +36,8 @@ class Parameter < ApplicationRecord
     if (pluralize && !@types_short_to_long_pluralized[type_short]) ||
        (!pluralize && !@types_short_to_long[type_short])
       v = self.value_for('Uebersetzer_Lauftypen', type_short).first
-      @types_short_to_long[type_short] = v.value || type_short
-      @types_short_to_long_pluralized[type_short] = v.additional || @types_short_to_long[type_short]
+      @types_short_to_long[type_short] = v&.value || type_short
+      @types_short_to_long_pluralized[type_short] = v&.additional || @types_short_to_long[type_short]
     end
 
     if pluralize
