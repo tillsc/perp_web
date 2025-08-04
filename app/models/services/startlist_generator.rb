@@ -104,7 +104,7 @@ module Services
     # *** Side effect free functions ***
 
     def self.number_of_heats(number_of_lanes, number_of_teams)
-      return 0 if number_of_teams <= 0
+      return 0 if number_of_teams <= 1
 
       # Step 1: All valid heat counts that divide evenly into lane count
       valid_heat_counts = (1..number_of_lanes).select { |n| number_of_lanes % n == 0 }
