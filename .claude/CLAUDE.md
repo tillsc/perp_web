@@ -1,0 +1,27 @@
+# Project Notes
+
+## Non-obvious patterns
+
+### Frontend
+- Custom Web Components (`customElements.define`) — no Stimulus
+- Turbolinks (not Turbo/Hotwire)
+
+### Controllers
+- Namespaced by area: `Internal::` for admin, `Announcer::` etc.
+
+### Models & Queries
+- Prefer `preload()` explicitly to avoid N+1
+- Arel for complex queries, not raw SQL strings
+
+### Services
+- Service objects support a preview mode before persisting
+
+### CSS
+- SCSS scoped per feature: `internal.scss`, `results.scss`, etc.
+- State classes like `.changed`, `.withdrawn` for visual state
+
+### Tests
+- Minitest + fixtures; focus only on critical business logic
+
+### Style
+- Short variable names (`p`, `mp`) acceptable in tight loops
