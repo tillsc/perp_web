@@ -60,8 +60,6 @@ gem 'bootstrap5-kaminari-views'
 
 gem 'ruby-progressbar'
 
-gem 'rubocop'
-
 gem 'sentry-rails'
 
 gem 'cancancan'
@@ -91,6 +89,8 @@ group :development do
   gem 'listen'
 
   gem 'bump' # for version management
+
+  gem 'rubocop'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   gem 'rack-mini-profiler'
