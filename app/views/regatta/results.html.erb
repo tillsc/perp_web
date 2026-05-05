@@ -18,7 +18,8 @@
           <h5><%= label %></h5>
           <% @missing[key][race_type].each do |participant| %>
             <div class="result-row">
-              <div class="position"></div>
+              <div class="rank"></div>
+              <div class="lane"></div>
               <div class="number"><%= participant.number %></div>
               <div class="country"><%= participant.team.try(:country) %></div>
               <div class="team"><%= participant.team_name(regatta: @regatta) %></div>

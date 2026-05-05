@@ -69,6 +69,8 @@
   </nav>
 <% end %>
 
+<%= yield :subnav %>
+
 <div class="main container<%= @page_container_suffix %> flex-grow-1">
   <% flash.each do |key, value| %>
     <div class="alert alert-<%= key %>">

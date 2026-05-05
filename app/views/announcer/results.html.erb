@@ -1,31 +1,43 @@
-<div class="row my-3">
-  <div class="col-3">
-    <% if @previous_race %>
-      <%= link_to "<< #{@previous_race.full_name}", announcer_results_path(@regatta, @previous_race.event.number, @previous_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'btn btn-outline-secondary d-block prev-button' %>
-    <% end %>
-  </div>
-  <div class="col-3">
-    <% if @current_race && @current_race.full_name != @race.full_name %>
-      <%= link_to "Aktuell #{@current_race.full_name}", announcer_results_path(@regatta, @current_race.event.number, @current_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'btn btn-outline-primary d-block current-race-button' %>
-    <% end %>
-  </div>
-  <div class="col-3">
-    <% if @next_race %>
-      <%= link_to ">> #{@next_race.full_name}", announcer_results_path(@regatta, @next_race.event.number, @next_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'btn btn-outline-secondary d-block next-button' %>
-    <% end %>
-  </div>
-  <div class="col-3">
-    <%= link_to "Zum Dashboard", announcer_path(@regatta, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'btn btn-outline-secondary d-block' %>
-  </div>
-</div>
+<% content_for :subnav do %>
+  <nav class="navbar bg-body-secondary border-bottom py-0 mb-2" style="--bs-nav-link-padding-y: 0.05rem">
+    <ul class="navbar-nav flex-row justify-content-around w-100">
+      <li class="nav-item">
+        <% if @previous_race %>
+          <%= link_to announcer_results_path(@regatta, @previous_race.event.number, @previous_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'nav-link prev-button' do %>
+            &laquo; <span class="d-none d-lg-inline"><%= @previous_race.full_name %></span><span class="d-lg-none"><%= @previous_race.compact_name %></span>
+          <% end %>
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <% if @current_race && @current_race.full_name != @race.full_name %>
+          <%= link_to announcer_results_path(@regatta, @current_race.event.number, @current_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'nav-link fw-bold current-race-button' do %>
+            <span class="d-none d-lg-inline">Aktuell <%= @current_race.full_name %></span><span class="d-lg-none">&#9654; <%= @current_race.compact_name %></span>
+          <% end %>
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <% if @next_race %>
+          <%= link_to announcer_results_path(@regatta, @next_race.event.number, @next_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'nav-link next-button' do %>
+            <span class="d-none d-lg-inline"><%= @next_race.full_name %></span><span class="d-lg-none"><%= @next_race.compact_name %></span> &raquo;
+          <% end %>
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to announcer_path(@regatta, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'nav-link' do %>
+          <span class="d-none d-lg-inline">Zum </span>Dashboard
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+<% end %>
 
 <% if @result_entries %>
-  <div style="break-inside: avoid">
+  <div class="results-with-lane<%= ' results-by-lane' if params[:lane_view].present? %>" style="break-inside: avoid">
     <div class="row align-items-center mb-2">
-      <div class="col">
+      <div class="col-12 col-lg">
         <h3 class="mb-0"><%= @race.full_name(show_event_name_short: true) %></h3>
       </div>
-      <div class="col-auto">
+      <div class="col-12 col-lg-auto">
         <div class="btn-group" role="group">
           <%= link_to "Nach Zeit", url_for(lane_view: nil, reverse_lanes: nil),
                       class: "btn btn-sm #{params[:lane_view].blank? ? 'btn-outline-success' : 'btn-outline-secondary'}" %>
@@ -37,11 +49,13 @@
       </div>
     </div>
     <div class="result-row result-row__header">
-      <div class="position"><%= params[:lane_view].present? ? 'Bahn' : 'Pos.' %></div>
+      <div class="rank">Pos.</div>
+      <div class="lane">Bahn</div>
       <div class="number">Bugnr</div>
       <div class="country">Land</div>
       <div class="team">Teamname</div>
       <div class="times">
+        <div class="times-label">Zeiten</div>
         <% @measuring_points.each do |mp| %>
           <div class="time"><%= mp.name %></div>
         <% end %>
@@ -52,23 +66,11 @@
          .then { |r| params[:lane_view].present? ? r.sort_by { |e| e[:lane].presence || e[:participant]&.number.to_i + 1000 } : r }
          .then { |r| params[:reverse_lanes].present? ? r.reverse : r }
          .each do |e| %>
-      <div class="result-row<%= " result-row--lane-view result-row--rank-#{e[:rank]}" if params[:lane_view].present? %>"
-           <%= "style=\"--rank-indent: #{e[:rank] ? (e[:rank] - 1) * 1.5 : 0}em\"".html_safe if params[:lane_view].present? %>>
-        <div class="position">
-          <% if params[:lane_view].present? %>
-            <%= e[:lane] %> <%= medal_for(e[:rank]) %>
-          <% else %>
-            <%= e[:rank] %>
-          <% end %>
-        </div>
-        <div class="number">
-          <%= e[:participant]&.number %>
-          <% if params[:lane_view].present? %>
-            <%= "(Pos. #{e[:rank]})" if e[:rank] %>
-          <% else %>
-            (Bahn <%= e[:lane] %>)
-          <% end %>
-        </div>
+      <div class="result-row result-row--rank-<%= e[:rank] %>"
+           style="--rank-indent: <%= [(e[:rank] || 1) - 1, 0].max * 1.5 %>em">
+        <div class="rank"><%= e[:rank] %> <%= medal_for(e[:rank]) if e[:rank] %></div>
+        <div class="lane"><%= e[:lane] %></div>
+        <div class="number"><%= e[:participant]&.number %></div>
         <div class="country"><%= e[:participant]&.team&.country %></div>
         <div class="team"><%= e[:participant]&.team_name(regatta: @regatta) %></div>
         <div class="rower-names">

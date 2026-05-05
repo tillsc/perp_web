@@ -2,6 +2,8 @@ class AnnouncerController < ApplicationController
 
   is_internal!
 
+  before_action { @page_container_suffix = "-xxl" }
+
   def index
     authorize! :access, :announcer_views
 

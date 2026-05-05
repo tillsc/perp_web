@@ -1,5 +1,7 @@
 class RegattaController < ApplicationController
 
+  before_action { @page_container_suffix = "-xxl" }
+
   def show
     unless @regatta
       redirect_to internal_regattas_url

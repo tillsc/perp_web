@@ -1,35 +1,65 @@
-.result-row {
-  display: grid;
-  grid-template-areas:
-            "position number  team        times"
-            "position country rower-names times";
-  grid-template-columns: 1fr 1fr 5fr 2fr;
-  @media (min-width: 1000px) {
-    grid-template-columns: 1fr 1fr 8fr 4fr;
+$result-compact: 800px;
+$result-wide: 1200px;
+
+// $pos: grid area names for position columns (e.g. "rank lane")
+// $n: number of position columns
+@mixin result-grid($pos, $n) {
+  $pos-cols: "";
+  $team-span: "";
+  $rower-span: "";
+  @for $i from 1 through $n {
+    $pos-cols: "#{$pos-cols} 1fr";
+  }
+  @for $i from 1 through ($n + 2) { // pos + number + country
+    $team-span: "#{$team-span} team";
+    $rower-span: "#{$rower-span} rower-names";
   }
 
-  @media only screen and (max-width: 800px) {
+  grid-template-areas:
+    "#{$pos} number  team        times"
+    "#{$pos} country rower-names times";
+  grid-template-columns: #{$pos-cols} 1fr 5fr 2fr;
+
+  @media (min-width: $result-wide) {
+    grid-template-columns: #{$pos-cols} 1fr 8fr 4fr;
+  }
+
+  @media (max-width: $result-compact) {
     grid-template-areas:
-            "position    number      country     times"
-            "team        team        team        times"
-            "rower-names rower-names rower-names times";
-    grid-template-columns: 1fr 1fr 5fr 2fr;
-    &__header {
-      .team, .rower-names {
-        display: none;
-      }
-    }
+      "#{$pos} number country   times"
+      "#{$team-span}            times"
+      "#{$rower-span}           times";
+    grid-template-columns: #{$pos-cols} 1fr 3fr 2fr;
+  }
 }
 
-  grid-gap: 0.2rem;
+.result-row {
+  display: grid;
+  @include result-grid("rank", 1);
 
+  @media (max-width: $result-compact) {
+    font-size: 0.875rem;
+    line-height: 1.2;
+    row-gap: 0;
+    &__header {
+      .team, .rower-names { display: none; }
+    }
+  }
+
+  grid-gap: 0.2rem;
   border-bottom: 1px solid #ccc;
 
   &__header {
     font-weight: bold;
+    .times-label { display: none; }
+    @media (max-width: $result-compact) {
+      .times-label { display: block; text-align: right; }
+      .time { display: none; }
+    }
   }
 
-  .position { grid-area: position }
+  .rank { grid-area: rank }
+  .lane { grid-area: lane }
   .number { grid-area: number }
   .country {
     grid-area: country;
@@ -42,48 +72,43 @@
   }
   .times {
     grid-area: times;
-    display: flex;
-    flex-wrap: wrap;
-    @media (max-width: 800px) {
-      flex-wrap: nowrap;
-      flex-direction: column;
+    display: grid;
+    column-gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    @media (max-width: $result-wide) {
+      grid-template-columns: repeat(2, 1fr);
     }
-    .time {
-      flex: 1 1 50px;
-      text-align: right;
-      @media (max-width: 800px) {
-        flex: 1;
-      }
+    @media (max-width: $result-compact) {
+      grid-template-columns: 1fr;
     }
-    .comment {
-      flex: 1;
-    }
+    .time { text-align: right; }
+    .comment { grid-column: 1 / -1; }
   }
 }
 
-.result-row--lane-view {
-  .team, .rower-names {
-    padding-left: var(--rank-indent, 0em);
-  }
-  &.result-row--rank-1 { background-color: #fef9e0; }
-  &.result-row--rank-2 { background-color: #f0f0f0; }
-  &.result-row--rank-3 { background-color: #faeedd; }
-}
+.result-row--rank-1 { background-color: #fef9e0; }
+.result-row--rank-2 { background-color: #f0f0f0; }
+.result-row--rank-3 { background-color: #faeedd; }
 
 .result-footer {
   display: grid;
   grid-template-columns: 1fr auto;
-  margin-bottom: 2rem;
-  @media (max-width: 800px) {
+  @media (max-width: $result-compact) {
     grid-template-columns: 1fr;
   }
-  .started_at {
-    grid-column: auto;
-  }
-  .referees {
-    grid-column: auto;
-  }
-  .result-official {
-    grid-column: auto;
+  .started_at { grid-column: auto; }
+  .referees { grid-column: auto; }
+  .result-official { grid-column: auto; }
+}
+
+// Announcer-specific: rank + lane columns
+.results-with-lane .result-row {
+  @include result-grid("rank lane", 2);
+}
+
+.results-by-lane .result-row {
+  @include result-grid("lane rank", 2);
+  .team, .rower-names {
+    padding-left: var(--rank-indent, 0em);
   }
 }

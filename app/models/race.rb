@@ -139,6 +139,10 @@ class Race < ApplicationRecord
     "#{Parameter.race_type_name(self.type_short)} #{self.number_short}"
   end
 
+  def compact_name
+    "#{event_number} #{number}"
+  end
+
   def full_name(show_event_name_short: false)
     "Rennen #{event&.number} #{" (#{event&.name_short})" if show_event_name_short} - #{self.name}"
   end
