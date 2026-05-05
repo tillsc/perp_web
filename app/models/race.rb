@@ -43,7 +43,7 @@ class Race < ApplicationRecord
            inverse_of: :race, dependent: :restrict_with_error
 
   scope :order_by_started_at, -> (asc: true) do
-    order(Arel.sql(%Q(DATE("SollStartZeit") #{asc ? "ASC" : "DESC"})),
+    order(Arel.sql(%Q(DATE(SollStartZeit) #{asc ? "ASC" : "DESC"})),
           arel_table[:started_at_time].send(asc ? :asc : :desc))
   end
 
