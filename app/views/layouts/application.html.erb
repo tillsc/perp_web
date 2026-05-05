@@ -9,20 +9,20 @@
   <% end %>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="turbolinks-cache-control" content="no-preview">
+  <meta name="turbo-cache-control" content="no-preview">
 
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbo-track': 'reload' %>
   <% if controller.class.is_internal? %>
-    <%= stylesheet_link_tag 'internal', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'internal', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'internal', media: 'all', 'data-turbo-track': 'reload' %>
+    <%= javascript_include_tag 'internal', 'data-turbo-track': 'reload' %>
   <% end %>
   <%= javascript_importmap_tags('app') %>
   <% Array.wrap(@additional_stylesheets).each do |css| %>
-    <%= stylesheet_link_tag css, 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag css, 'data-turbo-track': 'reload' %>
   <% end %>
   <% Array.wrap(@additional_javascript).each do |js| %>
-    <%= javascript_include_tag js, 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag js, 'data-turbo-track': 'reload' %>
   <% end %>
 </head>
 

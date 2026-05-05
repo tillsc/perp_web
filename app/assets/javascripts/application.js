@@ -11,10 +11,10 @@
 // about supported directives.
 //
 //= require bootstrap
-//= require turbolinks.custom
+//= require turbo.custom
 //= require_tree ../components
 
-document.addEventListener("turbolinks:load", () => {
+document.addEventListener("turbo:load", () => {
     const hash = window.location.hash;
 
     if (!hash) return;

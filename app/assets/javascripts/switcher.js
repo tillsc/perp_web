@@ -13,7 +13,7 @@ const checkForUpdate = async (current_url) => {
     if (data['url'] != current_url) {
       console.log("Reload!", data['url'], '!=', current_url);
       clearTimeout(switcherTimeout);
-      reloadWithTurbolinks();
+      reloadPage();
     }
   }
   catch(e) {
