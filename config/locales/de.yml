@@ -267,3 +267,9 @@ de:
       race: Aktuelles Rennen
       final_times: Letztes 2000m Ergebnis
       winner: Letzter Gewinner
+    switcher_compact:
+      blank: Leer
+      start: Start
+      race: Rennen
+      final_times: 2000m
+      winner: Gewinner

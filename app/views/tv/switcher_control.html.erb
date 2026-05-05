@@ -1,9 +1,11 @@
-<h2>TV Switcher umschalten</h2>
-<%= bootstrap_form_with url: tv_switcher_control_url, method: :put do |f| %>
-  <div class="col col-sm-10 col-md-6 col-xl-4">
+<% compact = params[:compact].present? %>
+<%= content_tag(compact ? :h6 : :h2, 'TV Switcher umschalten') %>
+<%= bootstrap_form_with url: tv_switcher_control_url(compact: params[:compact]), method: :put do |f| %>
+  <div class="<%= compact ? 'd-flex flex-wrap gap-1' : 'col col-sm-10 col-md-6 col-xl-4' %>">
+    <% scope = compact ? 'tv.switcher_compact' : 'tv.switcher' %>
     <% @switcher_urls.keys.each do |key| %>
-      <%= f.button t(key, scope: 'tv.switcher', default: key), name: 'switch_to', value: key,
-                   extra_class: "d-block w-100 m-1 #{@current_switcher_view == key ? 'btn-success' : ''}" %>
+      <%= f.button t(key, scope: scope, default: key), name: 'switch_to', value: key,
+                   extra_class: "#{'d-block w-100 m-1' unless compact} #{@current_switcher_view == key ? 'btn-success' : ''}" %>
     <% end %>
   </div>
 <% end %>

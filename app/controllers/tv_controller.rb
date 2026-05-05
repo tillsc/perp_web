@@ -84,7 +84,7 @@ class TvController < ApplicationController
 
   def switcher_control
     prepare_switcher_urls
-
+    render layout: (params[:compact].present? ? 'minimal' : true)
   end
 
   def update_switcher_control
@@ -92,7 +92,7 @@ class TvController < ApplicationController
     Parameter.set_value_for!("Tv", "CurrentSwitcherView", @current_switcher_view)
 
     prepare_switcher_urls
-    render :switcher_control
+    render :switcher_control, layout: ('minimal' if params[:compact].present?)
   end
 
   protected

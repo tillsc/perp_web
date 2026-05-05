@@ -21,6 +21,7 @@
   <li class="list-group-item">
     <%= link_to 'Auto-Switcher', tv_switcher_url %>
     (<%= link_to 'Kontroll-Ansicht', tv_switcher_control_url %> |
+    <%= link_to 'Kompakte Kontroll-Ansicht', tv_switcher_control_url(compact: '1') %> |
     <%= link_to 'Testmodus', tv_switcher_url(testmode: '1') %>)
   </li>
 </ul>
