@@ -1,54 +1,85 @@
 <% content_for :subnav do %>
   <nav class="navbar bg-body-secondary border-bottom py-0 mb-2" style="--bs-nav-link-padding-y: 0.05rem">
-    <ul class="navbar-nav flex-row justify-content-around w-100">
-      <li class="nav-item">
+    <ul class="navbar-nav flex-row align-items-center w-100">
+      <li class="nav-item col-2 text-center">
         <% if @previous_race %>
           <%= link_to announcer_results_path(@regatta, @previous_race.event.number, @previous_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'nav-link prev-button' do %>
-            &laquo; <span class="d-none d-lg-inline"><%= @previous_race.full_name %></span><span class="d-lg-none"><%= @previous_race.compact_name %></span>
+            &laquo; <%= @previous_race.compact_name %>
           <% end %>
         <% end %>
       </li>
-      <li class="nav-item">
+      <li class="nav-item col-2 text-center">
         <% if @current_race && @current_race.full_name != @race.full_name %>
           <%= link_to announcer_results_path(@regatta, @current_race.event.number, @current_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'nav-link fw-bold current-race-button' do %>
-            <span class="d-none d-lg-inline">Aktuell <%= @current_race.full_name %></span><span class="d-lg-none">&#9654; <%= @current_race.compact_name %></span>
+            &#9654; <%= @current_race.compact_name %>
           <% end %>
         <% end %>
       </li>
-      <li class="nav-item">
+      <li class="nav-item col-2 text-center">
         <% if @next_race %>
           <%= link_to announcer_results_path(@regatta, @next_race.event.number, @next_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'nav-link next-button' do %>
-            <span class="d-none d-lg-inline"><%= @next_race.full_name %></span><span class="d-lg-none"><%= @next_race.compact_name %></span> &raquo;
+            <%= @next_race.compact_name %> &raquo;
           <% end %>
         <% end %>
       </li>
-      <li class="nav-item">
+      <li class="nav-item col-2 text-center">
+        <% if @same_event_races.present? %>
+          <select id="select-race" class="form-select form-select-sm" onchange="Turbo.visit(this.value)">
+            <option disabled selected><%= @race.name %></option>
+            <% @same_event_races.each do |r| %>
+              <option value="<%= announcer_results_path(@regatta, r.event.number, r.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]) %>">
+                <%= r.name %>
+              </option>
+            <% end %>
+          </select>
+        <% end %>
+      </li>
+      <li class="nav-item col-2 text-center">
+        <% if @related_event_races.present? %>
+          <select id="select-event" class="form-select form-select-sm" onchange="Turbo.visit(this.value)">
+            <option disabled selected><%= @race.event.name_short %></option>
+            <% @related_event_races.group_by { |r| r.event.number }.each do |event_number, races| %>
+              <optgroup label="Rennen <%= event_number %>">
+                <% races.each do |r| %>
+                  <option value="<%= announcer_results_path(@regatta, r.event.number, r.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]) %>">
+                    <%= r.name %>
+                  </option>
+                <% end %>
+              </optgroup>
+            <% end %>
+          </select>
+        <% end %>
+      </li>
+      <li class="nav-item col-2 text-center">
         <%= link_to announcer_path(@regatta, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'nav-link' do %>
-          <span class="d-none d-lg-inline">Zum </span>Dashboard
+          Dashboard
         <% end %>
       </li>
     </ul>
   </nav>
 <% end %>
 
-<turbo-frame id="results">
-  <div class="results-with-lane<%= ' results-by-lane' if params[:lane_view].present? %>" style="break-inside: avoid">
-    <div class="row align-items-center mb-2">
-      <div class="col-12 col-lg">
-        <h3 class="mb-0"><%= @race.full_name(show_event_name_short: true) %></h3>
-      </div>
-      <div class="col-12 col-lg-auto">
-        <div class="btn-group" role="group">
-          <%= link_to "Nach Zeit", url_for(lane_view: nil, reverse_lanes: nil),
-                      class: "btn btn-sm #{params[:lane_view].blank? ? 'btn-outline-success' : 'btn-outline-secondary'}" %>
-          <%= link_to "Nach Bahn (Bahn 1 oben)", url_for(lane_view: '1', reverse_lanes: nil),
-                      class: "btn btn-sm #{params[:lane_view].present? && params[:reverse_lanes].blank? ? 'btn-outline-success' : 'btn-outline-secondary'}" %>
-          <%= link_to "Nach Bahn (Bahn #{@regatta.number_of_lanes} oben)", url_for(lane_view: '1', reverse_lanes: '1'),
-                      class: "btn btn-sm #{params[:lane_view].present? && params[:reverse_lanes].present? ? 'btn-outline-success' : 'btn-outline-secondary'}" %>
-        </div>
-      </div>
+<div class="row align-items-center mb-2">
+  <div class="col-12 col-lg">
+    <h3 class="mb-0"><%= @race.full_name(show_event_name_short: true) %></h3>
+  </div>
+  <div class="col-12 col-lg-auto">
+    <div class="btn-group" role="group">
+      <%= link_to "Nach Zeit", url_for(lane_view: nil, reverse_lanes: nil),
+                  id: "sort-by-time",
+                  class: "btn btn-sm #{params[:lane_view].blank? ? 'btn-outline-success' : 'btn-outline-secondary'}" %>
+      <%= link_to "Nach Bahn (Bahn 1 oben)", url_for(lane_view: '1', reverse_lanes: nil),
+                  id: "sort-by-lane",
+                  class: "btn btn-sm #{params[:lane_view].present? && params[:reverse_lanes].blank? ? 'btn-outline-success' : 'btn-outline-secondary'}" %>
+      <%= link_to "Nach Bahn (Bahn #{@regatta.number_of_lanes} oben)", url_for(lane_view: '1', reverse_lanes: '1'),
+                  id: "sort-by-lane-reverse",
+                  class: "btn btn-sm #{params[:lane_view].present? && params[:reverse_lanes].present? ? 'btn-outline-success' : 'btn-outline-secondary'}" %>
     </div>
+  </div>
+</div>
 
+<div class="results-with-lane<%= ' results-by-lane' if params[:lane_view].present? %>">
+  <turbo-frame id="results">
     <div class="result-row result-row__header">
       <div class="rank">Pos.</div>
       <div class="lane">Bahn</div>
@@ -99,9 +130,10 @@
     <% end %>
 
     <%= render 'regatta/result_footer', race: @race %>
-  </div>
-  <script>autoreloadAfter(3000)</script>
-</turbo-frame>
+    <script>autoreloadAfter(3000, document.getElementById('results'))</script>
+  </turbo-frame>
+</div>
+
 
 <script>
   if (!window.perpKeyboardListenerInstalled) {
@@ -110,16 +142,30 @@
       if (event.defaultPrevented) {
         return;
       }
-      var b = null;
+      var b = null, s = null;
       if (event.key == "ArrowLeft") {
         b = document.querySelector('.prev-button')
       } else if (event.key == "ArrowRight") {
         b = document.querySelector('.next-button')
       } else if (event.key == "Home" || event.key == "F1") {
         b = document.querySelector('.current-race-button')
+      } else if (event.key == "l") {
+        s = document.getElementById('select-race')
+      } else if (event.key == "r") {
+        s = document.getElementById('select-event')
+      } else if (event.key == "z") {
+        b = document.getElementById('sort-by-time')
+      } else if (event.key == "b") {
+        b = document.getElementById('sort-by-lane')
+      } else if (event.key == "B") {
+        b = document.getElementById('sort-by-lane-reverse')
       }
       if (b) {
         b.click();
+        event.preventDefault();
+      } else if (s) {
+        s.focus();
+        s.showPicker();
         event.preventDefault();
       }
     })

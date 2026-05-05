@@ -30,9 +30,18 @@ class AnnouncerController < ApplicationController
       return
     end
 
-    @previous_race = Race.for_regatta(@regatta).preload(:event).before_race(@race).first
-    @next_race = Race.for_regatta(@regatta).preload(:event).following_race(@race).first
-    @current_race = Race.for_regatta(@regatta).preload(:event).latest.first
+    unless turbo_frame_request?
+      @previous_race = Race.for_regatta(@regatta).preload(:event).before_race(@race).first
+      @next_race = Race.for_regatta(@regatta).preload(:event).following_race(@race).first
+      @current_race = Race.for_regatta(@regatta).preload(:event).latest.first
+      @same_event_races = @race.event.races.where.not(number: @race.number).order(:number)
+      @related_event_races = Race.for_regatta(@regatta).
+        joins(:event).
+        where(Event.arel_table[:name_short].eq(@race.event.name_short)).
+        where.not(event_number: @race.event_number).
+        preload(:event).
+        order(:event_number, :number)
+    end
 
     participants = @race.event.participants.index_by(&:participant_id)
 

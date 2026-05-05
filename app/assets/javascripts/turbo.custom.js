@@ -9,15 +9,23 @@ let cancelAutoreload = function () {
   autoreloadRunning = false
 }
 
-let autoreloadAfter = function (secs) {
+let autoreloadAfter = function (secs, frame) {
   cancelAutoreload()
-  autoreloadRunning = setTimeout(reloadPage, secs)
+  autoreloadRunning = setTimeout(() => reloadPage(frame), secs)
 }
 
-let reloadPage = function () {
+let reloadPage = function (frame) {
   cancelAutoreload()
-  autoscroll = true
-  Turbo.visit(window.location.toString(), {action: 'replace'})
+  if (frame) {
+    if (frame.src) {
+      frame.reload()
+    } else {
+      frame.src = window.location.href
+    }
+  } else {
+    autoscroll = true
+    Turbo.visit(window.location.toString(), {action: 'replace'})
+  }
 }
 
 

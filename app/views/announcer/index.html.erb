@@ -37,6 +37,19 @@
     <% end %>
   </div>
 </div>
+<hr class="mt-4">
+<h6 class="text-muted">Tastaturkürzel (in der Ergebnisansicht)</h6>
+<div class="row row-cols-auto g-2 small text-muted">
+  <div class="col"><kbd>&larr;</kbd> Vorheriges Rennen</div>
+  <div class="col"><kbd>&rarr;</kbd> Nächstes Rennen</div>
+  <div class="col"><kbd>Home</kbd> / <kbd>F1</kbd> Aktuelles Rennen</div>
+  <div class="col"><kbd>z</kbd> Sortierung nach Zeit</div>
+  <div class="col"><kbd>b</kbd> Sortierung nach Bahn (Bahn 1 oben)</div>
+  <div class="col"><kbd>B</kbd> Sortierung nach Bahn (Bahn <%= @regatta.number_of_lanes %> oben)</div>
+  <div class="col"><kbd>l</kbd> Lauf-Auswahl öffnen &mdash; dann Anfangsbuchstaben tippen, z.B. <kbd>v</kbd> + <kbd>Enter</kbd> für Vorlauf</div>
+  <div class="col"><kbd>r</kbd> Rennen-Auswahl öffnen &mdash; dann Anfangsbuchstaben tippen, z.B. <kbd>f</kbd> + <kbd>Enter</kbd> für Finale</div>
+</div>
+
 <script>
   autoreloadAfter(5000)
 </script>
