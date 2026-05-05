@@ -1,6 +1,11 @@
 <div class="result-footer">
   <div class="started_at">
-    Startzeit: <%= race.started_at && l(race.started_at) %>
+    Startzeit:
+    <% if race.started_at %>
+      <%= l(race.started_at) %>
+    <% else %>
+      <%= race.planned_for && l(race.planned_for) %> (Geplant)
+    <% end %>
   </div>
   <div class="result_official">
     <%= race.state_text %>

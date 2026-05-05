@@ -31,7 +31,7 @@
   </nav>
 <% end %>
 
-<% if @result_entries %>
+<turbo-frame id="results">
   <div class="results-with-lane<%= ' results-by-lane' if params[:lane_view].present? %>" style="break-inside: avoid">
     <div class="row align-items-center mb-2">
       <div class="col-12 col-lg">
@@ -48,18 +48,23 @@
         </div>
       </div>
     </div>
+
     <div class="result-row result-row__header">
       <div class="rank">Pos.</div>
       <div class="lane">Bahn</div>
       <div class="number">Bugnr</div>
       <div class="country">Land</div>
       <div class="team">Teamname</div>
-      <div class="times">
-        <div class="times-label">Zeiten</div>
-        <% @measuring_points.each do |mp| %>
-          <div class="time"><%= mp.name %></div>
-        <% end %>
-      </div>
+      <% if @measuring_points %>
+        <div class="times">
+          <div class="times-label">Zeiten</div>
+          <% @measuring_points.each do |mp| %>
+            <div class="time"><%= mp.name %></div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="state">Status</div>
+      <% end %>
     </div>
 
     <% @result_entries
@@ -76,56 +81,29 @@
         <div class="rower-names">
           <%= e[:participant]&.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r), target: 'announcer-rower') }) %>
         </div>
-        <div class="times">
-          <% @measuring_points.each do |mp| %>
-            <div class="time">
-              <%= e[:result].time_for(mp)&.time %>
-              <% if mp.number == @max_measuring_point_number %>
-                <br><%= e[:diff_to_prev] %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
+        <% if @measuring_points %>
+          <div class="times">
+            <% @measuring_points.each do |mp| %>
+              <div class="time">
+                <%= e[:result].time_for(mp)&.time %>
+                <% if mp.number == @max_measuring_point_number %>
+                  <br><%= e[:diff_to_prev] %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="state"><%= e[:participant]&.state %></div>
+        <% end %>
       </div>
     <% end %>
 
     <%= render 'regatta/result_footer', race: @race %>
   </div>
-<% else %>
-  <h3><%= @race.full_name(show_event_name_short: true) %></h3>
-  <div><%= @race.planned_for && l(@race.planned_for) %></div>
-  <div class="table-responsive-md">
-    <table class="table">
-      <thead>
-      <th><%= link_to "Bahn", url_for(reverse_lanes: params[:reverse_lanes].present? ? nil : '1', lane_view: params[:lane_view]) %></th>
-      <th>Bugnr.</th>
-      <th>Land</th>
-      <th>Teamname</th>
-      <th>Ruderer</th>
-      <th>Status</th>
-      </thead>
-      <tbody>
-      <% @race.starts.
-        sort_by { |s| params[:reverse_lanes].present? ? -s.lane_number.to_i : s.lane_number.to_i }.
-        each do |s| %>
-        <% participant = @race.event.participants.find { |p| p.participant_id == s.participant_id } %>
-        <tr class="<%= participant_state_classes(participant) %>">
-          <td><%= s.lane_number %></td>
-          <td><%= participant.number %></td>
-          <td><%= participant.team&.country %></td>
-          <td><%= participant.team_name(regatta: @regatta) %></td>
-          <td><%= participant.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r), target: 'announcer-rower') }) %></td>
-          <td><%= participant.state %></td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </div>
-<% end %>
+  <script>autoreloadAfter(3000)</script>
+</turbo-frame>
 
 <script>
-  autoreloadAfter(3000)
-
   if (!window.perpKeyboardListenerInstalled) {
     window.perpKeyboardListenerInstalled = true
     window.addEventListener("keydown", function (event) {

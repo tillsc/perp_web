@@ -34,35 +34,25 @@ class AnnouncerController < ApplicationController
     @next_race = Race.for_regatta(@regatta).preload(:event).following_race(@race).first
     @current_race = Race.for_regatta(@regatta).preload(:event).latest.first
 
+    participants = @race.event.participants.index_by(&:participant_id)
+
     if @race.results.any?
       @measuring_points = MeasuringPoint.where(regatta_id: params[:regatta_id]).for_event(@race.event)
       @max_measuring_point_number = @race.results.map { |r| r.times.map(&:measuring_point_number).max }.compact.max
-      @result_entries = build_result_entries(@race.results, @max_measuring_point_number)
-    end
-  end
-
-  private
-
-  def build_result_entries(results, measuring_point_number)
-    participants = @race.event.participants.index_by(&:participant_id)
-    current_rank = nil
-    results = results.sort_by { |r| r.sort_time_for(measuring_point_number) }
-
-    results.map.with_index do |r, i|
-      result_time = r.time_for(measuring_point_number)
-      previous_result_time = results[i - 1].time_for(measuring_point_number) if i > 0
-      if result_time&.time != previous_result_time&.time
-        current_rank = i + 1
+      current_rank = nil
+      results = @race.results.sort_by { |r| r.sort_time_for(@max_measuring_point_number) }
+      @result_entries = results.map.with_index do |r, i|
+        result_time = r.time_for(@max_measuring_point_number)
+        previous_result_time = results[i - 1].time_for(@max_measuring_point_number) if i > 0
+        current_rank = i + 1 if result_time&.time != previous_result_time&.time
+        { result: r, participant: participants[r.participant_id], lane: r.lane_number,
+          rank: result_time.present? ? current_rank : nil,
+          diff_to_prev: previous_result_time && result_time.subtract_time(previous_result_time) }
       end
-
-      { result: r,
-        participant: participants[r.participant_id],
-        lane: r.lane_number,
-        rank: result_time.present? ? current_rank : nil,
-        time: result_time&.time,
-        diff_to_first: (result_time && i > 0) ? result_time.subtract_time(results[0].time_for(measuring_point_number)) : nil,
-        diff_to_prev: previous_result_time && result_time.subtract_time(previous_result_time)
-      }
+    else
+      @result_entries = @race.starts.sort_by(&:lane_number).map do |s|
+        { participant: participants[s.participant_id], lane: s.lane_number }
+      end
     end
   end
 

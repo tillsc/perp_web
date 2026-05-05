@@ -165,7 +165,7 @@ class Race < ApplicationRecord
       "Ergebnis endgültig#{ '(Ergebnis korrigiert)' if result_corrected?}"
     elsif result_confirmed?
       'Ergebnis vom Zielrichter freigegeben'
-    else
+    elsif started_at.present?
       'Ergebnis vorläufig'
     end
   end
