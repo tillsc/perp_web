@@ -1,33 +1,101 @@
 <div class="row my-3">
   <div class="col-3">
     <% if @previous_race %>
-      <%= link_to "<< #{@previous_race.full_name}", announcer_results_path(@regatta, @previous_race.event.number, @previous_race.number, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block prev-button' %>
+      <%= link_to "<< #{@previous_race.full_name}", announcer_results_path(@regatta, @previous_race.event.number, @previous_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'btn btn-outline-secondary d-block prev-button' %>
     <% end %>
   </div>
   <div class="col-3">
     <% if @current_race && @current_race.full_name != @race.full_name %>
-      <%= link_to "Aktuell #{@current_race.full_name}", announcer_results_path(@regatta, @current_race.event.number, @current_race.number, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-primary d-block current-race-button' %>
+      <%= link_to "Aktuell #{@current_race.full_name}", announcer_results_path(@regatta, @current_race.event.number, @current_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'btn btn-outline-primary d-block current-race-button' %>
     <% end %>
   </div>
   <div class="col-3">
     <% if @next_race %>
-      <%= link_to ">> #{@next_race.full_name}", announcer_results_path(@regatta, @next_race.event.number, @next_race.number, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block next-button' %>
+      <%= link_to ">> #{@next_race.full_name}", announcer_results_path(@regatta, @next_race.event.number, @next_race.number, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'btn btn-outline-secondary d-block next-button' %>
     <% end %>
   </div>
   <div class="col-3">
-    <%= link_to "Zum Dashboard", announcer_path(@regatta, reverse_lanes: params[:reverse_lanes]), class: 'btn btn-outline-secondary d-block' %>
+    <%= link_to "Zum Dashboard", announcer_path(@regatta, reverse_lanes: params[:reverse_lanes], lane_view: params[:lane_view]), class: 'btn btn-outline-secondary d-block' %>
   </div>
 </div>
 
-<% if @race.results.any? %>
-  <%= render 'regatta/race_results', race: @race, results: @race.results, with_lane: true, full_race_name: true, measuring_points: @measuring_points %>
+<% if @result_entries %>
+  <div style="break-inside: avoid">
+    <div class="row align-items-center mb-2">
+      <div class="col">
+        <h3 class="mb-0"><%= @race.full_name(show_event_name_short: true) %></h3>
+      </div>
+      <div class="col-auto">
+        <div class="btn-group" role="group">
+          <%= link_to "Nach Zeit", url_for(lane_view: nil, reverse_lanes: nil),
+                      class: "btn btn-sm #{params[:lane_view].blank? ? 'btn-outline-success' : 'btn-outline-secondary'}" %>
+          <%= link_to "Nach Bahn (Bahn 1 oben)", url_for(lane_view: '1', reverse_lanes: nil),
+                      class: "btn btn-sm #{params[:lane_view].present? && params[:reverse_lanes].blank? ? 'btn-outline-success' : 'btn-outline-secondary'}" %>
+          <%= link_to "Nach Bahn (Bahn #{@regatta.number_of_lanes} oben)", url_for(lane_view: '1', reverse_lanes: '1'),
+                      class: "btn btn-sm #{params[:lane_view].present? && params[:reverse_lanes].present? ? 'btn-outline-success' : 'btn-outline-secondary'}" %>
+        </div>
+      </div>
+    </div>
+    <div class="result-row result-row__header">
+      <div class="position"><%= params[:lane_view].present? ? 'Bahn' : 'Pos.' %></div>
+      <div class="number">Bugnr</div>
+      <div class="country">Land</div>
+      <div class="team">Teamname</div>
+      <div class="times">
+        <% @measuring_points.each do |mp| %>
+          <div class="time"><%= mp.name %></div>
+        <% end %>
+      </div>
+    </div>
+
+    <% @result_entries
+         .then { |r| params[:lane_view].present? ? r.sort_by { |e| e[:lane].presence || e[:participant]&.number.to_i + 1000 } : r }
+         .then { |r| params[:reverse_lanes].present? ? r.reverse : r }
+         .each do |e| %>
+      <div class="result-row<%= " result-row--lane-view result-row--rank-#{e[:rank]}" if params[:lane_view].present? %>"
+           <%= "style=\"--rank-indent: #{e[:rank] ? (e[:rank] - 1) * 1.5 : 0}em\"".html_safe if params[:lane_view].present? %>>
+        <div class="position">
+          <% if params[:lane_view].present? %>
+            <%= e[:lane] %> <%= medal_for(e[:rank]) %>
+          <% else %>
+            <%= e[:rank] %>
+          <% end %>
+        </div>
+        <div class="number">
+          <%= e[:participant]&.number %>
+          <% if params[:lane_view].present? %>
+            <%= "(Pos. #{e[:rank]})" if e[:rank] %>
+          <% else %>
+            (Bahn <%= e[:lane] %>)
+          <% end %>
+        </div>
+        <div class="country"><%= e[:participant]&.team&.country %></div>
+        <div class="team"><%= e[:participant]&.team_name(regatta: @regatta) %></div>
+        <div class="rower-names">
+          <%= e[:participant]&.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r)) }) %>
+        </div>
+        <div class="times">
+          <% @measuring_points.each do |mp| %>
+            <div class="time">
+              <%= e[:result].time_for(mp)&.time %>
+              <% if mp.number == @max_measuring_point_number %>
+                <br><%= e[:diff_to_prev] %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%= render 'regatta/result_footer', race: @race %>
+  </div>
 <% else %>
   <h3><%= @race.full_name(show_event_name_short: true) %></h3>
   <div><%= @race.planned_for && l(@race.planned_for) %></div>
   <div class="table-responsive-md">
     <table class="table">
       <thead>
-      <th><%= link_to "Bahn", url_for(reverse_lanes: params[:reverse_lanes].present? ? nil : '1') %></th>
+      <th><%= link_to "Bahn", url_for(reverse_lanes: params[:reverse_lanes].present? ? nil : '1', lane_view: params[:lane_view]) %></th>
       <th>Bugnr.</th>
       <th>Land</th>
       <th>Teamname</th>
@@ -35,9 +103,9 @@
       <th>Status</th>
       </thead>
       <tbody>
-      <% starts = @race.starts %>
-      <% starts = starts.sort_by { |s| -s.lane_number.to_i } if params[:reverse_lanes].present? %>
-      <% starts.each do |s| %>
+      <% @race.starts.
+        sort_by { |s| params[:reverse_lanes].present? ? -s.lane_number.to_i : s.lane_number.to_i }.
+        each do |s| %>
         <% participant = @race.event.participants.find { |p| p.participant_id == s.participant_id } %>
         <tr class="<%= participant_state_classes(participant) %>">
           <td><%= s.lane_number %></td>
@@ -68,9 +136,8 @@
       } else if (event.key == "ArrowRight") {
         b = document.querySelector('.next-button')
       } else if (event.key == "Home" || event.key == "F1") {
-      b = document.querySelector('.current-race-button')
-    }
-
+        b = document.querySelector('.current-race-button')
+      }
       if (b) {
         b.click();
         event.preventDefault();

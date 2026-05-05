@@ -76,4 +76,10 @@ module ApplicationHelper
            .join(', ')
   end
   module_function :summarize_ranges
+
+  MEDALS = ['🥇', '🥈', '🥉'].freeze
+
+  def medal_for(rank)
+    MEDALS[rank - 1] if rank
+  end
 end

@@ -50,6 +50,7 @@
     }
     .time {
       flex: 1 1 50px;
+      text-align: right;
       @media (max-width: 800px) {
         flex: 1;
       }
@@ -58,6 +59,15 @@
       flex: 1;
     }
   }
+}
+
+.result-row--lane-view {
+  .team, .rower-names {
+    padding-left: var(--rank-indent, 0em);
+  }
+  &.result-row--rank-1 { background-color: #fef9e0; }
+  &.result-row--rank-2 { background-color: #f0f0f0; }
+  &.result-row--rank-3 { background-color: #faeedd; }
 }
 
 .result-footer {
