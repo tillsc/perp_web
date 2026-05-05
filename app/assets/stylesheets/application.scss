@@ -16,7 +16,7 @@ html, :root {
 body.internal {
   background: #fff9f9;
 
-  nav.navbar {
+  > nav.navbar-dark {
     background: #5e0403 !important;
   }
 }
