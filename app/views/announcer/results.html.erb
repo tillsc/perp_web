@@ -72,7 +72,7 @@
         <div class="country"><%= e[:participant]&.team&.country %></div>
         <div class="team"><%= e[:participant]&.team_name(regatta: @regatta) %></div>
         <div class="rower-names">
-          <%= e[:participant]&.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r)) }) %>
+          <%= e[:participant]&.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r), target: 'announcer-rower') }) %>
         </div>
         <div class="times">
           <% @measuring_points.each do |mp| %>
@@ -112,7 +112,7 @@
           <td><%= participant.number %></td>
           <td><%= participant.team&.country %></td>
           <td><%= participant.team_name(regatta: @regatta) %></td>
-          <td><%= participant.rower_names %></td>
+          <td><%= participant.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r), target: 'announcer-rower') }) %></td>
           <td><%= participant.state %></td>
         </tr>
       <% end %>
