@@ -10,7 +10,7 @@
   <% end %>
 </div>
 
-<% if @regatta.year < DateTime.now.year && @regatta.id != Parameter.current_regatta_id %>
+<% if @regatta.year < DateTime.now.year && @regatta.id.to_s != Parameter.current_regatta_id.to_s %>
   <p class="alert alert-info">
     Sie betrachten eine vergangene Regatta. Die Aktuelle Regatta finden Sie
     <%= link_to "hier", url_for(new_regatta_id: Parameter.current_regatta_id) %>.
