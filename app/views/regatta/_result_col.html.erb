@@ -1,0 +1,18 @@
+<% if results.present? %>
+  <div class="col-sm-6">
+    <div class="text-muted mb-1">Ergebnisse</div>
+    <ul class="list-unstyled mb-0">
+      <% results.each do |result| %>
+        <li class="mb-1">
+          <%= link_to result.race.name, event_results_path(@regatta, result.race.event.number, anchor: result.race.number) %>
+          <% if result.rank %>
+            &ndash; <strong><%= result.rank %>. Platz</strong>&thinsp;<%= medal_for(result.rank) %>
+          <% end %>
+          <% if (t = result.time_for(result.race.event.finish_measuring_point_number)) %>
+            &ndash; <strong><%= t.time %></strong>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

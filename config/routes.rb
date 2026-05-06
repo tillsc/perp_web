@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     get '/upcoming' => 'regatta#upcoming'
     get '/time_schedule' => 'regatta#time_schedule'
     get '/rower/:rower_id' => 'regatta#rower', as: :rower
+    get '/participant/:event_number/:participant_id' => 'regatta#participant', as: :participant
 
     # Legacy
     get 'representative/:public_private_id', to: redirect(status: 307) { |p, req| "#{req.params["regatta_id"]}/my/#{req.params["public_private_id"]}" }

@@ -1,0 +1,21 @@
+<% if starts.present? %>
+  <div class="col-sm-6">
+    <div class="text-muted mb-1">Starts</div>
+    <ul class="list-unstyled mb-0">
+      <% starts.each do |start| %>
+        <li class="mb-1">
+          <%= link_to start.race.name, event_starts_path(@regatta, start.race.event.number, anchor: start.race.number) %>
+          &ndash; <strong><%= l start.race.planned_for, format: '%H:%M' %>&nbsp;Uhr</strong>
+          - Bahn <%= start.lane_number %>
+          <% if start.race.event.is_lightweight? || start.race.event.has_cox? %>
+            &ndash; <span class="text-nowrap"><%= start.race.event.is_lightweight? ? "Verwiegen" : "Stm. verwiegen" %> bis <strong><%= l start.race.planned_for - 1.hour, format: '%H:%M' %>&nbsp;Uhr</strong>
+            <% if start.race.planned_for - 1.hour > Time.now %>
+              (noch <%= distance_of_time_in_words(start.race.planned_for - 1.hour, Time.now) %>)
+            <% end %>
+          </span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

@@ -1,0 +1,37 @@
+<%= render 'header' %>
+
+<p class="text-muted mb-0">Meldung für Rennen <%= @participant.event.label %></p>
+<h3 class="mb-1"><%= @participant.team_name(regatta: @regatta) %><small> Bugnr. <%= @participant.number %></small></h3>
+<p class="text-muted mb-3"><%= @participant.rower_names(rower_link: -> (r, name) { link_to name, rower_path(@regatta, r) }) %></p>
+
+<% if @participant_results.present? || @participant_starts.present? %>
+  <h4>Starts &amp; Ergebnisse</h4>
+  <div class="row g-2 small mb-4">
+    <%= render 'result_col', results: @participant_results %>
+    <%= render 'start_col', starts: @participant_starts %>
+  </div>
+<% end %>
+
+<h4>Besatzung</h4>
+<p class="text-muted small">Weitere Starts und Ergebnisse der Besatzungsmitglieder bei dieser Regatta.</p>
+<% @rowers_data.each do |pos, data| %>
+  <% rower = data[:rower] %>
+  <div class="mb-4">
+    <div class="d-flex align-items-baseline gap-2 flex-wrap border-bottom pb-1 mb-2">
+      <strong><%= pos == 9 ? 'Stm.' : "#{pos}." %> <%= rower.name(no_year_of_birth: true, no_nobr: true) %></strong>
+      <span class="text-muted small">
+        <%= rower.year_of_birth.presence %>
+        <% club_name = rower.club&.name || rower.club_name %>
+        <%= "&middot; #{ERB::Util.html_escape(club_name)}".html_safe if club_name.present? %>
+      </span>
+    </div>
+
+    <% if data[:results].present? || data[:starts].present? %>
+      <%= render 'results_and_starts', results: data[:results], starts: data[:starts] %>
+    <% else %>
+      <p class="text-muted mb-0 small">Keine weiteren Starts oder Ergebnisse bei dieser Regatta.</p>
+    <% end %>
+  </div>
+<% end %>
+
+<script>autoreloadAfter(60000)</script>

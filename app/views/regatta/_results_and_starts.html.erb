@@ -1,0 +1,24 @@
+<% res_by_p = results.group_by { |r| [r.event_number, r.participant_id] }
+   raced    = results.map { |r| [r.event_number, r.race_number] }.to_set
+   st_by_p  = starts.reject { |s| raced.include?([s.event_number, s.race_number]) }.
+     group_by { |s| [s.event_number, s.participant_id] }
+   all_participants = (local_assigns.fetch(:participants, []) + results.map(&:participant) + starts.map(&:participant)).
+     index_by { |p| [p.event_number, p.participant_id] } %>
+
+<% all_participants.each do |key, participant| %>
+  <div class="mb-3">
+    <div class="text-muted mb-1">
+      <% event = (res_by_p[key] || st_by_p[key])&.first&.race&.event || participant.event %>
+      <%= link_to event.label, event_participants_url(@regatta, event.number) %> &ndash;
+      Bugnr.: <%= link_to participant.number, participant_path(@regatta, participant.event_number, participant.participant_id) %><br>
+      <div class="small">
+        <%= participant.team_name(regatta: @regatta) %><br>
+        <em><%= participant.rower_names(rower_link: -> (r, name) { link_to name, rower_path(@regatta, r) }) %></em>
+      </div>
+    </div>
+    <div class="row g-2 small">
+      <%= render 'regatta/result_col', results: res_by_p[key] %>
+      <%= render 'regatta/start_col', starts: st_by_p[key] %>
+    </div>
+  </div>
+<% end %>

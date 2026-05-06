@@ -8,41 +8,8 @@
 <% end %>
 
 <% if @participants %>
-  <% rower_link = -> (rower, name) { link_to name, rower_path(@regatta, rower) } %>
-  <div class="d-flex flex-wrap">
-    <% if @starts.present? %>
-      <div style="min-width: 45%;">
-        <h2>Ihre Starts</h2>
-        <%= render 'regatta/starts', starts: @starts, rower_link: rower_link %>
-      </div>
-    <% end %>
-
-    <% if @results.present? %>
-      <div style="min-width: 45%;">
-        <h2>Ihre Ergebnisse</h2>
-        <%= render 'regatta/results', results: @results, rower_link: rower_link %>
-      </div>
-    <% end %>
-
-    <div style="min-width: 45%;">
-      <h2>Ihre Meldungen</h2>
-
-      <% @participants.group_by(&:event).each do |event, participants| %>
-        <%= link_to event.label, event_participants_path(@regatta, event.number) %>
-        [<%= link_to "Starts", event_starts_path(@regatta, event.number) %>,
-        <%= link_to "Ergebnisse", event_results_path(@regatta, event.number) %>]
-        <ul>
-          <% participants.sort_by{ |p| p.number.to_i }.each do |participant| %>
-            <li>
-              <%= participant.number %>:
-              <%= participant.team_name(regatta: @regatta) %><br>
-              <em><%= participant.rower_names(rower_link: rower_link) %></em>
-            </li>
-          <% end %>
-        </ul>
-      <% end %>
-    </div>
-  </div>
+  <h2 class="mt-4">Ihre Meldungen</h2>
+  <%= render 'regatta/results_and_starts', results: @results || [], starts: @starts || [], participants: @participants %>
 <% end %>
 
 <script>

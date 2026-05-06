@@ -106,7 +106,13 @@
            style="--rank-indent: <%= [(e[:rank] || 1) - 1, 0].max * 1.5 %>em">
         <div class="rank"><%= e[:rank] %> <%= medal_for(e[:rank]) if e[:rank] %></div>
         <div class="lane"><%= e[:lane] %></div>
-        <div class="number"><%= e[:participant]&.number %></div>
+        <div class="number">
+          <% if e[:participant] %>
+            <%= link_to e[:participant].number,
+                        participant_path(@regatta, e[:participant].event_number, e[:participant].participant_id),
+                        target: 'announcer-participant' %>
+          <% end %>
+        </div>
         <div class="country"><%= e[:participant]&.team&.country %></div>
         <div class="team"><%= e[:participant]&.team_name(regatta: @regatta) %></div>
         <div class="rower-names">

@@ -50,12 +50,13 @@ class Participant < ApplicationRecord
     fields = ALL_ROWER_FIELD_NAMES
     fields -= ["ruderers_ID"] if no_cox
     fields.map { |field_name|
-      arel_table[field_name].eq(equals_rower)
+      equals_rower.is_a?(Array) ? arel_table[field_name].in(equals_rower) : arel_table[field_name].eq(equals_rower)
     }.inject(&:or)
   end
 
   scope :for_rower, -> (rower) {
-    where(any_rower_eq_condition(rower.id))
+    ids = Array.wrap(rower).map(&:id)
+    where(any_rower_eq_condition(ids.one? ? ids.first : ids))
   }
 
   scope :for_club, -> (club_address) {
