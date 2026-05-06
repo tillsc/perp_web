@@ -30,6 +30,17 @@ namespace :perp do
       end
     end
 
+    desc "Backfills rank column for all confirmed races"
+    task backfill_ranks: :environment do
+      scope = Race.where.not(ErgebnisBestaetigt: nil).or(Race.where.not(ErgebnisEndgueltig: nil))
+                  .preload(:event, results: :times)
+      progressbar = ProgressBar.create(total: scope.count, format: PROGRESS_BAR_FORMAT)
+      scope.each do |race|
+        race.persist_ranks!
+        progressbar.increment
+      end
+    end
+
     namespace :duplicate do
 
       desc "Removes all duplicate rowers having no external id, replacing them in their start lists and results"

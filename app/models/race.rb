@@ -151,6 +151,27 @@ class Race < ApplicationRecord
     Parameter.race_type_name(self.type_short)
   end
 
+  after_save :persist_ranks!, if: -> {
+    result_confirmed? &&
+    association(:event).loaded? &&
+    results.loaded? &&
+    results.all? { |r| r.association(:times).loaded? }
+  }
+
+  def persist_ranks!
+    mp_number = event.finish_measuring_point_number
+    return unless mp_number
+
+    sorted = results.sort_by { |r| r.sort_time_for(mp_number) }
+    current_rank = nil
+    sorted.each_with_index do |r, i|
+      t = r.time_for(mp_number)
+      prev_t = i > 0 ? sorted[i - 1].time_for(mp_number) : nil
+      current_rank = i + 1 if t.present? && (prev_t.nil? || t.time != prev_t.time)
+      r.update_columns(rank: t.present? ? current_rank : nil)
+    end
+  end
+
   def result_confirmed?
     self.result_confirmed_since.present? ||
       self.result_official?
