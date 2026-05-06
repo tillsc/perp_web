@@ -28,24 +28,20 @@
 </div>
 
 <script type="module">
-  import { Calendar } from 'https://cdn.skypack.dev/@fullcalendar/core@6.1.17';
-  import timeGrid from 'https://cdn.skypack.dev/@fullcalendar/timegrid@6.1.17';
-  import interaction from 'https://cdn.skypack.dev/@fullcalendar/interaction@6.1.17';
-  import deLocale from 'https://cdn.skypack.dev/@fullcalendar/core/locales/de';
+  import { Calendar } from 'fullcalendar';
+  import deLocale from '@fullcalendar/core/locales/de';
 
   let calendar;
 
-
   const initCalendar = () => {
+    const container = document.getElementById('calendar');
+    if (!container) return;
     if (calendar) {
       calendar.destroy();
     }
-    const container = document.getElementById('calendar');
     container.innerHTML = '';
     calendar = new Calendar(container, {
-      plugins: [timeGrid, interaction],
       locale: deLocale,
-      themeSystem: 'bootstrap5',
       initialView: 'timeGrid',
       views: {
         timeGrid: {
@@ -132,8 +128,8 @@
     return JSON.parse(jsonScript?.textContent || '[]');
   };
 
-  document.addEventListener('turbo:load', initCalendar());
-  document.addEventListener('DOMContentLoaded', initCalendar());
+  document.addEventListener('turbo:load', initCalendar);
+  initCalendar();
 </script>
 
 <style>
