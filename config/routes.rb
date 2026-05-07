@@ -78,6 +78,9 @@ Rails.application.routes.draw do
 
     get '/announcer' => 'announcer#index'
     get '/announcer/results/:event_number/:race_number' => 'announcer#results', as: :announcer_results
+    get '/announcer/honors' => 'announcer#honors', as: :announcer_honors
+    patch '/announcer/honors/:event_number/:race_number' => 'announcer#honor', as: :announcer_honor
+    delete '/announcer/honors/:event_number/:race_number' => 'announcer#revoke_honor'
 
     get '/measurements' => 'measurements#index', as: :measurements
     get '/measurements/:event_number/:race_number' => 'measurements#show', as: :measurement

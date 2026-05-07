@@ -1,0 +1,45 @@
+<h1>Ehrung</h1>
+
+<% if @races.empty? %>
+  <p class="text-muted mt-3">Keine Rennen zur Ehrung ausstehend.</p>
+<% else %>
+  <% @races.each do |race| %>
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <strong><%= race.full_name(show_event_name_short: true) %></strong>
+        <%= button_to "Als geehrt markieren",
+              announcer_honor_path(@regatta, race.event.number, race.number, referrer: current_url),
+              method: :patch,
+              class: "btn btn-success btn-sm" %>
+      </div>
+      <div class="card-body py-2">
+        <% entries = race.honor_entries(@regatta) %>
+        <% if entries.empty? %>
+          <span class="text-muted">Keine Ergebnisse verfügbar.</span>
+        <% else %>
+          <% mp_number = race.event.finish_measuring_point_number %>
+          <% entries.each do |result| %>
+            <div class="mb-2">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-secondary"><%= result.rank %>.</span>
+                <%= result.participant.team_name(regatta: @regatta) %>
+                <% cat = result.participant.age_category(regatta: @regatta) %>
+                <% if cat %>
+                  <span class="badge bg-info text-dark"><%= cat %></span>
+                <% end %>
+                <% if (t = result.time_for(mp_number)&.time) %>
+                  <span class="text-muted"><%= t %></span>
+                <% end %>
+              </div>
+              <div class="text-muted ms-4"><%= result.participant.rower_names(rower_link: rower_link_proc) %></div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<script>
+  autoreloadAfter(10000)
+</script>

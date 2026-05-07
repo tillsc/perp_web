@@ -127,12 +127,31 @@ class Race < ApplicationRecord
       order_by_planned_for
   end
 
+  HONORABLE_TYPE_SHORTS = %w[F A].freeze
+
+  scope :pending_honor, -> do
+    type_short_node = Arel::Nodes::NamedFunction.new('SUBSTR', [arel_table[:number], Arel::Nodes::SqlLiteral.new('1'), Arel::Nodes::SqlLiteral.new('1')])
+    with_results.where(honored_at: nil).where(type_short_node.in(HONORABLE_TYPE_SHORTS)).order_by_started_at
+  end
+
+  def honorable?
+    HONORABLE_TYPE_SHORTS.include?(type_short)
+  end
+
   scope :current_start, -> do
     where(arel_table[:started_at_time].eq(nil).or(
       arel_table[:started_at_time].gt(2.minutes.ago)
     )).
       where(planned_for: Date.today.all_day).
       order(arel_table[:planned_for].asc, arel_table[:started_at_time].desc)
+  end
+
+  def honored?
+    self.honored_at.present?
+  end
+
+  def honorable?
+    self.number.to_s.start_with?('F')
   end
 
   def name
@@ -233,6 +252,21 @@ class Race < ApplicationRecord
   def measurement_set_for(measuring_point_or_measuring_point_number)
     mp_number = MeasuringPoint.number(measuring_point_or_measuring_point_number)
     measurement_sets.find { |ms| ms.measuring_point_number == mp_number }
+  end
+
+  def honor_entries(regatta)
+    mp_number = event.finish_measuring_point_number
+    sorted = results.sort_by { |r| r.sort_time_for(mp_number) }
+    winner = sorted.first
+    return [] unless winner
+
+    winner_category = winner.participant.age_category(regatta: regatta)
+    if winner_category == 'A'
+      best_b = sorted.find { |r| r.participant.age_category(regatta: regatta) == 'B' }
+      best_b ? [winner, best_b] : [winner]
+    else
+      [winner]
+    end
   end
 
   SLOWEST_M_PER_SECOND = 200/60.0

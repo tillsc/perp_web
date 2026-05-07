@@ -17,6 +17,30 @@ class AnnouncerController < ApplicationController
       limit(10)
   end
 
+  def honors
+    authorize! :access, :announcer_views
+
+    @races = Race.for_regatta(@regatta).pending_honor.
+      preload(:event, results: [:times, { participant: [:team] + Participant::ALL_ROWERS }]).
+      limit(3)
+  end
+
+  def honor
+    authorize! :access, :announcer_views
+
+    race = Race.for_regatta(@regatta).find_by!(event_number: params[:event_number], number: params[:race_number])
+    race.update!(honored_at: Time.current)
+    redirect_to back_or_default
+  end
+
+  def revoke_honor
+    authorize! :access, :announcer_views
+
+    race = Race.for_regatta(@regatta).find_by!(event_number: params[:event_number], number: params[:race_number])
+    race.update!(honored_at: nil)
+    redirect_to back_or_default
+  end
+
   def results
     authorize! :access, :announcer_views
 
@@ -29,6 +53,8 @@ class AnnouncerController < ApplicationController
       redirect_to announcer_url
       return
     end
+
+    @pending_honors = Race.for_regatta(@regatta).pending_honor.exists?
 
     unless turbo_frame_request?
       @previous_race = Race.for_regatta(@regatta).preload(:event).before_race(@race).first
@@ -62,6 +88,16 @@ class AnnouncerController < ApplicationController
       @result_entries = @race.starts.sort_by(&:lane_number).map do |s|
         { participant: participants[s.participant_id], lane: s.lane_number }
       end
+    end
+  end
+
+  protected
+
+  def default_url
+    if @race
+      announcer_results_url(@regatta, @race.event_number, @race.number)
+    else
+      announcer_url(@regatta)
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_06_062346) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_07_063420) do
   create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", options: "ENGINE=MyISAM", force: :cascade do |t|
     t.string "ExterneID1", limit: 200
     t.string "Fax", limit: 20
@@ -101,6 +101,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_06_062346) do
     t.datetime "SollStartZeit", precision: nil
     t.datetime "WiegelisteFreigegeben", precision: nil
     t.string "WiegelisteFreigegebenVon", limit: 150
+    t.datetime "honored_at"
     t.index ["Regatta_ID", "Rennen", "Lauf"], name: "UNIQUE", unique: true
   end
 
