@@ -108,7 +108,7 @@ module Internal
         redirect_to back_or_default
       else
         @block = block
-        render on_error_view
+        render on_error_view, status: :unprocessable_entity
       end
     end
 

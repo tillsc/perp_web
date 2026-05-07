@@ -24,7 +24,7 @@ module Internal
         redirect_to back_or_default_with_uri_params(dialog_finished_with: @user.id)
       else
         flash[:danger] = helpers.error_message_for(:create, @user)
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -42,7 +42,7 @@ module Internal
         redirect_to back_or_default
       else
         flash[:danger] = helpers.error_message_for(:update, @user)
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

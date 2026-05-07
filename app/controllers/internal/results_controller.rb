@@ -18,7 +18,7 @@ module Internal
           redirect_to back_or_default
         else
           flash[:danger] = helpers.error_message_for(:update, @result)
-          render :edit
+          render :edit, status: :unprocessable_entity
         end
       end
     end

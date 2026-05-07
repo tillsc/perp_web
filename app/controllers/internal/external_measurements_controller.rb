@@ -28,7 +28,7 @@ module Internal
       else
         flash[:danger] = helpers.error_message_for(:create, @external_measurement)
         prepare_form
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

@@ -57,7 +57,7 @@ module Internal
       else
         flash[:danger] = helpers.error_message_for(:create, @rower)
         prepare_form
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -78,7 +78,7 @@ module Internal
       else
         flash[:danger] = helpers.error_message_for(:update, @rower)
         prepare_form
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

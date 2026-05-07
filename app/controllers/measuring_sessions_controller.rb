@@ -56,9 +56,9 @@ class MeasuringSessionsController < ApplicationController
                     measuring_session_url(@regatta, @measuring_session) :
                     measuring_sessions_url(@regatta)
     else
-      flash[:danger] = helpers.error_message_for(create, @measuring_session)
+      flash[:danger] = helpers.error_message_for(:create, @measuring_session)
       prepare_form
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -101,7 +101,7 @@ class MeasuringSessionsController < ApplicationController
       else
         flash[:danger] = helpers.error_message_for(:update, @measuring_session)
         prepare_form
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
   end

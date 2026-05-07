@@ -46,7 +46,7 @@ module Internal
         redirect_to back_or_default
       else
         flash[:danger] = helpers.error_message_for(:create, @address)
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -64,7 +64,7 @@ module Internal
         redirect_to back_or_default
       else
         flash[:danger] = helpers.error_message_for(:update, @address)
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

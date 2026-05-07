@@ -30,7 +30,7 @@ module Internal
         else
           @import.errors.merge!(importer.errors)
           flash[:danger] = helpers.error_message_for(:create, @import)
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 
