@@ -6,7 +6,7 @@
   <% @races.each do |race| %>
     <div class="card mb-4">
       <div class="card-header d-flex justify-content-between align-items-center">
-        <strong><%= race.full_name(show_event_name_short: true) %></strong>
+        <%= link_to race.full_name(show_event_name_short: true), announcer_results_path(@regatta, race.event_number, race.number), class: "fw-bold text-reset" %>
         <% if can?(:honor, race) %>
           <%= button_to "Als geehrt markieren",
                 announcer_honor_path(@regatta, race.event.number, race.number, referrer: current_url),
@@ -36,6 +36,12 @@
               <div class="text-muted ms-4"><%= result.participant.rower_names(rower_link: rower_link_proc) %></div>
             </div>
           <% end %>
+        <% end %>
+      </div>
+      <div class="card-footer text-muted small text-end">
+        <%= race.state_text %>
+        <% if race.referee_finish_judge %>
+          &middot; Zielrichter: <%= race.referee_finish_judge.name %>
         <% end %>
       </div>
     </div>

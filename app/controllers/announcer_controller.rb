@@ -21,7 +21,7 @@ class AnnouncerController < ApplicationController
     authorize! :access, :honors
 
     @races = Race.for_regatta(@regatta).pending_honor.
-      preload(:event, results: [:times, { participant: [:team] + Participant::ALL_ROWERS }]).
+      preload(:event, :referee_finish_judge, results: [:times, { participant: [:team] + Participant::ALL_ROWERS }]).
       limit(3)
   end
 

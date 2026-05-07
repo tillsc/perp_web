@@ -127,19 +127,35 @@ class Race < ApplicationRecord
       order_by_planned_for
   end
 
+  scope :result_official, -> do
+    where.not(result_official_since: nil)
+  end
+
+  def result_official?
+    result_official_since.present?
+  end
+
+  scope :result_confirmed, -> do
+    where.not(result_confirmed_since: nil).or(result_official)
+  end
+
+  def result_confirmed?
+    result_confirmed_since.present? || result_official?
+  end
+
   HONORABLE_TYPE_SHORTS = %w[F A].freeze
 
   scope :honorable, -> do
     type_short_node = Arel::Nodes::NamedFunction.new('SUBSTR', [arel_table[:number], Arel::Nodes::SqlLiteral.new('1'), Arel::Nodes::SqlLiteral.new('1')])
-    where(type_short_node.in(HONORABLE_TYPE_SHORTS))
+    result_confirmed.where(type_short_node.in(HONORABLE_TYPE_SHORTS))
   end
 
   def honorable?
-    HONORABLE_TYPE_SHORTS.include?(type_short)
+    result_confirmed? && HONORABLE_TYPE_SHORTS.include?(type_short)
   end
 
   scope :pending_honor, -> do
-    honorable.with_results.where(honored_at: nil).order_by_started_at
+    honorable.where(honored_at: nil).order_by_started_at
   end
 
   scope :current_start, -> do
@@ -189,15 +205,6 @@ class Race < ApplicationRecord
       current_rank = i + 1 if t.present? && (prev_t.nil? || t.time != prev_t.time)
       r.update_columns(rank: t.present? ? current_rank : nil)
     end
-  end
-
-  def result_confirmed?
-    self.result_confirmed_since.present? ||
-      self.result_official?
-  end
-
-  def result_official?
-    self.result_official_since.present?
   end
 
   def state_text
