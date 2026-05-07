@@ -31,8 +31,7 @@ let reloadPage = function (frame) {
 
 document.addEventListener('turbo:before-fetch-response', function (event) {
   if (!event.detail.fetchResponse.succeeded) {
-    console.log("HTTP Error: ", event.detail.fetchResponse.status)
-    event.preventDefault()
+    console.log("HTTP Error: ", event.detail.fetchResponse.statusCode)
   }
 })
 
