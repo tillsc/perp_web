@@ -38,6 +38,10 @@ class Participant < ApplicationRecord
     where(disqualified: [nil, '']).where(withdrawn: [nil, false])
   }
 
+  def active?
+    !withdrawn? && !disqualified.present?
+  end
+
   scope :for_regatta, -> (regatta) do
     where(regatta_id: regatta.id)
   end
@@ -177,10 +181,6 @@ class Participant < ApplicationRecord
   def set_rower_at(position, rower)
     raise "invalid position" unless position.downcase.to_s =~ /^[1-8s]$/
     self.send("rower#{position}=", rower)
-  end
-
-  def active?
-    !withdrawn? && !disqualified.present?
   end
 
   def disqualified?

@@ -129,13 +129,17 @@ class Race < ApplicationRecord
 
   HONORABLE_TYPE_SHORTS = %w[F A].freeze
 
-  scope :pending_honor, -> do
+  scope :honorable, -> do
     type_short_node = Arel::Nodes::NamedFunction.new('SUBSTR', [arel_table[:number], Arel::Nodes::SqlLiteral.new('1'), Arel::Nodes::SqlLiteral.new('1')])
-    with_results.where(honored_at: nil).where(type_short_node.in(HONORABLE_TYPE_SHORTS)).order_by_started_at
+    where(type_short_node.in(HONORABLE_TYPE_SHORTS))
   end
 
   def honorable?
     HONORABLE_TYPE_SHORTS.include?(type_short)
+  end
+
+  scope :pending_honor, -> do
+    honorable.with_results.where(honored_at: nil).order_by_started_at
   end
 
   scope :current_start, -> do
@@ -148,10 +152,6 @@ class Race < ApplicationRecord
 
   def honored?
     self.honored_at.present?
-  end
-
-  def honorable?
-    self.number.to_s.start_with?('F')
   end
 
   def name

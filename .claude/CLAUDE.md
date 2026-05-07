@@ -12,6 +12,7 @@
 ### Models & Queries
 - Prefer `preload()` explicitly to avoid N+1
 - Arel for complex queries, not raw SQL strings
+- Scope/method pairs that express the same predicate (e.g. `scope :honorable` + `def honorable?`) must be adjacent — method directly after scope
 
 ### Services
 - Service objects support a preview mode before persisting
@@ -19,6 +20,9 @@
 ### CSS
 - SCSS scoped per feature: `internal.scss`, `results.scss`, etc.
 - State classes like `.changed`, `.withdrawn` for visual state
+
+### Migrations
+- Never reference model classes or constants — migrations must run without models
 
 ### Tests
 - Minitest + fixtures; focus only on critical business logic

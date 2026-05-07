@@ -66,6 +66,10 @@ class Address < ApplicationRecord
       where('schiedsrichterliste.Regatta_ID' => regatta)
   end
 
+  def referee_for?(regatta)
+    self.regatta_referees.any? { |rr| rr.regatta_id == regatta.id }
+  end
+
   scope :order_by_name, -> do
     order(:last_name, :first_name)
   end
@@ -94,10 +98,6 @@ class Address < ApplicationRecord
     else
       [is_female? ? 'Frau' : 'Herr', title.presence, last_name.presence, ].compact.join(' ')
     end
-  end
-
-  def referee_for?(regatta)
-    self.regatta_referees.any? { |rr| rr.regatta_id == regatta.id }
   end
 
   def status_label
