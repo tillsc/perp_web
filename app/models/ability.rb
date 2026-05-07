@@ -8,8 +8,12 @@ class Ability
       can :access, :internal
 
       if user.roles.any?
-        can :access, :announcer_views
+        can :access, [:announcer_views, :honors]
         can :read, [Rower, Result, Start, Participant, Team, Event, Race, Address, Services::TimeSchedule::Block]
+      end
+
+      if user.role_announcer || user.role_admin
+        can :honor, Race
       end
 
       if user.role_timekeeping || user.role_admin

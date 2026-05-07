@@ -136,14 +136,14 @@
     <% end %>
 
     <%= render 'regatta/result_footer', race: @race %>
-    <% if @pending_honors %>
+    <% if @pending_honors && can?(:access, :honors) %>
       <div class="mt-3">
         <%= link_to "Ausstehende Ehrungen", announcer_honors_path(@regatta),
                     class: 'btn btn-warning',
                     target: 'honors_window' %>
       </div>
     <% end %>
-    <% if @race.honored? && @race.honorable? %>
+    <% if @race.honored? && @race.honorable? && can?(:honor, @race) %>
       <div class="mt-3">
         <%= button_to "Ehrung doch nicht erfolgt", announcer_honor_path(@regatta, @race.event_number, @race.number, referrer: current_url),
                       method: :delete,

@@ -41,6 +41,9 @@
       <ul>
         <% if can?(:access, :announcer_views) %>
           <li><%= link_to "Sprecher-Dashboard", announcer_url(@regatta) %></li>
+          <% if can?(:access, :honors) %>
+            <li><%= link_to "Ehrungen", announcer_honors_url(@regatta) %></li>
+          <% end %>
         <% end %>
         <li><%= link_to "TV-Overlays", tv_url(@regatta) %></li>
       </ul>

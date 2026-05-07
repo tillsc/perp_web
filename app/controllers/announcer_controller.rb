@@ -18,7 +18,7 @@ class AnnouncerController < ApplicationController
   end
 
   def honors
-    authorize! :access, :announcer_views
+    authorize! :access, :honors
 
     @races = Race.for_regatta(@regatta).pending_honor.
       preload(:event, results: [:times, { participant: [:team] + Participant::ALL_ROWERS }]).
@@ -26,17 +26,15 @@ class AnnouncerController < ApplicationController
   end
 
   def honor
-    authorize! :access, :announcer_views
-
     race = Race.for_regatta(@regatta).find_by!(event_number: params[:event_number], number: params[:race_number])
+    authorize! :honor, race
     race.update!(honored_at: Time.current)
     redirect_to back_or_default
   end
 
   def revoke_honor
-    authorize! :access, :announcer_views
-
     race = Race.for_regatta(@regatta).find_by!(event_number: params[:event_number], number: params[:race_number])
+    authorize! :honor, race
     race.update!(honored_at: nil)
     redirect_to back_or_default
   end
