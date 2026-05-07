@@ -45,7 +45,7 @@
     <tr>
       <td><%= link_to participant.event.label, internal_participants_url(@regatta, event_number: participant.event.number) %></td>
       <td><%= link_to participant.number || '-', internal_participant_url(@regatta, participant) %></td>
-      <td><%= participant.rower_names(rower_link: -> (r, n) { link_to highlight_nobr(n), internal_rower_path(@regatta, r) }) %></td>
+      <td><%= participant.rower_names(rower_link: internal_rower_link_proc) %></td>
     </tr>
   <% end %>
   </tbody>

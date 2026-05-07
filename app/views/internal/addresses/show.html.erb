@@ -79,7 +79,7 @@
   <h3>Ruderer dieses Vereins</h3>
   <ul class="multi-column">
     <% @address.rowers.order(:last_name, :first_name).each do |rower| %>
-      <li><%= link_to rower.name, internal_rower_path(@regatta, rower, referrer: current_url) %></li>
+      <li><%= internal_rower_link_proc(rower_url_options: { referrer: current_url }).call(rower) %></li>
     <% end %>
   </ul>
 <% end %>

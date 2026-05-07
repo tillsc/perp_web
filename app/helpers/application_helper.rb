@@ -52,12 +52,28 @@ module ApplicationHelper
     str = s.to_s
     was_html_safe = str.html_safe?
 
-    breakables = '[ \t\n\u200B\u2028\u2029]'
-    nobr_tokens = /(?<!#{breakables})(\u00A0|\u2009|&thinsp;|&nbsp;)(?!#{breakables})/
+    breakables = '[ \t\n​  ]'
+    nobr_tokens = /(?<!#{breakables})( | |&thinsp;|&nbsp;)(?!#{breakables})/
 
     result = str.gsub(nobr_tokens, '␣')
 
     was_html_safe ? result.html_safe : result
+  end
+
+  def rower_link_proc(link_to_options: {}, rower_url_options: {}, rower_name_options: {})
+    -> (rower) do
+      link_to(rower.name(no_year_of_birth: true, **rower_name_options), rower_path(@regatta, rower, **rower_url_options), **link_to_options).tap do |s|
+        s << "\u202F(#{rower.year_of_birth})" if rower.year_of_birth.present?
+      end
+    end
+  end
+
+  def internal_rower_link_proc(link_to_options: {}, rower_url_options: {}, rower_name_options: { no_nobr: true })
+    -> (rower) do
+      link_to(highlight_nobr(rower.name(no_year_of_birth: true, **rower_name_options)), internal_rower_path(@regatta, rower, **rower_url_options), **link_to_options).tap do |s|
+        s << "\u202F(#{rower.year_of_birth})" if rower.year_of_birth.present?
+      end
+    end
   end
 
   def current_url_with_anchor(o)

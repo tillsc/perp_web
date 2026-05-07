@@ -2,7 +2,7 @@
 
 <p class="text-muted mb-0">Meldung für Rennen <%= @participant.event.label %></p>
 <h3 class="mb-1"><%= @participant.team_name(regatta: @regatta) %><small> Bugnr. <%= @participant.number %></small></h3>
-<p class="text-muted mb-3"><%= @participant.rower_names(rower_link: -> (r, name) { link_to name, rower_path(@regatta, r) }) %></p>
+<p class="text-muted mb-3"><%= @participant.rower_names(rower_link: rower_link_proc) %></p>
 
 <% if @participant_results.present? || @participant_starts.present? %>
   <h4>Starts &amp; Ergebnisse</h4>

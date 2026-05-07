@@ -24,7 +24,7 @@
             <td><%= safe_join(participant["rowers"].values.map do |r|
               rower = Rower.new(r)
               safe_join([if rower.id
-                           [link_to(highlight_nobr(rower.name), internal_rower_path(@regatta, rower, referrer: current_url_with_anchor("part_#{i}")))]
+                           [internal_rower_link_proc(rower_url_options: { referrer: current_url_with_anchor("part_#{i}") }).call(rower)]
                          else
                            [highlight_nobr(rower.name)]
                          end,

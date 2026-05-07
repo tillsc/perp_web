@@ -132,12 +132,14 @@ class Participant < ApplicationRecord
   def rower_names(options = {})
     ALL_ROWERS.map { |assoc| self.send(assoc) }.each_with_index.map { |rower, i|
       if rower
-        rower_options = options.
-          slice(:no_year_of_birth, :no_nobr, :first_name_last_name).
-          merge(is_cox: i == 8)
-        n = ERB::Util.html_escape(rower.name(**rower_options))
-        n = options[:rower_link].call(rower, n) if options[:rower_link]
-        n
+        if options[:rower_link]
+          options[:rower_link].call(rower)
+        else
+          rower_options = options.
+            slice(:no_year_of_birth, :no_nobr, :first_name_last_name).
+            merge(is_cox: i == 8)
+          ERB::Util.html_escape(rower.name(**rower_options))
+        end
       end
     }.compact.join(", ").html_safe
   end

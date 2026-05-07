@@ -116,7 +116,7 @@
         <div class="country"><%= e[:participant]&.team&.country %></div>
         <div class="team"><%= e[:participant]&.team_name(regatta: @regatta) %></div>
         <div class="rower-names">
-          <%= e[:participant]&.rower_names(rower_link: -> (r, name) { link_to(name, rower_path(@regatta, r), target: 'announcer-rower') }) %>
+          <%= e[:participant]&.rower_names(rower_link: rower_link_proc(link_to_options: { target: 'announcer-rower' })) %>
         </div>
         <% if @measuring_points %>
           <div class="times">

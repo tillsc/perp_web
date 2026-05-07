@@ -13,7 +13,7 @@
 
       <dl class="col">
         <% @participant.rower_fields.each do |field| %>
-          <%= dl_entry(@participant, field)  { |rower| rower && link_to(rower.name, internal_rower_path(@regatta, rower, referrer: current_url)) || "-" } %>
+          <%= dl_entry(@participant, field)  { |rower| rower && internal_rower_link_proc(rower_url_options: { referrer: current_url }).call(rower) || "-" } %>
         <% end %>
       </dl>
 

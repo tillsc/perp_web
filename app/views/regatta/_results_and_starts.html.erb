@@ -13,7 +13,7 @@
       Bugnr.: <%= link_to participant.number, participant_path(@regatta, participant.event_number, participant.participant_id) %><br>
       <div class="small">
         <%= participant.team_name(regatta: @regatta) %><br>
-        <em><%= participant.rower_names(rower_link: -> (r, name) { link_to name, rower_path(@regatta, r) }) %></em>
+        <em><%= participant.rower_names(rower_link: rower_link_proc) %></em>
       </div>
     </div>
     <div class="row g-2 small">

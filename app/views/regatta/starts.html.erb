@@ -5,7 +5,6 @@
   <%= @event.name %>
 </p>
 
-<% rower_link = -> (rower, name) { link_to name, rower_path(@regatta, rower) } %>
 <% @starts.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, starts| %>
   <div class="row">
     <a class="anchor" id="<%= race.number %>"></a>
@@ -29,7 +28,7 @@
           <td><%= s.participant && link_to(s.participant.number, participant_path(@regatta, s.participant.event_number, s.participant.participant_id)) %></td>
           <td><%= s.participant&.team&.country %></td>
           <td><%= s.participant&.team_name(regatta: @regatta) %></td>
-          <td><%= s.participant&.rower_names(rower_link: rower_link) %></td>
+          <td><%= s.participant&.rower_names(rower_link: rower_link_proc) %></td>
           <td><%= s.participant&.state %></td>
         </tr>
       <% end %>
