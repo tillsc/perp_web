@@ -40,8 +40,7 @@
 
   <%= f.submit "Fertig", class: 'btn btn-success' %>
   <%= link_to "Zeit Stoppen", '#', id: 'stop_time', class: 'btn btn-primary' %>
-
-  <%= f.button "Zwischenspeichern", class: 'btn btn-secondary', type: :submit, name: :autosave, value: 1 %>
+  <span id="autosave-status" class="autosave-status"></span>
 <% end %>
 
 <h6 class="mt-1">Verfügbare Boote</h6>

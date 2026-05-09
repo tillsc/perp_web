@@ -70,3 +70,34 @@
 .hide_team_name .team_name {
   display: none;
 }
+
+.autosave-status {
+  display: inline-block;
+  min-width: 1.2em;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.5;
+
+  &[data-state="pending"] {
+    color: inherit;
+  }
+  &[data-state="saving"] {
+    color: inherit;
+    opacity: 1;
+    display: inline-block;
+    animation: autosave-spin 1s linear infinite;
+  }
+  @keyframes autosave-spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  &[data-state="saved"] {
+    color: green;
+    opacity: 1;
+  }
+  &[data-state="error"] {
+    color: red;
+    opacity: 1;
+    font-weight: bold;
+  }
+}

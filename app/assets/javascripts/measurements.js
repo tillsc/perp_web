@@ -5,6 +5,12 @@
 var selected = document.getElementById('participants');
 var selectable = document.getElementById('available_participants');
 
+var autosaveEnabled = false;
+var autosaveTimeout = null;
+var autosaveStatusClearTimer = null;
+var autosaveInFlight = false;
+var autosavePending = false;
+
 var startedAt = null;
 if (document.getElementById('started_at') && document.getElementById('started_at').getAttribute('datetime')) {
   startedAt = moment(document.getElementById('started_at').getAttribute('datetime'));
@@ -39,6 +45,9 @@ drake.on('drop', function(el, target, _source, _sibling) {
   if (el.classList.contains('empty-lane') && target?.id == 'available_participants') {
     el.remove();
   }
+  if (target?.id == 'participants') {
+    scheduleAutosave();
+  }
 });
 drake.on('dragend', function(_el, _source) {
   scrollable = true;
@@ -57,6 +66,7 @@ drake.on('dragend', function(_el, _source) {
       item = item.cloneNode(true);
     }
     selected.append(item);
+    scheduleAutosave();
     e.preventDefault();
   });
   const teamNameElement = item.querySelector('.team_name');
@@ -243,18 +253,78 @@ if (times) {
     }
   }
 
+  autosaveEnabled = true;
+
   document.getElementById('stop_time').addEventListener("click", function (e) {
     stopTime();
+    scheduleAutosave();
     e.preventDefault();
     return false;
   });
   document.addEventListener("keydown", function (e) {
     if (!e.handled && e.key == 'Enter') {
       stopTime();
-
+      scheduleAutosave();
       e.handled = true;
       return true;
     }
   });
 
+}
+
+function scheduleAutosave() {
+  if (!autosaveEnabled) return;
+  if (autosaveInFlight) {
+    autosavePending = true;
+    return;
+  }
+  var form = document.querySelector('form');
+  if (!form) return;
+  clearTimeout(autosaveTimeout);
+  setAutosaveStatus('pending');
+  autosaveTimeout = setTimeout(function() { doAutosave(form); }, 1000);
+}
+
+function doAutosave(form) {
+  autosaveInFlight = true;
+  autosavePending = false;
+  setAutosaveStatus('saving');
+  var formData = new FormData(form);
+  formData.append('autosave', '1');
+  var csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+  fetch(form.action, {
+    method: 'POST',
+    body: formData,
+    headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-Token': csrfToken }
+  })
+  .then(function(r) {
+    autosaveInFlight = false;
+    if (autosavePending) { scheduleAutosave(); return; }
+    if (r.ok) {
+      setAutosaveStatus('saved');
+    } else {
+      console.error('Autosave failed:', r.status, r.statusText);
+      setAutosaveStatus('error');
+    }
+  })
+  .catch(function(err) {
+    autosaveInFlight = false;
+    console.error('Autosave error:', err);
+    if (autosavePending) { scheduleAutosave(); return; }
+    setAutosaveStatus('error');
+  });
+}
+
+function setAutosaveStatus(state) {
+  var el = document.getElementById('autosave-status');
+  if (!el) return;
+  clearTimeout(autosaveStatusClearTimer);
+  el.dataset.state = state;
+  el.textContent = { pending: '…', saving: '⟳', saved: '✓', error: '!' }[state] || '';
+  if (state === 'saved') {
+    autosaveStatusClearTimer = setTimeout(function() {
+      el.dataset.state = '';
+      el.textContent = '';
+    }, 3000);
+  }
 }

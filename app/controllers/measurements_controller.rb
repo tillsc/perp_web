@@ -100,17 +100,21 @@ class MeasurementsController < ApplicationController
     end
 
     MeasuringSession.transaction do
-      @res = if (params[:participant_times]) # finish cam
-               @measuring.save_finish_cam!(params[:participant_times].permit!.to_h, true, measurement_set_params)
-             else
-               @measuring.save!(params[:participants], params[:times], true, measurement_set_params)
-             end
+    @res = if (params[:participant_times]) # finish cam
+             @measuring.save_finish_cam!(params[:participant_times].permit!.to_h, true, measurement_set_params)
+           else
+             @measuring.save!(params[:participants], params[:times], true, measurement_set_params)
+           end
     end
 
     if autosave
-      redirect_to measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number,
-                                   measuring_session_id: params[:measuring_session_id],
-                                   measuring_point_number: params[:measuring_point_number])
+      if request.xhr?
+        head :ok
+      else
+        redirect_to measurement_path(@regatta, race_number: @race.number, event_number: @race.event.number,
+                                     measuring_session_id: params[:measuring_session_id],
+                                     measuring_point_number: params[:measuring_point_number])
+      end
     elsif current_user.is_a?(MeasuringSession)
       redirect_to measuring_session_url(@regatta, current_user, anchor: "race_#{@measuring.race.event.number}_#{@measuring.race.number}")
     else
