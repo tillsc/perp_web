@@ -5,4 +5,8 @@
 <%= f.check_box :autoreload_disabled %>
 
 <%= f.check_box :hide_team_names %>
+
+<%= f.number_field :autosave_delay_ms,
+      append: "ms",
+      help: "Automatisch im Hintergrund speichern nach der angegebenen Inaktivitätsdauer. Auf 0 oder negativ setzen, um den automatischen Speichervorgang zu deaktivieren." %>
 <br>

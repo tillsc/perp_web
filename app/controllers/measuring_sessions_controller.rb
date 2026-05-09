@@ -123,7 +123,7 @@ class MeasuringSessionsController < ApplicationController
   end
 
   def measuring_session_params
-    params.require(:measuring_session).permit(:device_description, :measuring_point_number, :autoreload_disabled, :hide_team_names)
+    params.require(:measuring_session).permit(:device_description, :measuring_point_number, :autoreload_disabled, :hide_team_names, :autosave_delay_ms)
   end
 
 end

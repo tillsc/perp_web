@@ -272,8 +272,16 @@ if (times) {
 
 }
 
+function autosaveDelay() {
+  var raw = document.getElementById('autosave-status')?.dataset?.autosaveDelay;
+  if (!raw) return 0;
+  return parseInt(raw);
+}
+
 function scheduleAutosave() {
   if (!autosaveEnabled) return;
+  var delay = autosaveDelay();
+  if (delay <= 0) return;
   if (autosaveInFlight) {
     autosavePending = true;
     return;
@@ -282,7 +290,7 @@ function scheduleAutosave() {
   if (!form) return;
   clearTimeout(autosaveTimeout);
   setAutosaveStatus('pending');
-  autosaveTimeout = setTimeout(function() { doAutosave(form); }, 1000);
+  autosaveTimeout = setTimeout(function() { doAutosave(form); }, delay);
 }
 
 function doAutosave(form) {

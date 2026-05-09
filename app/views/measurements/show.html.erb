@@ -40,7 +40,7 @@
 
   <%= f.submit "Fertig", class: 'btn btn-success' %>
   <%= link_to "Zeit Stoppen", '#', id: 'stop_time', class: 'btn btn-primary' %>
-  <span id="autosave-status" class="autosave-status"></span>
+  <span id="autosave-status" class="autosave-status" data-autosave-delay="<%= @measuring_session&.autosave_delay_ms %>"></span>
 <% end %>
 
 <h6 class="mt-1">Verfügbare Boote</h6>

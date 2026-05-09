@@ -93,6 +93,7 @@ de:
         measuring_point_number: Messpunkt
         autoreload_disabled: Automatischen Reload deaktivieren
         hide_team_names: Team-Namen verbergen
+        autosave_delay_ms: Verzögerung für automatisches Speichern
       measurement_set:
         referee_starter: Starter
         referee_starter_id: Starter
