@@ -13,15 +13,19 @@ class MeasurementsController < ApplicationController
     raise(ActionController::RoutingError, "Could not find valid MeasuringPoint!") unless @measuring_point
 
     ev = @regatta.events.find_by!(number: params[:event_number])
-    preload_participants = if ev.measuring_point_type(@measuring_point) == :start
-                             [:team, rowers: :weights]
-                           else
-                             :team
-                           end
 
     @race = Race.
       for_regatta(@regatta).
-      preload(:regatta, :starts, results: :times, event: [participants: preload_participants]).
+      preload(:regatta, :starts).
+      then do |q|
+        if request.xhr?
+          q.preload(:results, :event)
+        else
+          q.preload(results: :times, event: {
+            participants: (ev.measuring_point_type(@measuring_point) == :start ? [:team, { rowers: :weights }] : :team)
+          })
+        end
+      end.
       find_by!(event_number: params[:event_number], number: params[:race_number])
 
     @measuring = Services::Measuring.new(@race, @measuring_point, @measuring_session)
@@ -100,11 +104,11 @@ class MeasurementsController < ApplicationController
     end
 
     MeasuringSession.transaction do
-    @res = if (params[:participant_times]) # finish cam
-             @measuring.save_finish_cam!(params[:participant_times].permit!.to_h, true, measurement_set_params)
-           else
-             @measuring.save!(params[:participants], params[:times], true, measurement_set_params)
-           end
+      @res = if (params[:participant_times]) # finish cam
+               @measuring.save_finish_cam!(params[:participant_times].permit!.to_h, measurement_set_params)
+             else
+               @measuring.save!(params[:participants], params[:times], measurement_set_params)
+             end
     end
 
     if autosave

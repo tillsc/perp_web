@@ -272,6 +272,14 @@ if (times) {
 
 }
 
+var autosaveToggle = document.getElementById('autosave-toggle');
+if (autosaveToggle) {
+  var autosaveStatusEl = document.getElementById('autosave-status');
+  autosaveToggle.addEventListener('change', function() {
+    autosaveStatusEl.dataset.autosaveDelay = autosaveToggle.checked ? '1000' : '0';
+  });
+}
+
 function autosaveDelay() {
   var raw = document.getElementById('autosave-status')?.dataset?.autosaveDelay;
   if (!raw) return 0;

@@ -41,6 +41,11 @@
   <%= f.submit "Fertig", class: 'btn btn-success' %>
   <%= link_to "Zeit Stoppen", '#', id: 'stop_time', class: 'btn btn-primary' %>
   <span id="autosave-status" class="autosave-status" data-autosave-delay="<%= @measuring_session&.autosave_delay_ms %>"></span>
+  <% if @measuring_session.nil? && can?(:manage, MeasurementSet) %>
+    <label class="ms-2 small text-muted">
+      <input type="checkbox" id="autosave-toggle"> Autosave
+    </label>
+  <% end %>
 <% end %>
 
 <h6 class="mt-1">Verfügbare Boote</h6>

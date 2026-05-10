@@ -79,7 +79,7 @@ module Services
       end
     end
 
-    def save!(raw_participant_ids, raw_times, publish_result, measurement_set_attributes = nil)
+    def save!(raw_participant_ids, raw_times, measurement_set_attributes = nil)
       participants = Array.wrap(raw_participant_ids).map { |p_id|
         p_id = p_id.presence&.to_i
         all_participants.find { |p| p.participant_id == p_id }
@@ -106,10 +106,10 @@ module Services
       end
       res = participant_ids.zip(ftimes, rel_ftimes)
 
-      save_measurements_hash!(res, publish_result, measurement_set_attributes)
+      save_measurements_hash!(res, measurement_set_attributes)
     end
 
-    def save_finish_cam!(raw_participant_times, publish_result, measurement_set_attributes = nil)
+    def save_finish_cam!(raw_participant_times, measurement_set_attributes = nil)
       res = raw_participant_times.map do |raw_participant_id, raw_time|
         raw_participant_id = raw_participant_id.presence&.to_i
         participant = all_participants.find { |p| p.participant_id == raw_participant_id }
@@ -119,7 +119,7 @@ module Services
         sort_by { |p_id, time, _rel_time| time.presence || "ZZZZZZZZZZZZ#{p_id}" }.
         reject { |p_id, time, _rel_time| p_id.to_i < 0 && time.nil? }
 
-      save_measurements_hash!(res, publish_result, measurement_set_attributes)
+      save_measurements_hash!(res, measurement_set_attributes)
     end
 
     def alternative_times_for(original_time)
@@ -136,7 +136,7 @@ module Services
 
     protected
 
-    def save_measurements_hash!(measurements_hash, publish_result, measurement_set_attributes)
+    def save_measurements_hash!(measurements_hash, measurement_set_attributes)
       if measurement_set_attributes.present?
         @measurement_set.attributes = measurement_set_attributes
       end
@@ -149,14 +149,21 @@ module Services
       end
       @measurement_set.save!
 
-      if publish_result
-        publish_result!
-      end
+      publish_result!
 
       measurements_hash
     end
 
+    def publishable?
+      if is_start?
+        @measurement_set.measurements.any? { |p_id, time, _| p_id.to_i > 0 && time.present? }
+      else
+        @measurement_set.measurements.any? { |p_id, _, rel_time| p_id.to_i > 0 && rel_time.present? }
+      end
+    end
+
     def publish_result!
+      return unless publishable?
       if self.is_start?
         race.results.each do |r|
           r.lane_number = nil
