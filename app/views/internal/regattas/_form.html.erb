@@ -16,6 +16,12 @@
 
   <%= f.text_field :currency %>
 
+  <% if @regatta.new_record? %>
+    <%= f.select :copy_events_from_regatta_id,
+        options_from_collection_for_select(@copy_from_regattas, :id, :name),
+        include_blank: "Keine Rennen kopieren", label: "Rennen kopieren von" %>
+  <% end %>
+
   <%= f.primary %>
   <%= link_to "Abbrechen", back_or_default, class: 'btn btn-secondary' %>
 <% end %>

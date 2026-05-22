@@ -49,6 +49,9 @@ class Regatta < ApplicationRecord
   has_many :imports, foreign_key: 'Regatta_ID',
            inverse_of: :regatta, dependent: :destroy
 
+  # used in new form to copy events from an existing regatta
+  attr_accessor :copy_events_from_regatta_id
+
   scope :valid, -> { where(Regatta.arel_table[:ID].gteq(1032)) }
 
   validates :name, presence: true, length: { minimum: 4 }, uniqueness: true
