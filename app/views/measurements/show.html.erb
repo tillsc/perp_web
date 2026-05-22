@@ -76,17 +76,27 @@
 <% end %>
 <% if can?(:show, :measurements_history) && @measurements_history.present? %>
   <h5 class="mt-4">Historie</h5>
-  <% @measurements_history.reverse_each do |date, data| %>
-    <h6><%= date && l(DateTime.parse(date), format: :full) %></h6>
-    <div class="d-flex justify-content-between">
-    <% data.each do |k, v| %>
-      <div class="border p-3 bg-light">
-        <%= @measuring.find_participant(k)&.number || "TNR#{k}" %>:
-        <%= v %>
+  <div style="display: grid; grid-template-columns: max-content 1fr; column-gap: 1rem; font-size: 0.8rem;">
+    <% @measurements_history.reverse_each do |date, data| %>
+      <span class="text-muted text-nowrap border-top pt-1"><%= date && l(DateTime.parse(date), format: :full) %></span>
+      <div class="d-flex flex-wrap align-items-baseline gap-2 border-top pt-1">
+        <% if data.empty? %>
+          <span class="text-muted fst-italic">&lt;keine Daten&gt;</span>
+        <% else %>
+          <% data.each do |p_id, time, rel_time| %>
+            <% parsed_time = time && (DateTime.parse(time) rescue nil) %>
+            <span class="text-nowrap">
+              <span class="text-muted"><%= @measuring.find_participant(p_id&.to_i)&.number || "TNR#{p_id}" %>:</span>
+              <span class="font-monospace" title="<%= time %>"><%= parsed_time ? parsed_time.strftime("%H:%M:%S.%2N") : time %></span>
+              <% if rel_time.present? %>
+                <span class="font-monospace text-muted">(<%= ResultTime.sanitize_time(rel_time) %>)</span>
+              <% end %>
+            </span>
+          <% end %>
+        <% end %>
       </div>
     <% end %>
-    </div>
-  <% end %>
+  </div>
 <% end %>
 
 <script>

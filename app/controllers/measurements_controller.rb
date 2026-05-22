@@ -97,7 +97,7 @@ class MeasurementsController < ApplicationController
         @original_time = times.first
         @alternative_times = @measuring.alternative_times_for(@original_time)
         if @alternative_times.any?
-          render :select_alternative_time
+          render :select_alternative_time, status: :unprocessable_entity
           return
         end
       end

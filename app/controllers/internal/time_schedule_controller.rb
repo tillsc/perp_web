@@ -65,7 +65,7 @@ module Internal
           redirect_to back_or_default
         else
           flash[:danger] = "Läufe könnten nicht gelöscht werden. Vermutlich existieren bereits Startlisten oder Ergebnisse."
-          render :show
+          render :show, status: :unprocessable_entity
         end
       end
     end
