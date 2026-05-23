@@ -1,15 +1,13 @@
 <%= render 'regatta/print_footer' %>
 <% @events_with_results.each do |event| %>
-  <%= render 'regatta/header', event: event, type_label: Result.model_name.human(count: 1), type_filled: true, type_variant: :results %>
-  <% @event = event %>
+  <%= render 'regatta/header', event: event, type_label: Result.model_name.human(count: 1), type_variant: :results %>
   <% measuring_points = @all_measuring_points.select { |mp|
-       mp.number > event.start_measuring_point_number &&
-       mp.number <= event.finish_measuring_point_number
-     } %>
+    mp.number > event.start_measuring_point_number &&
+      mp.number <= event.finish_measuring_point_number
+  } %>
 
-  <% event_results = event.races.flat_map(&:results) %>
-  <% event_results.group_by { |r| r.race.type_short }.each do |_race_type, race_type_results| %>
-    <div style="break-inside: avoid">
+  <% event.races.flat_map(&:results).group_by { |r| r.race.type_short }.each do |_race_type, race_type_results| %>
+    <div class="print-keep-together">
       <% race_type_results.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, race_results| %>
         <%= render 'regatta/race_results',
                    race: race,

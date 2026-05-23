@@ -14,8 +14,8 @@
   }
 }
 
-// Volle Style-Deklaration außerhalb @media print: Paged.js scannt CSS vor @media-Auflösung,
-// und display:flex überschreibt das display:none aus .print-footer
+// Declared outside @media print: Paged.js scans CSS before resolving @media rules,
+// and display:flex needs to win over the display:none from .print-footer
 .running-regatta-header {
   @include regatta-header-print;
   position: running(running-header);
@@ -28,7 +28,7 @@
   width: 100%;
 }
 
-// Paged.js setzt display:block auf alle Margin-Box-Kinder — mit höherer Spezifität überschreiben
+// Paged.js sets display:block on all margin box children — override with higher specificity
 .pagedjs_page .pagedjs_margin-top-left > .pagedjs_margin-content > .running-regatta-header {
   display: flex;
   flex-direction: row;

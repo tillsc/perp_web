@@ -1,4 +1,4 @@
-<%= render 'header', event: @event, type_label: Result.model_name.human(count: 1), type_filled: true, type_variant: :results %>
+<%= render 'header', event: @event, type_label: Result.model_name.human(count: 1), type_variant: :results %>
 
 <% has_comments = @results.any? { |r| r.comment.present? } %>
 <% @results.group_by { |res| res.race.type_short }.each do |race_type, race_type_results| %>

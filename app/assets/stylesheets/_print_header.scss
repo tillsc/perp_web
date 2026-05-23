@@ -46,7 +46,7 @@
     align-self: center;
   }
 
-  .regatta-header__type--filled {
+  &.regatta-header--results .regatta-header__type{
     background: var(--header-accent-color, #000);
     color: #fff;
     print-color-adjust: exact;
