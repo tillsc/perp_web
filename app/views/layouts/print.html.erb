@@ -7,6 +7,7 @@
   <%= csrf_meta_tags %>
   <%= stylesheet_link_tag 'application' %>
   <%= stylesheet_link_tag 'pagedjs_print' %>
+  <style>@page { size: A4 <%= params[:orientation] == "portrait" ? "portrait" : "landscape" %>; }</style>
   <script>window.PagedConfig = { auto: false };</script>
   <script type="module" src="<%= asset_path('pagedjs.js') %>"></script>
   <script type="module">

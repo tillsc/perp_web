@@ -19,6 +19,9 @@
           <%= f.number_field :event_number_from, value: params[:event_number_from], label: "Von Rennen" %>
           <%= f.number_field :event_number_to, value: params[:event_number_to], label: "Bis Rennen" %>
         </div>
+        <div class="col-sm-6">
+          <%= f.select :orientation, [["Querformat", "landscape"], ["Hochformat", "portrait"]], { selected: params.fetch(:orientation, "landscape") }, label: "Seitenformat" %>
+        </div>
       </div>
       <%= f.submit "Öffnen" %>
     <% end %>
