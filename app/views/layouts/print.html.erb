@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <title>Druck – <%= @regatta&.name %></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag 'application' %>
+  <%= stylesheet_link_tag 'pagedjs_print' %>
+  <script>window.PagedConfig = { auto: false };</script>
+  <script type="module" src="<%= asset_path('pagedjs.js') %>"></script>
+  <script type="module">
+    class ReadyHandler extends window.Paged.Handler {
+      afterRendered() {
+        document.getElementById('print-loading').remove();
+      }
+    }
+    window.Paged.registerHandlers(ReadyHandler);
+    window.PagedPolyfill.preview();
+  </script>
+</head>
+<body>
+  <div id="print-loading" style="position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#6c757d;z-index:9999">
+    Wird aufbereitet…
+  </div>
+  <%= yield %>
+</body>
+</html>

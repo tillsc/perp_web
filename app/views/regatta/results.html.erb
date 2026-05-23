@@ -1,13 +1,8 @@
-<%= render 'header' %>
-
-<h2>Ergebnisse in Rennen <%= @event.number %> <small class="text-nowrap"><%= @event.name_short %></small></h2>
-<p class="lead">
-  <%= @event.name %>
-</p>
+<%= render 'header', event: @event, type_label: Result.model_name.human(count: 1), type_filled: true, type_variant: :results %>
 
 <% has_comments = @results.any? { |r| r.comment.present? } %>
 <% @results.group_by { |res| res.race.type_short }.each do |race_type, race_type_results| %>
-  <div style="break-inside: avoid">
+  <div>
     <% race_type_results.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, race_results| %>
       <%= render 'race_results', race: race, results: race_results, measuring_points: @measuring_points, has_commnents: has_comments %>
     <% end %>
@@ -32,6 +27,9 @@
     <% end %>
   </div>
 <% end %>
+
+<%= render 'print_footer' %>
+
 <% if @results.any? { |r| !r.race.result_confirmed? } %>
   <script>
       autoreloadAfter(30000)

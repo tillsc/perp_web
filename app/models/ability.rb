@@ -9,7 +9,7 @@ class Ability
 
       if user.roles.any?
         can :access, [:announcer_views, :honors]
-        can :read, [Rower, Result, Start, Participant, Team, Event, Race, Address, Services::TimeSchedule::Block]
+        can :read, [Rower, Result, Start, Participant, Team, Event, Race, Address, Services::TimeSchedule::Block, :reports]
       end
 
       if user.role_announcer || user.role_admin
@@ -53,7 +53,7 @@ class Ability
         end
         can :manage, MeasuringPoint
         can :manage, :tv_settings
-        can :read, [:statistics, :server_status, :reports]
+        can :read, [:statistics, :server_status]
         can :manage, Regatta
         cannot :delete, Regatta do |r|
           r.events.any?

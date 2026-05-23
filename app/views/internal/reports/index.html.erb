@@ -1,0 +1,43 @@
+<%= render 'regatta/header' %>
+
+<h2>Ausdrucke</h2>
+
+<ul class="nav nav-tabs mb-3" role="tablist">
+  <li class="nav-item">
+    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-results" type="button"><%= Result.model_name.human(count: 2) %></button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-rowers" type="button"><%= Rower.model_name.human(count: 2) %></button>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="tab-results">
+    <%= bootstrap_form_with url: internal_reports_results_path(@regatta), method: :get, target: "_blank" do |f| %>
+      <div class="row">
+        <div class="col-sm-6">
+          <%= f.number_field :event_number_from, value: params[:event_number_from], label: "Von Rennen" %>
+          <%= f.number_field :event_number_to, value: params[:event_number_to], label: "Bis Rennen" %>
+        </div>
+      </div>
+      <%= f.submit "Öffnen" %>
+    <% end %>
+  </div>
+  <div class="tab-pane fade" id="tab-rowers">
+    <%= bootstrap_form_with url: internal_reports_rowers_path(@regatta), method: :get, target: "_blank" do |f| %>
+      <div class="row">
+        <div class="col-sm-6">
+          <%= f.number_field :event_number_from, value: params[:event_number_from], label: "Von Rennen" %>
+          <%= f.number_field :event_number_to, value: params[:event_number_to], label: "Bis Rennen" %>
+        </div>
+        <formset class="col-sm-6">
+          <legend>Optionen</legend>
+          <%= f.check_box :hide_age_category, checked: params[:hide_age_category] == "1", label: "Leistungsklasse nicht anzeigen" %>
+          <%= f.check_box :hide_club, checked: params[:hide_club] == "1", label: "Verein nicht anzeigen" %>
+          <%= f.check_box :hide_event_shortname, checked: params[:hide_event_shortname] == "1", label: "Kurzbezeichnung Rennen nicht anzeigen" %>
+        </formset>
+      </div>
+      <%= f.submit "Öffnen" %>
+    <% end %>
+  </div>
+</div>

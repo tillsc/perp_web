@@ -1,0 +1,47 @@
+@import "print_header";
+
+@page {
+  size: A4;
+  margin: 28mm 10mm 18mm 10mm;
+
+  @top-left {
+    content: element(running-header);
+    vertical-align: bottom;
+  }
+
+  @bottom-left {
+    content: element(running-footer);
+    vertical-align: middle;
+  }
+}
+
+// Volle Style-Deklaration außerhalb @media print: Paged.js scannt CSS vor @media-Auflösung,
+// und display:flex überschreibt das display:none aus .print-footer
+.running-regatta-header {
+  @include regatta-header-print;
+  position: running(running-header);
+  width: 100%;
+}
+
+.running-print-footer {
+  @include print-footer;
+  position: running(running-footer);
+  width: 100%;
+}
+
+// Paged.js setzt display:block auf alle Margin-Box-Kinder — mit höherer Spezifität überschreiben
+.pagedjs_page .pagedjs_margin-top-left > .pagedjs_margin-content > .running-regatta-header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.pagedjs_page .pagedjs_margin-bottom-left > .pagedjs_margin-content > .running-print-footer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.print-footer__page-counter::before {
+  content: "Seite " counter(page) " von " counter(pages);
+}

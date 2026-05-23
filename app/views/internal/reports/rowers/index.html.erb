@@ -1,21 +1,5 @@
 <h1><%= @regatta&.name %> - Startende Ruderer</h1>
 
-<%= bootstrap_form_with method: :get, class: "d-print-none" do |f| %>
-  <div class="row">
-    <div class="col-sm-6">
-      <%= f.number_field :event_number_from, value: params[:event_number_from], label: "Von Rennen" %>
-      <%= f.number_field :event_number_to, value: params[:event_number_to], label: "Bis Rennen" %>
-    </div>
-    <formset class="col-sm-6">
-      <legend>Optionen</legend>
-      <%= f.check_box :hide_age_category, checked: params[:hide_age_category] == "1", label: "Leistungsklasse nicht anzeigen" %>
-      <%= f.check_box :hide_club, checked: params[:hide_club] == "1", label: "Verein nicht anzeigen" %>
-      <%= f.check_box :hide_event_shortname, checked: params[:hide_event_shortname] == "1", label: "Kurzbezeichnung Rennen nicht anzeigen" %>
-    </formset>
-  </div>
-  <%= f.submit "Filtern" %>
-<% end %>
-
 <table class="table mt-5">
   <thead>
   <tr>

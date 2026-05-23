@@ -8,4 +8,5 @@ Rails.application.config.assets.version = "1.0"
 Rails.application.config.assets.precompile += %w( measurements.js measurements.css
   startlists.js startlists.css internal.js internal.css switcher.js components app.js
   bootstrap5-autocomplete.js @rails--ujs.js
-  fullcalendar.js @fullcalendar--core--locales--de.js)
+  fullcalendar.js @fullcalendar--core--locales--de.js
+  pagedjs.js pagedjs_print.css)

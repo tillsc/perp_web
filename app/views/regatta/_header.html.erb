@@ -1,12 +1,22 @@
-<div class="bg-light px-3 py-2 my-2 border regatta-header">
-  <h2><%= @regatta.name %></h2>
-  <% if @regatta.from_date %>
-  <p class="lead">
-    Von <%= l(@regatta.from_date, format: '%a, %d.%m.') %>
-    <% if @regatta.to_date %>
-      bis <%= l(@regatta.to_date, format: '%a, %d.%m.%Y') %>
+<div class="regatta-header running-regatta-header<%= " regatta-header--#{type_variant}" if local_assigns[:type_variant] %>">
+  <% if local_assigns[:event].present? %>
+    <div class="regatta-header__number">
+      <div class="regatta-header__number-label"><%= Event.model_name.human %></div>
+      <div class="regatta-header__number-value"><%= event.number %></div>
+    </div>
+  <% end %>
+  <div class="regatta-header__main">
+    <div class="regatta-header__name"><%= @regatta.name %></div>
+    <% if local_assigns[:event].present? %>
+      <div class="regatta-header__subtitle"><%= event.name_short %> &ndash; <%= event.name %></div>
+    <% elsif @regatta.from_date %>
+      <div class="regatta-header__subtitle">
+        <%= l(@regatta.from_date, format: '%a, %d.%m.') %><% if @regatta.to_date %> bis <%= l(@regatta.to_date, format: '%a, %d.%m.%Y') %><% end %>
+      </div>
     <% end %>
-  </p>
+  </div>
+  <% if local_assigns[:type_label].present? %>
+    <div class="regatta-header__type<%= ' regatta-header__type--filled' if local_assigns[:type_filled] %>"><%= type_label %></div>
   <% end %>
 </div>
 

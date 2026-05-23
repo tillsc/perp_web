@@ -1,5 +1,6 @@
 @import "bootstrap";
 @import "results";
+@import "print";
 @import "../components/auto-grid/auto-grid";
 @import "../components/dialog-opener/dialog-opener";
 @import "../components/spinner/spinner";
@@ -18,19 +19,6 @@ body.internal {
 
   > nav.navbar-dark {
     background: #5e0403 !important;
-  }
-}
-
-.regatta-header {
-  @media only print {
-    padding-left: 0;
-    background-color: unset;
-  }
-}
-
-@media print {
-  @page {
-    margin: 0;
   }
 }
 

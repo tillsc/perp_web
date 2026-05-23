@@ -1,0 +1,4 @@
+<div class="print-footer running-print-footer">
+  <span>Stand: <%= l(Time.current, format: '%d.%m.%Y %H:%M') %> &middot; <%= @regatta&.tap { _1.strict_loading!(false) }&.organizer&.name %> &middot; perp.de</span>
+  <span class="print-footer__page-counter"></span>
+</div>

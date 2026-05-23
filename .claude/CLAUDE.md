@@ -15,7 +15,7 @@
 - Scope/method pairs that express the same predicate (e.g. `scope :honorable` + `def honorable?`) must be adjacent — method directly after scope
 
 ### Services
-- Service objects support a preview mode before persisting
+- Some Service objects support a preview mode before persisting
 
 ### CSS
 - SCSS scoped per feature: `internal.scss`, `results.scss`, etc.

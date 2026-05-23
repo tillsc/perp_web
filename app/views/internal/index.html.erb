@@ -103,8 +103,8 @@
       <h5 class="card-header">Reports</h5>
       <div class="card-body">
         <ul>
-          <% if can?(:index, Rower) %>
-            <li><%= link_to("Ruderer", internal_reports_rowers_url(@regatta)) %></li>
+          <% if can?(:index, :reports) %>
+            <li><%= link_to("Ausdrucke", internal_reports_url(@regatta)) %></li>
           <% end %>
           <% if can?(:index, Result) %>
             <li><%= link_to "DRV Ergebnis-XML", results_url(@regatta, format: :xml) %></li>

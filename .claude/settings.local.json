@@ -6,7 +6,8 @@
       "Bash(rtk ls *)",
       "Bash(rtk read *)",
       "Bash(rtk wc *)",
-      "Bash(bundle exec *)"
+      "Bash(bundle exec *)",
+      "Bash(grep -E '\\\\.\\(scss|css\\)$')"
     ]
   }
 }

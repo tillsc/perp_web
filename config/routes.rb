@@ -49,8 +49,10 @@ Rails.application.routes.draw do
       get '/weighings/:date/rowers/:id' => 'weighings#rower', as: :rower_weighings
       put '/weighings/:date/rowers/:id' => 'weighings#save_weight'
 
+      get '/reports' => 'reports#index', as: :reports
       scope :reports, module: :reports, as: :reports do
         get '/rowers' => 'rowers#index', as: :rowers
+        get '/results' => 'results#index', as: :results
       end
 
       get '/status' => 'state#index'

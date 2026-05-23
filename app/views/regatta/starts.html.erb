@@ -1,9 +1,4 @@
-<%= render 'header' %>
-
-<h3>Geplante Starts in Rennen <%= @event.number %> <small><%= @event.name_short %></small></h3>
-<p class="lead">
-  <%= @event.name %>
-</p>
+<%= render 'header', event: @event, type_label: "Startlisten", type_variant: :starts %>
 
 <% @starts.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, starts| %>
   <div class="row">
@@ -12,7 +7,7 @@
     <div class="col-auto"><%= l race.planned_for %></div>
   </div>
   <div class="table-responsive-md">
-    <table class="table">
+    <table class="table print-keep-together">
       <thead>
       <th class="fw-light">Bahn</th>
       <th>Bugnr.</th>
@@ -36,3 +31,5 @@
     </table>
   </div>
 <% end %>
+
+<%= render 'print_footer' %>
