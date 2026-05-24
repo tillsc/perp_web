@@ -1,10 +1,14 @@
+@mixin print-band-base {
+  background: #fff;
+  border: 1px solid var(--header-border-color, #000);
+  box-sizing: border-box;
+}
+
 @mixin regatta-header-structure {
+  @include print-band-base;
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  background: #fff;
-  border: 2px solid var(--header-border-color, #000);
-  box-sizing: border-box;
 
   .regatta-header__number {
     display: flex;
@@ -17,6 +21,7 @@
     -webkit-print-color-adjust: exact;
     text-align: center;
     flex-shrink: 0;
+    aspect-ratio: 1;
 
     &-label {
       text-transform: uppercase;
@@ -62,8 +67,7 @@
   width: 100%;
 
   .regatta-header__number {
-    padding: 2mm 4mm;
-    min-width: 18mm;
+    padding: 2mm;
 
     &-label { font-size: 6pt; }
     &-value { font-size: 18pt; }
@@ -91,13 +95,17 @@
 }
 
 @mixin print-footer {
-  border: 2px solid #000;
-  background: #fff;
-  box-sizing: border-box;
+  @include print-band-base;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 2mm 8mm;
   font-size: 8pt;
   color: #555;
+}
+
+@mixin print-layout {
+  .regatta-header {
+    @include regatta-header-print;
+  }
 }
