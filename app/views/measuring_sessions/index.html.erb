@@ -20,7 +20,7 @@
           <td><%= ms.device_description %></td>
           <td><%= link_to ms.identifier.truncate(10), measuring_session_url(@regatta, ms) %></td>
           <td>
-            <%= ms.measuring_point.name %>
+            <%= ms.measuring_point&.name %>
             <% if ms.active? %>
               <span class="badge badge-info">Aktiv</span>
               <% end %>
@@ -37,11 +37,11 @@
             <% if can?(:edit, ms) %>
               <% if ms.active? %>
                 <%= form_tag measuring_session_url(@regatta, ms), method: :patch do %>
-                  <button type="submit" name="deactivate" value="<%= ms.measuring_point.number %>" class="btn btn-outline-danger">Deaktivieren</button>
+                  <button type="submit" name="deactivate" value="<%= ms.measuring_point&.number %>" class="btn btn-outline-danger">Deaktivieren</button>
                 <% end %>
               <% else %>
                 <%= form_tag measuring_session_url(@regatta, ms), method: :patch do %>
-                  <button type="submit" name="activate" value="<%= ms.measuring_point.number %>" class="btn btn-outline-success">Aktivieren</button>
+                  <button type="submit" name="activate" value="<%= ms.measuring_point&.number %>" class="btn btn-outline-success">Aktivieren</button>
                 <% end %>
               <% end %>
             <% end %>
