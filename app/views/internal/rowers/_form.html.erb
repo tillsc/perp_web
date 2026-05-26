@@ -15,7 +15,14 @@
     </div>
 
     <div class="col-md-4">
-      <%= f.collection_select :club_id, Address.club, :id, :name, include_blank: true %>
+      <dialog-opener move-out="primary" local-reload id="dialog-opener-club">
+        <%= content_tag 'find-reference', href: internal_addresses_url(@regatta, only_role: "club"),
+                        'value-field': 'club_id', 'label-field': 'name',
+                        'initial-label': f.object.club&.name do %>
+          <%= f.text_field :club_id, required: true,
+                           append: link_to("+", new_internal_address_url(@regatta, address: {is_club: 1}, referrer: current_url), class: "btn btn-secondary") %>
+        <% end %>
+      </dialog-opener>
       <%= f.text_field :club_name %>
     </div>
   </div>

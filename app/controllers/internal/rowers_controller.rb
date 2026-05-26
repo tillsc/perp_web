@@ -101,7 +101,12 @@ module Internal
     end
 
     def prepare_form
-      @representatives = Address.representative.order_existing_first(@regatta)
+      if params['local_reload'].present? && params['dialog_finished_with'].present?
+        if params['local_reload'] == 'dialog-opener-club'
+          new_club = Address.club.find_by(id:  params['dialog_finished_with'])
+          @rower.club = new_club if new_club
+        end
+      end
     end
 
     def rower_params(default = {})
