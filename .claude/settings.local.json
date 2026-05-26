@@ -9,7 +9,8 @@
       "Bash(bundle exec *)",
       "Bash(grep -E '\\\\.\\(scss|css\\)$')",
       "Bash(rtk rake *)",
-      "Bash(bin/rails routes *)"
+      "Bash(bin/rails routes *)",
+      "Bash(grep -E \"\\\\.\\(py|rb|js|ts|tsx\\)$\")"
     ]
   }
 }

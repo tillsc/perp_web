@@ -24,6 +24,8 @@ class Team < ApplicationRecord
 
   validates :name, uniqueness: { scope: ['Regatta_ID', 'Obmann_ID'] }
 
+  before_save { self.name = Team.sanitize_name(self.name, slashes_had_no_whitespace: true) }
+
   scope :for_regatta, -> (regatta) {
     where(regatta_id: regatta)
   }

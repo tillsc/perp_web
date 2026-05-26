@@ -4,7 +4,9 @@
 
   <div class="row">
     <div class="col-md-4">
-      <%= f.text_field :name, required: true %>
+      <tagged-name-input href="<%= internal_addresses_url(@regatta, only_role: 'club') %>">
+        <%= f.text_field :name, required: true %>
+      </tagged-name-input>
       <%= f.text_field :country %>
       <%= f.text_field :city %>
 
