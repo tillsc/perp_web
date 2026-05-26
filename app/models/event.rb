@@ -2,6 +2,7 @@ class Event < ApplicationRecord
 
   self.table_name = 'rennen'
   self.primary_key = 'Regatta_ID', 'Rennen'
+  validates_lengths_from_schema
 
   alias_attribute :regatta_id, 'Regatta_ID'
   alias_attribute :number, 'Rennen'

@@ -3,6 +3,7 @@ class Team < ApplicationRecord
   include AliasAttributesInJson
 
   self.primary_key = 'Regatta_ID', 'ID'
+  validates_lengths_from_schema
 
   alias_attribute :regatta_id, 'Regatta_ID'
   alias_attribute :team_id, 'ID'

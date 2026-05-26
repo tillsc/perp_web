@@ -1,6 +1,7 @@
 class Regatta < ApplicationRecord
 
   self.table_name = 'regatten'
+  validates_lengths_from_schema
 
   AGE_CATEGORIES = [:drv, :fisa_masters]
 

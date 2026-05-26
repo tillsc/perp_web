@@ -3,6 +3,7 @@ class Rower < ApplicationRecord
   include AliasAttributesInJson
 
   self.table_name = 'ruderer'
+  validates_lengths_from_schema
 
   # Transient attribute to visualize changes made to a rower. This data could be gathered by using "rower.changes"
   # before "rower.save" is made.

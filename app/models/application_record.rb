@@ -1,6 +1,14 @@
 class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
 
+  def self.validates_lengths_from_schema
+    columns_hash.each do |name, col|
+      if col.type == :string && col.limit
+        validates name, length: { maximum: col.limit }
+      end
+    end
+  end
+
   def self.bool_to_int_sql(attribute)
     unless attribute.is_a?(Arel::Attributes::Attribute)
       attribute = self.arel_table[attribute]

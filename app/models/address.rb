@@ -1,6 +1,7 @@
 class Address < ApplicationRecord
 
   self.table_name = 'addressen'
+  validates_lengths_from_schema
 
   alias_attribute :title, 'Titel'
   alias_attribute :first_name, 'Vorname'
