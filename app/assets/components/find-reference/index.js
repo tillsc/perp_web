@@ -21,8 +21,11 @@ class FindReferenceElement extends HTMLElement {
       this.queryInput.addEventListener("keydown", this);
       this.input.after(this.queryInput);
       this.input.type = 'hidden';
+      const hrefUrl = new URL(this.getAttribute('href'), document.location.href);
+      const serverParams = Object.fromEntries(hrefUrl.searchParams.entries());
+      const serverBase = hrefUrl.origin + hrefUrl.pathname;
       this.autocomplete = new Autocomplete(this.queryInput, {
-        liveServer: true, server: this.getAttribute('href'),
+        liveServer: true, server: serverBase, serverParams,
         showAllSuggestions: true, // Stop Autocomplete searching in JSON again
         suggestionsThreshold: 3, // 3 letters required before fetching
         notFoundMessage: 'Nix gefunden. Sorry.',
