@@ -27,7 +27,7 @@ class MeasuringSession < ApplicationRecord
   end
 
   def active?
-    self.active_measuring_point&.number == self.measuring_point.number
+    self.active_measuring_point&.number == self.measuring_point&.number
   end
 
   def to_param
