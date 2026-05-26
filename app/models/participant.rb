@@ -6,6 +6,8 @@ class Participant < ApplicationRecord
   ALL_ROWERS_WITH_WEIGHTS = ALL_ROWERS.inject({}) { |h, rel_name| h.merge(rel_name => :weights) }
   ALL_ROWERS_WITH_CLUBS = ALL_ROWERS.inject({}) { |h, rel_name| h.merge(rel_name => :club) }
 
+  COPY_FIELDS = [:team_id] + ALL_ROWERS.map { |f| "#{f}_id" }
+
   self.table_name = 'meldungen'
   self.primary_key = 'Regatta_ID', 'Rennen', 'TNr'
 

@@ -23,8 +23,12 @@ module Internal
     end
 
     def new
-      @participant_params = participant_params
-      @participant = @regatta.participants.new(participant_params)
+      @participant_params = participant_params.to_h
+      if params[:copy_participant].present?
+        copy_participant = @regatta.participants.find(params[:copy_participant].split("_", -1))
+        @participant_params = @participant_params.merge(Participant::COPY_FIELDS.inject({}) { |h, f| h.merge(f => copy_participant&.send(f)) })
+      end
+      @participant = @regatta.participants.new(@participant_params)
 
       authorize! :new, @participant
       prepare_form
