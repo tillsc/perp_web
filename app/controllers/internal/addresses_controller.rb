@@ -36,7 +36,7 @@ module Internal
 
     def new
       @address = Address.new(address_params)
-      @address.last_name = @address.last_name.presence || params[:default]&.camelcase
+      @address.last_name = @address.last_name.presence || params[:default]&.titleize
 
       authorize! :new, @address
     end

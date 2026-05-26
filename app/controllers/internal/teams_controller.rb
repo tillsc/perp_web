@@ -24,7 +24,7 @@ module Internal
 
       copy_team =  @regatta.teams.find_by(team_id: params[:copy_team]) if params[:copy_team].present?
       @team = @regatta.teams.new(team_params(Team::COPY_FIELDS.inject({}) { |h, f| h.merge(f => copy_team&.send(f)) }))
-      @team.name = @team.name.presence || params[:default]&.camelcase
+      @team.name = @team.name.presence || params[:default]&.titleize
 
       prepare_form
     end
