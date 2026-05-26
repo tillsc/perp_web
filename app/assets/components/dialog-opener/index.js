@@ -2,7 +2,7 @@ class DialogOpener extends HTMLElement {
 
   dialogContent = (closeText) => `
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-body"></div>
       <div class="modal-footer">
@@ -61,7 +61,7 @@ class DialogOpener extends HTMLElement {
       document.body.appendChild(this.dialog);
     }
     this.dialog.innerHTML = this.dialogContent(this.getAttribute('close') || 'Close');
-    this.dialog.querySelector(".modal-body").innerHTML = `<iframe src="${src}" height="550px"></iframe>`;
+    this.dialog.querySelector(".modal-body").innerHTML = `<iframe src="${src}" style="height: max(500px, calc(100vh - 200px)); width: 100%;"></iframe>`;
     this.modal = new bootstrap.Modal(this.dialog.querySelector(".modal"));
   }
 
@@ -86,6 +86,7 @@ class DialogOpener extends HTMLElement {
       }
     }
     else {
+      this.iframe.contentWindow.document.body.style.width = '98%';
       this.moveElementsToOuterActions();
       this.iframe.display = 'unset';
     }
