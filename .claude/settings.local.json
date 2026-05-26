@@ -8,7 +8,8 @@
       "Bash(rtk wc *)",
       "Bash(bundle exec *)",
       "Bash(grep -E '\\\\.\\(scss|css\\)$')",
-      "Bash(rtk rake *)"
+      "Bash(rtk rake *)",
+      "Bash(bin/rails routes *)"
     ]
   }
 }

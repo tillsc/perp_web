@@ -1,0 +1,45 @@
+<h1>Bugnummernverlosung für <%= @regatta.name %></h1>
+
+<%= bootstrap_form_with url: new_internal_participants_number_draw_path(@regatta), method: :get, class: "row g-2 align-items-end mb-4" do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
+  <%= f.number_field :event_number_from, label: "Rennen von", value: @event_number_from, wrapper: { class: "col-auto" } %>
+  <%= f.number_field :event_number_to,   label: "Rennen bis", value: @event_number_to,   wrapper: { class: "col-auto" } %>
+  <%= f.number_field :sector_size,       label: "Sektorgröße", value: @sector_size,       wrapper: { class: "col-auto" } %>
+  <div class="col-auto">
+    <br>
+    <%= f.submit "Auslosen", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= bootstrap_form_with url: internal_participants_number_draw_path(@regatta), method: :post do |f| %>
+
+  <% @proposals_by_event.each do |event, proposals| %>
+    <% next if proposals.empty? %>
+
+    <h3 class="mt-4"><%= event.label %></h3>
+
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-1">
+      <% proposals.each do |proposal| %>
+        <% p = proposal[:participant] %>
+        <%= hidden_field_tag "numbers[#{p.to_param}]", proposal[:number] %>
+        <div class="col">
+          <div class="d-flex gap-2 align-items-baseline">
+            <span class="fw-bold text-nowrap"><%= proposal[:number] %></span>
+            <span class="text-truncate small"><%= p.team&.name %><%= " (#{p.team_boat_number})" if p.team_boat_number.present? %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+  <% end %>
+
+  <% if @proposals_by_event.values.all?(&:empty?) %>
+    <p class="text-muted mt-4">Alle Teilnehmer in diesem Bereich haben bereits eine Bugnummer.</p>
+  <% end %>
+
+  <div class="mt-4">
+    <%= f.primary "Bugnummern speichern" %>
+    <%= link_to "Abbrechen", back_or_default, class: "btn btn-secondary" %>
+  </div>
+
+<% end %>

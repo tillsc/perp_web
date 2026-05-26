@@ -35,6 +35,7 @@ Rails.application.routes.draw do
             resources :drv_imports, except: [:edit, :update] do
               post '/' => :execute
             end
+            resource :number_draw, only: [:new, :create]
           end
         end
       end

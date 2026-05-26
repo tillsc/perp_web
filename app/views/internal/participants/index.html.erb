@@ -23,6 +23,10 @@
                 internal_participants_drv_imports_url(@regatta, referrer: current_url),
                 class: 'btn btn-secondary d-block my-1') if can?(:index, Import) %>
 
+    <%= link_to("Bugnummernverlosung",
+                new_internal_participants_number_draw_path(@regatta, event_number_from: params[:event_number].presence, event_number_to: params[:event_number].presence, referrer: current_url),
+                class: 'btn btn-secondary d-block my-1') if can?(:update, Participant) %>
+
     <% if params[:referrer] %>
       <hr>
       <%= link_to "Zurück", back_or_default, class: 'btn btn-secondary d-block my-1' %>
