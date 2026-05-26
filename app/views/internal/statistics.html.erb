@@ -5,7 +5,7 @@
     <h2>Meldungen</h2>
     <dl>
       <dt>Gesamt-Anzahl Meldungen:</dt>
-      <dd><%= @participants_stats.total_participants_count %> (davon <%= @participants_stats.total_participants_count - @participants_stats.withdrawn_participants_count %> angemeldet)</dd>
+      <dd><%= @participants_stats.total_participants_count %> (davon <%= @participants_stats.total_participants_count.to_i - @participants_stats.withdrawn_participants_count.to_i %> angemeldet)</dd>
       <dt>Davon Nachgemeldungen:</dt>
       <dd><%= @participants_stats.late_participants_count %></dd>
       <dt>Summe Meldegeld:</dt>
