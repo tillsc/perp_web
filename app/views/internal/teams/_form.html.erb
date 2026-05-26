@@ -16,7 +16,7 @@
                         'value-field': 'address_id', 'label-field': 'name',
                         'initial-label': f.object.representative&.name do %>
           <%= f.text_field :representative_id, required: true,
-                           append: link_to("+", new_internal_address_url(@regatta, address: {is_representative: 1}, referrer: current_url), class: "btn btn-secondary") %>
+                           append: (can?(:create, Address) ? link_to("+", new_internal_address_url(@regatta, address: {is_representative: 1}, referrer: current_url), class: "btn btn-secondary") : nil) %>
         <% end %>
       </dialog-opener>
     </div>
