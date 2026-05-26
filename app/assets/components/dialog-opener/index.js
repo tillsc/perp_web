@@ -65,10 +65,11 @@ class DialogOpener extends HTMLElement {
     this.modal = new bootstrap.Modal(this.dialog.querySelector(".modal"));
   }
 
-   enhanceIFrame() {
+  enhanceIFrame() {
     this.iframe = this.dialog.querySelector("iframe");
     return new Promise((resolve, _reject) => {
       this.iframe.addEventListener("load", (e) => {
+        this.iframe.contentWindow?.document.addEventListener('turbo:load', () => this.iFrameLoad().then(resolve));
         this.iFrameLoad(e).then(resolve);
       });
     });
