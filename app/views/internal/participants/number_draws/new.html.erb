@@ -11,6 +11,12 @@
   </div>
 <% end %>
 
+<p class="text-muted small">
+  Boote aus demselben Verein werden gleichmäßig über das Feld verteilt: Die Startnummern werden in Sektoren der angegebenen Größe aufgeteilt, und jedes Mehrboot-Vereinsteam bekommt seinen Block gleichmäßig über alle Sektoren gestreut.
+  Einzelboote füllen die verbleibenden Plätze zufällig auf.
+  Bereits vergebene Bugnummern bleiben unverändert; neue Nummern schließen direkt an die höchste vorhandene an.
+</p>
+
 <%= bootstrap_form_with url: internal_participants_number_draw_path(@regatta), method: :post do |f| %>
 
   <% @proposals_by_event.each do |event, proposals| %>
