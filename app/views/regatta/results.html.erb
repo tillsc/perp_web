@@ -1,5 +1,7 @@
 <%= render 'header', event: @event, type_label: Result.model_name.human(count: 1), type_variant: :results %>
 
+<%= render 'print_button' %>
+
 <% has_comments = @results.any? { |r| r.comment.present? } %>
 <% @results.group_by { |res| res.race.type_short }.each do |race_type, race_type_results| %>
   <div>
@@ -9,7 +11,7 @@
 
     <% {not_at_start: "Nicht am Start erschienen", disqualified: "Ausgeschlossen", withdrawn: "Abgemeldet"}.each do |key, label| %>
       <% if @missing[key][race_type].present? %>
-        <div class="mb-4">
+        <div class="mb-4 print-keep-together">
           <h5><%= label %></h5>
           <% @missing[key][race_type].each do |participant| %>
             <div class="result-row">
