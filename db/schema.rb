@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_09_100724) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_26_131512) do
   create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "ExterneID1", limit: 200
     t.string "Fax", limit: 20
@@ -202,7 +202,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_100724) do
     t.boolean "entry_closed"
     t.string "show_age_categories"
     t.boolean "show_countries", default: true
-    t.index ["Jahr", "Kurzbezeichnung"], name: "SECONDARY", unique: true
+    t.index ["Jahr"], name: "index_regatten_on_Jahr"
   end
 
   create_table "rennen", primary_key: ["Regatta_ID", "Rennen"], charset: "latin1", force: :cascade do |t|
