@@ -2,6 +2,7 @@ module Internal
   class AddressesController < ApplicationController
 
     is_internal!
+    respond_to :json, :html
 
     def index
       authorize! :index, Address
@@ -25,6 +26,7 @@ module Internal
           ['Schiedsrichter (diese Regatta)', 'referee_current_regatta']
         ]).sort_by(&:second)
 
+      respond_with @addresses
     end
 
     def show
@@ -33,7 +35,9 @@ module Internal
     end
 
     def new
-      @address = Address.new
+      @address = Address.new(address_params)
+      @address.last_name = @address.last_name.presence || params[:default]&.camelcase
+
       authorize! :new, @address
     end
 
@@ -43,7 +47,7 @@ module Internal
 
       if @address.save
         flash[:info] = helpers.success_message_for(:create, @address)
-        redirect_to back_or_default
+        redirect_to back_or_default_with_uri_params(dialog_finished_with: @address.id)
       else
         flash[:danger] = helpers.error_message_for(:create, @address)
         render :new, status: :unprocessable_entity
@@ -103,8 +107,8 @@ module Internal
       internal_addresses_url(@regatta)
     end
 
-    def address_params
-      params.require(:address).permit(:email, :first_name, :last_name, :title, :name_suffix, :is_female, :external_id,
+    def address_params(default = {})
+      params.fetch(:address, default).permit(:email, :first_name, :last_name, :title, :name_suffix, :is_female, :external_id,
                                       :telefone_private, :telefone_business, :telefone_mobile, :telefone_fax,
                                       :street, :zipcode, :city, :country, :public_private_id,
                                       :is_representative, :is_club, :is_referee, :is_staff)

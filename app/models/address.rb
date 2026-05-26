@@ -1,5 +1,11 @@
 class Address < ApplicationRecord
 
+  include AliasAttributesInJson
+
+  def as_json(options = nil)
+    super((options || {}).reverse_merge(methods: [:name]))
+  end
+
   self.table_name = 'addressen'
   validates_lengths_from_schema
 

@@ -86,7 +86,12 @@ module Internal
     end
 
     def prepare_form
-      @representatives = Address.representative.order_existing_first(@regatta)
+      if params['local_reload'].present? && params['dialog_finished_with'].present?
+        if params['local_reload'] == 'dialog-opener-representative'
+          new_representative = Address.representative.find_by(id:  params['dialog_finished_with'])
+          @team.representative = new_representative if new_representative
+        end
+      end
     end
 
     def team_params(default = {})
