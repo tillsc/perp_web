@@ -29,7 +29,7 @@ module Internal
       authorize! :new, Rower
 
       @rower = Rower.new(rower_params)
-      defaults = params[:default]&.split(" ")
+      defaults = params[:default]&.gsub("\u00A0", " ")&.gsub(/[\(\)]/, "")&.split(" ")
       if defaults
         if defaults.last && defaults.last =~ /^(\d{2})?\d{2}$/
           default_year = defaults.pop.to_i
