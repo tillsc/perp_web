@@ -18,14 +18,15 @@
 
     <h3 class="mt-4"><%= event.label %></h3>
 
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-1">
+    <div>
       <% proposals.each do |proposal| %>
         <% p = proposal[:participant] %>
         <%= hidden_field_tag "numbers[#{p.to_param}]", proposal[:number] %>
-        <div class="col">
-          <div class="d-flex gap-2 align-items-baseline">
-            <span class="fw-bold text-nowrap"><%= proposal[:number] %></span>
-            <span class="text-truncate small"><%= p.team&.name %><%= " (#{p.team_boat_number})" if p.team_boat_number.present? %></span>
+        <div class="d-flex flex-row gap-4 align-items-baseline">
+          <div class="fw-bold text-nowrap"><%= proposal[:number] %></div>
+          <div class="">
+            <%= p.team_name(regatta: @regatta) %><br>
+            <%= p.rower_names %>
           </div>
         </div>
       <% end %>
