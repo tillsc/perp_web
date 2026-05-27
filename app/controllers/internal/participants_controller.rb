@@ -8,7 +8,7 @@ module Internal
 
       @participants = @regatta.participants.preload(:event, :team).page(params[:page])
       if params[:event_number].present?
-        @participants = @participants.where(event_number: params[:event_number])
+        @participants = @participants.where(event_number: params[:event_number]).preload(Participant::ALL_ROWERS)
       end
       if params[:query].present?
         @participants = @participants.joins(:team).merge(Team.by_filter(params[:query]))
