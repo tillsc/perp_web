@@ -9,7 +9,7 @@
         <%= dl_entry(@team, :city) %>
       </dl>
       <dl class="col">
-        <%= dl_entry(@team, :representative) { |r| link_to(r.name, internal_address_path(@regatta, r, referrer: current_url)) } %>
+        <%= dl_entry(@team, :representative) { |r| r && link_to(r.name, internal_address_path(@regatta, r, referrer: current_url)) } %>
       </dl>
       <dl class="col">
         <%= dl_entry(@team, :no_entry_fee?) %>
