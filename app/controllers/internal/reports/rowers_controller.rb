@@ -7,12 +7,7 @@ module Internal
         authorize! :index, Rower
 
         @participants = @regatta.participants.joins(:event).preload(Participant::ALL_ROWERS_WITH_CLUBS)
-        if params[:event_number_from].present?
-          @participants = @participants.merge(Event.from_number(params[:event_number_from]))
-        end
-        if params[:event_number_to].present?
-          @participants = @participants.merge(Event.to_number(params[:event_number_to]))
-        end
+        @participants = @participants.merge(Event.number_range(from: params[:event_number_from], to: params[:event_number_to]))
         @rowers = @participants.inject({}) do |hash, participant|
           Participant::ALL_ROWERS.each do |rel|
             if rower = participant.send(rel)

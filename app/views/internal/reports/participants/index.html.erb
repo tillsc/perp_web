@@ -1,0 +1,20 @@
+<%= render 'regatta/print_footer' %>
+
+<% @events_with_participants.each_with_index do |(event, participants), i| %>
+  <% if params[:new_page_per_event] == "1" %>
+    <div class="<%= 'print-page-break' if i > 0 %>">
+      <%= render 'regatta/header', event: event, type_label: "Meldeergebnis", type_variant: :entries %>
+      <% participants.each do |p| %>
+        <%= render 'regatta/participant_entry', participant: p, inline: params[:inline] == "1", with_history: params[:with_history] == "1" %>
+      <% end %>
+    </div>
+  <% else %>
+    <%= render 'regatta/header', type_label: "Meldeergebnis", type_variant: :entries if i == 0 %>
+    <div class="print-keep-together mb-0">
+      <h5 class="mt-3 mb-1"><%= event.number %>&thinsp;&ndash;&thinsp;<%= event.name_short %> <%= event.name %></h5>
+      <% participants.each do |p| %>
+        <%= render 'regatta/participant_entry', participant: p, inline: params[:inline] == "1", with_history: params[:with_history] == "1" %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

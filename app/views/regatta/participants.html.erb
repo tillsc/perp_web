@@ -2,28 +2,9 @@
 
 <%= render 'print_button' %>
 
-<table class="table">
-  <thead>
-  <tr>
-    <th>Bugnr.</th>
-    <th>Land</th>
-    <th>Teamname</th>
-    <th>Ruderer</th>
-    <th>Status</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @event&.participants&.each do |p| %>
-    <tr class="<%= participant_state_classes(p) %>">
-      <td><%= p.number %></td>
-      <td><%= p.team.try(:country) %></td>
-      <td><%= p.team_name(regatta: @regatta) %></td>
-      <td><%= p.rower_names(rower_link: rower_link_proc) %></td>
-      <td><%= p.state %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+<% @event&.participants&.each do |p| %>
+  <%= render 'participant_entry', participant: p, rower_link: rower_link_proc %>
+<% end %>
 
 <%= render 'print_footer' %>
 

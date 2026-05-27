@@ -60,6 +60,13 @@ class Event < ApplicationRecord
     where(arel_table[:number].lteq(number))
   }
 
+  scope :number_range, -> (from: nil, to: nil) {
+    scope = all
+    scope = scope.from_number(from) if from.presence
+    scope = scope.to_number(to) if to.presence
+    scope
+  }
+
   scope :to_be_weighed, -> {
     where(is_lightweight: true).or(where(has_cox: true))
   }

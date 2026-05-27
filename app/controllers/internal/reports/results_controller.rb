@@ -9,8 +9,7 @@ module Internal
         @all_measuring_points = MeasuringPoint.where(regatta: @regatta).order(:number).to_a
 
         events = @regatta.events.order(:number)
-        events = events.from_number(params[:event_number_from]) if params[:event_number_from].present?
-        events = events.to_number(params[:event_number_to]) if params[:event_number_to].present?
+          .number_range(from: params[:event_number_from], to: params[:event_number_to])
 
         @events_with_results = events
           .preload(:start_measuring_point, :finish_measuring_point,

@@ -54,6 +54,7 @@ Rails.application.routes.draw do
       scope :reports, module: :reports, as: :reports do
         get '/rowers' => 'rowers#index', as: :rowers
         get '/results' => 'results#index', as: :results
+        get '/participants' => 'participants#index', as: :participants
       end
 
       get '/status' => 'state#index'

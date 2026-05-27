@@ -1,0 +1,17 @@
+<%= bootstrap_form_with url: internal_reports_participants_path(@regatta), method: :get, target: "_blank" do |f| %>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= f.number_field :event_number_from, value: params[:event_number_from], label: "Von Rennen" %>
+      <%= f.number_field :event_number_to, value: params[:event_number_to], label: "Bis Rennen" %>
+    </div>
+    <formset class="col-sm-6">
+      <%= f.select :orientation, [["Hochformat", "portrait"], ["Querformat", "landscape"]], { selected: params.fetch(:orientation, "portrait") }, label: "Seitenformat" %>
+      <%= f.check_box :inline, checked: params[:inline] == "1", label: "Alles in eine Zeile" %>
+      <%= f.check_box :new_page_per_event, checked: params[:new_page_per_event] == "1", label: "Neue Seite vor jedem Rennen" %>
+      <%= f.check_box :with_withdrawn, checked: params[:with_withdrawn] == "1", label: "Mit Abgemeldeten" %>
+      <%= f.check_box :with_history, checked: params[:with_history] == "1", label: "Mit Historie" %>
+      <%= f.check_box :only_late_entries, checked: params[:only_late_entries] == "1", label: "Nur Nachmeldungen" %>
+    </formset>
+  </div>
+  <%= f.submit "Öffnen" %>
+<% end %>
