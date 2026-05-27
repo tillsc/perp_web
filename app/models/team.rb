@@ -18,7 +18,7 @@ class Team < ApplicationRecord
 
   belongs_to :regatta, foreign_key: 'Regatta_ID'
 
-  belongs_to :representative, class_name: 'Address', foreign_key: 'Obmann_ID', optional: true
+  belongs_to :representative, class_name: 'Address', foreign_key: 'Obmann_ID'
 
   has_many :participants, foreign_key: ['Regatta_ID', 'Team_ID'], dependent: :restrict_with_error
 
