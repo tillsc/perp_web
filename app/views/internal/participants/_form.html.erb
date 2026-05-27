@@ -1,4 +1,5 @@
-<%= bootstrap_form_for [:internal, @participant] do |f| %>
+<%= bootstrap_form_for @participant, url:
+  @participant.new_record? ? internal_participants_path(@regatta) : internal_participant_path(@regatta, @participant) do |f| %>
   <%= hidden_field_tag :referrer, params[:referrer] %>
 
   <div class="row">
