@@ -12,8 +12,27 @@
   <script type="module" src="<%= asset_path('pagedjs.js') %>"></script>
   <script type="module">
     class ReadyHandler extends window.Paged.Handler {
+      beforeParsed(content) {
+        this.filterForm = content.querySelector('#filter-form-container');
+        if (this.filterForm) this.filterForm.remove();
+      }
       afterRendered() {
         document.getElementById('print-loading').remove();
+        if (this.filterForm) {
+          if (new URLSearchParams(window.location.search).has('filter_open')) {
+            this.filterForm.setAttribute('open', '');
+          }
+          this.filterForm.querySelectorAll('form').forEach(form => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'filter_open';
+            input.value = '1';
+            form.appendChild(input);
+          });
+          document.body.appendChild(this.filterForm);
+          window.addEventListener('beforeprint', () => this.filterForm.style.display = 'none');
+          window.addEventListener('afterprint', () => this.filterForm.style.display = '');
+        }
       }
     }
     window.Paged.registerHandlers(ReadyHandler);
@@ -24,6 +43,14 @@
   <div id="print-loading" style="position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#6c757d;z-index:9999">
     Wird aufbereitet…
   </div>
+  <% if content_for?(:filter_form) %>
+    <details id="filter-form-container" style="position:fixed;top:0;right:0;z-index:10000;background:#fff;border:1px solid #dee2e6;border-radius:0 0 0 .25rem;padding:.25rem .5rem;max-width:400px">
+      <summary style="cursor:pointer;font-size:.875rem;color:#6c757d">Filter</summary>
+      <div style="padding-top:.5rem">
+        <%= yield :filter_form %>
+      </div>
+    </details>
+  <% end %>
   <%= yield %>
 </body>
 </html>

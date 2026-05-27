@@ -1,3 +1,7 @@
+<% content_for :filter_form do %>
+  <%= render 'form' %>
+<% end %>
+
 <%= render 'regatta/print_footer' %>
 <% @events_with_results.each_with_index do |event, i| %>
   <div class="<%= 'print-page-break' if i > 0 %>">
