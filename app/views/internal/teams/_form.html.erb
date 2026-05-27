@@ -15,7 +15,7 @@
     <div class="col-md-4">
       <dialog-opener move-out="primary" local-reload id="dialog-opener-representative">
         <%= content_tag 'find-reference', href: internal_addresses_url(@regatta, only_role: "representative"),
-                        'value-field': 'address_id', 'label-field': 'name',
+                        'value-field': 'id', 'label-field': 'name',
                         'initial-label': f.object.representative&.name do %>
           <%= f.text_field :representative_id, required: true,
                            append: (can?(:create, Address) ? link_to("+", new_internal_address_url(@regatta, address: {is_representative: 1}, referrer: current_url), class: "btn btn-secondary") : nil) %>
