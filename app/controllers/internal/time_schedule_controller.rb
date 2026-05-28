@@ -37,7 +37,7 @@ module Internal
       block = @time_schedule_service.find(params[:id].to_i)
       authorize! :update, block
 
-      validate_save_and_render(:show) do
+      validate_save_and_render(:show, block) do
         # Apply data
         case params[:operation].to_s
         when "shift_block"
@@ -72,7 +72,7 @@ module Internal
 
     protected
 
-    def validate_save_and_render(on_error_view)
+    def validate_save_and_render(on_error_view, block = nil)
       raise "Block expected" unless block_given?
 
       block = yield
