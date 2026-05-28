@@ -7,7 +7,7 @@ class Ability
     if user.is_a?(::User)
       can :access, :internal
 
-      if user.roles.any?
+      if user.roles&.any?
         can :access, [:announcer_views, :honors]
         can :read, [Rower, Result, Start, Participant, Team, Event, Race, Address, Services::TimeSchedule::Block, :reports]
       end
