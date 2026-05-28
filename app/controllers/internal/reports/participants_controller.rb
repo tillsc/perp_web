@@ -19,7 +19,7 @@ module Internal
 
         loaded = participants_scope.to_a
 
-        @events_with_participants = events.to_a.filter_map do |event|
+        @events_with_participants = events.preload(:races).to_a.filter_map do |event|
           ps = loaded.select { |p| p.event_number == event.number }
           [event, ps] if ps.any?
         end

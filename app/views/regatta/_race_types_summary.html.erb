@@ -1,0 +1,22 @@
+<%
+  first_start_time_only = local_assigns.fetch(:first_start_time_only, false)
+  race_types_summary = event.races
+    .select(&:planned_for)
+    .group_by(&:type_short)
+    .sort_by { |_, rs| rs.min_by(&:planned_for).planned_for }
+    .map do |ts, races|
+      sorted = races.sort_by(&:planned_for)
+      times_str = if first_start_time_only
+        first = sorted.first
+        "#{l(first.planned_for, format: '%a.')} #{l(first.planned_for, format: '%-H:%M')}"
+      else
+        sorted.group_by { |r| r.planned_for.to_date }
+          .map { |_, day_races| "#{l(day_races.first.planned_for, format: '%a.')} #{day_races.map { |r| l(r.planned_for, format: '%-H:%M') }.join(', ')}" }
+          .join(' / ')
+      end
+      "#{Parameter.race_type_name(ts, pluralize: races.size > 1)}: #{times_str}"
+    end
+%>
+<% if race_types_summary.any? %>
+  <p class="small text-body-secondary mb-1"><%= safe_join(race_types_summary, ' &middot; '.html_safe) %></p>
+<% end %>

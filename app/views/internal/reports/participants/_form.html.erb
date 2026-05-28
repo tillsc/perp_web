@@ -11,6 +11,7 @@
       <%= f.check_box :with_withdrawn, checked: params[:with_withdrawn] == "1", label: "Mit Abgemeldeten" %>
       <%= f.check_box :with_history, checked: params[:with_history] == "1", label: "Mit Historie" %>
       <%= f.check_box :only_late_entries, checked: params[:only_late_entries] == "1", label: "Nur Nachmeldungen" %>
+      <%= f.check_box :first_start_time_only, checked: params[:first_start_time_only] == "1", label: "Nur erste Startzeit je Lauftyp" %>
     </formset>
   </div>
   <%= f.submit "Öffnen" %>

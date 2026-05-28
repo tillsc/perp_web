@@ -1,5 +1,7 @@
 <%= render 'header', event: @event, type_label: "Meldeergebnis", type_variant: :entries %>
 
+<%= render 'race_types_summary', event: @event %>
+
 <%= render 'print_button' %>
 
 <% @event&.participants&.each do |p| %>

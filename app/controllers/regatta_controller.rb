@@ -26,7 +26,7 @@ class RegattaController < ApplicationController
 
   def participants
     @event = @regatta.events.where(number: params[:event_id]).
-      preload(participants: [:team] + Participant::ALL_ROWERS).
+      preload(:races, participants: [:team] + Participant::ALL_ROWERS).
       first
   end
 
