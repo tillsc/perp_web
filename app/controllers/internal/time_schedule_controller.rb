@@ -45,7 +45,7 @@ module Internal
         when "adjust_interval"
           block.adjust_interval(params[:race_interval].to_i.minutes)
         when "insert_break"
-          break_start = Time.zone.parse("#{block.first_race_start.to_date} #{break_start}")
+          break_start = Time.zone.parse("#{block.first_race_start.to_date} #{params[:break_start]}")
           block.insert_break(break_start, params[:break_length].to_i)
         else
           raise "Unknown operation: #{params[:operation]}"
