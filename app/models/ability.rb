@@ -37,7 +37,7 @@ class Ability
         end
         can :manage, Team
         can [:read, :create], Rower
-        can [:read, :create, :edit], Address
+        can [:read, :create, :update], Address
         can :read, [Event, Race]
       end
 
