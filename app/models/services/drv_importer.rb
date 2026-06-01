@@ -69,7 +69,7 @@ module Services
 
       meldungen_xml.xpath("./meldungen/rennen").each do |rennen_xml|
         event_number = rennen_xml["nummer"].to_s
-        event = events.find { |e| e.number.to_s == event_number } || raise("Entry #{entry["id"].inspect}: Could not find event #{event_number.inspect}")
+        event = events.find { |e| e.number.to_s == event_number } || raise("Could not find event #{event_number.inspect}")
 
         rennen_xml.xpath("./meldung").each do |meldung_xml|
           changed = false
