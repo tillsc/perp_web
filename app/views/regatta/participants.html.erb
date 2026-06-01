@@ -2,7 +2,7 @@
 
 <%= render 'print_button' %>
 
-<%= render 'race_types_summary', event: @event %>
+<%= render 'race_types_summary', event: @event if @event&.races.present? %>
 
 <% @event&.participants&.each do |p| %>
   <%= render 'participant_entry', participant: p, rower_link: rower_link_proc %>
