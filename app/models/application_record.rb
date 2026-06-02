@@ -3,10 +3,10 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.validates_lengths_from_schema
     columns_hash.each do |name, col|
-      if col.type == :string && col.limit
-        validates name, length: { maximum: col.limit }
-      end
+      validates name, length: { maximum: col.limit } if col.type == :string && col.limit
     end
+  rescue ActiveRecord::ConnectionNotEstablished, ActiveRecord::NoDatabaseError
+    # No DB during asset precompilation — validations are set up at runtime
   end
 
   def self.bool_to_int_sql(attribute)
