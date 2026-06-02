@@ -14,6 +14,7 @@ class Ability
 
       if user.role_announcer || user.role_admin
         can :honor, Race
+        can :switch, :tv_settings
       end
 
       if user.role_timekeeping || user.role_admin
@@ -37,7 +38,7 @@ class Ability
         end
         can :manage, Team
         can [:read, :create], Rower
-        can [:read, :create, :update], Address
+        can [:read, :create, :update, :access_public_page], Address
         can :read, [Event, Race]
       end
 
@@ -64,7 +65,7 @@ class Ability
     elsif user.is_a?(MeasuringSession)
       measuring_session = user
       can [:show, :create, :update], measuring_session
-      can [:create, :update], MeasurementSet, measuring_session: measuring_session
+      can [:read, :create, :update], MeasurementSet, measuring_session: measuring_session
     end
   end
 end

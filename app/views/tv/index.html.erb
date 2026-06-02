@@ -20,10 +20,14 @@
   </li>
   <li class="list-group-item">
     <%= link_to 'Auto-Switcher', tv_switcher_url %>
-    (<%= link_to 'Kontroll-Ansicht', tv_switcher_control_url %> |
-    <%= link_to 'Kompakte Kontroll-Ansicht', tv_switcher_control_url(compact: '1') %> |
-    <%= link_to 'Testmodus', tv_switcher_url(testmode: '1') %>)
+    (<%= link_to 'Testmodus', tv_switcher_url(testmode: '1') %>)
   </li>
+  <% if can?(:switch, :tv_settings) %>
+    <li class="list-group-item">
+    <%= link_to 'Switcher Kontroll-Ansicht', tv_switcher_control_url %>
+    (<%= link_to 'Kompakt', tv_switcher_control_url(compact: '1') %>)
+    </li>
+  <% end %>
 </ul>
 
 <% if can?(:update, :tv_settings) %>

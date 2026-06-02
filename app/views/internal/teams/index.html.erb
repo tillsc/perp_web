@@ -40,8 +40,9 @@
       <%= f.submit 'Filtern', class: 'btn btn-secondary d-block w-100' %>
     <% end %>
 
-    <hr>
-
-    <%= link_to t('helpers.titles.new', model: Team.model_name.human), new_internal_team_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+    <% if can?(:new, Team) %>
+      <hr>
+      <%= link_to t('helpers.titles.new', model: Team.model_name.human), new_internal_team_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+    <% end %>
   </div>
 </div>

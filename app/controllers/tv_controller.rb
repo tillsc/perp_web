@@ -83,11 +83,15 @@ class TvController < ApplicationController
   end
 
   def switcher_control
+    authorize! :switch, :tv_settings
+
     prepare_switcher_urls
     render layout: (params[:compact].present? ? 'minimal' : true)
   end
 
   def update_switcher_control
+    authorize! :switch, :tv_settings
+
     @current_switcher_view = params[:switch_to]
     Parameter.set_value_for!("Tv", "CurrentSwitcherView", @current_switcher_view)
 
