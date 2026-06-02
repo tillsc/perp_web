@@ -9,6 +9,11 @@
 ### Controllers
 - Namespaced by area: `Internal::` for admin, `Announcer::` etc.
 
+### Legacy DB naming
+- The DB has German/legacy table and column names (`addressen`, `IstSchiedsrichter`, etc.)
+- Models abstract this completely via `alias_attribute`, `self.table_name`, custom scopes — keep legacy names out of non-migration code
+- Migrations must use the physical table/column names (unavoidable), everything else uses the Ruby API
+
 ### Models & Queries
 - `strict_loading_by_default = true` in development — always preload associations used in views, lazy loading raises `StrictLoadingViolationError`
 - Prefer `preload()` explicitly to avoid N+1
