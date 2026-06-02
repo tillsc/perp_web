@@ -35,7 +35,7 @@ Die Zielbildkamera wird als separates Softwaremodul betrieben und ist frei verf√
 
 ## Lizenz
 
-Dieses Projekt ist unter der **[PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/)** lizenziert.
+Dieses Projekt ist unter der **[PolyForm Noncommercial License 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0)** lizenziert.
 
 **Was bedeutet das?**
 
