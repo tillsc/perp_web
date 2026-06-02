@@ -5,9 +5,17 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :trackable
 
+  belongs_to :address, optional: true
+
   serialize :roles, coder: JSON
 
   ALL_ROLES = [:admin, :weighing, :registration, :timekeeping, :announcer]
+
+  Address::ROLES.each do |role|
+    define_method "role_#{role}" do
+      address&.send("is_#{role}?")
+    end
+  end
 
   ALL_ROLES.each do |role|
     define_method "role_#{role}" do

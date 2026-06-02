@@ -2,6 +2,21 @@
 
 <p class="fs-4">Hallo <%= @address.salutation %></p>
 
+<% if @address.is_referee? %>
+  <div class="card mb-3">
+    <div class="card-body">
+      <% if @address.user.nil? %>
+        <p class="mb-2">Als Schiedsrichter können Sie sich einen Login anlegen und erhalten damit Zugang zu erweiterten Funktionen.</p>
+        <%= link_to "Login anlegen", new_user_registration_path(ppid: @address.public_private_id), class: "btn btn-outline-primary btn-sm" %>
+      <% elsif user_signed_in? && current_user.address == @address %>
+        <p class="mb-0 text-muted">Angemeldet als <strong><%= current_user.email %></strong> &mdash; <%= link_to "Zur internen Ansicht", internal_url(@regatta) %></p>
+      <% else %>
+        <%= link_to "Anmelden", new_user_session_path, class: "btn btn-outline-primary btn-sm" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <% if can?(:access, :internal) %>
   <%= link_to "Interne Details", internal_address_url(@regatta, @address), class: 'btn btn-primary' %>
   <%= link_to t('helpers.titles.edit', model: Address.model_name.human), edit_internal_address_url(@regatta, @address), class: 'btn btn-secondary' %>

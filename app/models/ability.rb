@@ -7,7 +7,7 @@ class Ability
     if user.is_a?(::User)
       can :access, :internal
 
-      if user.roles&.any?
+      if user.roles&.any? || user.role_referee
         can :access, [:announcer_views, :honors]
         can :read, [Rower, Result, Start, Participant, Team, Event, Race, Address, Services::TimeSchedule::Block, :reports]
       end
@@ -21,10 +21,14 @@ class Ability
         can :manage, MeasurementSet
         can :manage, MeasuringSession
         can :manage, :measurements_history
+      elsif user.role_referee
+        can :read, MeasurementSet
       end
 
       if user.role_weighing || user.role_admin
         can :manage, Weight
+      elsif user.role_referee
+        can :read, Weight
       end
 
       if user.role_registration || user.role_admin

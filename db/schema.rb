@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_26_131512) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_02_075550) do
   create_table "addressen", primary_key: "ID", id: :integer, charset: "latin1", force: :cascade do |t|
     t.string "ExterneID1", limit: 200
     t.string "Fax", limit: 20
@@ -267,6 +267,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_26_131512) do
   end
 
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
+    t.integer "address_id"
     t.datetime "confirmation_sent_at", precision: nil
     t.string "confirmation_token"
     t.datetime "confirmed_at", precision: nil
@@ -288,6 +289,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_26_131512) do
     t.string "unconfirmed_email"
     t.string "unlock_token"
     t.datetime "updated_at", precision: nil, null: false
+    t.index ["address_id"], name: "index_users_on_address_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -310,4 +312,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_26_131512) do
     t.string "Zeit", limit: 13
     t.index ["Regatta_ID", "Rennen", "Lauf"], name: "SECONDARY"
   end
+
+  add_foreign_key "users", "addressen", column: "address_id", primary_key: "ID"
 end

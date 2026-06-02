@@ -47,6 +47,8 @@ class Address < ApplicationRecord
   alias_attribute :public_private_id, 'PublicPrivateID'
   validates :public_private_id, uniqueness: true
 
+  has_one :user
+
   has_many :teams, foreign_key: 'Obmann_ID'
   has_many :rowers, foreign_key: 'Verein_ID'
 

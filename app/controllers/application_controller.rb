@@ -75,7 +75,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    super || @measuring_session
+    super&.tap { |u| u.strict_loading!(false) } || @measuring_session
   end
 
   def configure_devise_permitted_parameters

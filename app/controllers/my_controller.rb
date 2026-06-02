@@ -3,7 +3,7 @@ class MyController < ApplicationController
   def index
     @noindex = true
 
-    @address = Address.
+    @address = Address.preload(:user).
       find_by!(public_private_id: params[:public_private_id])
     cookies[:my_public_private_id] = @address.public_private_id unless params[:no_cookie]
 
