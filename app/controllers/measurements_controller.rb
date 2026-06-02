@@ -16,12 +16,12 @@ class MeasurementsController < ApplicationController
 
     @race = Race.
       for_regatta(@regatta).
-      preload(:regatta, :starts).
+      preload(:regatta, :starts, results: :times).
       then do |q|
         if request.xhr?
-          q.preload(:results, :event)
+          q.preload(event: :participants)
         else
-          q.preload(results: :times, event: {
+          q.preload(event: {
             participants: (ev.measuring_point_type(@measuring_point) == :start ? [:team, { rowers: :weights }] : :team)
           })
         end
