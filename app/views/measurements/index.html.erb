@@ -47,7 +47,11 @@
                 <% ms = @measurement_sets.find { |ms| ms.race == race && ms.measuring_point == mp } %>
                 <% url = measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number, referrer: current_url_with_anchor(race)) %>
                 <div class="btn-group">
-                  <%= link_to ms ? "Edit" : "Neu", url, class: "btn #{ms ? (!ms.correct? ? 'btn-warning' : 'btn-success') : 'btn-secondary'}" %>
+                  <% if can?(:edit, MeasurementSet) %>
+                    <%= link_to ms ? "Edit" : "Neu", url, class: "btn #{ms ? (!ms.correct? ? 'btn-warning' : 'btn-success') : 'btn-secondary'}" %>
+                  <% elsif ms && can?(:show, ms) %>
+                    <%= link_to "Anzeigen", url, class: "btn #{ms ? (!ms.correct? ? 'btn-warning' : 'btn-success') : 'btn-secondary'}" %>
+                  <% end %>
                   <% if  mp.finish_cam_base_url.present? %>
                     <%= link_to("🎥", finish_cam_measurement_path(@regatta, race_number: race.number, event_number: race.event.number, measuring_point_number: mp.number, referrer: current_url_with_anchor(race)), class: 'btn btn-outline-primary') %>
                   <% end %>
@@ -59,7 +63,7 @@
             </td>
           <% end %>
           <td>
-            <% if race.started_at.present? %>
+            <% if race.started_at.present? && can?(:finish, MeasurementSet) %>
               <%= link_to(race.result_confirmed? ? '✎' : 'Finalisieren',
                           finish_measurement_path(@regatta, race_number: race.number, event_number: race.event.number, referrer: current_url_with_anchor(race)),
                           class: "btn #{race.result_official? ? 'btn-outline-secondary' : 'btn-primary'}") %>
@@ -71,7 +75,9 @@
     </table>
   </div>
   <div class="col-md-4 col-lg-3">
-    <%= link_to 'Übersicht der Mess-Sitzungen', measuring_sessions_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+    <% if can?(:show, MeasuringSession) %>
+      <%= link_to 'Übersicht der Mess-Sitzungen', measuring_sessions_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+    <% end %>
   </div>
 </div>
 

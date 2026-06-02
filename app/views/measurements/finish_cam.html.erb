@@ -37,7 +37,7 @@
 
   <div class="d-flex flex-wrap align-items-center">
     <%= render 'referees', f: f %>
-    <%= f.submit "Fertig", class: 'mx-1 btn btn-primary' %>
+    <%= f.submit "Fertig", class: 'mx-1 btn btn-primary' if can?(:update, @measuring.measurement_set) %>
     <%= link_to("Zurück", back_or_default, class: 'mx-1 btn btn-outline-secondary') if params[:referrer] %>
   </div>
   </div>

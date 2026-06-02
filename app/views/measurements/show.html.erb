@@ -38,9 +38,13 @@
 
   <%= render 'referees', f: f %>
 
-  <%= f.submit "Fertig", class: 'btn btn-success' %>
+  <%= f.submit "Fertig", class: 'btn btn-success' if can?(:update, @measuring.measurement_set) %>
   <%= link_to "Zeit Stoppen", '#', id: 'stop_time', class: 'btn btn-primary' %>
-  <span id="autosave-status" class="autosave-status" data-autosave-delay="<%= @measuring_session&.autosave_delay_ms %>"></span>
+  <% if can?(:update, @measuring.measurement_set) %>
+    <span id="autosave-status" class="autosave-status" data-autosave-delay="<%= @measuring_session&.autosave_delay_ms %>"></span>
+  <% elsif params[:referrer] %>
+    <%= link_to("Zurück", back_or_default, class: 'mx-1 btn btn-outline-secondary') %>
+  <% end %>
   <% if @measuring_session.nil? && can?(:manage, MeasurementSet) %>
     <label class="ms-2 small text-muted">
       <input type="checkbox" id="autosave-toggle"> Autosave

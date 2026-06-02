@@ -5,7 +5,7 @@ class MeasurementsController < ApplicationController
       preload(:measuring_point, :active_measuring_point).
       find_by(identifier: params[:measuring_session_id])
 
-    @measuring_point = if can?(:manage, MeasurementSet) && params[:measuring_point_number].present?
+    @measuring_point = if can?(:index, MeasurementSet) && params[:measuring_point_number].present?
                          @regatta.measuring_points.find_by!(number: params[:measuring_point_number])
                        else
                          @measuring_session&.active_measuring_point
@@ -77,7 +77,7 @@ class MeasurementsController < ApplicationController
   end
 
   def show
-    authorize! :create, @measuring.measurement_set
+    authorize! :show, @measuring.measurement_set
 
     @measurements = @measuring.measurements
     @measurements_history = @measuring.measurement_set.measurements_history
@@ -127,7 +127,7 @@ class MeasurementsController < ApplicationController
   end
 
   def finish_cam
-    authorize! :create, @measuring.measurement_set
+    authorize! :show, @measuring.measurement_set
 
     @measurements = @measuring.measurements
     @measuring_session = @measuring.measurement_set.measuring_session
