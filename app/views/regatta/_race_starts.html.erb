@@ -1,0 +1,39 @@
+<div class="race-starts mb-4 print-keep-together">
+  <a class="anchor" id="<%= race.number %>"></a>
+  <h5 class="mt-3 mb-1">
+    <%= race.name %>
+    <% if race.planned_for %>
+      &ensp;<small class="text-body-secondary fw-normal"><%= l race.planned_for, format: '%a.' %>&thinsp;<%= l race.planned_for, format: '%-H:%M' %>&thinsp;Uhr</small>
+    <% end %>
+  </h5>
+  <% if local_assigns[:column_labels] != false %>
+    <div class="d-flex gap-2 py-1 border-bottom fw-bold small text-body-secondary">
+      <div class="text-end text-nowrap" style="min-width:2rem">Bahn</div>
+      <div class="text-end text-nowrap" style="min-width:2.5rem">Bugnr</div>
+      <div class="text-nowrap" style="min-width:2.5rem">Land</div>
+      <div class="flex-grow-1">Teamname / Ruderer</div>
+    </div>
+  <% end %>
+  <% starts = race.starts.sort_by { |s| s.lane_number.to_i } %>
+  <% starts = starts.reject { |s| s.participant&.withdrawn? } unless local_assigns[:with_withdrawn] %>
+  <% starts.each do |s| %>
+    <div class="d-flex align-items-baseline gap-2 py-1 border-bottom <%= participant_state_classes(s.participant) %>">
+      <div class="text-end text-nowrap fw-light" style="min-width:2rem"><%= s.lane_number %></div>
+      <div class="text-end text-nowrap fw-bold" style="min-width:2.5rem"><%= s.participant&.number %></div>
+      <div class="text-nowrap" style="min-width:2.5rem"><%= s.participant&.team&.country %></div>
+      <div class="flex-grow-1">
+        <% if local_assigns[:inline] %>
+          <%= s.participant&.team_name(regatta: @regatta) %>
+          &ensp;<span class="text-body-secondary"><%= s.participant&.rower_names(rower_link: local_assigns[:rower_link]) %></span>
+        <% else %>
+          <div><%= s.participant&.team_name(regatta: @regatta) %></div>
+          <div class="text-body-secondary small"><%= s.participant&.rower_names(rower_link: local_assigns[:rower_link]) %></div>
+        <% end %>
+      </div>
+      <% state = s.participant&.state %>
+      <% if state.present? %>
+        <div class="text-body-secondary small fst-italic text-nowrap"><%= state %></div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
