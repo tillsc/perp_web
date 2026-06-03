@@ -9,6 +9,7 @@
     <div class="<%= 'print-page-break' if i > 0 %>">
       <%= render 'regatta/header', event: event, type_label: "Meldeergebnis", type_variant: :entries %>
       <%= render 'regatta/race_types_summary', event: event, first_start_time_only: params[:first_start_time_only] == "1" %>
+      <%= render 'regatta/participants_header' if params[:column_labels] != "0" %>
       <% participants.each do |p| %>
         <%= render 'regatta/participant_entry', participant: p, inline: params[:inline] == "1", with_history: params[:with_history] == "1" %>
       <% end %>
@@ -16,8 +17,9 @@
   <% else %>
     <%= render 'regatta/header', type_label: "Meldeergebnis", type_variant: :entries if i == 0 %>
     <div class="print-keep-together mb-0">
-      <h5 class="mt-3 mb-1"><%= event.number %>&thinsp;&ndash;&thinsp;<%= event.name_short %> <%= event.name %></h5>
+      <h5 class="mt-3 mb-1"><%= event.number %>&ensp;<small class="fw-normal text-body-secondary"><%= event.name_short %> <%= event.name %></small></h5>
       <%= render 'regatta/race_types_summary', event: event, first_start_time_only: params[:first_start_time_only] == "1" %>
+      <%= render 'regatta/participants_header' if params[:column_labels] != "0" %>
       <% participants.each do |p| %>
         <%= render 'regatta/participant_entry', participant: p, inline: params[:inline] == "1", with_history: params[:with_history] == "1" %>
       <% end %>

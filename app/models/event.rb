@@ -62,8 +62,8 @@ class Event < ApplicationRecord
 
   scope :number_range, -> (from: nil, to: nil) {
     scope = all
-    scope = scope.from_number(from) if from.presence
-    scope = scope.to_number(to) if to.presence
+    scope = scope.from_number(from) if from.present?
+    scope = scope.to_number(to) if to.present?
     scope
   }
 

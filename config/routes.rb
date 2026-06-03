@@ -55,6 +55,7 @@ Rails.application.routes.draw do
         get '/rowers' => 'rowers#index', as: :rowers
         get '/results' => 'results#index', as: :results
         get '/participants' => 'participants#index', as: :participants
+        get '/starts' => 'starts#index', as: :starts
       end
 
       get '/status' => 'state#index'

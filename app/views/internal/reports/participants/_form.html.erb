@@ -6,6 +6,7 @@
     </div>
     <formset class="col-sm-6">
       <%= f.select :orientation, [["Hochformat", "portrait"], ["Querformat", "landscape"]], { selected: params.fetch(:orientation, "portrait") }, label: "Seitenformat" %>
+      <%= f.check_box :column_labels, checked: params[:column_labels] != "0", label: "Spaltenköpfe" %>
       <%= f.check_box :inline, checked: params[:inline] == "1", label: "Alles in eine Zeile" %>
       <%= f.check_box :new_page_per_event, checked: params[:new_page_per_event] == "1", label: "Neue Seite vor jedem Rennen" %>
       <%= f.check_box :with_withdrawn, checked: params[:with_withdrawn] == "1", label: "Mit Abgemeldeten" %>

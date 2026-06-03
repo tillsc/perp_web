@@ -32,10 +32,10 @@ class RegattaController < ApplicationController
 
   def starts
     @event = Event.find([@regatta, params[:event_id]])
-    @starts = @event.starts.
-      joins(:race).
-      preload(:race, participant: [:team] + Participant::ALL_ROWERS).
-      order(:lane_number, :participant_id)
+    @races = @event.races.
+      with_starts.
+      order_by_planned_for.
+      preload(starts: { participant: [:team] + Participant::ALL_ROWERS })
   end
 
   def results

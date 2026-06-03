@@ -1,25 +1,19 @@
-<% inline = local_assigns.fetch(:inline, false) %>
-<% with_history = local_assigns.fetch(:with_history, false) %>
-<% rower_link = local_assigns.fetch(:rower_link, nil) %>
 <div class="d-flex align-items-baseline gap-2 py-1 border-bottom participant-entry <%= participant_state_classes(participant) %>">
-  <div class="text-end text-nowrap fw-bold" style="min-width:2.5em"><%= participant.number %></div>
-  <div class="text-nowrap" style="min-width:2.5em"><%= participant.team.try(:country) %></div>
-  <% if inline %>
-    <div class="flex-grow-1">
-      <%= participant.team_name(regatta: @regatta) %><% rn = participant.rower_names(rower_link: rower_link); if rn.present? %>&ensp;<span class="text-body-secondary"><%= rn %></span><% end %>
-    </div>
-  <% else %>
-    <div class="flex-grow-1">
+  <div class="text-end text-nowrap fw-bold" style="min-width:2.5rem"><%= participant.number %></div>
+  <div class="text-nowrap" style="min-width:2.5rem"><%= participant.team.try(:country) %></div>
+  <div class="flex-grow-1">
+    <% if local_assigns[:inline] %>
+      <%= participant.team_name(regatta: @regatta) %>&ensp;<span class="text-body-secondary"><%= participant.rower_names(rower_link: local_assigns[:rower_link]) %></span>
+    <% else %>
       <div><%= participant.team_name(regatta: @regatta) %></div>
-      <% rn = participant.rower_names(rower_link: rower_link) %>
-      <% if rn.present? %><div class="text-body-secondary small"><%= rn %></div><% end %>
-    </div>
-  <% end %>
+      <div class="text-body-secondary small"><%= participant.rower_names(rower_link: local_assigns[:rower_link]) %></div>
+    <% end %>
+  </div>
   <% state = participant.state %>
   <% if state.present? %>
     <div class="text-body-secondary small fst-italic text-nowrap"><%= state %></div>
   <% end %>
 </div>
-<% if with_history && participant.history.present? %>
+<% if local_assigns[:with_history] && participant.history.present? %>
   <div class="ps-4 pb-1 small text-body-secondary border-bottom" style="margin-left: 5em;"><%= participant.history.html_safe %></div>
 <% end %>

@@ -2,38 +2,8 @@
 
 <%= render 'print_button' %>
 
-<% @starts.group_by(&:race).sort_by(&Parameter.race_sorter).each do |race, starts| %>
-  <div class="print-keep-together">
-    <div class="row">
-      <a class="anchor" id="<%= race.number %>"></a>
-      <h4 class="col-auto mr-auto"><%= race.name %></h4>
-      <div class="col-auto"><%= l race.planned_for %></div>
-    </div>
-    <div class="table-responsive-md">
-      <table class="table">
-        <thead>
-        <th class="fw-light">Bahn</th>
-        <th>Bugnr.</th>
-        <th>Land</th>
-        <th>Teamname</th>
-        <th>Ruderer</th>
-        <th>Status</th>
-        </thead>
-        <tbody>
-        <% starts.each do |s| %>
-          <tr class="<%= participant_state_classes(s.participant) %>">
-            <td class="fw-lighter"><%= s.lane_number %></td>
-            <td><%= s.participant && link_to(s.participant.number, participant_path(@regatta, s.participant.event_number, s.participant.participant_id)) %></td>
-            <td><%= s.participant&.team&.country %></td>
-            <td><%= s.participant&.team_name(regatta: @regatta) %></td>
-            <td><%= s.participant&.rower_names(rower_link: rower_link_proc) %></td>
-            <td><%= s.participant&.state %></td>
-          </tr>
-        <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
+<% @races.each do |race| %>
+  <%= render 'race_starts', race: race, rower_link: rower_link_proc %>
 <% end %>
 
 <%= render 'print_footer' %>

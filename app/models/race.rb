@@ -67,7 +67,7 @@ class Race < ApplicationRecord
       where(Start.arel_table[:Regatta_ID].eq(arel_table[:Regatta_ID]).
         and(Start.arel_table[:Rennen].eq(arel_table[:Rennen])))
 
-    where(arel_table[:planned_for].gteq(1.hour.ago)).
+    planned_from(1.hour.ago).
       where(arel_table[:started_at_time].eq(nil)).
       where(Arel::Nodes::SqlLiteral.new("(#{participants.to_sql})").gt(1).or(Arel::Nodes::SqlLiteral.new("(#{starts.to_sql})").gt(0))).
       order_by_planned_for
@@ -115,6 +115,14 @@ class Race < ApplicationRecord
 
   scope :planned_for, ->(date) do
     where(planned_for: date.all_day)
+  end
+
+  scope :planned_from, ->(datetime) do
+    where(arel_table[:planned_for].gteq(datetime))
+  end
+
+  scope :planned_until, ->(datetime) do
+    where(arel_table[:planned_for].lteq(datetime))
   end
 
   scope :before_race, -> (race) do

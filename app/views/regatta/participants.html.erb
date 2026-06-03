@@ -4,6 +4,7 @@
 
 <%= render 'race_types_summary', event: @event if @event&.races.present? %>
 
+<%= render 'participants_header' %>
 <% @event&.participants&.each do |p| %>
   <%= render 'participant_entry', participant: p, rower_link: rower_link_proc %>
 <% end %>
