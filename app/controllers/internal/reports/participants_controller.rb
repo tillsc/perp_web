@@ -16,6 +16,7 @@ module Internal
 
         participants_scope = participants_scope.enabled unless params[:with_withdrawn] == "1"
         participants_scope = participants_scope.where(late_entry: true) if params[:only_late_entries] == "1"
+        participants_scope = participants_scope.where(entry_changed: true) if params[:only_changed_entries] == "1"
 
         loaded = participants_scope.to_a
 
