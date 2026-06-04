@@ -4,11 +4,12 @@ module Services
     include Enumerable
     delegate :each, to: :@blocks
 
-    attr_reader :special_race_type_treatment_for, :default_race_duration
+    attr_reader :special_race_type_treatment_for, :default_race_duration, :max_time_between_block_races
 
-    def initialize(regatta, special_race_type_treatment_for: ['K'], default_race_duration: 8.minutes)
+    def initialize(regatta, special_race_type_treatment_for: ['K'], default_race_duration: 8.minutes, max_time_between_block_races: nil)
       @special_race_type_treatment_for = special_race_type_treatment_for
       @default_race_duration = default_race_duration
+      @max_time_between_block_races = max_time_between_block_races
 
       @regatta = regatta
       @races = regatta.races.preload(:event)

@@ -1,6 +1,7 @@
 <h1><%= t("helpers.titles.new", model: Services::TimeSchedule::Block.model_name.human) %></h1>
 
 <%= bootstrap_form_with url: internal_time_schedule_index_path(@regatta), method: :post do |f| %>
+  <%= hidden_field_tag max_time_between_block_races: params[:max_time_between_block_races] %>
   <%= f.number_field :event_number_from, value: params[:event_number_from] || @regatta.events.minimum(:number),
                      min: 1, label: "Von Rennen Nummer"%>
 

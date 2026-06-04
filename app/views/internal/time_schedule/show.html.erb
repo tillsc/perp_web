@@ -1,6 +1,7 @@
 <h1><%= t('helpers.titles.show', model: Services::TimeSchedule::Block.model_name.human, label: @block.title) %></h1>
 
 <%= bootstrap_form_with url: internal_time_schedule_path(@regatta, @block.id), method: :put do |f| %>
+  <%= hidden_field_tag max_time_between_block_races: params[:max_time_between_block_races] %>
   <%
     operations = {
       insert_break: 'Pause einfügen',

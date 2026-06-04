@@ -14,8 +14,8 @@
           can?(:update, block) ? {
             startEditable: true,
             extendedProps: {
-              editUrl: internal_time_schedule_url(@regatta, block.id),
-              resourceUrl: internal_time_schedule_url(@regatta, block.id)
+              editUrl: internal_time_schedule_url(@regatta, block.id, max_time_between_block_races: params[:max_time_between_block_races]),
+              resourceUrl: internal_time_schedule_url(@regatta, block.id, max_time_between_block_races: params[:max_time_between_block_races])
             }
           } : {}
         )})) %>
@@ -24,7 +24,13 @@
   </div>
   <div class="col-md-4 col-lg-3">
     <% if can?(:new, Services::TimeSchedule::Block) %>
-      <%= link_to t('helpers.titles.new', model: Services::TimeSchedule::Block.model_name.human), new_internal_time_schedule_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+      <%= link_to t('helpers.titles.new', model: Services::TimeSchedule::Block.model_name.human), new_internal_time_schedule_path(@regatta, max_time_between_block_races: params[:max_time_between_block_races]), class: 'btn btn-secondary d-block my-1' %>
+    <% end %>
+
+    <h3>Auto-Blockerkennung</h3>
+    <%= bootstrap_form_with url: internal_time_schedule_index_path(@regatta), method: :get do |f| %>
+      <%= f.number_field :max_time_between_block_races, value: params[:max_time_between_block_races] %>
+      <%= f.submit "Anwenden", class: "btn btn-primary d-block" %>
     <% end %>
   </div>
 </div>

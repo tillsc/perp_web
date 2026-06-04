@@ -132,7 +132,7 @@ module Services
         last_race = self.normal_races.last
 
         return false if race.type_short != last_race.type_short
-        return false if race.planned_for > last_race.planned_for + 15.minutes
+        return false if race.planned_for > last_race.planned_for + (@service.max_time_between_block_races || 15.minutes)
         return false if race.event_number < last_race.event_number
 
         event_numbers_between = ((last_race.event_number + 1)..(race.event_number - 1)).to_a

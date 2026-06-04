@@ -4,7 +4,7 @@ module Internal
     is_internal!
 
     before_action do
-      @time_schedule_service = Services::TimeSchedule.new(@regatta)
+      @time_schedule_service = Services::TimeSchedule.new(@regatta, max_time_between_block_races: params[:max_time_between_block_races].presence&.to_i&.minutes)
     end
 
     def index
@@ -113,7 +113,7 @@ module Internal
     end
 
     def default_url
-      internal_time_schedule_index_url(@regatta)
+      internal_time_schedule_index_url(@regatta, max_time_between_block_races: params[:max_time_between_block_races])
     end
 
   end
