@@ -6,6 +6,7 @@ module Internal
     def index
       authorize! :index, Event
 
+      @page_container_suffix = "-xxl"
       @events = @regatta.events.preload(:start_measuring_point, :finish_measuring_point)
     end
 
