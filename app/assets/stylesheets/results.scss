@@ -18,7 +18,7 @@ $result-wide: 1200px;
   grid-template-areas:
     "#{$pos} number  team        times"
     "#{$pos} country rower-names times";
-  grid-template-columns: #{$pos-cols} 1fr 5fr 2fr;
+  grid-template-columns: #{$pos-cols} 1fr 5fr 2.8fr;
 
   @media (min-width: $result-wide) {
     grid-template-columns: #{$pos-cols} 1fr 8fr 4fr;
