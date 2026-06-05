@@ -1,0 +1,8 @@
+<% if @race_types.any? %>
+  <div class="mb-3">
+    <label class="form-label">Lauftypen</label>
+    <% @race_types.each do |rt| %>
+      <%= f.check_box :race_types, { multiple: true, checked: params[:race_types].present? && params[:race_types].include?(rt), label: Parameter.race_type_name(rt) }, rt, nil %>
+    <% end %>
+  </div>
+<% end %>

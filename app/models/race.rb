@@ -42,6 +42,17 @@ class Race < ApplicationRecord
   has_many :measurement_sets, foreign_key: ['Regatta_ID', 'Rennen', 'Lauf'],
            inverse_of: :race, dependent: :restrict_with_error
 
+  scope :from_event_number, -> (number) { where(arel_table[:event_number].gteq(number)) }
+  scope :to_event_number, -> (number) { where(arel_table[:event_number].lteq(number)) }
+  scope :event_number_range, -> (from: nil, to: nil) {
+    scope = all
+    scope = scope.from_event_number(from) if from.present?
+    scope = scope.to_event_number(to) if to.present?
+    scope
+  }
+
+  scope :order_by_event_number, -> (asc: true) { order(arel_table[:event_number].send(asc ? :asc : :desc)) }
+
   scope :order_by_started_at, -> (asc: true) do
     order(Arel.sql(%Q(DATE(SollStartZeit) #{asc ? "ASC" : "DESC"})),
           arel_table[:started_at_time].send(asc ? :asc : :desc))

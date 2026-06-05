@@ -57,9 +57,10 @@ class Parameter < ApplicationRecord
 
   def self.race_sorter
     race_type_list = get_value_for('Global', 'LauftypSortierung').to_s
-    @sorter||= -> (race) {
-      race = race.first if race.is_a?(Array) # For Hashes where the race is the key
-      [race_type_list.index(race&.type_short || '-').to_s.rjust(2, "0").presence || "Z#{race&.type_short}", race&.number_short]
+    @sorter||= -> (race_or_type_short) {
+      race_or_type_short = race_or_type_short.first if race_or_type_short.is_a?(Array) # For Hashes where the race is the key
+      ts = race_or_type_short.is_a?(String) ? race_or_type_short : race_or_type_short&.type_short
+      [race_type_list.index(ts || '-').to_s.rjust(2, "0").presence || "Z#{ts}", race_or_type_short.is_a?(String) ? nil : race_or_type_short&.number_short]
     }
   end
 

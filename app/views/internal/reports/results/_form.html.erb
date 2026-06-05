@@ -6,6 +6,7 @@
     </div>
     <div class="col-sm-6">
       <%= f.select :orientation, [["Querformat", "landscape"], ["Hochformat", "portrait"]], { selected: params.fetch(:orientation, "landscape"), label: "Seitenformat" } %>
+      <%= render 'internal/reports/race_type_filter', f: f %>
     </div>
   </div>
   <%= f.submit "Öffnen" %>
