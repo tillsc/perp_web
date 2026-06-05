@@ -80,7 +80,7 @@ class AnnouncerController < ApplicationController
         current_rank = i + 1 if result_time&.time != previous_result_time&.time
         { result: r, participant: participants[r.participant_id], lane: r.lane_number,
           rank: result_time.present? ? current_rank : nil,
-          diff_to_prev: previous_result_time && result_time.subtract_time(previous_result_time) }
+          diff_to_prev: previous_result_time && result_time && result_time.subtract_time(previous_result_time) }
       end
     else
       @result_entries = @race.starts.sort_by(&:lane_number).map do |s|
