@@ -4,7 +4,7 @@
 
 ### Frontend
 - Custom Web Components (`customElements.define`) — no Stimulus
-- Turbolinks (not Turbo/Hotwire)
+- Turbo (turbo-rails), not Turbolinks — use `turbo:load` events for page initialization
 
 ### Controllers
 - Namespaced by area: `Internal::` for admin, `Announcer::` etc.
