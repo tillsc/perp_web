@@ -92,11 +92,9 @@ class TvController < ApplicationController
   def update_switcher_control
     authorize! :switch, :tv_settings
 
-    @current_switcher_view = params[:switch_to]
-    Parameter.set_value_for!("Tv", "CurrentSwitcherView", @current_switcher_view)
+    Parameter.set_value_for!("Tv", "CurrentSwitcherView", params[:switch_to])
 
-    prepare_switcher_urls
-    render :switcher_control, layout: ('minimal' if params[:compact].present?)
+    redirect_to tv_switcher_control_path(@regatta, compact: params[:compact].presence)
   end
 
   protected
