@@ -90,7 +90,8 @@ module Services
         ordered_participants = []
         rank = 1
         loop do
-          next_participants = data.flat_map { |_race_num, results| Array.wrap(results[rank]).map(&:participant)  }
+          ranked = data.flat_map { |_race_num, race_results| Array.wrap(race_results[rank]) }
+          next_participants = ranked.sort_by { |r| r.sort_time_for(finish_measuring_point) }.map(&:participant)
           break if next_participants.empty?
           break if ordered_participants.size + next_participants.size > number_of_lanes
           ordered_participants += next_participants
