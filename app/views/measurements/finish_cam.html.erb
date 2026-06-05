@@ -45,9 +45,9 @@
 <% end %>
 
 <% if @withdrawn_participants.present? %>
-  <div class="m-3">
-    <h2>Abmeldungen</h2>
-    <div class="d-grid gap-2" style="grid-template-columns: auto auto 1fr;">
+  <div class="m-1">
+    Abmeldungen:
+    <div class="d-grid gap-2" style="grid-template-columns: auto auto 1fr auto auto 1fr;">
       <% @withdrawn_participants.each do |participant| %>
         <div><%= participant.number %></div>
         <div><%= participant.team&.country %></div>
@@ -67,7 +67,7 @@
         flex-direction: column;
     }
     .finish_cam_form {
-        margin-bottom: 5rem;
+        /* margin-bottom: 5rem; */
     }
     .finish_cam_container {
         flex: 1 1 auto;
