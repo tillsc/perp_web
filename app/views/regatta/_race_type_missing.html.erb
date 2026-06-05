@@ -1,0 +1,28 @@
+<% race_type = race_results_pairs.first&.first&.type_short
+   seen_ids = race_results_pairs.flat_map { |_, rr| rr.map(&:participant_id) }
+   not_started = (if Parameter.race_types_with_implicit_start_list.include?(race_type) || event.races.map(&:type_short).uniq == [race_type]
+                    event.participants
+                  else
+                    event.starts.filter_map { |s| s.race_type_short == race_type ? event.participants.find { |p| p.participant_id == s.participant_id } : nil }
+                  end).reject { |p| seen_ids.include?(p.participant_id) }
+   missing = { not_at_start: not_started.reject { |p| p.withdrawn? || p.disqualified? },
+               disqualified: not_started.select(&:disqualified?),
+               withdrawn:    not_started.select(&:withdrawn?) } %>
+<% { not_at_start: "Nicht am Start erschienen", disqualified: "Ausgeschlossen", withdrawn: "Abgemeldet" }.each do |key, label| %>
+  <% if missing[key].present? %>
+    <div class="mb-4 print-keep-together">
+      <h5><%= label %></h5>
+      <% missing[key].each do |participant| %>
+        <div class="result-row">
+          <div class="rank"></div>
+          <div class="lane"></div>
+          <div class="number"><%= participant.number %></div>
+          <div class="country"><%= participant.team.try(:country) %></div>
+          <div class="team"><%= participant.team_name(regatta: @regatta) %></div>
+          <div class="rower-names"><%= participant.rower_names %></div>
+          <div class="times"><%= participant.disqualified %></div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

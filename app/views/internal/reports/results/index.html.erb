@@ -3,7 +3,6 @@
 <% end %>
 
 <%= render 'regatta/print_footer' %>
-<% last_event = nil %>
 <% @races.group_by(&:event).each_with_index do |(event, event_races), i| %>
   <% measuring_points = @all_measuring_points.select { |mp|
        mp.number > event.start_measuring_point_number &&
@@ -12,13 +11,12 @@
   <div class="<%= 'print-page-break' if i > 0 %>">
     <%= render 'regatta/header', event: event, type_label: Result.model_name.human(count: 1), type_variant: :results %>
     <% event_races.group_by(&:type_short).each do |_race_type, type_races| %>
+      <% race_results_pairs = type_races.sort_by(&Parameter.race_sorter).map { |r| [r, r.results] } %>
       <div class="print-keep-together">
-        <% type_races.sort_by(&Parameter.race_sorter).each do |race| %>
-          <%= render 'regatta/race_results',
-                     race: race,
-                     results: race.results,
-                     measuring_points: measuring_points %>
+        <% race_results_pairs.each do |race, race_results| %>
+          <%= render 'regatta/race_results', race: race, results: race_results, measuring_points: measuring_points %>
         <% end %>
+        <%= render 'regatta/race_type_missing', race_results_pairs: race_results_pairs, event: event %>
       </div>
     <% end %>
   </div>

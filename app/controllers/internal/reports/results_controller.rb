@@ -19,7 +19,7 @@ module Internal
           order(Race.arel_table[:number].asc).
           distinct.
           preload(:referee_umpire, :referee_finish_judge,
-                  event: [:start_measuring_point, :finish_measuring_point,
+                  event: [:start_measuring_point, :finish_measuring_point, :starts, :races,
                           { participants: [:team] + Participant::ALL_ROWERS }],
                   results: :times)
 
