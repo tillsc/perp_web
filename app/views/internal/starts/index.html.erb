@@ -69,6 +69,9 @@
 
     <hr>
 
+    <%= link_to("Ergebnis-Report", internal_reports_results_url(@regatta, event_number_from: @event.number, event_number_to: @event.number, referrer: current_url), class: 'btn btn-secondary d-block my-1') %>
+
+
     <%= link_to "Läufe anzeigen", internal_event_path(@regatta, @event, referrer: current_url),
                 class: 'btn btn-secondary d-block w-100' if can?(:show, @event) %>
 
