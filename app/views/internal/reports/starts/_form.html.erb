@@ -1,4 +1,5 @@
 <%= bootstrap_form_with url: internal_reports_starts_path(@regatta), method: :get, target: "_blank" do |f| %>
+  <%= hidden_field_tag :referrer, params[:referrer] %>
   <div class="row">
     <div class="col-sm-6">
       <%= f.number_field :event_number_from, value: params[:event_number_from], label: "Von Rennen" %>
@@ -16,4 +17,8 @@
     </formset>
   </div>
   <%= f.submit "Öffnen" %>
+  <% if params[:referrer].present? %>
+    <%= link_to "Zurück", params[:referrer],
+                class: 'btn btn-secondary' %>
+  <% end %>
 <% end %>
