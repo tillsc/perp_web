@@ -1,4 +1,4 @@
 module PerpWeb
-  VERSION = "1.3.23"
+  VERSION = "1.3.24"
   Version = VERSION
 end
