@@ -10,7 +10,7 @@
           <% if can?(:index, MeasurementSet) %>
             <li>
               <%= link_to MeasurementSet.model_name.human(count: 2), measurements_url(@regatta) %>
-              (<%= link_to "Nur aktuelle", measurements_url(@regatta, filter: 'nearby') %>)
+              (<%= link_to "Nur aktuelle", measurements_url(@regatta, filter: 'nearby', sort_by: 'start_time') %>)
             </li>
           <% end %>
           <% if can?(:index, MeasuringSession) %>
