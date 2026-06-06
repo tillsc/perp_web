@@ -96,6 +96,10 @@ class Race < ApplicationRecord
     with_times_at(Event.arel_table[:finish_measuring_point_number])
   end
 
+  def with_finish_times?
+    times.any? { |t| t.measuring_point_number == event.finish_measuring_point_number }
+  end
+
   scope :with_times_at, -> (measuring_point_number) do
     joins(:event, results: :times).
       where(ResultTime.arel_table[:measuring_point_number].eq(measuring_point_number)).
@@ -166,11 +170,11 @@ class Race < ApplicationRecord
 
   scope :honorable, -> do
     type_short_node = Arel::Nodes::NamedFunction.new('SUBSTR', [arel_table[:number], Arel::Nodes::SqlLiteral.new('1'), Arel::Nodes::SqlLiteral.new('1')])
-    result_confirmed.where(type_short_node.in(HONORABLE_TYPE_SHORTS))
+    with_finish_times.distinct.where(type_short_node.in(HONORABLE_TYPE_SHORTS))
   end
 
   def honorable?
-    result_confirmed? && HONORABLE_TYPE_SHORTS.include?(type_short)
+    with_finish_times? && HONORABLE_TYPE_SHORTS.include?(type_short)
   end
 
   scope :pending_honor, -> do
