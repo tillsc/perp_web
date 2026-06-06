@@ -43,7 +43,9 @@ module Internal
     end
 
     def update
-      @race = @regatta.races.find(params.extract_value(:id))
+      scope = @regatta.races
+      scope = scope.preload(:event, results: :times) if params[:force_rank_calculation] == "1"
+      @race = scope.find(params.extract_value(:id))
       authorize! :update, @race
 
       if @race.update(race_params)

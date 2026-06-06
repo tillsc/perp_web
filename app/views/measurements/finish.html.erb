@@ -27,11 +27,11 @@
         <%= @race.result_confirmed_since && l(@race.result_confirmed_since) || "-" %>
       </div>
 
-      <%= button_to("Jetzt offiziell", internal_race_path(@regatta, @race, referrer: current_url),
+      <%= button_to("Jetzt offiziell", internal_race_path(@regatta, @race, force_rank_calculation: 1, referrer: current_url),
                     params: { race: { result_official_since: DateTime.now } },
                     method: :patch, class: 'btn btn-primary w-100 d-block', form_class: 'd-block my-1') %>
     <% else %>
-      <%= button_to("Wurde unterschrieben", internal_race_path(@regatta, @race, referrer: current_url),
+      <%= button_to("Wurde unterschrieben", internal_race_path(@regatta, @race, force_rank_calculation: 1, referrer: current_url),
                     params: { race: { result_confirmed_since: DateTime.now } },
                     method: :patch, class: 'btn btn-primary w-100 d-block', form_class: 'd-block my-1') %>
     <% end %>
