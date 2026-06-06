@@ -34,8 +34,8 @@ class MeasurementSet < ApplicationRecord
   def correct?
     return true unless self.measurements.is_a?(Array)
 
-    rel_time_required = self.race.event.measuring_point_type(self.measuring_point_number) != :start
-    self.measurements.all? { |m| m[0].to_i > 0 && m[1].present? && (!rel_time_required || m[2].present?) }
+    is_start = self.race.event.measuring_point_type(self.measuring_point_number) == :start
+    self.measurements.all? { |m| m[1].present? && (is_start || (m[2].present? && m[0].to_i > 0)) }
   end
 
 end
