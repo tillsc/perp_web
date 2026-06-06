@@ -7,8 +7,9 @@ $result-wide: 1200px;
   $pos-cols: "";
   $team-span: "";
   $rower-span: "";
+  $fixed-col-width: "3.2rem";
   @for $i from 1 through $n {
-    $pos-cols: "#{$pos-cols} 1fr";
+    $pos-cols: "#{$pos-cols} #{$fixed-col-width}";
   }
   @for $i from 1 through ($n + 2) { // pos + number + country
     $team-span: "#{$team-span} team";
@@ -18,18 +19,15 @@ $result-wide: 1200px;
   grid-template-areas:
     "#{$pos} number  team        times"
     "#{$pos} country rower-names times";
-  grid-template-columns: #{$pos-cols} 1fr 5fr 2.8fr;
+  grid-template-columns: #{$pos-cols} #{$fixed-col-width} 1fr var(--times-col, 10rem);
 
-  @media (min-width: $result-wide) {
-    grid-template-columns: #{$pos-cols} 1fr 8fr 4fr;
-  }
 
   @media (max-width: $result-compact) {
     grid-template-areas:
       "#{$pos} number country   times"
       "#{$team-span}            times"
       "#{$rower-span}           times";
-    grid-template-columns: #{$pos-cols} 1fr 3fr 2fr;
+    grid-template-columns: #{$pos-cols} #{$fixed-col-width} 1fr var(--times-col, 5rem);
   }
 }
 
@@ -84,6 +82,15 @@ $result-wide: 1200px;
     .time { text-align: right; }
     .comment { grid-column: 1 / -1; }
   }
+
+}
+
+@media (min-width: $result-wide) { body { --times-col: 20rem; } }
+@media print { body.page-landscape { --times-col: 20rem; } }
+
+.race-results--single-time {
+  .result-row { --times-col: 5rem; }
+  .result-row .times { grid-template-columns: 1fr; }
 }
 
 .result-row--rank-1 { background-color: #fef9e0; }

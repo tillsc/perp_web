@@ -7,7 +7,6 @@ module Internal
 
       def index
         authorize! :index, Result
-        @default_print_orientation = "landscape"
 
         @all_measuring_points = MeasuringPoint.where(regatta: @regatta).order(:number).to_a
 

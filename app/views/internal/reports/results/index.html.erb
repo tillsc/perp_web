@@ -4,10 +4,14 @@
 
 <%= render 'regatta/print_footer' %>
 <% @races.group_by(&:event).each_with_index do |(event, event_races), i| %>
-  <% measuring_points = @all_measuring_points.select { |mp|
-       mp.number > event.start_measuring_point_number &&
-         mp.number <= event.finish_measuring_point_number
-     } %>
+  <% measuring_points = if params[:finish_time_only] == "1"
+       @all_measuring_points.select { |mp| mp.number == event.finish_measuring_point_number }
+     else
+       @all_measuring_points.select { |mp|
+         mp.number > event.start_measuring_point_number &&
+           mp.number <= event.finish_measuring_point_number
+       }
+     end %>
   <div class="<%= 'print-page-break' if i > 0 %>">
     <%= render 'regatta/header', event: event, type_label: Result.model_name.human(count: 1), type_variant: :results %>
     <% event_races.group_by(&:type_short).each do |_race_type, type_races| %>

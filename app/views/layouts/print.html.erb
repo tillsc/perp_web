@@ -7,7 +7,8 @@
   <%= csrf_meta_tags %>
   <%= stylesheet_link_tag 'application' %>
   <%= stylesheet_link_tag 'pagedjs_print' %>
-  <style>@page { size: A4 <%= (params[:orientation].presence || @default_print_orientation) == "landscape" ? "landscape" : "portrait" %>; }</style>
+  <% orientation_css = (params[:orientation].presence || @default_print_orientation) == "landscape" ? "landscape" : "portrait" %>
+  <style>@page { size: A4 <%= orientation_css %> %>; }</style>
   <script>window.PagedConfig = { auto: false };</script>
   <script type="module" src="<%= asset_path('pagedjs.js') %>"></script>
   <script type="module">
@@ -39,7 +40,7 @@
     window.PagedPolyfill.preview();
   </script>
 </head>
-<body>
+<body class="page-<%= orientation_css %>">
   <div id="print-loading" style="position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#6c757d;z-index:9999">
     Wird aufbereitet…
   </div>

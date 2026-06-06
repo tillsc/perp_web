@@ -6,7 +6,8 @@
       <%= f.number_field :event_number_to, value: params[:event_number_to], label: "Bis Rennen" %>
     </div>
     <div class="col-sm-6">
-      <%= f.select :orientation, [["Querformat", "landscape"], ["Hochformat", "portrait"]], { selected: params.fetch(:orientation, "landscape"), label: "Seitenformat" } %>
+      <%= f.select :orientation, [["Hochformat", "portrait"], ["Querformat", "landscape"]], { selected: params.fetch(:orientation, "portrait") , label: "Seitenformat" } %>
+      <%= f.check_box :finish_time_only, checked: params[:finish_time_only] == "1", label: "Nur Zielzeit" %>
       <%= render 'internal/reports/race_type_filter', f: f %>
     </div>
   </div>

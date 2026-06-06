@@ -1,5 +1,5 @@
 <% has_comments = local_assigns.key?(:has_comments) ? local_assigns[:has_comments] : results.any? { |r| r.comment.present? } %>
-<div class="race-results mb-5 print-keep-together">
+<div class="race-results mb-5 print-keep-together<%= ' race-results--single-time' if measuring_points.size == 1 %>">
   <a class="anchor" id="<%= race.number %>"></a>
   <h3><%= local_assigns[:full_race_name] ? race.full_name(show_event_name_short: true) : race.name %></h3>
   <div class="result-row result-row__header">
