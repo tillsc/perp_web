@@ -97,7 +97,7 @@ class Race < ApplicationRecord
   end
 
   def with_finish_times?
-    times.any? { |t| t.measuring_point_number == event.finish_measuring_point_number }
+    self.results.any? {  |r| r.times.any? { |t| t.measuring_point_number == event.finish_measuring_point_number } }
   end
 
   scope :with_times_at, -> (measuring_point_number) do
