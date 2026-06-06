@@ -50,7 +50,7 @@ class TvController < ApplicationController
     scope = Race.with_starts if params[:testmode] == "1"
     scope = scope.by_type_short(params[:type_short].to_s.split(',')) if params[:type_short].present?
     @race = scope.preload(:event, starts: { participant: :team }).first
-    @event = @race &¥& @race.event
+    @event = @race && @race.event
 
     render layout: 'minimal'
   end
