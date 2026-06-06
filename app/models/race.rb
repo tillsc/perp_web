@@ -110,8 +110,8 @@ class Race < ApplicationRecord
     with_existing(:starts)
   end
 
-  scope :now, -> do
-    stated_minutes_ago(12)
+  scope :now, -> (asc: true) do
+    stated_minutes_ago(12, asc: asc)
   end
 
   scope :nearby, -> do

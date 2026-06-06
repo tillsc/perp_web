@@ -17,7 +17,7 @@ class TvController < ApplicationController
   end
 
   def latest_race
-    scope = Race.joins(:results).for_regatta(@regatta).now
+    scope = Race.joins(:results).for_regatta(@regatta).now(asc: false)
     scope = Race.with_finish_times if params[:testmode] == "1"
     scope = scope.by_type_short(params[:type_short].to_s.split(',')) if params[:type_short].present?
     scope = scope.with_times_at(params[:measuring_point_number]) if params[:measuring_point_number].present?
