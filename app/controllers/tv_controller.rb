@@ -50,8 +50,12 @@ class TvController < ApplicationController
     scope = Race.with_starts if params[:testmode] == "1"
     scope = scope.by_type_short(params[:type_short].to_s.split(',')) if params[:type_short].present?
     @race = scope.preload(:event, starts: { participant: :team }).first
-    @event = @race && @race.event
+    @event = @race &¥& @race.event
 
+    render layout: 'minimal'
+  end
+
+  def information
     render layout: 'minimal'
   end
 
@@ -105,7 +109,8 @@ class TvController < ApplicationController
       start: tv_current_start_url(type_short: 'F,V,A', testmode: params[:testmode]),
       race: tv_latest_race_url(type_short: 'F,V,A', testmode: params[:testmode]),
       final_times: tv_latest_race_url(type_short: 'F,V,A', measuring_point_number: 4, testmode: params[:testmode]),
-      winner: tv_latest_winner_url(type_short: 'F,V,A', testmode: params[:testmode])
+      winner: tv_latest_winner_url(type_short: 'F,V,A', testmode: params[:testmode]),
+      information: tv_information_url()
     }.with_indifferent_access
   end
 

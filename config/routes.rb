@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     get '/tv/current_start' => 'tv#current_start'
     get '/tv/latest_race' => 'tv#latest_race'
     get '/tv/latest_winner' => 'tv#latest_winner'
+    get '/tv/information' => 'tv#information'
 
     get '/results' => 'regatta#all_results'
     get '/upcoming' => 'regatta#upcoming'

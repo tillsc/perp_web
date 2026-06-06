@@ -1,0 +1,28 @@
+<div class="sticky-top px-3" style="background: var(--bg, rgba(0, 0, 0, 0.3)); margin-left: <%= @header_space_left || 0 %>px;">
+  <strong><%= @regatta.name %></strong>
+</div>
+
+<div class="fixed-bottom px-2" style="background: var(--bg, rgba(0, 0, 0, 0.3)); margin-top: 10px; margin-left: <%= @footer_space_left || 0 %>px;">
+  Startlisten und Ergebnisse unter <%= root_url %>
+</div>
+
+<style>
+    body {
+        --bg: <%= @background_color || 'rgba(0, 0, 0, 0.3)' %>;
+        background-color: rgba(0, 0, 0, 0);
+        color: <%= @font_color || '#fff' %>;
+    //font-smooth: never;
+    //-webkit-font-smoothing: none;
+        font-weight: bold;
+        font-size: <%= @font_size || 24 %>px;
+    }
+    .sticky-top  {
+    <% if @header_font_color %>
+        color: <%= @header_font_color %>;
+    <% end %>
+    }
+</style>
+
+<script>
+  autoreloadAfter(5000)
+</script>
