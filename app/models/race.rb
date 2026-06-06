@@ -118,10 +118,10 @@ class Race < ApplicationRecord
     where(arel_table[:planned_for].between((20.minutes.ago)..(20.minutes.since)))
   end
 
-  scope :stated_minutes_ago, -> (minutes) do
+  scope :stated_minutes_ago, -> (minutes, asc: true) do
     where(arel_table[:started_at_time].between((minutes.minutes.ago)..(Time.current.getlocal))).
       where(planned_for: Date.today.all_day).
-      order_by_started_at
+      order_by_started_at(asc: asc)
   end
 
   scope :planned_for_today, -> do

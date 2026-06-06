@@ -33,7 +33,7 @@ class TvController < ApplicationController
   end
 
   def latest_winner
-    scope = Race.for_regatta(@regatta).with_finish_times.stated_minutes_ago(30)
+    scope = Race.for_regatta(@regatta).with_finish_times.stated_minutes_ago(30, asc: false)
     scope = Race.with_finish_times if params[:testmode] == "1"
     scope = scope.by_type_short(params[:type_short].to_s.split(',')) if params[:type_short].present?
     @race = scope.preload(event: [:start_measuring_point, :finish_measuring_point], results: [:times, participant: [:team, *Participant::ALL_ROWERS]]).first
