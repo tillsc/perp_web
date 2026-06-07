@@ -4,156 +4,156 @@
 
   <% if can?(:index, MeasurementSet) || can?(:index, MeasuringSession) %>
     <div class="card">
-      <h5 class="card-header">Zeitmessung</h5>
-      <div class="card-body">
-        <ul>
-          <% if can?(:index, MeasurementSet) %>
-            <li>
-              <%= link_to MeasurementSet.model_name.human(count: 2), measurements_url(@regatta) %>
-              (<%= link_to "Nur aktuelle", measurements_url(@regatta, filter: 'nearby', sort_by: 'start_time') %>)
-            </li>
-          <% end %>
-          <% if can?(:index, MeasuringSession) %>
-            <li><%= link_to MeasuringSession.model_name.human(count: 2), measuring_sessions_url(@regatta) %></li>
-          <% end %>
-          <% if can?(:index, MeasuringPoint) %>
-            <li><%= link_to MeasuringPoint.model_name.human(count: 2), internal_measuring_points_url(@regatta) %></li>
-          <% end %>
-        </ul>
-      </div>
+      <h6 class="card-header">Zeitmessung</h6>
+      <ul class="list-group list-group-flush">
+        <% if can?(:index, MeasurementSet) %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <%= link_to "Aktuelle Messungen", measurements_url(@regatta, filter: 'nearby', sort_by: 'start_time') %>
+            </div>
+            <div class="vr"></div>
+            <div>
+              <%= link_to "Alle Messungen", measurements_url(@regatta) %>
+            </div>
+          </li>
+        <% end %>
+        <% if can?(:index, MeasuringSession) %>
+          <li class="list-group-item"><%= link_to MeasuringSession.model_name.human(count: 2), measuring_sessions_url(@regatta) %></li>
+        <% end %>
+        <% if can?(:index, MeasuringPoint) %>
+          <li class="list-group-item"><%= link_to MeasuringPoint.model_name.human(count: 2), internal_measuring_points_url(@regatta) %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
 
   <% if can?(:index, Weight) %>
     <div class="card">
-      <h5 class="card-header">Wiegen</h5>
-      <div class="card-body">
-        <ul>
-          <li><%= link_to("Verwiegen", internal_weighings_url(@regatta, date: Date.today)) %></li>
-        </ul>
-      </div>
+      <h6 class="card-header">Wiegen</h6>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><%= link_to("Verwiegen", internal_weighings_url(@regatta, date: Date.today)) %></li>
+      </ul>
     </div>
   <% end %>
 
   <div class="card">
-    <h5 class="card-header">Sprecher & TV</h5>
-    <div class="card-body">
-      <ul>
-        <% if can?(:access, :announcer_views) %>
-          <li><%= link_to "Sprecher-Dashboard", announcer_url(@regatta) %></li>
-          <% if can?(:access, :honors) %>
-            <li><%= link_to "Ehrungen", announcer_honors_url(@regatta) %></li>
-          <% end %>
+    <h6 class="card-header">Sprecher & TV</h6>
+    <ul class="list-group list-group-flush">
+      <% if can?(:access, :announcer_views) %>
+        <li class="list-group-item"><%= link_to "Sprecher-Dashboard", announcer_url(@regatta) %></li>
+        <% if can?(:access, :honors) %>
+          <li class="list-group-item"><%= link_to "Ehrungen", announcer_honors_url(@regatta) %></li>
         <% end %>
-        <li><%= link_to "TV-Overlays", tv_url(@regatta) %></li>
-      </ul>
-    </div>
+      <% end %>
+      <li class="list-group-item"><%= link_to "TV-Overlays", tv_url(@regatta) %></li>
+    </ul>
   </div>
 
   <% if can?(:index, Team) || can?(:index, Participant) %>
 
     <div class="card">
-      <h5 class="card-header">Meldewesen</h5>
-      <div class="card-body">
-        <ul>
-          <% if can?(:index, Participant) %>
-            <li><%= link_to(Participant.model_name.human(count: 2), internal_participants_url(@regatta)) %></li>
-          <% end %>
+      <h6 class="card-header">Meldewesen</h6>
+      <ul class="list-group list-group-flush">
+        <% if can?(:index, Participant) %>
+          <li class="list-group-item"><%= link_to(Participant.model_name.human(count: 2), internal_participants_url(@regatta)) %></li>
+        <% end %>
 
-          <% if can?(:index, Team) %>
-            <li><%= link_to(Team.model_name.human(count: 2), internal_teams_path(@regatta)) %></li>
-          <% end %>
+        <% if can?(:index, Team) %>
+          <li class="list-group-item"><%= link_to(Team.model_name.human(count: 2), internal_teams_path(@regatta)) %></li>
+        <% end %>
 
-          <% if can?(:index, Rower) %>
-            <li><%= link_to(Rower.model_name.human(count: 2), internal_rowers_url(@regatta)) %></li>
-          <% end %>
+        <% if can?(:index, Rower) %>
+          <li class="list-group-item"><%= link_to(Rower.model_name.human(count: 2), internal_rowers_url(@regatta)) %></li>
+        <% end %>
 
-          <% if can?(:index, Address) %>
-            <li><%= link_to(Address.model_name.human(count: 2), internal_addresses_url(@regatta)) %></li>
-          <% end %>
-        </ul>
-      </div>
+        <% if can?(:index, Address) %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div><%= link_to(Address.model_name.human(count: 2), internal_addresses_url(@regatta)) %></div>
+            <div class="vr"></div>
+            <div><%= link_to("Schiedsrichter", internal_addresses_url(@regatta, only_role: "referee_current_regatta")) %></div>
+            <div class="vr"></div>
+            <div><%= link_to("Obleute", internal_addresses_url(@regatta, only_role: "representative_current_regatta")) %></div>
+          </li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
 
   <% if can?(:index, Event) || can?(:index, Race) %>
     <div class="card">
-      <h5 class="card-header">Regatta-Verwaltung</h5>
-      <div class="card-body">
-        <ul>
-          <% if can?(:index, Event) %>
-            <li><%= link_to("Übersicht über alle Rennen", internal_events_url(@regatta)) %></li>
-            <li>
-              <%= form_with url: internal_events_url(@regatta), method: :get do |f| %>
-                <div class="input-group">
-                  <div class="input-group-text">Rennen</div>
+      <h6 class="card-header">Regatta-Verwaltung</h6>
+      <ul class="list-group list-group-flush">
+        <% if can?(:index, Event) %>
+          <li class="list-group-item"><%= link_to("Übersicht über alle Rennen", internal_events_url(@regatta)) %></li>
+          <li class="list-group-item">
+            <%= form_with url: internal_events_url(@regatta), method: :get do |f| %>
+              <div class="input-group">
+                <div class="input-group-text">Rennen</div>
                 <%= f.number_field :event_number, class: "form-control" %>
                 <%= f.submit "Go", class: "btn btn-primary" %>
-                </div>
-              <% end %>
-            </li>
-          <% end %>
+              </div>
+            <% end %>
+          </li>
+        <% end %>
 
 
-          <% if can?(:index, Race) %>
-            <li><%= link_to("Zeitplan verwalten", internal_time_schedule_index_url(@regatta)) %></li>
-          <% end %>
-        </ul>
-      </div>
+        <% if can?(:index, Race) %>
+          <li class="list-group-item"><%= link_to("Zeitplan verwalten", internal_time_schedule_index_url(@regatta)) %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
 
 
   <% if can?(:index, Rower) || can?(:index, Result) %>
     <div class="card">
-      <h5 class="card-header">Reports</h5>
-      <div class="card-body">
-        <ul>
-          <% if can?(:index, :reports) %>
-            <li><%= link_to("Ausdrucke", internal_reports_url(@regatta)) %></li>
-          <% end %>
-          <% if can?(:index, Result) %>
-            <li><%= link_to "DRV Ergebnis-XML", results_url(@regatta, format: :xml) %></li>
-          <% end %>
+      <h6 class="card-header">Reports</h6>
+      <ul class="list-group list-group-flush">
+        <% if can?(:index, :reports) %>
+          <li class="list-group-item"><%= link_to("Ausdrucke", internal_reports_url(@regatta)) %></li>
+        <% end %>
+        <% if can?(:index, Result) %>
+          <li class="list-group-item"><%= link_to "DRV Ergebnis-XML", results_url(@regatta, format: :xml) %></li>
+        <% end %>
 
-          <% if can?(:show, :statistics) %>
-            <li><%= link_to("Statistiken", internal_statistics_url(@regatta)) %></li>
-          <% end %>
-        </ul>
-      </div>
+        <% if can?(:show, :statistics) %>
+          <li class="list-group-item"><%= link_to("Statistiken", internal_statistics_url(@regatta)) %></li>
+        <% end %>
+      </ul>
     </div>
 
   <% end %>
 
   <% if can?(:index, Regatta) || can?(:show, User) %>
     <div class="card">
-      <h5 class="card-header">Administration</h5>
-      <div class="card-body">
-        <ul>
-          <% if can?(:index, Regatta) %>
-            <li><%= link_to(Regatta.model_name.human(count: 2), internal_regattas_url(@regatta)) %></li>
-          <% end %>
+      <h6 class="card-header">Administration</h6>
+      <ul class="list-group list-group-flush">
+        <% if can?(:index, Regatta) %>
+          <li class="list-group-item"><%= link_to(Regatta.model_name.human(count: 2), internal_regattas_url(@regatta)) %></li>
+        <% end %>
 
-          <% if can?(:index, ExternalMeasurement) %>
-            <li><%= link_to(ExternalMeasurement.model_name.human(count: 2), internal_external_measurements_url(@regatta)) %></li>
-          <% end %>
+        <% if can?(:index, ExternalMeasurement) %>
+          <li class="list-group-item"><%= link_to(ExternalMeasurement.model_name.human(count: 2), internal_external_measurements_url(@regatta)) %></li>
+        <% end %>
 
-          <% if can?(:show, User) %>
-            <li><%= link_to(User.model_name.human(count: 2), internal_users_url) %></li>
-          <% end %>
+        <% if can?(:show, User) %>
+          <li class="list-group-item"><%= link_to(User.model_name.human(count: 2), internal_users_url) %></li>
+        <% end %>
 
-          <% if can?(:show, :server_status) %>
-            <li><%= link_to("Server Status", internal_status_url(@regatta)) %></li>
-          <% end %>
-        </ul>
-      </div>
+        <% if can?(:show, :server_status) %>
+          <li class="list-group-item"><%= link_to("Server Status", internal_status_url(@regatta)) %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
 
   <div class="card">
-    <h5 class="card-header">Mein Account</h5>
+    <h6 class="card-header">Mein Account</h6>
     <div class="card-body">
       <div class="d-grid gap-2">
+        <% if current_user %>
+          <span>Hallo <%= current_user.email %></span>
+        <% end %>
         <%= link_to "Profil bearbeiten", edit_user_registration_url, class: 'btn btn-secondary' %>
         <%= link_to "Ausloggen", destroy_user_session_url, method: :delete, class: 'btn btn-danger' %>
       </div>
