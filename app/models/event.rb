@@ -37,6 +37,10 @@ class Event < ApplicationRecord
 
   has_many :participants, foreign_key: ['Regatta_ID', 'Rennen'],
            inverse_of: :event, dependent: :restrict_with_error
+  has_many :active_participants, -> { merge(Participant.active) },
+           class_name: 'Participant',
+           foreign_key: ['Regatta_ID', 'Rennen'],
+           inverse_of: :event, dependent: :restrict_with_error
   has_many :races, foreign_key: ['Regatta_ID', 'Rennen'],
            inverse_of: :event, dependent: :restrict_with_error
   has_many :starts, foreign_key: ['Regatta_ID', 'Rennen'],

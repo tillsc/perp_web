@@ -7,7 +7,9 @@ module Internal
       authorize! :index, Event
 
       @page_container_suffix = "-xxl"
-      @events = @regatta.events.preload(:start_measuring_point, :finish_measuring_point)
+      @events = @regatta.events.
+        with_counts(:participants, :active_participants).
+        preload(:start_measuring_point, :finish_measuring_point)
     end
 
     def show
