@@ -6,6 +6,8 @@ module Internal
     def index
       authorize! :index, Event
 
+      params[:only_open]||= @regatta.is_running? ? "1" : "0"
+
       if params[:event_number] && event = Event.for_regatta(@regatta).find_by(number: params[:event_number])
         redirect_to internal_event_url(@regatta, event)
         return
@@ -15,6 +17,8 @@ module Internal
       @events = @regatta.events.
         with_counts(:participants, :active_participants).
         preload(:start_measuring_point, :finish_measuring_point)
+
+      @events = @events.with_existing(:open_races) if params[:only_open] == "1"
     end
 
     def show

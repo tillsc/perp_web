@@ -43,6 +43,10 @@ class Event < ApplicationRecord
            inverse_of: :event, dependent: :restrict_with_error
   has_many :races, foreign_key: ['Regatta_ID', 'Rennen'],
            inverse_of: :event, dependent: :restrict_with_error
+  has_many :open_races, -> { where(result_official_since: nil) },
+           class_name: 'Race',
+           foreign_key: ['Regatta_ID', 'Rennen'],
+           inverse_of: :event, dependent: :restrict_with_error
   has_many :starts, foreign_key: ['Regatta_ID', 'Rennen'],
            inverse_of: :event, dependent: :restrict_with_error
   has_many :results, foreign_key: ['Regatta_ID', 'Rennen'],

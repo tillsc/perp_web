@@ -50,6 +50,13 @@
   <div class="col-md-12 col-lg-3">
     <% if can?(:new, Event) %>
       <%= link_to t('helpers.titles.new', model: Event.model_name.human), new_internal_event_path(@regatta), class: 'btn btn-secondary d-block my-1' %>
+      <hr>
+    <% end %>
+    <% if params[:only_open] == "1" %>
+      <div class="alert alert-info">Achtung: Es werden aktuell nur Rennen mit Läufen angezeigt, die noch nicht abgeschlossen sind.</div>
+      <%= link_to "Alle Rennen anzeigen", internal_events_path(@regatta, only_open: 0), class: "btn btn-secondary d-block my-1" %>
+    <% else %>
+      <%= link_to "Nur offene Rennen anzeigen", internal_events_path(@regatta, only_open: 1), class: "btn btn-secondary d-block my-1" %>
     <% end %>
   </div>
 </div>

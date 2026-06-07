@@ -71,6 +71,11 @@ class Regatta < ApplicationRecord
     true
   end
 
+  def is_running?
+    self.from_date && self.to_date &&
+      self.from_date <= Date.today && self.to_date >= Date.today
+  end
+
   def self.current
     find(Parameter.current_regatta_id)
   end
