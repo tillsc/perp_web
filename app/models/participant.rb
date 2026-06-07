@@ -205,6 +205,11 @@ class Participant < ApplicationRecord
     end
   end
 
+  before_create :write_history_on_create
+  def write_history_on_create
+    prepend_history_entry('Nachmeldung') if late_entry?
+  end
+
   before_update :write_history
   def write_history
     if self.entry_changed
@@ -234,6 +239,10 @@ class Participant < ApplicationRecord
 
     if self.changed.include?("Abgemeldet")
       prepend_history_entry(self.withdrawn? ? "Abmeldung" : "Anmeldung")
+    end
+
+    if self.changed.include?("Nachgemeldet")
+      prepend_history_entry(self.late_entry? ? "Nachmeldung" : "Nachmeldung zurückgesetzt")
     end
   end
 
