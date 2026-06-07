@@ -13,6 +13,7 @@
       <%= f.check_box :inline, checked: params[:inline] != "0", label: "Alles in eine Zeile" %>
       <%= f.check_box :new_page_per_event, checked: params[:new_page_per_event] == "1", label: "Neue Seite vor jedem Rennen" %>
       <%= f.check_box :with_withdrawn, checked: params[:with_withdrawn] == "1", label: "Mit Abgemeldeten" %>
+      <%= f.check_box :only_entries_worth_checking, checked: params[:only_entries_worth_checking] == "1", label: "Nur auffällige Startlisteneinträge" %>
       <%= render 'internal/reports/race_type_filter', f: f %>
     </formset>
   </div>

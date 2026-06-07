@@ -14,14 +14,16 @@
       </div>
     <% end %>
     <%= render 'regatta/race_starts', race: race, inline: params[:inline] != "0", with_withdrawn: params[:with_withdrawn] == "1", column_labels: params[:column_labels] != "0" %>
+    <% last_event = race.event %>
   <% else %>
     <%= render 'regatta/header', type_label: "Startlisten", type_variant: :starts if i == 0 %>
     <div class="print-keep-together">
-      <% if event_changed %>
+      <% content = capture do; render('regatta/race_starts', race: race, inline: params[:inline] != "0", with_withdrawn: params[:with_withdrawn] == "1", column_labels: params[:column_labels] != "0"); end %>
+      <% if event_changed && content.present? %>
         <h4 class="mt-3 mb-1"><%= race.event.number %>&ensp;<small class="fw-normal text-body-secondary"><%= race.event.name_short %> <%= race.event.name %></small></h4>
+        <% last_event = race.event %>
       <% end %>
-      <%= render 'regatta/race_starts', race: race, inline: params[:inline] != "0", with_withdrawn: params[:with_withdrawn] == "1", column_labels: params[:column_labels] != "0" %>
+      <%= content %>
     </div>
   <% end %>
-  <% last_event = race.event %>
 <% end %>

@@ -15,7 +15,12 @@
     </div>
   <% end %>
   <% starts = race.starts.sort_by { |s| s.lane_number.to_i } %>
-  <% starts = starts.reject { |s| s.participant&.withdrawn? } unless local_assigns[:with_withdrawn] %>
+  <% if params[:only_entries_worth_checking] == "1" %>
+    <% starts = starts.select { |s| s.participant&.withdrawn? || s.participant&.number.nil? }  %>
+    <% return unless starts.any? %>
+  <% elsif !local_assigns[:with_withdrawn] %>
+    <% starts = starts.reject { |s| s.participant&.withdrawn? }  %>
+  <% end %>
   <% starts.each do |s| %>
     <div class="d-flex align-items-baseline gap-2 py-1 border-bottom <%= participant_state_classes(s.participant) %>">
       <div class="text-end text-nowrap fw-light" style="min-width:2rem"><%= s.lane_number %></div>
