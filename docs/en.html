@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>perp.de – Modern Regatta Software</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:    #1a3f6f;
+      --accent:  #1e88e5;
+      --light:   #e8f1fb;
+      --text:    #1c2b3a;
+      --muted:   #5a7087;
+      --border:  #d0dce8;
+      --white:   #ffffff;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--white);
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--blue);
+      color: var(--white);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    nav .logo { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.03em; color: var(--white); }
+    nav .lang a { color: rgba(255,255,255,0.75); font-size: 0.875rem; border: 1px solid rgba(255,255,255,0.35); border-radius: 4px; padding: 0.2rem 0.6rem; }
+    nav .lang a:hover { color: var(--white); border-color: var(--white); text-decoration: none; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(160deg, var(--blue) 0%, #2563a8 100%);
+      color: var(--white);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 800; line-height: 1.15; margin-bottom: 1.25rem; }
+    .hero p { font-size: 1.2rem; max-width: 640px; margin: 0 auto 2rem; opacity: 0.9; }
+    .hero .cta {
+      display: inline-block;
+      background: var(--white);
+      color: var(--blue);
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: opacity 0.15s;
+    }
+    .hero .cta:hover { opacity: 0.9; text-decoration: none; }
+
+    /* ── SECTIONS ── */
+    section { padding: 4rem 2rem; }
+    .container { max-width: 900px; margin: 0 auto; }
+
+    h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--blue); }
+    .section-lead { font-size: 1.05rem; color: var(--muted); margin-bottom: 2.5rem; max-width: 660px; }
+
+    /* ── GRID ── */
+    .grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+
+    .card {
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--blue); }
+    .card p { font-size: 0.95rem; color: var(--text); }
+
+    /* ── HIGHLIGHT STRIP ── */
+    .highlights {
+      background: var(--light);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .highlights ul {
+      list-style: none;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    .highlights li {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      font-size: 0.97rem;
+    }
+    .highlights li::before {
+      content: "✓";
+      color: var(--accent);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    /* ── DIFFERENTIATORS ── */
+    .diff-list { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+    .diff-list li {
+      border-left: 4px solid var(--accent);
+      padding: 0.75rem 1rem;
+      background: var(--light);
+      border-radius: 0 8px 8px 0;
+    }
+    .diff-list li strong { display: block; margin-bottom: 0.25rem; color: var(--blue); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--blue);
+      color: rgba(255,255,255,0.65);
+      text-align: center;
+      padding: 1.5rem 2rem;
+      font-size: 0.875rem;
+    }
+    footer a { color: rgba(255,255,255,0.85); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">perp.de</span>
+  <span class="lang"><a href="index.html">Deutsch</a></span>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <h1>Regatta management<br>that just works.</h1>
+  <p>From registration to podium – everything in one browser tab. No expensive hardware, no software to install, no paper chaos.</p>
+  <a class="cta" href="https://github.com/tillsc/perp_web">View on GitHub</a>
+</header>
+
+<!-- OVERVIEW -->
+<section>
+  <div class="container">
+    <h2>Everything a regatta needs</h2>
+    <p class="section-lead">perp.de covers a rowing regatta from start to finish – and everyone involved works simultaneously from their own device.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>Registration &amp; Draw</h3>
+        <p>Import entries or add them manually, assign lanes, print start lists. Re-imports from the German rowing federation (DRV) portal are possible at any time without overwriting existing data.</p>
+      </div>
+      <div class="card">
+        <h3>Timekeeping</h3>
+        <p>Record times via Bluetooth button, software finish camera, or manual entry – at start, finish, and any number of intermediate waypoints simultaneously.</p>
+      </div>
+      <div class="card">
+        <h3>Live Results</h3>
+        <p>As soon as a result is entered, everyone sees it: officials, club representatives, and the TV display at the finish line – no extra steps required.</p>
+      </div>
+      <div class="card">
+        <h3>Finish Camera</h3>
+        <p>The companion module <em>perp_finish_cam</em> turns an ordinary laptop with a webcam into a professional slit camera. Sharp images, optional AI boat detection – no expensive specialist hardware.</p>
+      </div>
+      <div class="card">
+        <h3>TV Display System</h3>
+        <p>Multiple display modes (current start, last race, winner, info slides) – controlled from the announcer's station. Fonts and colors freely configurable.</p>
+      </div>
+      <div class="card">
+        <h3>Club Portal</h3>
+        <p>Every club gets a private link to view their own entries, starts, and results – no account needed, works on any device.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HIGHLIGHTS -->
+<section class="highlights">
+  <div class="container">
+    <h2>At a glance</h2>
+    <p class="section-lead">What the software includes.</p>
+    <ul>
+      <li>Runs entirely in the browser – nothing to install</li>
+      <li>Works on mobile, tablet, and desktop simultaneously</li>
+      <li>Direct import from the DRV entry portal, repeatable without data loss</li>
+      <li>Bluetooth-based timing with affordable wireless buttons</li>
+      <li>Software finish camera with AI boat detection (perp_finish_cam)</li>
+      <li>Multiple timing points: start, intermediate splits, finish</li>
+      <li>Live rankings with time gaps</li>
+      <li>TV display system for screens or projectors</li>
+      <li>Weight verification for lightweight events</li>
+      <li>Role-based access: timekeeper, clerk, referee, announcer …</li>
+      <li>XML export of all results</li>
+      <li>Open source – self-hostable or deploy via Docker</li>
+    </ul>
+  </div>
+</section>
+
+<!-- WHY DIFFERENT -->
+<section>
+  <div class="container">
+    <h2>What sets it apart from conventional solutions</h2>
+    <p class="section-lead">Most regattas today still rely on a mix of proprietary hardware, spreadsheets, and paper. perp.de takes a different approach.</p>
+    <ul class="diff-list">
+      <li>
+        <strong>No expensive specialist hardware</strong>
+        Instead of timing systems costing thousands of euros, affordable Bluetooth buttons and a standard laptop are enough. The finish camera runs entirely as software.
+      </li>
+      <li>
+        <strong>Everything connected, in real time</strong>
+        Timekeepers, clerks, officials, and announcers all work in the same system at the same time. No slips of paper, no waiting for the printout from the next table.
+      </li>
+      <li>
+        <strong>Real federation data integration</strong>
+        Imports from the DRV entry system can be repeated as often as needed – late corrections from the federation land automatically in the system without overwriting anything already entered.
+      </li>
+      <li>
+        <strong>Works on any device</strong>
+        If you have a browser, you can participate. No installation headaches on race morning, no Windows-only software.
+      </li>
+      <li>
+        <strong>Scales with the event</strong>
+        The system was built for large regattas and proven at that level – but works just as reliably for small club events.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>perp.de is open source. <a href="https://github.com/tillsc/perp_web">GitHub</a></p>
+</footer>
+
+</body>
+</html>
