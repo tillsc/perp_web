@@ -28,8 +28,8 @@
 <%= link_to t("helpers.actions.edit"),
             edit_internal_event_start_url(@regatta, @race.event, @race.type_short),
             class: "btn btn-secondary float-end" %>
-<h2>Starts</h2>
+<h2 id="starts">Starts</h2>
 <%= render 'starts', object: @race %>
 
-<h2>Ergebnisse</h2>
+<h2 id="results">Ergebnisse</h2>
 <%= render 'results', object: @race %>

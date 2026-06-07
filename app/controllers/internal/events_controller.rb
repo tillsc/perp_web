@@ -6,6 +6,11 @@ module Internal
     def index
       authorize! :index, Event
 
+      if params[:event_number] && event = Event.for_regatta(@regatta).find_by(number: params[:event_number])
+        redirect_to internal_event_url(@regatta, event)
+        return
+      end
+
       @page_container_suffix = "-xxl"
       @events = @regatta.events.
         with_counts(:participants, :active_participants).
@@ -14,9 +19,14 @@ module Internal
 
     def show
       @event = @regatta.events.
+        with_counts(:participants, :active_participants).
         preload(:start_measuring_point, :finish_measuring_point, :races).
         find(params.extract_value(:id))
       authorize! :show, @event
+
+      @prev_event = @regatta.events.to_number(@event.number - 1).reorder(:number).last
+      @next_event = @regatta.events.from_number(@event.number + 1).reorder(:number).first
+
     end
 
     def new

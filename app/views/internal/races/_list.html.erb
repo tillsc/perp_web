@@ -17,8 +17,8 @@
       <td><%= link_to race.name, internal_race_path(@regatta, race, referrer: current_url_with_anchor(race)) %></td>
       <td><%= race.planned_for && l(race.planned_for, format: :short) || '-' %></td>
       <td><%= race.started_at && l(race.started_at, format: :short) || '-' %></td>
-      <td><%= race.starts.size.instance_eval { |s| s != 0 ? s : '-' } %></td>
-      <td><%= race.results.size.instance_eval { |s| s != 0 ? s : '-' }  %></td>
+      <td><%= link_to race.starts.size.instance_eval { |s| s != 0 ? s : '-' }, internal_race_path(@regatta, race, anchor: "starts", referrer: current_url_with_anchor(race)) %></td>
+      <td><%= link_to race.results.size.instance_eval { |s| s != 0 ? s : '-' }, internal_race_path(@regatta, race, anchor: "results", referrer: current_url_with_anchor(race)) %></td>
       <td class="text-nowrap">
         <%= link_to(t('helpers.actions.edit_icon'), edit_internal_race_url(@regatta, race, referrer: current_url_with_anchor(race)),
                     class: 'btn btn-outline-primary',

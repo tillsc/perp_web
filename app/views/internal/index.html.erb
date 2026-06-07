@@ -82,12 +82,18 @@
       <div class="card-body">
         <ul>
           <% if can?(:index, Event) %>
-            <li><%= link_to(Event.model_name.human(count: 2), internal_events_url(@regatta)) %></li>
+            <li><%= link_to("Übersicht über alle Rennen", internal_events_url(@regatta)) %></li>
+            <li>
+              <%= form_with url: internal_events_url(@regatta), method: :get do |f| %>
+                <div class="input-group">
+                  <div class="input-group-text">Rennen</div>
+                <%= f.number_field :event_number, class: "form-control" %>
+                <%= f.submit "Go", class: "btn btn-primary" %>
+                </div>
+              <% end %>
+            </li>
           <% end %>
 
-          <% if can?(:index, Race) %>
-            <li><%= link_to(Race.model_name.human(count: 2), internal_races_url(@regatta)) %></li>
-          <% end %>
 
           <% if can?(:index, Race) %>
             <li><%= link_to("Zeitplan verwalten", internal_time_schedule_index_url(@regatta)) %></li>
