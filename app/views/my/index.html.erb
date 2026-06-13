@@ -24,7 +24,55 @@
 
 <% if @participants %>
   <h2 class="mt-4">Ihre Meldungen</h2>
-  <%= render 'regatta/results_and_starts', results: @results || [], starts: @starts || [], participants: @participants %>
+
+  <% res_by_p = (@results || []).group_by { |r| [r.event_number, r.participant_id] }
+     raced    = (@results || []).map { |r| [r.event_number, r.race_number] }.to_set
+     st_by_p  = (@starts || []).reject { |s| raced.include?([s.event_number, s.race_number]) }.
+       group_by { |s| [s.event_number, s.participant_id] } %>
+
+  <% @participants.each do |p|
+       key       = [p.event_number, p.participant_id]
+       p_results = res_by_p[key]
+       p_starts  = st_by_p[key] %>
+    <div class="small text-muted border-bottom mb-2 pb-2">
+      <div class="row align-items-baseline">
+        <div class="col">
+          <%= link_to p.event.label, event_participants_url(@regatta, p.event.number) %> &ndash;
+          Bugnr.: <%= link_to p.number, participant_path(@regatta, p.event_number, p.participant_id) %>,
+          <%= p.team_name(regatta: @regatta) %>,
+          <em><%= p.rower_names %></em>
+        </div>
+        <div class="col-auto fw-semibold">
+          <%= "#{p.entry_fee} #{@regatta.currency}" %>
+        </div>
+      </div>
+      <% if p_starts.present? || p_results.present? %>
+        <div>
+          <% if p_starts.present? %>
+            Starts:
+            <%= safe_join(p_starts.map { |s|
+              safe_join([
+                link_to(s.race.name, event_starts_path(@regatta, s.race.event.number, anchor: s.race.number)),
+                " #{l s.race.planned_for, format: '%H:%M'} Uhr Bahn #{s.lane_number}"
+              ])
+            }, " &middot; ".html_safe) %>
+          <% end %>
+          <% if p_results.present? %>
+            <%= safe_join(p_results.map { |r|
+              parts = [link_to(r.race.name, event_results_path(@regatta, r.race.event.number, anchor: r.race.number))]
+              parts << " &ndash; <strong>#{r.rank}. Platz</strong>#{medal_for(r.rank)}".html_safe if r.rank
+              safe_join(parts)
+            }, " &middot; ".html_safe) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="row fw-semibold border-top pt-2 small">
+    <div class="col">Summe</div>
+    <div class="col-auto"><%= "#{@participants.sum(&:entry_fee)} #{@regatta.currency}" %></div>
+  </div>
 <% end %>
 
 <script>
