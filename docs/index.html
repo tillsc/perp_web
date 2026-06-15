@@ -23,6 +23,50 @@
   <div class="hero-scroll"><span>scrollen</span></div>
 </header>
 
+<section class="screenshot">
+  <div class="container">
+    <span class="eyebrow">Screenshots</span>
+    <h2>Software in Aktion</h2>
+    <p class="lead">Von der Regatta-Verwaltung bis zur Schlitzkamera – alles läuft im Browser.</p>
+    <div class="carousel">
+      <div class="carousel-track">
+        <div class="carousel-slide active" data-caption="Ops-Dashboard – Übersicht aller Bereiche">
+          <div class="browser-bar"><span class="bdot"></span><span class="bdot"></span><span class="bdot"></span><span class="browser-url">perp.de</span></div>
+          <div class="browser-content"><img src="dashboard.webp" alt="PERP Dashboard – Übersicht aller Funktionen"></div>
+        </div>
+        <div class="carousel-slide" data-caption="perp_finish_cam – Zielauswertung im Browser">
+          <div class="browser-bar"><span class="bdot"></span><span class="bdot"></span><span class="bdot"></span><span class="browser-url">perp.de</span></div>
+          <div class="browser-content"><img src="finish_cam.webp" alt="Schlitzkamera-Auswertung im Browser"></div>
+        </div>
+        <div class="carousel-slide" data-caption="Sprecher-Ansicht – Rennergebnisse nach Bahnen sortiert">
+          <div class="browser-bar"><span class="bdot"></span><span class="bdot"></span><span class="bdot"></span><span class="browser-url">perp.de</span></div>
+          <div class="browser-content"><img src="speaker.webp" alt="Sprecher-Ansicht nach Bahnen"></div>
+        </div>
+        <div class="carousel-slide portrait" data-caption="Zwischenzeitmessung – läuft auf iPhone &amp; iPad">
+          <div class="browser-bar"><span class="bdot"></span><span class="bdot"></span><span class="bdot"></span><span class="browser-url">perp.de</span></div>
+          <div class="browser-content"><img src="times.webp" alt="Zwischenzeitmessung auf iPhone"></div>
+        </div>
+        <div class="carousel-slide" data-caption="Grafischer Zeitplan – Rennblöcke über den gesamten Wettkampftag">
+          <div class="browser-bar"><span class="bdot"></span><span class="bdot"></span><span class="bdot"></span><span class="browser-url">perp.de</span></div>
+          <div class="browser-content"><img src="time_schedule.webp" alt="Grafischer Zeitplan"></div>
+        </div>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-btn carousel-prev" aria-label="Zurück">&#8592;</button>
+        <div class="carousel-dots">
+          <button class="dot active" aria-label="Slide 1"></button>
+          <button class="dot" aria-label="Slide 2"></button>
+          <button class="dot" aria-label="Slide 3"></button>
+          <button class="dot" aria-label="Slide 4"></button>
+          <button class="dot" aria-label="Slide 5"></button>
+        </div>
+        <button class="carousel-btn carousel-next" aria-label="Weiter">&#8594;</button>
+      </div>
+      <p class="carousel-caption">Ops-Dashboard – Übersicht aller Bereiche</p>
+    </div>
+  </div>
+</section>
+
 <section class="features">
   <div class="container">
     <span class="eyebrow">Funktionen</span>
@@ -148,5 +192,29 @@
   <a href="https://github.com/tillsc/perp_web">GitHub</a>
 </footer>
 
+<script>
+document.querySelectorAll('.carousel').forEach(function(carousel) {
+  var slides = carousel.querySelectorAll('.carousel-slide');
+  var dots   = carousel.querySelectorAll('.dot');
+  var caption = carousel.querySelector('.carousel-caption');
+  var current = 0, timer;
+
+  function go(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    if (caption) caption.textContent = slides[current].dataset.caption;
+  }
+
+  carousel.querySelector('.carousel-prev').addEventListener('click', function() { clearInterval(timer); go(current - 1); startTimer(); });
+  carousel.querySelector('.carousel-next').addEventListener('click', function() { clearInterval(timer); go(current + 1); startTimer(); });
+  dots.forEach(function(dot, i) { dot.addEventListener('click', function() { clearInterval(timer); go(i); startTimer(); }); });
+
+  function startTimer() { timer = setInterval(function() { go(current + 1); }, 5000); }
+  startTimer();
+});
+</script>
 </body>
 </html>

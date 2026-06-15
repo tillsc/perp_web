@@ -76,7 +76,12 @@ nav {
   align-items: center;
   text-align: center;
   padding: 9rem 2rem 6rem;
-  background: var(--ink);
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(to bottom, rgba(7,9,28,0.55) 0%, rgba(7,9,28,0.82) 75%, rgba(7,9,28,1) 100%),
+    url('finish_bg.webp');
+  background-size: cover;
+  background-position: center 45%;
   overflow: hidden;
 }
 
@@ -200,6 +205,169 @@ nav {
   height: 36px;
   background: linear-gradient(to bottom, rgba(0,201,167,0.5), transparent);
   animation: pulseDown 1.8s ease-in-out infinite;
+}
+
+/* ── SCREENSHOT ── */
+.screenshot {
+  background: var(--ink);
+  padding: 5rem 2rem 4rem;
+  text-align: center;
+}
+
+.screenshot h2 { color: #fff; }
+.screenshot .lead { color: rgba(255,255,255,0.45); }
+
+.carousel {
+  max-width: 1020px;
+  margin: 0 auto;
+}
+
+.carousel-track {
+  position: relative;
+  height: 520px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0,201,167,0.18),
+    0 32px 80px rgba(0,0,0,0.55);
+}
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.browser-bar {
+  background: #1c2535;
+  padding: 0.55rem 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.bdot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+.bdot:nth-child(1) { background: #ff5f57; }
+.bdot:nth-child(2) { background: #febc2e; }
+.bdot:nth-child(3) { background: #28c840; }
+
+.browser-url {
+  flex: 1;
+  margin: 0 0.6rem;
+  background: rgba(255,255,255,0.06);
+  border-radius: 4px;
+  padding: 0.18rem 0.65rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.28);
+  text-align: center;
+}
+
+.browser-content {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+.browser-content img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+.carousel-slide.portrait .browser-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f6fb;
+}
+
+.carousel-slide.portrait .browser-content img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+}
+
+.carousel-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.45);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s;
+  line-height: 1;
+}
+
+.carousel-btn:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.dot.active {
+  background: var(--teal);
+  transform: scale(1.4);
+}
+
+.carousel-caption {
+  margin-top: 0.9rem;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  min-height: 1.2em;
+}
+
+@media (max-width: 600px) {
+  .carousel-track { height: 300px; }
 }
 
 /* ── SECTIONS ── */
